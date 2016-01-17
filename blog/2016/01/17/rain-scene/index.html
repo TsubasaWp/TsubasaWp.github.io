@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>制作下雨场景 - org-page</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="" />
+    <meta name="description" content="rain" />
+    <meta name="keywords" content="/" />
+    <link rel="stylesheet" href="/media/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/prettify.css" type="text/css">
+  </head>
+  <body class="container">
+    <div>
+      <header class="masthead">
+        <h1 class="masthead-title"><a href="/">org-page</a></h1>
+        <p>static site generator</p>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/resource/">Resource</a></li>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://github.com/kelvinh/org-page">GitHub</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+        <form method="get" id="searchform" action="http://www.google.com/search">
+          <input type="text" class="field" name="q" id="s" placeholder="Search">
+          <input type="hidden" name="as_sitesearch" value="tsubasawp.github.io">
+        </form>
+      </header>
+    </div>
+
+<div>
+<div class="post">
+<h1>制作下雨场景</h1>
+<hr  />
+<p>
+低能预警: 这篇文章并没有什么技术含量, 用于练习org之作.
+</p>
+
+
+<p>
+前些阵子在公司km上看到一篇描述某端游下雨场景开发历程的文章, 回家后忍不住用unity实验了一番, 打算用同样思路实现一套可以在手机上跑的下雨场景.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">首先需要准备一张雨丝纹理, 将灰度用作透明通道.</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+雨丝越密集, 可表现的雨势越大.
+雨丝不可太粗太长. (咦这种下刀子的感觉是怎么回事
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/blog/2016/01/17/rain-scene/rain_texture.png" alt="rain_texture.png" /> 
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">让雨动起来</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+这时候需要一个uv动画shader
+</p>
+
+<p>
+首先把shader混合方式设置为Add
+</p>
+<pre class="example">
+Blend One One
+</pre>
+
+<p>
+在顶点着色器中让ui以一定速率运动
+</p>
+
+<p>
+v2f vert (appdata_t v)
+{
+    v2f o;
+    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.color = v.color;
+    o.texcoord = TRANSFORM_TEX(float2(v.texcoord.x, v.texcoord.y + _Time.y), _FlareTexture);
+    return o;
+}
+</p>
+
+<p>
+这个动画实现的比较简单, 还可以添加运动偏移, 动画速度, 缩放等参数.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">把纹理用合适的姿势放在场景中</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+最粗暴的方式当然是直接把雨丝贴在相机前方, 像这样
+<img src="/assets/blog/2016/01/17/rain-scene/rain03.png" alt="rain03.png" />
+</p>
+
+<p>
+这种实现消耗最小, 但缺点是在3d场景中上下移动镜头时, 雨永远都是垂直下落的, 没有透视表现, 比较假.
+</p>
+
+<p>
+稍微科学一些的做法是使用带雨丝贴图的圆锥体把相机包裹住
+<img src="/assets/blog/2016/01/17/rain-scene/rain04.png" alt="rain04.png" />
+(懒得去弄圆锥体模型了, 就用圆柱体凑合下吧
+</p>
+
+<p>
+仰视和俯视的效果:
+<img src="/assets/blog/2016/01/17/rain-scene/rain01.png" alt="rain01.png" />
+</p>
+
+
+<div class="figure">
+<p><img src="/assets/blog/2016/01/17/rain-scene/rain02.png" alt="rain02.png" />
+</p>
+</div>
+
+<p>
+可以通过调整纹理密度,动画速度来控制雨势大小
+可以修改动画方向来模拟大风雨天气
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">地面雨点溅起和水波纹效果</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+溅起的水花可以使用序列帧动画来做
+水波纹可以使用序列帧, 但如果力求逼真的话最好用normal map.
+normap需要逐像素计算, 对于手机平台来说比较吃力, 所以只能通过序列帧动画来将就一下了..
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">地面/衣服潮湿效果</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+调整光照shader的specular, 加强反光效果即可模拟潮湿效果.
+但考虑到手机平台基本跑不动这种需要逐像素计算光照的shader...GG
+</p>
+</div>
+</div>
+
+</div>
+</div>
+    <div>
+      <div class="post-meta">
+        <span title="post date" class="post-info">2016-01-17</span>
+        <span title="last modification date" class="post-info">2016-01-17</span>
+        <span title="tags" class="post-info"><a href="/tags/unity/">unity</a></span>
+        <span title="author" class="post-info"></span>
+      </div>
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          //var disqus_developer = 1;
+          var disqus_identifier = "/blog/2016/01/17/rain-scene";
+          var disqus_url = "http://tsubasawp.github.io/blog/2016/01/17/rain-scene";
+          var disqus_shortname = 'Tsubasa';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div class="ds-thread"></div>
+        <script type="text/javascript">
+          var duoshuoQuery = {short_name:'Tsubasa'};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';ds.async = true;
+          ds.src = 'http://static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
+        </script>
+      </section>
+      <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script src="/media/js/main.js"></script>
+      <div class="footer">
+        <p>Generated by <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.x (<a href="http://orgmode.org">Org mode</a> 8.x)</p>
+        <p>
+          Copyright &copy; 2012 - <span id="footerYear"></span> <a href="mailto:Tsubasa &lt;at&gt; TSUBASA-PC"></a>
+          &nbsp;&nbsp;-&nbsp;&nbsp;
+          Powered by <a href="https://github.com/kelvinh/org-page" target="_blank">org-page</a>
+          <script type="text/javascript">document.getElementById("footerYear").innerHTML = (new Date()).getFullYear();</script>
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>
