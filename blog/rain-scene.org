@@ -1,0 +1,68 @@
+#+TITLE:       制作下雨场景
+#+AUTHOR:      
+#+EMAIL:       Tsubasa@TSUBASA-PC
+#+DATE:        2016-01-17 
+#+URI:         /blog/%y/%m/%d/rain-scene
+#+KEYWORDS:    /
+#+TAGS:        unity
+#+LANGUAGE:    en
+#+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
+#+DESCRIPTION: rain
+
+------------------------------------------------------------
+低能预警: 这篇文章并没有什么技术含量, 用于练习org之作.
+
+
+前些阵子在公司km上看到一篇描述某端游下雨场景开发历程的文章, 回家后忍不住用unity实验了一番, 打算用同样思路实现一套可以在手机上跑的下雨场景.
+
+** 首先需要准备一张雨丝纹理, 将灰度用作透明通道. 
+雨丝越密集, 可表现的雨势越大.
+雨丝不可太粗太长. (咦这种下刀子的感觉是怎么回事
+
+ file:../resource/rain/rain_texture.png 
+
+** 让雨动起来
+这时候需要一个uv动画shader
+
+首先把shader混合方式设置为Add
+: Blend One One
+
+在顶点着色器中让ui以一定速率运动
+
+v2f vert (appdata_t v)
+{
+    v2f o;
+    o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+    o.color = v.color;
+    o.texcoord = TRANSFORM_TEX(float2(v.texcoord.x, v.texcoord.y + _Time.y), _FlareTexture);
+    return o;
+}
+
+这个动画实现的比较简单, 还可以添加运动偏移, 动画速度, 缩放等参数.
+
+** 把纹理用合适的姿势放在场景中
+最粗暴的方式当然是直接把雨丝贴在相机前方, 像这样
+[[file:../resource/rain/rain03.png]]
+
+这种实现消耗最小, 但缺点是在3d场景中上下移动镜头时, 雨永远都是垂直下落的, 没有透视表现, 比较假.
+
+稍微科学一些的做法是使用带雨丝贴图的圆锥体把相机包裹住
+file:../resource/rain/rain04.png
+(懒得去弄圆锥体模型了, 就用圆柱体凑合下吧
+
+仰视和俯视的效果:
+file:../resource/rain/rain01.png
+
+file:../resource/rain/rain02.png
+
+可以通过调整纹理密度,动画速度来控制雨势大小
+可以修改动画方向来模拟大风雨天气
+
+** 地面雨点溅起和水波纹效果
+溅起的水花可以使用序列帧动画来做
+水波纹可以使用序列帧, 但如果力求逼真的话最好用normal map.
+normap需要逐像素计算, 对于手机平台来说比较吃力, 所以只能通过序列帧动画来将就一下了..
+
+** 地面/衣服潮湿效果
+调整光照shader的specular, 加强反光效果即可模拟潮湿效果.
+但考虑到手机平台基本跑不动这种需要逐像素计算光照的shader...GG
