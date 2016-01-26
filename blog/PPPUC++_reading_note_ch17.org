@@ -1,0 +1,48 @@
+#+TITLE:     PPPUC++ Reading Note
+#+AUTHOR:    Tsubasa
+#+EMAIL:     tsubasa.wp@gmail.com
+#+DATE:      2016-01-26
+
+* CH. 17  Memory, Address
+
+
+#+BEGIN_SRC c++
+int main()
+{
+  char a = 'a';
+  char b = 'b';
+  void *pv = &a;
+  int *pa = (int*)pv;
+  std:: cout <<*pa<<std::endl;
+  *pa = 65535;
+  std:: cout <<(char*)&a<<" "<<(char*)&b<<std::endl;
+  std:: cout <<a<<" "<<b<<std::endl;
+  return 0;
+}
+
+�� b��
+� b
+#+END_SRC 
+
+实测堆上分配的内存并没有溢出
+
+int* 和 char* 不能直接互相赋值的原因: 索引数组时地址跨越长度
+
+** 初始化:
+为了避免误用未初始化的变量, 尽量保证变量在被声明的同时初始化.
+
+** 空指针:
+c++11 引入了nullptr, 旨在于解决null的二义性问题
+
+** Free-Store:
+Free-Store由Store Manager管理
+
+** 析构函数:
+占用Free-Store的类都需要析构函数
+
+** 指针和引用:
+传值和传指针: 指针允许nullptr, 可能需要额外写防御代码.
+
+
+* CH. 18 Vector and Arrays
+
