@@ -46,3 +46,5 @@ Free-Store由Store Manager管理
 
 * CH. 18 Vector and Arrays
 
+** Moving
+   && ?
