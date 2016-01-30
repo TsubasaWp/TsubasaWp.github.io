@@ -48,3 +48,14 @@ Free-Store由Store Manager管理
 
 ** Moving
    && ?
+
+** explicit
+
+
+** Get & Set
+索引靠重载[]运算符实现, 并返回reference. 
+- 若返回值则只能get无法set(可用作const版本), 返回指针则书写起来比较别扭.
+
+** Array
+array的问题: 编译器难以做到边界检查
+pointer arithmetic
