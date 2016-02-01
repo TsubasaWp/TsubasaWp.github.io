@@ -44,7 +44,16 @@ Free-Store由Store Manager管理
 传值和传指针: 指针允许nullptr, 可能需要额外写防御代码.
 
 
-* CH. 18 Vector and Arrays
+* CH. 18 Vector and Array
+
+
+- initializer_list
+- copy constructor
+- copy assignment
+
+** Copying
+
+
 
 ** Moving
    && ?
@@ -59,3 +68,90 @@ Free-Store由Store Manager管理
 ** Array
 array的问题: 编译器难以做到边界检查
 pointer arithmetic
+
+
+** Excrise
+//
+//  main.cpp
+//  PPPUC
+//
+//  Created by Tsubasa on 1/30/16.
+//  Copyright (c) 2016 tsu. All rights reserved.
+//
+
+#include <iostream>
+using namespace std;
+
+class Vector
+{
+  int sz;
+  double * elem;
+public:
+  Vector(int s): sz{s}, elem{new double[s]}
+  {
+    for(int i = 0; i < sz; i++) elem[i] = 0;
+  }
+
+  Vector(initializer_list<double> lst): sz{(int)lst.size()},elem{new double[lst.size()]}
+  {
+    copy(lst.begin(),lst.end(),elem);
+  }
+  
+  Vector(const Vector&);
+
+  Vector& operator=(const Vector&);
+
+  ~Vector(){delete[] elem;}
+  void Set(int, double);
+  void Print();
+};
+
+void Vector::Set(int index, double value)
+{
+  if (index >= sz) return;
+  elem[index] = value;
+}
+
+void Vector::Print()
+{
+  for (int i = 0; i < sz; i++)
+    {
+      cout<<(elem[i])<<endl;
+    }
+}
+
+Vector::Vector(const Vector& arg)
+  :sz(arg.sz),elem(new double[arg.sz])
+{
+  copy(arg.elem,arg.elem+arg.sz,elem);
+}
+
+Vector& Vector::operator=(const Vector& arg)
+{
+  double *d = new double[arg.sz];
+  copy(arg.elem,arg.elem+arg.sz,d);
+  delete[] elem;
+  elem = d;
+  sz = arg.sz;
+  return *this;
+}
+
+// exc 1
+char *strup(const char* a)
+{
+  int sz = 0;
+  while ( a[sz] != 0 )  sz++;
+  
+  char * res = new char[sz+1];
+  for(int i = 0; i <= sz; i++) res[i] = *a+i;
+
+  return res;
+}
+
+// exc 2
+
+
+int main(int argc, const char * argv[]) {
+
+  return 0;
+}
