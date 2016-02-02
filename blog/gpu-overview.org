@@ -1,0 +1,68 @@
+#+TITLE:       GPU Overview
+#+AUTHOR:      Tsubasa
+#+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
+#+DATE:        2016-02-02 Tue
+#+URI:         /blog/%y/%m/%d/gpu-overview
+#+KEYWORDS:    rtr
+#+TAGS:        rtr
+#+LANGUAGE:    en
+#+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
+#+DESCRIPTION: GPU概览,内容大部分源自RTR. 才疏学浅不敢妄加吐槽, 行文可能略生硬.
+
+
+图形硬件发展到今天, 可谓是五花八门. 这里简要介绍一些图形硬件中比较通用的概念.
+
+** Pipeline
+这里简述一下教学意义上的渲染管道. 到后面了解一下cpu架构之后会发现不同厂商对渲染过程的实现天差地别, 这是后话.
+
+*** Application Stage
+应用程序阶段, 即开发人员自己写的,运行在cpu上的代码.
+在手机平台上,drawcall数量过多造成的卡顿就是因为在这个阶段对cpu压力过大造成的. 
+
+*** Geometry Stage
+几何处理阶段一般包括以下过程:
+
+- Transform 视图模型顶点变换
+- Vertex Shader 顶点着色器
+  恩..最常用的东西
+- Projection 透视变换
+  不可编程.
+- Clipping 裁剪
+- Screen Mapping 屏幕坐标适配
+
+*** Rasterizer Stage
+- to be continue... 
+
+** Buffers and buffering
+
+*** Color Buffer
+
+*** Z-Buffering
+
+*** Single,Double,Triple Buffering
+
+*** Buffer Memory
+
+*** Interpolation
+
+** Architecture
+
+*** sort first, sort middle, sort last
+
+*** Memory architecture
+
+*** Ports and buses
+
+*** Memory Bandwidth
+
+*** Latency
+
+*** BufferCompression 
+
+*** Z-Culling and Early-Z
+
+*** PCU: Programmable Culling Unit
+
+** Case : Xbox 360
+
+** Case : PS3
