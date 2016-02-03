@@ -32,7 +32,7 @@
 
 *** Rasterizer Stage
 - to be continue...
-- ..
+- ...
 
 ** Buffers and buffering
 
