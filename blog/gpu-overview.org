@@ -31,7 +31,8 @@
 - Screen Mapping 屏幕坐标适配
 
 *** Rasterizer Stage
-- to be continue... 
+- to be continue...
+- ..
 
 ** Buffers and buffering
 
