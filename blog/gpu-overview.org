@@ -1,4 +1,4 @@
-#+TITLE:       GPU Overview
+#+TITLE:       GPU Points
 #+AUTHOR:      Tsubasa
 #+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
 #+DATE:        2016-02-02 Tue
@@ -7,32 +7,40 @@
 #+TAGS:        rtr
 #+LANGUAGE:    en
 #+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
-#+DESCRIPTION: GPU概览,内容大部分源自RTR. 才疏学浅不敢妄加吐槽, 行文可能略生硬.
+#+DESCRIPTION: 一些关于GPU的知识点,内容大部分源自RTR.
 
+好吧这其实是读书笔记orz.....主要出自于RTR的12章和18章.
 
-图形硬件发展到今天, 可谓是五花八门. 这里简要介绍一些图形硬件中比较通用的概念.
+图形硬件发展到今天, 可谓是五花八门. 这里记录一些图形硬件中比较通用的概念.
 
 ** Pipeline
-这里简述一下教学意义上的渲染管道. 到后面了解一下cpu架构之后会发现不同厂商对渲染过程的实现天差地别, 这是后话.
+渲染管道大致分为Application, Geometry, Rasterizer三个模块, 这三个模块一般被实现为三个独立的管道, 它们分别又包括许多子模块.
+不同的GPU架构对子模块的实现非常不同.
 
 *** Application Stage
 应用程序阶段, 即开发人员自己写的,运行在cpu上的代码.
-在手机平台上,drawcall数量过多造成的卡顿就是因为在这个阶段对cpu压力过大造成的. 
+- 在这个阶段, 几何图元被送往Geometry stage. 在这个过程中可以对几何图元进行批量处理以减少cpu对图形接口的调用次数, 对cpu较弱的手机平台来说, 这个步骤至关重要.
+- 碰撞检测, 动画, 某些优化算法都可以在这个阶段进行.
 
 *** Geometry Stage
-几何处理阶段一般包括以下过程:
+几何阶段负责处理图元和顶点, 一般包括以下子阶段:
 
-- Transform 视图模型顶点变换
-- Vertex Shader 顶点着色器
-  恩..最常用的东西
-- Projection 透视变换
-  不可编程.
-- Clipping 裁剪
-- Screen Mapping 屏幕坐标适配
+- Transform :视图模型顶点变换,把顶点从模型空间变换到世界空间.
+- Vertex Shader :可编程顶点着色器. 恩..最常用的东西.
+- Projection :透视变换, 不可编程. 会把坐标系单位化.
+- Clipping :裁剪. 把变换过的图元在屏幕外的部分裁切掉.
+- Screen Mapping :把单位化的坐标系拉伸到屏幕像素尺寸.
 
 *** Rasterizer Stage
-- to be continue...
-- ...
+像素化阶段通过几何阶段产生的顶点数据, 计算被图元覆盖的每个像素的颜色.
+
+- Triangle Setup :固定管线.计算后续步骤需要的数据.
+- Triangle Traversal :固定管线.遍历确定落在三角形中的片段, 并插值计算片段的属性.
+- Pixel Shading :可编程像素着色器.
+- Merging :合并color buffer与fragment color. 
+  - 根据z-buffer来判断片段的可见性.
+  - 根据alpha进行颜色混合.
+  - 根据stencil buffer, accumulation buffer进行一些计算.
 
 ** Buffers and buffering
 
