@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>GPU Points - org-page</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tsubasa" />
+    <meta name="description" content="一些关于GPU的知识点,内容大部分源自RTR." />
+    <meta name="keywords" content="rtr" />
+    <link rel="stylesheet" href="/media/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/prettify.css" type="text/css">
+  </head>
+  <body class="container">
+    <div>
+      <header class="masthead">
+        <h1 class="masthead-title"><a href="/">org-page</a></h1>
+        <p>static site generator</p>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/resource/">Resource</a></li>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://github.com/kelvinh/org-page">GitHub</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+        <form method="get" id="searchform" action="http://www.google.com/search">
+          <input type="text" class="field" name="q" id="s" placeholder="Search">
+          <input type="hidden" name="as_sitesearch" value="tsubasawp.github.io">
+        </form>
+      </header>
+    </div>
+
+<div>
+<div class="post">
+<h1>GPU Points</h1>
+<p>
+[转载请注明出处]
+</p>
+
+<p>
+好吧这其实是读书笔记orz.....主要出自于RTR的12章和18章.
+</p>
+
+<p>
+图形硬件发展到今天, 可谓是五花八门. 这里记录一些图形硬件中比较通用的概念.
+</p>
+
+<p>
+某些条目后会补充一些我自己平时在unity中的实践经验.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Pipeline</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+渲染管道大致分为Application, Geometry, Rasterizer三个模块, 这三个模块一般被实现为三个独立的管道, 它们分别又包括许多子模块.
+不同的GPU架构对子模块的实现非常不同.
+</p>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">Application Stage</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+应用程序阶段, 即开发人员自己写的,运行在cpu上的代码.
+</p>
+<ul class="org-ul">
+<li>在这个阶段, 几何图元被送往Geometry stage. 在这个过程中可以对几何图元进行批量处理以减少cpu对图形接口的调用次数, 对cpu较弱的手机平台来说, 这个步骤至关重要.</li>
+<li>碰撞检测, 动画, 某些优化算法都可以在这个阶段进行.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Geometry Stage</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+几何阶段负责处理图元和顶点, 一般包括以下子阶段:
+</p>
+
+<ul class="org-ul">
+<li>Transform :视图模型顶点变换,把顶点从模型空间变换到世界空间.</li>
+<li>Vertex Shader :可编程顶点着色器. 恩..最常用的东西.</li>
+<li>Projection :透视变换, 不可编程. 会把坐标系单位化.</li>
+<li>Clipping :裁剪. 把变换过的图元在屏幕外的部分裁切掉.</li>
+<li>Screen Mapping :把单位化的坐标系拉伸到屏幕像素尺寸.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">Rasterizer Stage</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+像素化阶段通过几何阶段产生的顶点数据, 计算被图元覆盖的每个像素的颜色.
+</p>
+
+<ul class="org-ul">
+<li>Triangle Setup :固定管线.计算后续步骤需要的数据.</li>
+<li>Triangle Traversal :固定管线.遍历确定落在三角形中的片段, 并插值计算片段的属性.</li>
+<li>Pixel Shading :可编程像素着色器.</li>
+<li>Merging :合并color buffer与fragment color. 
+<ul class="org-ul">
+<li>根据z-buffer来判断片段的可见性.</li>
+<li>根据alpha进行颜色混合.</li>
+<li>根据stencil buffer, accumulation buffer进行一些计算.</li>
+</ul></li>
+<li>最终像素的颜色存放在color buffer中</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Buffers and buffering</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<p>
+像素颜色的最终结果会被存放在color buffer中, 再通过Video Controller输出到显示设备上.
+</p>
+
+<ul class="org-ul">
+<li>数字信号/模拟信号:</li>
+</ul>
+<p>
+video controller 中通常包含一个 digital-to-analog conversion模块, 它会作用于每一个fram buffer的每一个像素上, 所以这个子系统需要高带宽.
+CRT屏幕需要把color buffer转换为模拟数据; 而一般家用电脑可以接收数字信号, 即常说的digital visual interface(DVI).
+</p>
+<ul class="org-ul">
+<li>刷新:</li>
+</ul>
+<p>
+CRT设备的刷新频率通常在60-120HZ, video controller以相同的频率逐行扫描color buffer, 扫描完毕后切换到下一帧. CRT的发光体需要持续通电来保持亮度, 所以需要较高的刷新频率. 
+LCD夜晶屏的发光体可以保持亮度, 所以刷新率通常稳定在60HZ.
+</p>
+<ul class="org-ul">
+<li>垂直同步:</li>
+</ul>
+<p>
+强制应用程序的逻辑帧率与与显示设备的刷新率保持相同.
+限帧对于移动设备至关重要, 一般限制为30帧或60帧, 否则会造成无谓的耗电/发热.
+</p>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">Color Buffer</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<ul class="org-ul">
+<li><p>
+常用颜色模型:
+</p>
+<ul class="org-ul">
+<li>16位: r:5 g:5 b:5 或 r:5 g:6 b:5</li>
+<li>True color: 24 或 32 bits / pixel</li>
+</ul>
+<p>
+在unity的纹理选项中可以看到这两种颜色模型. 在实践中,由于16位往往会导致明显的色差, 故32位较为常用.
+</p></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">Z-Buffering</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+通常24bit / pixel
+</p>
+<ul class="org-ul">
+<li>orthographic: 物体的z-value与世界坐标成正比.</li>
+<li>perspective: z-value是单位化的, 与世界坐标不成正比. z-value越大, 精度越低, 以至于远处的z-value比较接近物体可能会出现层级错乱问题.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">Single,Double,Triple Buffering</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
+</p>
+<ul class="org-ul">
+<li>single buffer: 单缓冲</li>
+<li>double buffer: 双缓冲, 分为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.</li>
+<li>tripel buffer: 三缓冲, 分为 back, pending, front buffer. 三缓冲的优势是: front在输出时,系统还可以访问到下一个 buffer, 而不必等待buffer交换. 缺点是会增加latency, 比如在硬核游戏中, 玩家的即时操作只能影响到penddnig buffer, 还要等待2次交换才输出到屏幕. 所以有些硬核游戏厂商会把垂直同步关闭以保证实时性.</li>
+<li>其它: 当双核GPU出现以后, 这个技术就变得更复杂了. 比如让两个gpu分别控制buffer的奇/偶行, 或者分别控制两个buffer.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">Buffer Memory</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+举个栗子说明一下buffer需要多少memory. 比如我们有 一张1280*1024, true color 纹理. 
+</p>
+<ul class="org-ul">
+<li>自身占用1280 * 1024 * 4 = 5M 存储空间.</li>
+<li>如果使用了双缓冲, 5 * 2 = 10M.</li>
+<li>24bit z-buffer + 8 bit stencil buffer: 10 + 5 = 15M.</li>
+</ul>
+
+<p>
+对这些有些了解, 在unity实践中, 可以帮助我们进行存储方面的评估和优化. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">Interpolation</h3>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19">Architecture</h2>
+<div class="outline-text-2" id="text-orgheadline19">
+</div><div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">sort first, sort middle, sort last</h3>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">Memory architecture</h3>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">Ports and buses</h3>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">Memory Bandwidth</h3>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">Latency</h3>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">BufferCompression</h3>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">Z-Culling and Early-Z</h3>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">PCU: Programmable Culling Unit</h3>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-2">
+<h2 id="orgheadline20">Case : Xbox 360</h2>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21">Case : PS3</h2>
+</div>
+
+</div>
+</div>
+    <div>
+      <div class="post-meta">
+        <span title="post date" class="post-info">2016-02-02</span>
+        <span title="last modification date" class="post-info">2016-02-07</span>
+        <span title="tags" class="post-info"><a href="/tags/rtr/">rtr</a></span>
+        <span title="author" class="post-info">Tsubasa</span>
+      </div>
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          //var disqus_developer = 1;
+          var disqus_identifier = "/blog/2016/02/02/gpu-overview";
+          var disqus_url = "http://tsubasawp.github.io/blog/2016/02/02/gpu-overview";
+          var disqus_shortname = 'Tsubasa';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div class="ds-thread"></div>
+        <script type="text/javascript">
+          var duoshuoQuery = {short_name:'Tsubasa'};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';ds.async = true;
+          ds.src = 'http://static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
+        </script>
+      </section>
+      <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script src="/media/js/main.js"></script>
+      <div class="footer">
+        <p>Generated by <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.x (<a href="http://orgmode.org">Org mode</a> 8.x)</p>
+        <p>
+          Copyright &copy; 2012 - <span id="footerYear"></span> <a href="mailto:tsubasa &lt;dot&gt; wp &lt;at&gt; gmail &lt;dot&gt; com">Tsubasa</a>
+          &nbsp;&nbsp;-&nbsp;&nbsp;
+          Powered by <a href="https://github.com/kelvinh/org-page" target="_blank">org-page</a>
+          <script type="text/javascript">document.getElementById("footerYear").innerHTML = (new Date()).getFullYear();</script>
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>
