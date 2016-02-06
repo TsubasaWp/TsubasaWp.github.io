@@ -1,6 +1,6 @@
 #+TITLE:       GPU Points
 #+AUTHOR:      Tsubasa
-#+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
+#+EMAIL:       tsubasa.wp@gmail.com
 #+DATE:        2016-02-02 Tue
 #+URI:         /blog/%y/%m/%d/gpu-overview
 #+KEYWORDS:    rtr
@@ -9,9 +9,13 @@
 #+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
 #+DESCRIPTION: 一些关于GPU的知识点,内容大部分源自RTR.
 
+[转载请注明出处]
+
 好吧这其实是读书笔记orz.....主要出自于RTR的12章和18章.
 
 图形硬件发展到今天, 可谓是五花八门. 这里记录一些图形硬件中比较通用的概念.
+
+某些条目后会补充一些我自己平时在unity中的实践经验.
 
 ** Pipeline
 渲染管道大致分为Application, Geometry, Rasterizer三个模块, 这三个模块一般被实现为三个独立的管道, 它们分别又包括许多子模块.
@@ -41,16 +45,47 @@
   - 根据z-buffer来判断片段的可见性.
   - 根据alpha进行颜色混合.
   - 根据stencil buffer, accumulation buffer进行一些计算.
+- 最终像素的颜色存放在color buffer中
 
 ** Buffers and buffering
 
+像素颜色的最终结果会被存放在color buffer中, 再通过Video Controller输出到显示设备上.
+
+- 数字信号/模拟信号:
+video controller 中通常包含一个 digital-to-analog conversion模块, 它会作用于每一个fram buffer的每一个像素上, 所以这个子系统需要高带宽.
+CRT屏幕需要把color buffer转换为模拟数据; 而一般家用电脑可以接收数字信号, 即常说的digital visual interface(DVI).
+- 刷新:
+CRT设备的刷新频率通常在60-120HZ, video controller以相同的频率逐行扫描color buffer, 扫描完毕后切换到下一帧. CRT的发光体需要持续通电来保持亮度, 所以需要较高的刷新频率. 
+LCD夜晶屏的发光体可以保持亮度, 所以刷新率通常稳定在60HZ.
+- 垂直同步:
+强制应用程序的逻辑帧率与与显示设备的刷新率保持相同.
+限帧对于移动设备至关重要, 一般限制为30帧或60帧, 否则会造成无谓的耗电/发热.
+
 *** Color Buffer
+- 常用颜色模型:
+  - 16位: r:5 g:5 b:5 或 r:5 g:6 b:5
+  - True color: 24 或 32 bits / pixel
+  在unity的纹理选项中可以看到这两种颜色模型. 在实践中,由于16位往往会导致明显的色差, 故32位较为常用.
 
 *** Z-Buffering
+通常24bit / pixel
+  - orthographic: 物体的z-value与世界坐标成正比.
+  - perspective: z-value是单位化的, 与世界坐标不成正比. z-value越大, 精度越低, 以至于远处的z-value比较接近物体可能会出现层级错乱问题.
 
 *** Single,Double,Triple Buffering
+buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
+  - single buffer: 单缓冲
+  - double buffer: 双缓冲, 分为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
+  - tripel buffer: 三缓冲, 分为 back, pending, front buffer. 三缓冲的优势是: front在输出时,系统还可以访问到下一个 buffer, 而不必等待buffer交换. 缺点是会增加latency, 比如在硬核游戏中, 玩家的即时操作只能影响到penddnig buffer, 还要等待2次交换才输出到屏幕. 所以有些硬核游戏厂商会把垂直同步关闭以保证实时性.
+  - 其它: 当双核GPU出现以后, 这个技术就变得更复杂了. 比如让两个gpu分别控制buffer的奇/偶行, 或者分别控制两个buffer.
 
 *** Buffer Memory
+举个栗子说明一下buffer需要多少memory. 比如我们有 一张1280*1024, true color 纹理. 
+- 自身占用1280 * 1024 * 4 = 5M 存储空间. 
+- 如果使用了双缓冲, 5 * 2 = 10M. 
+- 24bit z-buffer + 8 bit stencil buffer: 10 + 5 = 15M.
+
+对这些有些了解, 在unity实践中, 可以帮助我们进行存储方面的评估和优化. 
 
 *** Interpolation
 
