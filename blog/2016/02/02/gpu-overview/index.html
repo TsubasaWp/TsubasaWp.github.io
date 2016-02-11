@@ -37,7 +37,7 @@
 </p>
 
 <p>
-好吧这其实是读书笔记orz.....主要出自于RTR的12章和18章.
+好吧这其实是读书笔记orz.....主要出自于RTR的2章和18章.
 </p>
 
 <p>
@@ -206,51 +206,184 @@ buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, �
 
 <div id="outline-container-orgheadline10" class="outline-3">
 <h3 id="orgheadline10">Interpolation</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+透视正确的插值:一言难尽...关于透视变换应配合ch4.6食用..
+总之 屏幕空间内对纹理进行线性插值得到的结果是错误的(u/w, v/w). 应除以1/w并对w也进行插值,(u/w[i], v/w[i])/(1/w[i]), 学名双曲线插值.
+在GPU中, 透视插值可以用边缘检测函数来实现. ( 这也可以复用么--
+</p>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline19" class="outline-2">
-<h2 id="orgheadline19">Architecture</h2>
-<div class="outline-text-2" id="text-orgheadline19">
-</div><div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">sort first, sort middle, sort last</h3>
+
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">Architecture</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+<p>
+总体来说, 图形加速卡提供功能从渲染管线尾部向前发展. 最早的pc加速卡只提供纹理插值, 直到2000年才出现了顶点和像素着色器. 现代GPU全称图形处理单元,是图形加速卡的进化体.
+驱动提供了运行在应用与图形硬件之间的接口.
+比起CPU, GPU的架构更适合处理大规模并行运算. 除了提供图形计算, 现代GPU也可以用来进行更通用的运算.
+</p>
 </div>
 
 <div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">Memory architecture</h3>
+<h3 id="orgheadline12">pipeline and parallelization</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+用gpu进行图形运算比较快的原因有二:
+</p>
+<ul class="org-ul">
+<li>管线和并行是相辅相成,可以同时进行大量图形运算. gpu可以同时运行上千个管线(cpu只有数十个). 对gpu来说, 时钟频率并不是瓶颈(gpu时钟频率比cpu低很多), 带宽才是.</li>
+<li>gpu的存储操作比较简单, 大部分是read, 这也有利于提高性能.</li>
+</ul>
+
+<p>
+并行计算会带来另一个问题: 排序.
+图元在model space 和screen space都需要排序
+</p>
+<ul class="org-ul">
+<li>sort first: 将屏幕分块, 分别送往单独的处理单元.</li>
+<li>sort middle: 在几何阶段之后再进行排序. 几何阶段以负载均衡的原则处理任意的图元, 而之后每个光栅化单元负责单独的屏幕区域, 经过几何阶段的图元被路由到相应的光栅化单元中.</li>
+<li>sort last fragment: 在光栅化之后, merge之前进行排序.</li>
+<li>sort last image: 在光栅化以及merge全部结束之后进行排序. 不同的物体被送往不同的处理单元.</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">Ports and buses</h3>
+<h3 id="orgheadline13">Texture access</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<ul class="org-ul">
+<li>从内存中读取纹理会占用大量的带宽,所以许多gpu架构设计了不同的cache来优化纹理读取. cache通常是集成在芯片上的,容量可能只有几KB,缓存着最近一次读取的纹理.
+即使经过cache,读取纹理往往也是较慢的操作, 需要耗费数个时钟周期. 如果串行处理片段, 则必须等待前一个片段读取操作完成后才能处理下一个片段 (这个等待时间叫latency).</li>
+</ul>
+<p>
+一种常用来消除latency的手段是:并行计算多个片段. 首先运行每个片段的查询操作, 然后回过头来依次根据查询结果进行一些运算. 这也是GPU寄存器非常多的原因.
+</p>
+
+<ul class="org-ul">
+<li>mipmap也是一种节省带宽的有效手段. -- mipmap是少见的, 可以同时提升性能与表现的技术. 关于mipmap可参考第6章.</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="orgheadline14">Memory Bandwidth</h3>
+<h3 id="orgheadline14">Memory architecture</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<p>
+这里举几个栗子🌰:
+</p>
+<ul class="org-ul">
+<li>XBox: unified memory architecture. GPU与CPU共用所有host memory.</li>
+<li>XBox360: GPU与CPU共享一条总线, GPU主要通过这里读取纹理. 而各类buffer则存放在GPU独享的, 速度较快的eDRAM中.</li>
+<li>PS3: GPU拥有完全独立的存储空间.</li>
+</ul>
+</div>
 </div>
 
 <div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">Latency</h3>
+<h3 id="orgheadline15">Ports and buses</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+<p>
+port负责在两个设备之间传输数据, bus在多个设备之间传输数据. 带宽用于描述它们的数据传输能力.
+</p>
+
+<p>
+i.e. dynamic vertex buffer存放在主存中, gpu可以通过bus来访问它.    
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16">BufferCompression</h3>
+<h3 id="orgheadline16">Memory Bandwidth</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+<p>
+首先分析渲染一个片段所需占用的bandwidth:
+B = B(z-buffer) + B(texture buffer) + B(color buffer):
+约360 byte/pixcel
+如果在分辨率1920*1200的屏幕上以72帧/秒速度渲染, 大约需要18G/s带宽.
+</p>
+
+<p>
+为了尽量优化带宽占用, 往往需要一些非常精密的设计.
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17">Z-Culling and Early-Z</h3>
+<h3 id="orgheadline17">Latency</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+<p>
+latency指请求发出到返回结果之间的时间.许多地方存在latency, 比如查询纹理, CPU向GPU请求数据,等等. 减少latency是一个永恒的目标. 
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgheadline18" class="outline-3">
-<h3 id="orgheadline18">PCU: Programmable Culling Unit</h3>
+<h3 id="orgheadline18">Buffer Compression</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+<p>
+为了减少带宽占用,往往需要将各种buffer压缩.
+这里以某种架构下的z-buffer为例进行说明:
+遮挡剔除, buffer压缩/解压, 清理buffer逻辑被放在同一个硬件模块中, 因为它们可以共用一些实现. 它们的核心是一块固定在芯片上的存储, 叫tile table. 它可以存放color, stencil, z, 等,现在只讨论下z.
+tile table由许多8x8的单元组成, 它们各储存8x8的z-value.
+当系统下令清除缓存时, 这些8x8的单元会被清除.光栅化完成后, 数据被压缩后(占用更少的bit)存入tile table.
+</p>
+
+<p>
+这个技术对于手机设备来说尤为重要.
+</p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline20" class="outline-2">
-<h2 id="orgheadline20">Case : Xbox 360</h2>
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19">Z-Culling and Early-Z</h3>
+<div class="outline-text-3" id="text-orgheadline19">
+<p>
+深度测试往往在管线的最后一步进行. 在像素着色器使用片段之前剔除tile table中一些不需要片段, 是一项重要的优化手段: z-culling.
+</p>
+
+<p>
+如果像素着色器不会修改片段的z-value, 这个优化通常由gpu自动进行.
+</p>
+
+<p>
+z-culling主要通过估算当前三角形的最小z(z-min)来实现, 如果z-min &gt; z-max(通过z-buffer获得), 则说明这个图元一定被遮挡, 可以丢弃这个片段. 
+估算整个三角形的z-min是比较费力的, 具体实现参阅18.3.7.
+</p>
+
+<p>
+early-z是一个与z-culling相似的技术.
+</p>
 </div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">PCU: Programmable Culling Unit</h3>
+<div class="outline-text-3" id="text-orgheadline20">
+<p>
+当片段着色器需要修改z时, 自动z-culling将会失效. PCU就应运而生了. 
+</p>
+
+<p>
+PCU的实现思路是:允许一部分片段着色器代码运行在一整个tile上. 例如, 如果程序猿可以判断出某块tile都被阴影覆盖, 就可以免除后续的复杂计算.
+</p>
+
+<p>
+虽然对于不需要裁剪的片段来说, 运行pcu反而增加了负担, 但总体来说, 效率可以提高1.4-2.1倍.
+</p>
+</div>
+</div>
+</div>
+
 
 <div id="outline-container-orgheadline21" class="outline-2">
-<h2 id="orgheadline21">Case : PS3</h2>
+<h2 id="orgheadline21">Case : Xbox 360</h2>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-2">
+<h2 id="orgheadline22">Case : PS3</h2>
 </div>
 
 </div>
@@ -258,7 +391,7 @@ buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, �
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-02-02</span>
-        <span title="last modification date" class="post-info">2016-02-07</span>
+        <span title="last modification date" class="post-info">2016-02-12</span>
         <span title="tags" class="post-info"><a href="/tags/rtr/">rtr</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
