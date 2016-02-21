@@ -1,0 +1,41 @@
+* princples and practice using c++ ch19 reading note
+
+** C++ 14 features
+- Mechanism for checking template interface.
+
+
+** Changing size
+上一章的vector仅使用固定的数组来实现, 难以支持push_back, resize等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+上一章的vector长度储存在sz中, 现在增加一个space变量, 用于储存vector的总可用空间(已用空间+空闲空间). 
+当有新成员放入vector时, 先从空闲空间中找位置, 如果空闲空间已被用完, 再申请一块新的空间. 这样可以减少频繁进行内存申请造成的性能损失.
+
+:template<typename T>
+:void Vector<T>::reserve(int newalloc)
+:{
+:  if (newalloc < space) return;
+:  T *p = new T[newalloc];
+:  for (int i = 0; i < sz; i++) p[i] = elem[i];
+:  delete[] elem;
+:  elem = p;
+:  space = newalloc;
+:}
+
+:template<typename T>
+:void Vector<T>::resize(int newsize)
+:{
+:  if (newsize < space) return;
+:  reserve(newsize);
+:  for (int i = sz; i < newsize; i++) elem[i] = 0;
+:  sz = newsize;
+:}
+
+:template<typename T>
+:void Vector<T>::push_back(T value)
+:{
+:  if ( space == 0 ) reserve(8);
+:  if ( space == sz) reserve(2*space);
+:  elem[sz] = value;
+:  sz ++;
+:}
+
+
