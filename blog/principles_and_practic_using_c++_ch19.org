@@ -39,3 +39,69 @@
 :}
 
 
+
+** Templates
+*** Types as templates parameters 
+
+:template<typename T>
+or
+:template<class T> // include built-in type
+
+编译器会在编译阶段或link阶段进行模板展开
+
+*** Generic programming
+使用模板是泛型编程的基础.
+
+一般所说的多态包括两种类型:
+- parametic polymorphism: 依赖于模板参数(泛型编程)
+- hoc polymorphism: 使用类继承, 虚函数(面向对象编程)
+
+需要注意的差异:
+- 决定被调用函数的时机: 面向对象编程在运行时决定, 而泛型编程在编译时决定.
+
+两者结合使用的例子:
+:void draw_all(Vector<Shape*>& v)
+:{
+:    for ( int i = 0; i < v.size(); i++ ) v[i]->draw();
+:}
+在泛型的vector中储存shape, 然后调用它们的虚函数draw().
+
+*** Concepts
+模板虽好, 也有缺点. 模板的内部检查比较薄弱,而且可能在编译晚期才发现问题.
+
+我写了个test case:
+:template<typename T>
+:class test {
+:public:
+:  test(T& v):val{v}{};
+:  T val;
+:  T operator+(T v) {  return this->val + v; }
+:};
+
+如果类型T支持'+'操作, 一切ok. 但如果T不支持'+',且调用了test的+方法, 编译器会报错:no mach for operator+.
+
+c++14提供了一套机制来规定对类型T的要求, 叫*concepts*
+最常用的,如果要求T实现了拷贝/移动/默认构造函数, 则在template后追加requires Element.
+
+: template<typename T> requires<Element T>
+or
+: template<Element T>
+
+Element是满足一系列条件的集合.
+相应的还有许多其它集合:如果要求T可以分配和释放内存, 可以使用Allocator. 如果要求T是容器, 可以使用Container, 等等. 查阅19.3.3.
+
+c++14之前的版本不支持concepts, 只能通过一些约定来限定了.
+
+*** Containers and inheritance
+
+两个有继承关系的类型搁到模板类中以后就没有任何关系了, 模板展开后它们是完全不同的两个类型.
+
+下面是错误示范:
+:vector<Shape> vs;
+:vector<Circle> vc;
+:vs = vc;                 // error
+:void f(vector<Shape> &);
+:f(vc);                   // error
+
+
+
