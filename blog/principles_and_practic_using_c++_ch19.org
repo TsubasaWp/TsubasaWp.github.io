@@ -1,4 +1,7 @@
-* princples and practice using c++ ch19 reading note
+#+TITLE:     princples and practice using c++ ch19 reading note
+#+AUTHOR:    Tsubasa
+#+EMAIL:     tsubasa.wp@gmail.com
+#+DATE:      2016-02-25
 
 ** C++ 14 features
 - Mechanism for checking template interface.
@@ -9,43 +12,43 @@
 上一章的vector长度储存在sz中, 现在增加一个space变量, 用于储存vector的总可用空间(已用空间+空闲空间). 
 当有新成员放入vector时, 先从空闲空间中找位置, 如果空闲空间已被用完, 再申请一块新的空间. 这样可以减少频繁进行内存申请造成的性能损失.
 
-:template<typename T>
-:void Vector<T>::reserve(int newalloc)
-:{
-:  if (newalloc < space) return;
-:  T *p = new T[newalloc];
-:  for (int i = 0; i < sz; i++) p[i] = elem[i];
-:  delete[] elem;
-:  elem = p;
-:  space = newalloc;
-:}
+: template<typename T>
+: void Vector<T>::reserve(int newalloc)
+: {
+:   if (newalloc < space) return;
+:   T *p = new T[newalloc];
+:   for (int i = 0; i < sz; i++) p[i] = elem[i];
+:   delete[] elem;
+:   elem = p;
+:   space = newalloc;
+: }
 
-:template<typename T>
-:void Vector<T>::resize(int newsize)
-:{
+: template<typename T>
+: void Vector<T>::resize(int newsize)
+: {
 :  if (newsize < space) return;
 :  reserve(newsize);
 :  for (int i = sz; i < newsize; i++) elem[i] = 0;
 :  sz = newsize;
-:}
+: }
 
-:template<typename T>
-:void Vector<T>::push_back(T value)
-:{
+: template<typename T>
+: void Vector<T>::push_back(T value)
+: {
 :  if ( space == 0 ) reserve(8);
 :  if ( space == sz) reserve(2*space);
 :  elem[sz] = value;
 :  sz ++;
-:}
-
+: }
 
 
 ** Templates
+
 *** Types as templates parameters 
 
-:template<typename T>
+: template<typename T>
 or
-:template<class T> // include built-in type
+: template<class T> // include built-in type
 
 编译器会在编译阶段或link阶段进行模板展开
 
@@ -60,27 +63,28 @@ or
 - 决定被调用函数的时机: 面向对象编程在运行时决定, 而泛型编程在编译时决定.
 
 两者结合使用的例子:
-:void draw_all(Vector<Shape*>& v)
-:{
+: void draw_all(Vector<Shape*>& v)
+: {
 :    for ( int i = 0; i < v.size(); i++ ) v[i]->draw();
-:}
+: }
 在泛型的vector中储存shape, 然后调用它们的虚函数draw().
 
 *** Concepts
 模板虽好, 也有缺点. 模板的内部检查比较薄弱,而且可能在编译晚期才发现问题.
 
 我写了个test case:
-:template<typename T>
-:class test {
-:public:
+: template<typename T>
+: class test {
+: public:
 :  test(T& v):val{v}{};
 :  T val;
 :  T operator+(T v) {  return this->val + v; }
-:};
+: };
 
-如果类型T支持'+'操作, 一切ok. 但如果T不支持'+',且调用了test的+方法, 编译器会报错:no mach for operator+.
+如果类型T支持'+'操作, 一切ok. 但如果T不支持'+', 且调用了test的+方法, 编译器会报错:no mach for operator+.
 
-c++14提供了一套机制来规定对类型T的要求, 叫*concepts*
+c++14提供了一套机制来规定对类型T的要求, 叫concepts
+
 最常用的,如果要求T实现了拷贝/移动/默认构造函数, 则在template后追加requires Element.
 
 : template<typename T> requires<Element T>
@@ -97,11 +101,55 @@ c++14之前的版本不支持concepts, 只能通过一些约定来限定了.
 两个有继承关系的类型搁到模板类中以后就没有任何关系了, 模板展开后它们是完全不同的两个类型.
 
 下面是错误示范:
-:vector<Shape> vs;
-:vector<Circle> vc;
-:vs = vc;                 // error
-:void f(vector<Shape> &);
-:f(vc);                   // error
+: vector<Shape> vs;
+: vector<Circle> vc;
+: vs = vc;                 // error
+: void f(vector<Shape> &);
+: f(vc);                   // error
+
+*** Integers as template parameters
+除了类型外, 模板还可以传递其它参数, 最常用的是int.
+
+: template<typename T, int N> 
+
+其它类型参数不太常用, 并且需要开发者非常熟悉语言特性.
+
+*** Template argument deduction
+
+对函数模版参数来说, 当编译期能够通过函数参数确定模板参数的值, 通常可以不显示书写模板参数. 
+
+: template<typename T, int N> fill(array<T,N>& a, T& v);
+: array<double,10> d;
+: fill(d,0);  // 相当于  fill<double,10>(d,0);
+
+*** Generalizing vector 
+
+现在我们的vector离实用还差一些. 比如以下两个问题:
+- 如果Vector<X>的X没有默认值咋办?
+- 怎么保证当vector销毁时, 它包含的所有元素也能被销毁?
+
+对于第一个问题, 可以让用户提供默认值:
+
+: template<typename T>void vector<T>::resize(int newsize, T def = T());
+
+如果用户不提供默认值, 则使用T().
+
+对于第二个问题, 解决方案是使用allocator:
+
+: template<typename T> class allocator {
+: public:
+:     T* allocate(int n); // 分配n个T的内存
+:     void deallocate(T*, int n); // 回收n个T的空间
+:     void construct(T*, const T&); // 拷贝一个T
+:     void destory(T*); // 回收T
+
+** Range checking and exceptions
+
+边界检查使程序更健壮, 但降低效率.
+
+标准容器会提供带有边界检查的索引方式 at(), 也会提供快速的, 不检查边界的索引 operator[]().
+
+** Resource
 
 
 
