@@ -8,7 +8,8 @@
 
 
 ** Changing size
-上一章的vector仅使用固定的数组来实现, 难以支持push_back, resize等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+上一章的vector仅使用固定的数组来实现, 难以支持'push_back()', 'resize()'等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+
 上一章的vector长度储存在sz中, 现在增加一个space变量, 用于储存vector的总可用空间(已用空间+空闲空间). 
 当有新成员放入vector时, 先从空闲空间中找位置, 如果空闲空间已被用完, 再申请一块新的空间. 这样可以减少频繁进行内存申请造成的性能损失.
 
@@ -40,7 +41,6 @@
 :  elem[sz] = value;
 :  sz ++;
 : }
-
 
 ** Templates
 
@@ -143,13 +143,137 @@ c++14之前的版本不支持concepts, 只能通过一些约定来限定了.
 :     void construct(T*, const T&); // 拷贝一个T
 :     void destory(T*); // 回收T
 
+
 ** Range checking and exceptions
 
 边界检查使程序更健壮, 但降低效率.
 
 标准容器会提供带有边界检查的索引方式 at(), 也会提供快速的, 不检查边界的索引 operator[]().
 
-** Resource
+
+** Resource and exceptions
+resource需要被申请和释放, 常用的资源包括: Memory, Locks, File handles, Thread handles, Sockets, Windows.
+
+*** Potential resource management problems
+下面以memory为例进行说明.
+
+new和delete应该是成对出现的, 然而它们之间会发生什么奇怪的事情就不知道了:
+
+: int p* = new p[10];
+: // p = q;              // p 可能指向了别处
+: // return;             // 程序可能已经返回 
+: // try{..} catch{..}   // 可能抛出异常
+: delete[] p;
+
+为了确保p能够被释放, 一个稍微好一点的版本可能长这样:
+
+: int p* = new p[10];
+: try { ... }
+: catch() { 
+:    delete[] p;
+:    return;
+: }
+: delete[] p;
+
+虽然有点搓, 但至少解决了温饱. 那么问题来了, 如果我们有一大波p需要被delete怎么办.
+
+*** Resource acquisition is initialization
+接上节. 当面临一大波p时, 好在还有vector:
+
+: void f()
+: {
+:     vector<int> p(10);
+:     vector<int> q(10);
+: }
+
+这样我们就不用担心delete的问题了:
+- vector初始化函数负责new,析构函数中delete.
+- p不是指针,不必担心中途被改变.
+- 离开作用域时,所有fully-constructed object(以及sub-object)的析构函数自动被调用.
+
+
+引用一下百度百科:
+
+RAII （Resource Acquisition Is Initialization）,也称为“资源获取就是初始化”，是C++语言的一种管理资源、避免泄漏的惯用法。C++标准保证任何情况下，已构造的对象最终会销毁，即它的析构函数最终会被调用。简单的说，RAII 的做法是使用一个对象，在其构造时获取资源，在对象生命期控制对资源的访问使之始终保持有效，最后在对象析构的时候释放资源。
+
+*** Guarantee
+一个常见的场景, 我们可能希望在在作用域之外使用p:
+
+: void make_vec() {
+:     vector<int> p = new vector<int>();
+:     // ...
+:     return p;
+: }
+
+同delete的问题类似, p可能活不到被return. 类似的, 这里也可以使用try-catch来解决.
+这就是所谓的basic-guarantee.
+
+- basic-guarantee: 确保没有内存泄露.
+- strong-guarantee: 在basic的基础上, 还要确保所有observable value(非本地变量)的值不变, 除了抛出异常外. 这样的函数是可重入的.
+- no-throw-guarantee: 足够安全,不throw. 所有c++内置的工具提供no throw guarantee, 只要开发者不使用throw,new,dynamic_cast这三种操作.
+
+*** unique_ptr
+try-catch还是太丑了. 这里介绍一个更牛逼的RAII工具, <memory>的unique_ptr.
+
+: vector<int> *make_vec() {
+:     unique_ptr<vector<int>> p {new vector<int>};
+:     // fill ..., may throw a exception.
+:     return p.release();
+: }
+  
+unique_ptr 是一个拥有指针的实例, 它被析构时(离开make_vec的作用域), 会负责销毁所拥有的指针. p.release()把vector从p中解绑, 这样以后p会指向一个nullptr, 被销毁时不会释放掉vector.
+
+最好不要在unique_ptr中嵌套unique_ptr.
+
+*** Return by moving 
+对容器来说,有一种更加优雅的解决方案: 使用move constructor传递内容.
+: void make_vec() {
+:     vector<int> m;
+:     // ...
+:     return m; // the move constructor efficiently transfers ownership.
+: }
+
+*** RAII for vector
+如果使用了smart pointer - 比如unique_ptr, 问题依旧存在..
+- 怎样保证所有的pointer都被保护起来了?
+- 如果有些实例在退出作用域时不需要被销毁怎么办? (你烦不烦...
+ 
+参考前面使用allocator的reserve实现.
+
+其中, alloc.construct(&p[i], elem[i])可能会抛异常, 这样后面的alloc.destory(&elem[i])就执行不到了..似曾相识的状况..
+
+好一点的解决方案是:把vector的memory(包括sz,elem,space)当做resource:
+: struct vector_base {
+:     A alloc;
+:     T* elem;
+:     int sz;
+:     int space;
+:
+:     vector_base(const A& a, int n);
+:     ~vector_base();    
+: }
+
+vector可以继承vector_base
+: class vector: private vector_base<T,A>
+
+重新实现reserve():
+: void vector<T,A>::reserve(int newalloc) 
+: {
+:     if ( newalloc <= this->space ) return;
+:     vector_base<T,A> b(this->alloc, newalloc);
+:     uninitialized_copy(b.elem, &b.elem[this->sz], this->elem); // copy
+:     for ( int i = 0; i < this->sz; i++ )
+:         this->alloc.destory(&this->elem[i]);
+:     swap<vector_base<T,A>>(*this, p);
+: }
+
+uninitialized_copy可以处理掉拷贝构造函数抛出的异常. 如果中间抛了异常, 则新的p会在离开作用域时被析构.
+
+有一点要注意, 这里*this和p是不同类型, 所以在调用swap时需要显示指定一下类型.
+
+
+
+- 以上
 
 
 
