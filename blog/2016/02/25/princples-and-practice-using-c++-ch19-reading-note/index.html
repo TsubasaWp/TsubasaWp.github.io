@@ -48,7 +48,16 @@
 </ul>
 </li>
 <li><a href="#orgheadline11">4. Range checking and exceptions</a></li>
-<li><a href="#orgheadline12">5. Resource</a></li>
+<li><a href="#orgheadline18">5. Resource and exceptions</a>
+<ul>
+<li><a href="#orgheadline12">5.1. Potential resource management problems</a></li>
+<li><a href="#orgheadline13">5.2. Resource acquisition is initialization</a></li>
+<li><a href="#orgheadline14">5.3. Guarantee</a></li>
+<li><a href="#orgheadline15">5.4. unique<sub>ptr</sub></a></li>
+<li><a href="#orgheadline16">5.5. Return by moving</a></li>
+<li><a href="#orgheadline17">5.6. RAII for vector</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -67,7 +76,10 @@
 <h2 id="orgheadline2"><span class="section-number-2">2</span> Changing size</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-上一章的vector仅使用固定的数组来实现, 难以支持push<sub>back</sub>, resize等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+上一章的vector仅使用固定的数组来实现, 难以支持'push<sub>back</sub>()', 'resize()'等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+</p>
+
+<p>
 上一章的vector长度储存在sz中, 现在增加一个space变量, 用于储存vector的总可用空间(已用空间+空闲空间). 
 当有新成员放入vector时, 先从空闲空间中找位置, 如果空闲空间已被用完, 再申请一块新的空间. 这样可以减少频繁进行内存申请造成的性能损失.
 </p>
@@ -108,7 +120,6 @@ void Vector&lt;T&gt;::push_back(T value)
 </pre>
 </div>
 </div>
-
 
 <div id="outline-container-orgheadline10" class="outline-2">
 <h2 id="orgheadline10"><span class="section-number-2">3</span> Templates</h2>
@@ -313,6 +324,7 @@ public:
 </div>
 </div>
 
+
 <div id="outline-container-orgheadline11" class="outline-2">
 <h2 id="orgheadline11"><span class="section-number-2">4</span> Range checking and exceptions</h2>
 <div class="outline-text-2" id="text-4">
@@ -326,8 +338,229 @@ public:
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-2">
-<h2 id="orgheadline12"><span class="section-number-2">5</span> Resource</h2>
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">5</span> Resource and exceptions</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+resource需要被申请和释放, 常用的资源包括: Memory, Locks, File handles, Thread handles, Sockets, Windows.
+</p>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">5.1</span> Potential resource management problems</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+下面以memory为例进行说明.
+</p>
+
+<p>
+new和delete应该是成对出现的, 然而它们之间会发生什么奇怪的事情就不知道了:
+</p>
+
+<pre class="example">
+int p* = new p[10];
+// p = q;              // p 可能指向了别处
+// return;             // 程序可能已经返回 
+// try{..} catch{..}   // 可能抛出异常
+delete[] p;
+</pre>
+
+<p>
+为了确保p能够被释放, 一个稍微好一点的版本可能长这样:
+</p>
+
+<pre class="example">
+int p* = new p[10];
+try { ... }
+catch() { 
+   delete[] p;
+   return;
+}
+delete[] p;
+</pre>
+
+<p>
+虽然有点搓, 但至少解决了温饱. 那么问题来了, 如果我们有一大波p需要被delete怎么办.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">5.2</span> Resource acquisition is initialization</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+接上节. 当面临一大波p时, 好在还有vector:
+</p>
+
+<pre class="example">
+void f()
+{
+    vector&lt;int&gt; p(10);
+    vector&lt;int&gt; q(10);
+}
+</pre>
+
+<p>
+这样我们就不用担心delete的问题了:
+</p>
+<ul class="org-ul">
+<li>vector初始化函数负责new,析构函数中delete.</li>
+<li>p不是指针,不必担心中途被改变.</li>
+<li>离开作用域时,所有fully-constructed object(以及sub-object)的析构函数自动被调用.</li>
+</ul>
+
+
+<p>
+引用一下百度百科:
+</p>
+
+<p>
+RAII （Resource Acquisition Is Initialization）,也称为“资源获取就是初始化”，是C++语言的一种管理资源、避免泄漏的惯用法。C++标准保证任何情况下，已构造的对象最终会销毁，即它的析构函数最终会被调用。简单的说，RAII 的做法是使用一个对象，在其构造时获取资源，在对象生命期控制对资源的访问使之始终保持有效，最后在对象析构的时候释放资源。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">5.3</span> Guarantee</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+一个常见的场景, 我们可能希望在在作用域之外使用p:
+</p>
+
+<pre class="example">
+void make_vec() {
+    vector&lt;int&gt; p = new vector&lt;int&gt;();
+    // ...
+    return p;
+}
+</pre>
+
+<p>
+同delete的问题类似, p可能活不到被return. 类似的, 这里也可以使用try-catch来解决.
+这就是所谓的basic-guarantee.
+</p>
+
+<ul class="org-ul">
+<li>basic-guarantee: 确保没有内存泄露.</li>
+<li>strong-guarantee: 在basic的基础上, 还要确保所有observable value(非本地变量)的值不变, 除了抛出异常外. 这样的函数是可重入的.</li>
+<li>no-throw-guarantee: 足够安全,不throw. 所有c++内置的工具提供no throw guarantee, 只要开发者不使用throw,new,dynamic<sub>cast这三种操作</sub>.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">5.4</span> unique<sub>ptr</sub></h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+try-catch还是太丑了. 这里介绍一个更牛逼的RAII工具, &lt;memory&gt;的unique<sub>ptr</sub>.
+</p>
+
+<pre class="example">
+vector&lt;int&gt; *make_vec() {
+    unique_ptr&lt;vector&lt;int&gt;&gt; p {new vector&lt;int&gt;};
+    // fill ..., may throw a exception.
+    return p.release();
+}
+</pre>
+
+<p>
+unique<sub>ptr</sub> 是一个拥有指针的实例, 它被析构时(离开make<sub>vec的作用域</sub>), 会负责销毁所拥有的指针. p.release()把vector从p中解绑, 这样以后p会指向一个nullptr, 被销毁时不会释放掉vector.
+</p>
+
+<p>
+最好不要在unique<sub>ptr中嵌套unique</sub><sub>ptr</sub>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">5.5</span> Return by moving</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+对容器来说,有一种更加优雅的解决方案: 使用move constructor传递内容.
+</p>
+<pre class="example">
+void make_vec() {
+    vector&lt;int&gt; m;
+    // ...
+    return m; // the move constructor efficiently transfers ownership.
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">5.6</span> RAII for vector</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+如果使用了smart pointer - 比如unique<sub>ptr</sub>, 问题依旧存在..
+</p>
+<ul class="org-ul">
+<li>怎样保证所有的pointer都被保护起来了?</li>
+<li>如果有些实例在退出作用域时不需要被销毁怎么办? (你烦不烦&#x2026;</li>
+</ul>
+
+<p>
+参考前面使用allocator的reserve实现.
+</p>
+
+<p>
+其中, alloc.construct(&amp;p[i], elem[i])可能会抛异常, 这样后面的alloc.destory(&amp;elem[i])就执行不到了..似曾相识的状况..
+</p>
+
+<p>
+好一点的解决方案是:把vector的memory(包括sz,elem,space)当做resource:
+</p>
+<pre class="example">
+struct vector_base {
+    A alloc;
+    T* elem;
+    int sz;
+    int space;
+
+    vector_base(const A&amp; a, int n);
+    ~vector_base();    
+}
+</pre>
+
+<p>
+vector可以继承vector<sub>base</sub>
+</p>
+<pre class="example">
+class vector: private vector_base&lt;T,A&gt;
+</pre>
+
+<p>
+重新实现reserve():
+</p>
+<pre class="example">
+void vector&lt;T,A&gt;::reserve(int newalloc) 
+{
+    if ( newalloc &lt;= this-&gt;space ) return;
+    vector_base&lt;T,A&gt; b(this-&gt;alloc, newalloc);
+    uninitialized_copy(b.elem, &amp;b.elem[this-&gt;sz], this-&gt;elem); // copy
+    for ( int i = 0; i &lt; this-&gt;sz; i++ )
+        this-&gt;alloc.destory(&amp;this-&gt;elem[i]);
+    swap&lt;vector_base&lt;T,A&gt;&gt;(*this, p);
+}
+</pre>
+
+<p>
+uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. 如果中间抛了异常, 则新的p会在离开作用域时被析构.
+</p>
+
+<p>
+有一点要注意, 这里*this和p是不同类型, 所以在调用swap时需要显示指定一下类型.
+</p>
+
+
+
+<ul class="org-ul">
+<li>以上</li>
+</ul>
+</div>
+</div>
 </div>
 
 </div>
@@ -335,7 +568,7 @@ public:
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-02-25</span>
-        <span title="last modification date" class="post-info">2016-02-27</span>
+        <span title="last modification date" class="post-info">2016-02-28</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
