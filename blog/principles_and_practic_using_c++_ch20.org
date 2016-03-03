@@ -1,0 +1,43 @@
+#+TITLE:     princples and practice using c++ ch20 reading note
+#+AUTHOR:    Tsubasa
+#+EMAIL:     tsubasa.wp@gmail.com
+#+DATE:      2016-03-01
+
+本章讲授如何模仿STL的思路写容器和算法.
+
+* STL
+编程中通常和两样东西打交道: 数据和算法. STL提供了一套容器, 以及一些通用的算法.
+  
+引用一下百科:
+
+: STL = Standard Template Library，标准模板库，惠普实验室开发的一系列软件的统称。它是由Alexander Stepanov、Meng Lee和David R Musser在惠普实验室工作时所开发出来的。从根本上说，STL是一些“容器”的集合，这些“容器”有list,vector,set,map等，STL也是算法和其他一些组件的集合。这里的“容器”和算法的集合指的是世界上很多聪明人很多年的杰作。STL的目的是标准化组件，这样就不用重新开发，可以使用现成的组件。STL现在是C++的一部分，因此不用额外安装什么。
+
+** Data interface
+数据结构最常用的特性包括:
+- 容器: vector, list, map ...
+- 数据组织: 快速查找, 打印等.
+- 访问: by value, by index, by properties, ...
+- 修改: 增删改
+- 数学运算: +, -, *, etc.
+
+另外,程序猿们希望在使用这些特性时不需要关心类型转换的问题.
+我们在上一章中实现的vector<T>就不满足这个需求, vector<int>和vector<double>是不同的类型.
+下面就来看看STL怎么解决这个问题.
+
+** Sequences and iterators
+序列是STL的核心思想. 序列有头有尾, 我们可以从begin到end遍历它.
+
+begin和end是iterator(迭代器). 迭代器是一个指向序列元素的对象.
+序列是"half-open"的,因为begin指向序列第一个元素, 而end指向的元素不属于序列,它指向最后一个元素之后的位置.可以这样表示:[begin:end).
+
+那么iterator是什么, 它看起来像指针, 但其实它是个更抽象的概念:
+- 它指向序列中的元素
+- 它可以用==或!=比较
+- 可以使用*取值
+- 可以用++获取下一个iterator.
+
+( 这样看起来是不是更像指针了 233
+上面说了,迭代器是一种抽象的概念, 所以指向array的指针的确可以被称为迭代器. 而许多迭代器的功能比指针要多. 比如可以提供边界检查[begin:end).
+
+迭代器这个概念可以带来巨大的灵活性, 后面会说明.
+
