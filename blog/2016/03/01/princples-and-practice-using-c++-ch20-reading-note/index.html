@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>princples and practice using c++ ch20 reading note - org-page</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tsubasa" />
+    <link rel="stylesheet" href="/media/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/prettify.css" type="text/css">
+  </head>
+  <body class="container">
+    <div>
+      <header class="masthead">
+        <h1 class="masthead-title"><a href="/">org-page</a></h1>
+        <p>static site generator</p>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/resource/">Resource</a></li>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://github.com/kelvinh/org-page">GitHub</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+        <form method="get" id="searchform" action="http://www.google.com/search">
+          <input type="text" class="field" name="q" id="s" placeholder="Search">
+          <input type="hidden" name="as_sitesearch" value="tsubasawp.github.io">
+        </form>
+      </header>
+    </div>
+
+<div>
+<div class="post">
+<h1>princples and practice using c++ ch20 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline3">1. STL</a>
+<ul>
+<li><a href="#orgheadline1">1.1. Data interface</a></li>
+<li><a href="#orgheadline2">1.2. Sequences and iterators</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+本章讲授如何模仿STL的思路写容器和算法.
+</p>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">1</span> STL</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+编程中通常和两样东西打交道: 数据和算法. STL提供了一套容器, 以及一些通用的算法.
+</p>
+
+<p>
+引用一下百科:
+</p>
+
+<pre class="example">
+STL = Standard Template Library，标准模板库，惠普实验室开发的一系列软件的统称。它是由Alexander Stepanov、Meng Lee和David R Musser在惠普实验室工作时所开发出来的。从根本上说，STL是一些“容器”的集合，这些“容器”有list,vector,set,map等，STL也是算法和其他一些组件的集合。这里的“容器”和算法的集合指的是世界上很多聪明人很多年的杰作。STL的目的是标准化组件，这样就不用重新开发，可以使用现成的组件。STL现在是C++的一部分，因此不用额外安装什么。
+</pre>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> Data interface</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+数据结构最常用的特性包括:
+</p>
+<ul class="org-ul">
+<li>容器: vector, list, map &#x2026;</li>
+<li>数据组织: 快速查找, 打印等.</li>
+<li>访问: by value, by index, by properties, &#x2026;</li>
+<li>修改: 增删改</li>
+<li>数学运算: +, -, *, etc.</li>
+</ul>
+
+<p>
+另外,程序猿们希望在使用这些特性时不需要关心类型转换的问题.
+我们在上一章中实现的vector&lt;T&gt;就不满足这个需求, vector&lt;int&gt;和vector&lt;double&gt;是不同的类型.
+下面就来看看STL怎么解决这个问题.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Sequences and iterators</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+序列是STL的核心思想. 序列有头有尾, 我们可以从begin到end遍历它.
+</p>
+
+<p>
+begin和end是iterator(迭代器). 迭代器是一个指向序列元素的对象.
+序列是"half-open"的,因为begin指向序列第一个元素, 而end指向的元素不属于序列,它指向最后一个元素之后的位置.可以这样表示:[begin:end).
+</p>
+
+<p>
+那么iterator是什么, 它看起来像指针, 但其实它是个更抽象的概念:
+</p>
+<ul class="org-ul">
+<li>它指向序列中的元素</li>
+<li>它可以用==或!=比较</li>
+<li>可以使用*取值</li>
+<li>可以用++获取下一个iterator.</li>
+</ul>
+
+<p>
+( 这样看起来是不是更像指针了 233
+上面说了,迭代器是一种抽象的概念, 所以指向array的指针的确可以被称为迭代器. 而许多迭代器的功能比指针要多. 比如可以提供边界检查[begin:end).
+</p>
+
+<p>
+迭代器这个概念可以带来巨大的灵活性, 后面会说明.
+</p>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+    <div>
+      <div class="post-meta">
+        <span title="post date" class="post-info">2016-03-01</span>
+        <span title="last modification date" class="post-info">2016-03-03</span>
+        <span title="tags" class="post-info">N/A</span>
+        <span title="author" class="post-info">Tsubasa</span>
+      </div>
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          //var disqus_developer = 1;
+          var disqus_identifier = "/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/";
+          var disqus_url = "http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/";
+          var disqus_shortname = 'Tsubasa';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div class="ds-thread"></div>
+        <script type="text/javascript">
+          var duoshuoQuery = {short_name:'Tsubasa'};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';ds.async = true;
+          ds.src = 'http://static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
+        </script>
+      </section>
+      <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script src="/media/js/main.js"></script>
+      <div class="footer">
+        <p>Generated by <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.x (<a href="http://orgmode.org">Org mode</a> 8.x)</p>
+        <p>
+          Copyright &copy; 2012 - <span id="footerYear"></span> <a href="mailto:tsubasa &lt;dot&gt; wp &lt;at&gt; gmail &lt;dot&gt; com">Tsubasa</a>
+          &nbsp;&nbsp;-&nbsp;&nbsp;
+          Powered by <a href="https://github.com/kelvinh/org-page" target="_blank">org-page</a>
+          <script type="text/javascript">document.getElementById("footerYear").innerHTML = (new Date()).getFullYear();</script>
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>
