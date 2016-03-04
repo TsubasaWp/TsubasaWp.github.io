@@ -5,6 +5,15 @@
 
 本章讲授如何模仿STL的思路写容器和算法.
 
+* C++ 11 features:
+
+- using
+: using Iterator = T*; // 类似typedef
+
+- auto
+: auto it; // equal to Vector<T>::iterator it;
+
+
 * STL
 编程中通常和两样东西打交道: 数据和算法. STL提供了一套容器, 以及一些通用的算法.
   
@@ -36,8 +45,79 @@ begin和end是iterator(迭代器). 迭代器是一个指向序列元素的对象
 - 可以使用*取值
 - 可以用++获取下一个iterator.
 
-( 这样看起来是不是更像指针了 233
+这样看起来是不是更像指针了23333.
 上面说了,迭代器是一种抽象的概念, 所以指向array的指针的确可以被称为迭代器. 而许多迭代器的功能比指针要多. 比如可以提供边界检查[begin:end).
 
 迭代器这个概念可以带来巨大的灵活性, 后面会说明.
+
+
+** Linked lists
+大家都熟悉的链表..
+
+在STL中, list被实现为双向链表. 使用iterator来遍历,插入和删除. list不支持下标索引,因为对链表来说下标索引效率太低.
+
+vector的iterator可以直接利用指针实现, 而list的iterator则复杂一些(注意它是nested class):
+: template<typename Elem>
+: class list<Elem>::iterator {
+:     Link<Elem *>curr;
+: public:
+:    iterator(Link<Elem>* p): curr{p};
+:    iterator& operator++() {curr = curr->succ; return *this;}
+:    iterator& operator--() {curr = curr->prev; return *this;}
+:    Elem& operator* () {return curr->val;} 
+:    
+:    bool operator==(const iterator& b) const {return curr == b.curr};    
+:    bool operator!=(const iterator& b) const {return curr != b.curr};    
+
+
+** General algorithm
+
+利用iterator,我们可以写出同时支持list和vector等容器的通用算法:
+: template<typename Iter>
+: Iter high(Iter first, Iter last)
+: {
+:     Iter high = first;
+:     for ( Iter p = first; p != last; p++)
+:         if ( high < p ) high = p;
+:     return p;
+: }
+
+* Generalizing vector yet again
+是时候改造一下上一章的vector了,我们为它加入iterator:
+: template<typename T>
+: class vector {
+: public:
+:     using size_type = unsigned long;
+:     using value_type = T;
+:     using iterator = T*;
+:     using const_iterator = const T*;
+:     //...
+:     iterator begin();
+:     iterator end();
+:     size_type size();
+:     // ... const version
+: }
+
+** Container traversal
+可以利用一个语法糖来实现通用的遍历:
+: for ( T val : _list) cout << val << endl;
+: for ( T val : _vector) cout << val << endl;
+
+没错这个语法糖就是利用iterator实现的.
+
+** auto
+声明iterator真的很烦有木有
+: Vector<double>::iterator it;
+c++11 为我们贴心的提供了一个语法糖,现在可以愉快的这么写了:
+: auto it;
+
+原则上只要编译期可以明确类型的声明都可以使用auto. 
+(可读性什么的自己权衡吧..)
+
+* An example: text editor
+呃, 这部分就不做笔记了, 参考原书$20.6.
+
+
+以上
+
 
