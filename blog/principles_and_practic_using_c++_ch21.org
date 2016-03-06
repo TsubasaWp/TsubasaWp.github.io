@@ -1,0 +1,221 @@
+#+TITLE:     princples and practice using c++ ch21 reading note
+#+AUTHOR:    Tsubasa
+#+EMAIL:     tsubasa.wp@gmail.com
+#+DATE:      2016-03-06
+
+* Algorithms and Maps
+
+** C++ 11 features
+- lambda 表达式 (){}
+
+** Standard Library algorithms
+介绍了一些通用算法: find, sort, accumulate, inner_produdt等.
+介绍了函数对象.
+
+** The simplest algorithm: find()
+最简单常用的算法莫过于find():
+: template<typename In, typename T>
+: In find(In first, In end, const T& val)
+: {
+:     while(first!=end && *first!=val) ++first;
+:     return first;
+: }
+
+它支持任意STL风格的容器, 任意类型.
+
+** The general search:find_if()
+find_if可以传入一个断言(下一节解释这玩意), find_if查找满足这个断言的第一个值.
+: template<typename In, typename T>
+: In find_if(In first, In end, Pred pred)
+: {
+:     while(first!=end && *!pred(*first)) ++first;
+:     return first;
+: }
+
+** Function objects
+上面说的pred是一个函数对象:一个跟函数的行为类似的对象. 对象可以储存数据, 比如储存被比较的值.
+: class Larger_than()
+: {
+:     int v;
+: public:
+:     Larger_than(int vv):v(vv){}
+:     bool operator()(int x) const {return x>v;}
+: }
+
+*** An abstract view of function objects
+把楼上Larger_than函数的对象名换成一个模棱两可的名字(比如F), 把int换成模板, 就是一个比较抽象的函数对象了.
+因为携带了数据, 函数对象是"有状态"的.
+
+函数对象是STL参数化的重要手段.
+
+性能方面, 使用函数对象当做参数优于使用函数. 为了获取最佳性能, 函数对象要以引用的方式专递, 而且operator()最好实现在class内部. 这样可以为编译器提供足够多的信息进行优化.
+
+比如: 上面的Larger_than可以被编译器优化成一个机器指令, 而不是进行函数调用. 进行一次函数调用的开销大概是运行比较指令的10-50倍. 另外为函数调用生成的代码也会比较多.
+
+*** Predicates on class members
+如果要使用函数对象来比较class member, 那么现有的武器就不太顺手了..我们可能要写许多类似以下的代码:
+: struct cmp_by_name {
+:    bool operator()(const Record& a, const Record& b) { return a.name < b.name; }
+: }
+
+*** Lambda expressions
+C++11 提供对了 lambda表达式. 
+: auto p = find_if(v.begin(), v.end(), (double a){ return a > 31;});
+
+可以理解为(double a){return a > 31;}定义函数对象的语法糖.
+
+** Numerical algorithms
+数值运算算法在<numeric>中. (如果以后有机会写引擎的话大概会用到吧...
+
+*** Accumulate
+x = accumulate(b,e,i), 计算[b,e)所有元素与i的和. 返回值x的类型会被用于初始化accumulate, 所以必须明确的把计算结果赋值给一个变量. ( 还真不知道这个..
+: double s1 = 0;
+: s1 = accumulate(v.begin(),v.end(),s1); // ok
+: s2 = accumulate(v.begin(),v.end(),s2); // oops
+: float3 = 0;
+: accumulate(v.begin(),v.end(),s3);      // oops
+
+*** Generalizing accumulate()
+运算不限于加法. STL提供了一个4参数版本的accumulate, 可以自定义运算:
+: template<typename In, typename T, typename BinOp>
+: // requires Input_iterator<In>() && Number<T>() && Binary_operator<BinOp, Value_type<In>, T>()
+: T accumulate(In first, In last, T init, BinOp op)
+: {
+:     while (first != last) {
+:         init = op(init, *first);
+: 	++first;
+:     }
+: }
+
+*** Inner product
+内积...计算两个序列中每一对元素的和, 最后相加.
+: int sum = inner_product( v1.begin(), v1.end(), v2.begin, 0); // v2 maybe have more elements than v1, it's ok.
+
+*** Generalizing inner_product()
+一个比上上节更加冗长的声明:
+: T inner_product(In first, In last, In2 first2, T init, BinOp op, BinOp2 op2)
+(累爱...
+
+** Associative containers
+最常用的关容器非map莫属. 与map类似的结构体还有:associative array, hash table, red-black trees ... unordered_map是为字符串key优化过的map.
+
+这些容器在<map>,<set>,<unordered_map>,<unordered_set>中.
+
+*** map overview
+STL采用了红黑树实现map -- 左子树的key小于父节点, 右子树大于父节点.
+
+map的interface:
+: class map {
+:     using value_type = pair<Key, Value>;
+: 
+:     using iterator = sometype1; // 可以理解为一个指向 tree node 的指针
+:     using const_iterator = sometype2;
+: 
+:     iterator begin();
+:     iterator end();
+:     Value& operator[](const Key& k);
+:     iterator find(const Key& k);
+:     void erase(iterator p);
+:     pair<iterator, bool> insert(const value_type&); // 插入一个键值对
+: }
+map的iterator是一个类似于[指向树节点的指针]的东西.
+
+insert方法的返回值要特别注意一下, 它是一个<迭代器, bool>键值对.如果插入成功了, bool是true, 并返回指向新元素的iterator. 如果插入失败bool是false. 这个返回值经常会被忽略.
+
+map支持按照特定方法排序:
+: map<string, double, No_case> m;
+No_case的默认值是less<Key>.
+
+*** unordered_map
+在vector中查找的复杂度是O(N), 在map中查找的复杂度是O(log_2(N)), 在unordered_map中是O(1).
+ 
+STL的unordered_map是用哈希表实现的: 把key哈希到一个不太长的vector中,用下标索引, 查找复杂度可以降低到接近O(1).
+
+关于vector, map和unordered_map的使用提示:
+- vector: 没什么事的话就用它吧
+- map: 需要根据key查询, 且key支持比较高效的<运算.
+- unordered_map: 需要频繁的查找, 且不需要有序的遍历.
+
+** Set
+set可以认为是一个只有key的map, 它也是棵红黑树.
+- set没有value, 它不支持operator[]. 
+- set不需要pair, 使用起来不需要写it->second这种代码, 比map简洁一些.
+
+** Copying
+STL提供了3种copy操作: copy, unique_copy, copy_if
+
+*** basic copy
+: template<typename In, typename Out>
+: Out copy(In first, In last, Out res)
+: { 
+:     while ( first != last ) {
+:         *res = *first;
+: 	++res;
+: 	++first;
+:     }
+:     return res;
+: }
+
+注意, res的size需要程序猿自己检查, STL为了性能, 一般不提供边界检查.
+
+*** Stream iterator
+可以利用copy把input stream的内容转移到output stream中.
+
+: string from, to;
+: cin >> from >> to; // source and target file name
+: ifstream is {from};
+: ofstream os {to};
+: 
+: istream_iterator<string> ii {is};
+: istream_iterator<string> eof;
+: ostream_iterator<string> oo {os, "\n"};
+: 
+: vector<string> b{ii, eos};
+: sort(b.begin(), b .end());
+: copy(b.begin(), b.end(), oo);
+
+传入一对iterator给vector作为初始化参数的意思是"读取[a:b)". 上面vector b会读取输入文件的内容, 直到碰到eof为止.
+据说如果试验一下这个case(回头再说吧..), 会发现input buffer比想象中的小, 很容易利用这个搞一些overflow什么的.
+
+*** Unique_copy
+unique_copy不会拷贝重复的元素
+
+*** Using a set to keep order
+修改一下上面copy例子的最后三行
+: set<string> b {istream_iterator<string>{is}, istream_iterator<string>{}};
+: copy(b.begin(), b.end(), ostream_iterator<string>{os, ""}};
+
+这时利用了set的特性:自动去重, 自动排序.
+
+*** copy_if
+跟前面的algorithms方法类似, STL也提供了可以使用函数对象的版本.
+: Out copy_if(In first, In last, Out res, Pred p);
+
+** Sorting and seraching
+如果需要保持数据有序, 我们可以使用有序的容器map和set, 也可以使用sort方法. sort()默认使用<作为排序规则, 也可以自己定义排序函数.
+
+当数据有序以后, find就高效多了, 可以用二分查找, binary_search() 和 equal_range().
+: bool binary_search(Ran first, Ran last, const T&val);
+binary_search仅能告诉我们要查找的数据是否存在. 如果需要知道元素的位置, 可以用 lower_bound(), upper_bound() 或者 equal_range().
+
+** Container algorithms
+综上所述, 容器的算法大抵是接受一对iterator做参数, 然后返回一个iterator. 这个设定很好的保证了算法的通用性.
+
+以上.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
