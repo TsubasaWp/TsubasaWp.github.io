@@ -1,0 +1,42 @@
+#+TITLE:     princples and practice using c++ ch3 reading note
+#+AUTHOR:    Tsubasa
+#+EMAIL:     tsubasa.wp@gmail.com
+#+DATE:      2016-03-08
+
+3-9章比较基础, 仅凭喜好选择一些内容记录.
+
+** c++ 11
+{}: 初始化运算符. 它不允许不安全类型转换.
+
+** Names
+起名的注意事项:
+- 尽量不要使用下划线开头的变量名
+- 名字不要太长
+- 不要全部大写, 全大写变量是为宏定义保留的
+- 起名要有意义
+
+** Types and objects
+- type: 一种逻辑结构, 它定义了一系列值和操作.
+- object: 一块内存, 存储着某个类型(type)的值(value)
+- value: 一些内存中的二进制数据, 可用type来解析
+- variable: 一个有名字的object
+- declaration: 为object命名
+- definition: 为object分配内存
+
+** Type safety
+c++不是类型安全的, 所以要格外小心
+
+*** Safe conversions
+- bool to char/int/double
+- char to int/double
+- int to double
+
+*** Unsafe conversions
+当目标类型比原类型"小"时, 类型转换是不安全的, 会丢失一些信息. 比如把double转为int.
+
+c++允许不安全的类型转换 --- 当然你可以选择让编译器给出警告.
+
+为啥c++允许这种行为呢? 历史原因, 因为c++的祖先c也这么干, 并且有些古老的代码依赖于这种转换.
+
+c++11提供了初始化运算符{}, 它遇到unsafe conversion会直接报错:
+: int x {2.7} // error: double -> int may narrow.
