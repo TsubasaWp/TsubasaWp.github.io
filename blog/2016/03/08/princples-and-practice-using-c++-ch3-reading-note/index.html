@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>princples and practice using c++ ch3 reading note - org-page</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tsubasa" />
+    <link rel="stylesheet" href="/media/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/prettify.css" type="text/css">
+  </head>
+  <body class="container">
+    <div>
+      <header class="masthead">
+        <h1 class="masthead-title"><a href="/">org-page</a></h1>
+        <p>static site generator</p>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/resource/">Resource</a></li>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://github.com/kelvinh/org-page">GitHub</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+        <form method="get" id="searchform" action="http://www.google.com/search">
+          <input type="text" class="field" name="q" id="s" placeholder="Search">
+          <input type="hidden" name="as_sitesearch" value="tsubasawp.github.io">
+        </form>
+      </header>
+    </div>
+
+<div>
+<div class="post">
+<h1>princples and practice using c++ ch3 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. c++ 11</a></li>
+<li><a href="#orgheadline2">2. Names</a></li>
+<li><a href="#orgheadline3">3. Types and objects</a></li>
+<li><a href="#orgheadline6">4. Type safety</a>
+<ul>
+<li><a href="#orgheadline4">4.1. Safe conversions</a></li>
+<li><a href="#orgheadline5">4.2. Unsafe conversions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+3-9章比较基础, 仅凭喜好选择一些内容记录.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> c++ 11</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+{}: 初始化运算符. 它不允许不安全类型转换.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Names</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+起名的注意事项:
+</p>
+<ul class="org-ul">
+<li>尽量不要使用下划线开头的变量名</li>
+<li>名字不要太长</li>
+<li>不要全部大写, 全大写变量是为宏定义保留的</li>
+<li>起名要有意义</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> Types and objects</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>type: 一种逻辑结构, 它定义了一系列值和操作.</li>
+<li>object: 一块内存, 存储着某个类型(type)的值(value)</li>
+<li>value: 一些内存中的二进制数据, 可用type来解析</li>
+<li>variable: 一个有名字的object</li>
+<li>declaration: 为object命名</li>
+<li>definition: 为object分配内存</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">4</span> Type safety</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+c++不是类型安全的, 所以要格外小心
+</p>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">4.1</span> Safe conversions</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>bool to char/int/double</li>
+<li>char to int/double</li>
+<li>int to double</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">4.2</span> Unsafe conversions</h3>
+<div class="outline-text-3" id="text-4-2">
+<p>
+当目标类型比原类型"小"时, 类型转换是不安全的, 会丢失一些信息. 比如把double转为int.
+</p>
+
+<p>
+c++允许不安全的类型转换 &#x2014; 当然你可以选择让编译器给出警告.
+</p>
+
+<p>
+为啥c++允许这种行为呢? 历史原因, 因为c++的祖先c也这么干, 并且有些古老的代码依赖于这种转换.
+</p>
+
+<p>
+c++11提供了初始化运算符{}, 它遇到unsafe conversion会直接报错:
+</p>
+<pre class="example">
+int x {2.7} // error: double -&gt; int may narrow.
+</pre>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+    <div>
+      <div class="post-meta">
+        <span title="post date" class="post-info">2016-03-08</span>
+        <span title="last modification date" class="post-info">2016-03-08</span>
+        <span title="tags" class="post-info">N/A</span>
+        <span title="author" class="post-info">Tsubasa</span>
+      </div>
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          //var disqus_developer = 1;
+          var disqus_identifier = "/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/";
+          var disqus_url = "http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/";
+          var disqus_shortname = 'Tsubasa';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div class="ds-thread"></div>
+        <script type="text/javascript">
+          var duoshuoQuery = {short_name:'Tsubasa'};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';ds.async = true;
+          ds.src = 'http://static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
+        </script>
+      </section>
+      <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script src="/media/js/main.js"></script>
+      <div class="footer">
+        <p>Generated by <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.x (<a href="http://orgmode.org">Org mode</a> 8.x)</p>
+        <p>
+          Copyright &copy; 2012 - <span id="footerYear"></span> <a href="mailto:tsubasa &lt;dot&gt; wp &lt;at&gt; gmail &lt;dot&gt; com">Tsubasa</a>
+          &nbsp;&nbsp;-&nbsp;&nbsp;
+          Powered by <a href="https://github.com/kelvinh/org-page" target="_blank">org-page</a>
+          <script type="text/javascript">document.getElementById("footerYear").innerHTML = (new Date()).getFullYear();</script>
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>

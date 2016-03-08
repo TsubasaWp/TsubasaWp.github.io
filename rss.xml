@@ -4,493 +4,127 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 06 Mar 2016 22:11:11 CST</pubDate>
-    <lastBuildDate>Sun, 06 Mar 2016 22:11:11 CST</lastBuildDate>
+    <pubDate>Tue, 08 Mar 2016 23:06:18 CST</pubDate>
+    <lastBuildDate>Tue, 08 Mar 2016 23:06:18 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
-      <title>princples and practice using c++ ch21 reading note</title>
-      <link>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</link>
+      <title>princples and practice using c++ ch3 reading note</title>
+      <link>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</link>
       <description><![CDATA[<div>
 <div class="post">
-<h1>princples and practice using c++ ch21 reading note</h1>
+<h1>princples and practice using c++ ch3 reading note</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline26">1. Algorithms and Maps</a>
+<li><a href="#orgheadline1">1. c++ 11</a></li>
+<li><a href="#orgheadline2">2. Names</a></li>
+<li><a href="#orgheadline3">3. Types and objects</a></li>
+<li><a href="#orgheadline6">4. Type safety</a>
 <ul>
-<li><a href="#orgheadline1">1.1. C++ 11 features</a></li>
-<li><a href="#orgheadline2">1.2. Standard Library algorithms</a></li>
-<li><a href="#orgheadline3">1.3. The simplest algorithm: find()</a></li>
-<li><a href="#orgheadline4">1.4. The general search:find<sub>if</sub>()</a></li>
-<li><a href="#orgheadline8">1.5. Function objects</a>
-<ul>
-<li><a href="#orgheadline5">1.5.1. An abstract view of function objects</a></li>
-<li><a href="#orgheadline6">1.5.2. Predicates on class members</a></li>
-<li><a href="#orgheadline7">1.5.3. Lambda expressions</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">1.6. Numerical algorithms</a>
-<ul>
-<li><a href="#orgheadline9">1.6.1. Accumulate</a></li>
-<li><a href="#orgheadline10">1.6.2. Generalizing accumulate()</a></li>
-<li><a href="#orgheadline11">1.6.3. Inner product</a></li>
-<li><a href="#orgheadline12">1.6.4. Generalizing inner<sub>product</sub>()</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline16">1.7. Associative containers</a>
-<ul>
-<li><a href="#orgheadline14">1.7.1. map overview</a></li>
-<li><a href="#orgheadline15">1.7.2. unordered<sub>map</sub></a></li>
-</ul>
-</li>
-<li><a href="#orgheadline17">1.8. Set</a></li>
-<li><a href="#orgheadline23">1.9. Copying</a>
-<ul>
-<li><a href="#orgheadline18">1.9.1. basic copy</a></li>
-<li><a href="#orgheadline19">1.9.2. Stream iterator</a></li>
-<li><a href="#orgheadline20">1.9.3. Unique<sub>copy</sub></a></li>
-<li><a href="#orgheadline21">1.9.4. Using a set to keep order</a></li>
-<li><a href="#orgheadline22">1.9.5. copy<sub>if</sub></a></li>
-</ul>
-</li>
-<li><a href="#orgheadline24">1.10. Sorting and seraching</a></li>
-<li><a href="#orgheadline25">1.11. Container algorithms</a></li>
+<li><a href="#orgheadline4">4.1. Safe conversions</a></li>
+<li><a href="#orgheadline5">4.2. Unsafe conversions</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
+<p>
+3-9章比较基础, 仅凭喜好选择一些内容记录.
+</p>
 
-<div id="outline-container-orgheadline26" class="outline-2">
-<h2 id="orgheadline26"><span class="section-number-2">1</span> Algorithms and Maps</h2>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> c++ 11</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1"><span class="section-number-3">1.1</span> C++ 11 features</h3>
-<div class="outline-text-3" id="text-1-1">
+<p>
+{}: 初始化运算符. 它不允许不安全类型转换.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Names</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+起名的注意事项:
+</p>
 <ul class="org-ul">
-<li>lambda 表达式 (){}</li>
+<li>尽量不要使用下划线开头的变量名</li>
+<li>名字不要太长</li>
+<li>不要全部大写, 全大写变量是为宏定义保留的</li>
+<li>起名要有意义</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Standard Library algorithms</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-介绍了一些通用算法: find, sort, accumulate, inner<sub>produdt等</sub>.
-介绍了函数对象.
-</p>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> Types and objects</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>type: 一种逻辑结构, 它定义了一系列值和操作.</li>
+<li>object: 一块内存, 存储着某个类型(type)的值(value)</li>
+<li>value: 一些内存中的二进制数据, 可用type来解析</li>
+<li>variable: 一个有名字的object</li>
+<li>declaration: 为object命名</li>
+<li>definition: 为object分配内存</li>
+</ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">1.3</span> The simplest algorithm: find()</h3>
-<div class="outline-text-3" id="text-1-3">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">4</span> Type safety</h2>
+<div class="outline-text-2" id="text-4">
 <p>
-最简单常用的算法莫过于find():
+c++不是类型安全的, 所以要格外小心
 </p>
-<pre class="example">
-template&lt;typename In, typename T&gt;
-In find(In first, In end, const T&amp; val)
-{
-    while(first!=end &amp;&amp; *first!=val) ++first;
-    return first;
-}
-</pre>
-
-<p>
-它支持任意STL风格的容器, 任意类型.
-</p>
-</div>
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">1.4</span> The general search:find<sub>if</sub>()</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-find<sub>if可以传入一个断言</sub>(下一节解释这玩意), find<sub>if查找满足这个断言的第一个值</sub>.
-</p>
-<pre class="example">
-template&lt;typename In, typename T&gt;
-In find_if(In first, In end, Pred pred)
-{
-    while(first!=end &amp;&amp; *!pred(*first)) ++first;
-    return first;
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">1.5</span> Function objects</h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-上面说的pred是一个函数对象:一个跟函数的行为类似的对象. 对象可以储存数据, 比如储存被比较的值.
-</p>
-<pre class="example">
-class Larger_than()
-{
-    int v;
-public:
-    Larger_than(int vv):v(vv){}
-    bool operator()(int x) const {return x&gt;v;}
-}
-</pre>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5"><span class="section-number-4">1.5.1</span> An abstract view of function objects</h4>
-<div class="outline-text-4" id="text-1-5-1">
-<p>
-把楼上Larger<sub>than函数的对象名换成一个模棱两可的名字</sub>(比如F), 把int换成模板, 就是一个比较抽象的函数对象了.
-因为携带了数据, 函数对象是"有状态"的.
-</p>
-
-<p>
-函数对象是STL参数化的重要手段.
-</p>
-
-<p>
-性能方面, 使用函数对象当做参数优于使用函数. 为了获取最佳性能, 函数对象要以引用的方式专递, 而且operator()最好实现在class内部. 这样可以为编译器提供足够多的信息进行优化.
-</p>
-
-<p>
-比如: 上面的Larger<sub>than可以被编译器优化成一个机器指令</sub>, 而不是进行函数调用. 进行一次函数调用的开销大概是运行比较指令的10-50倍. 另外为函数调用生成的代码也会比较多.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6"><span class="section-number-4">1.5.2</span> Predicates on class members</h4>
-<div class="outline-text-4" id="text-1-5-2">
-<p>
-如果要使用函数对象来比较class member, 那么现有的武器就不太顺手了..我们可能要写许多类似以下的代码:
-</p>
-<pre class="example">
-struct cmp_by_name {
-   bool operator()(const Record&amp; a, const Record&amp; b) { return a.name &lt; b.name; }
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7"><span class="section-number-4">1.5.3</span> Lambda expressions</h4>
-<div class="outline-text-4" id="text-1-5-3">
-<p>
-C++11 提供对了 lambda表达式. 
-</p>
-<pre class="example">
-auto p = find_if(v.begin(), v.end(), (double a){ return a &gt; 31;});
-</pre>
-
-<p>
-可以理解为(double a){return a &gt; 31;}定义函数对象的语法糖.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13"><span class="section-number-3">1.6</span> Numerical algorithms</h3>
-<div class="outline-text-3" id="text-1-6">
-<p>
-数值运算算法在&lt;numeric&gt;中. (如果以后有机会写引擎的话大概会用到吧&#x2026;
-</p>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9"><span class="section-number-4">1.6.1</span> Accumulate</h4>
-<div class="outline-text-4" id="text-1-6-1">
-<p>
-x = accumulate(b,e,i), 计算[b,e)所有元素与i的和. 返回值x的类型会被用于初始化accumulate, 所以必须明确的把计算结果赋值给一个变量. ( 还真不知道这个..
-</p>
-<pre class="example">
-double s1 = 0;
-s1 = accumulate(v.begin(),v.end(),s1); // ok
-s2 = accumulate(v.begin(),v.end(),s2); // oops
-float3 = 0;
-accumulate(v.begin(),v.end(),s3);      // oops
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10"><span class="section-number-4">1.6.2</span> Generalizing accumulate()</h4>
-<div class="outline-text-4" id="text-1-6-2">
-<p>
-运算不限于加法. STL提供了一个4参数版本的accumulate, 可以自定义运算:
-</p>
-<pre class="example">
-template&lt;typename In, typename T, typename BinOp&gt;
-// requires Input_iterator&lt;In&gt;() &amp;&amp; Number&lt;T&gt;() &amp;&amp; Binary_operator&lt;BinOp, Value_type&lt;In&gt;, T&gt;()
-T accumulate(In first, In last, T init, BinOp op)
-{
-    while (first != last) {
-        init = op(init, *first);
-        ++first;
-    }
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11"><span class="section-number-4">1.6.3</span> Inner product</h4>
-<div class="outline-text-4" id="text-1-6-3">
-<p>
-内积&#x2026;计算两个序列中每一对元素的和, 最后相加.
-</p>
-<pre class="example">
-int sum = inner_product( v1.begin(), v1.end(), v2.begin, 0); // v2 maybe have more elements than v1, it's ok.
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12"><span class="section-number-4">1.6.4</span> Generalizing inner<sub>product</sub>()</h4>
-<div class="outline-text-4" id="text-1-6-4">
-<p>
-一个比上上节更加冗长的声明:
-</p>
-<pre class="example">
-T inner_product(In first, In last, In2 first2, T init, BinOp op, BinOp2 op2)
-</pre>
-<p>
-(累爱&#x2026;
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16"><span class="section-number-3">1.7</span> Associative containers</h3>
-<div class="outline-text-3" id="text-1-7">
-<p>
-最常用的关容器非map莫属. 与map类似的结构体还有:associative array, hash table, red-black trees &#x2026; unordered<sub>map是为字符串key优化过的map</sub>.
-</p>
-
-<p>
-这些容器在&lt;map&gt;,&lt;set&gt;,&lt;unordered<sub>map</sub>&gt;,&lt;unordered<sub>set</sub>&gt;中.
-</p>
-</div>
-
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><span class="section-number-4">1.7.1</span> map overview</h4>
-<div class="outline-text-4" id="text-1-7-1">
-<p>
-STL采用了红黑树实现map &#x2013; 左子树的key小于父节点, 右子树大于父节点.
-</p>
-
-<p>
-map的interface:
-</p>
-<pre class="example">
-class map {
-    using value_type = pair&lt;Key, Value&gt;;
-
-    using iterator = sometype1; // 可以理解为一个指向 tree node 的指针
-    using const_iterator = sometype2;
-
-    iterator begin();
-    iterator end();
-    Value&amp; operator[](const Key&amp; k);
-    iterator find(const Key&amp; k);
-    void erase(iterator p);
-    pair&lt;iterator, bool&gt; insert(const value_type&amp;); // 插入一个键值对
-}
-</pre>
-<p>
-map的iterator是一个类似于[指向树节点的指针]的东西.
-</p>
-
-<p>
-insert方法的返回值要特别注意一下, 它是一个&lt;迭代器, bool&gt;键值对.如果插入成功了, bool是true, 并返回指向新元素的iterator. 如果插入失败bool是false. 这个返回值经常会被忽略.
-</p>
-
-<p>
-map支持按照特定方法排序:
-</p>
-<pre class="example">
-map&lt;string, double, No_case&gt; m;
-</pre>
-<p>
-No<sub>case的默认值是less</sub>&lt;Key&gt;.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15"><span class="section-number-4">1.7.2</span> unordered<sub>map</sub></h4>
-<div class="outline-text-4" id="text-1-7-2">
-<p>
-在vector中查找的复杂度是O(N), 在map中查找的复杂度是O(log<sub>2</sub>(N)), 在unordered<sub>map中是O</sub>(1).
-</p>
-
-<p>
-STL的unordered<sub>map是用哈希表实现的</sub>: 把key哈希到一个不太长的vector中,用下标索引, 查找复杂度可以降低到接近O(1).
-</p>
-
-<p>
-关于vector, map和unordered<sub>map的使用提示</sub>:
-</p>
+<h3 id="orgheadline4"><span class="section-number-3">4.1</span> Safe conversions</h3>
+<div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
-<li>vector: 没什么事的话就用它吧</li>
-<li>map: 需要根据key查询, 且key支持比较高效的&lt;运算.</li>
-<li>unordered<sub>map</sub>: 需要频繁的查找, 且不需要有序的遍历.</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><span class="section-number-3">1.8</span> Set</h3>
-<div class="outline-text-3" id="text-1-8">
-<p>
-set可以认为是一个只有key的map, 它也是棵红黑树.
-</p>
-<ul class="org-ul">
-<li>set没有value, 它不支持operator[].</li>
-<li>set不需要pair, 使用起来不需要写it-&gt;second这种代码, 比map简洁一些.</li>
+<li>bool to char/int/double</li>
+<li>char to int/double</li>
+<li>int to double</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline23" class="outline-3">
-<h3 id="orgheadline23"><span class="section-number-3">1.9</span> Copying</h3>
-<div class="outline-text-3" id="text-1-9">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">4.2</span> Unsafe conversions</h3>
+<div class="outline-text-3" id="text-4-2">
 <p>
-STL提供了3种copy操作: copy, unique<sub>copy</sub>, copy<sub>if</sub>
-</p>
-</div>
-
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18"><span class="section-number-4">1.9.1</span> basic copy</h4>
-<div class="outline-text-4" id="text-1-9-1">
-<pre class="example">
-template&lt;typename In, typename Out&gt;
-Out copy(In first, In last, Out res)
-{ 
-    while ( first != last ) {
-        *res = *first;
-        ++res;
-        ++first;
-    }
-    return res;
-}
-</pre>
-
-<p>
-注意, res的size需要程序猿自己检查, STL为了性能, 一般不提供边界检查.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19"><span class="section-number-4">1.9.2</span> Stream iterator</h4>
-<div class="outline-text-4" id="text-1-9-2">
-<p>
-可以利用copy把input stream的内容转移到output stream中.
+当目标类型比原类型"小"时, 类型转换是不安全的, 会丢失一些信息. 比如把double转为int.
 </p>
 
-<pre class="example">
-string from, to;
-cin &gt;&gt; from &gt;&gt; to; // source and target file name
-ifstream is {from};
-ofstream os {to};
-
-istream_iterator&lt;string&gt; ii {is};
-istream_iterator&lt;string&gt; eof;
-ostream_iterator&lt;string&gt; oo {os, "\n"};
-
-vector&lt;string&gt; b{ii, eos};
-sort(b.begin(), b .end());
-copy(b.begin(), b.end(), oo);
-</pre>
-
 <p>
-传入一对iterator给vector作为初始化参数的意思是"读取[a:b)". 上面vector b会读取输入文件的内容, 直到碰到eof为止.
-据说如果试验一下这个case(回头再说吧..), 会发现input buffer比想象中的小, 很容易利用这个搞一些overflow什么的.
+c++允许不安全的类型转换 &#x2014; 当然你可以选择让编译器给出警告.
 </p>
-</div>
-</div>
 
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20"><span class="section-number-4">1.9.3</span> Unique<sub>copy</sub></h4>
-<div class="outline-text-4" id="text-1-9-3">
 <p>
-unique<sub>copy不会拷贝重复的元素</sub>
+为啥c++允许这种行为呢? 历史原因, 因为c++的祖先c也这么干, 并且有些古老的代码依赖于这种转换.
 </p>
-</div>
-</div>
 
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21"><span class="section-number-4">1.9.4</span> Using a set to keep order</h4>
-<div class="outline-text-4" id="text-1-9-4">
 <p>
-修改一下上面copy例子的最后三行
+c++11提供了初始化运算符{}, 它遇到unsafe conversion会直接报错:
 </p>
 <pre class="example">
-set&lt;string&gt; b {istream_iterator&lt;string&gt;{is}, istream_iterator&lt;string&gt;{}};
-copy(b.begin(), b.end(), ostream_iterator&lt;string&gt;{os, ""}};
+int x {2.7} // error: double -&gt; int may narrow.
 </pre>
-
-<p>
-这时利用了set的特性:自动去重, 自动排序.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22"><span class="section-number-4">1.9.5</span> copy<sub>if</sub></h4>
-<div class="outline-text-4" id="text-1-9-5">
-<p>
-跟前面的algorithms方法类似, STL也提供了可以使用函数对象的版本.
-</p>
-<pre class="example">
-Out copy_if(In first, In last, Out res, Pred p);
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24"><span class="section-number-3">1.10</span> Sorting and seraching</h3>
-<div class="outline-text-3" id="text-1-10">
-<p>
-如果需要保持数据有序, 我们可以使用有序的容器map和set, 也可以使用sort方法. sort()默认使用&lt;作为排序规则, 也可以自己定义排序函数.
-</p>
-
-<p>
-当数据有序以后, find就高效多了, 可以用二分查找, binary<sub>search</sub>() 和 equal<sub>range</sub>().
-</p>
-<pre class="example">
-bool binary_search(Ran first, Ran last, const T&amp;val);
-</pre>
-<p>
-binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果需要知道元素的位置, 可以用 lower<sub>bound</sub>(), upper<sub>bound</sub>() 或者 equal<sub>range</sub>().
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25"><span class="section-number-3">1.11</span> Container algorithms</h3>
-<div class="outline-text-3" id="text-1-11">
-<p>
-综上所述, 容器的算法大抵是接受一对iterator做参数, 然后返回一个iterator. 这个设定很好的保证了算法的通用性.
-</p>
-
-<p>
-以上.
-</p>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
+      <pubDate>2016-03-08</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
+    </item>
+    <item>
+      <title>princples and practice using c++ ch21 reading note</title>
+      <link>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</link>
+      <description><![CDATA[]]></description>
       <pubDate>2016-03-06</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
