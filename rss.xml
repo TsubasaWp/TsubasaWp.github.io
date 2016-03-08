@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 08 Mar 2016 23:06:18 CST</pubDate>
-    <lastBuildDate>Tue, 08 Mar 2016 23:06:18 CST</lastBuildDate>
+    <pubDate>Tue, 08 Mar 2016 23:17:44 CST</pubDate>
+    <lastBuildDate>Tue, 08 Mar 2016 23:17:44 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -124,56 +124,1903 @@ int x {2.7} // error: double -&gt; int may narrow.
     <item>
       <title>princples and practice using c++ ch21 reading note</title>
       <link>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>princples and practice using c++ ch21 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline26">1. Algorithms and Maps</a>
+<ul>
+<li><a href="#orgheadline1">1.1. C++ 11 features</a></li>
+<li><a href="#orgheadline2">1.2. Standard Library algorithms</a></li>
+<li><a href="#orgheadline3">1.3. The simplest algorithm: find()</a></li>
+<li><a href="#orgheadline4">1.4. The general search:find<sub>if</sub>()</a></li>
+<li><a href="#orgheadline8">1.5. Function objects</a>
+<ul>
+<li><a href="#orgheadline5">1.5.1. An abstract view of function objects</a></li>
+<li><a href="#orgheadline6">1.5.2. Predicates on class members</a></li>
+<li><a href="#orgheadline7">1.5.3. Lambda expressions</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">1.6. Numerical algorithms</a>
+<ul>
+<li><a href="#orgheadline9">1.6.1. Accumulate</a></li>
+<li><a href="#orgheadline10">1.6.2. Generalizing accumulate()</a></li>
+<li><a href="#orgheadline11">1.6.3. Inner product</a></li>
+<li><a href="#orgheadline12">1.6.4. Generalizing inner<sub>product</sub>()</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline16">1.7. Associative containers</a>
+<ul>
+<li><a href="#orgheadline14">1.7.1. map overview</a></li>
+<li><a href="#orgheadline15">1.7.2. unordered<sub>map</sub></a></li>
+</ul>
+</li>
+<li><a href="#orgheadline17">1.8. Set</a></li>
+<li><a href="#orgheadline23">1.9. Copying</a>
+<ul>
+<li><a href="#orgheadline18">1.9.1. basic copy</a></li>
+<li><a href="#orgheadline19">1.9.2. Stream iterator</a></li>
+<li><a href="#orgheadline20">1.9.3. Unique<sub>copy</sub></a></li>
+<li><a href="#orgheadline21">1.9.4. Using a set to keep order</a></li>
+<li><a href="#orgheadline22">1.9.5. copy<sub>if</sub></a></li>
+</ul>
+</li>
+<li><a href="#orgheadline24">1.10. Sorting and seraching</a></li>
+<li><a href="#orgheadline25">1.11. Container algorithms</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26"><span class="section-number-2">1</span> Algorithms and Maps</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> C++ 11 features</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>lambda 表达式 (){}</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Standard Library algorithms</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+介绍了一些通用算法: find, sort, accumulate, inner<sub>produdt等</sub>.
+介绍了函数对象.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> The simplest algorithm: find()</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+最简单常用的算法莫过于find():
+</p>
+<pre class="example">
+template&lt;typename In, typename T&gt;
+In find(In first, In end, const T&amp; val)
+{
+    while(first!=end &amp;&amp; *first!=val) ++first;
+    return first;
+}
+</pre>
+
+<p>
+它支持任意STL风格的容器, 任意类型.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> The general search:find<sub>if</sub>()</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+find<sub>if可以传入一个断言</sub>(下一节解释这玩意), find<sub>if查找满足这个断言的第一个值</sub>.
+</p>
+<pre class="example">
+template&lt;typename In, typename T&gt;
+In find_if(In first, In end, Pred pred)
+{
+    while(first!=end &amp;&amp; *!pred(*first)) ++first;
+    return first;
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">1.5</span> Function objects</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+上面说的pred是一个函数对象:一个跟函数的行为类似的对象. 对象可以储存数据, 比如储存被比较的值.
+</p>
+<pre class="example">
+class Larger_than()
+{
+    int v;
+public:
+    Larger_than(int vv):v(vv){}
+    bool operator()(int x) const {return x&gt;v;}
+}
+</pre>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">1.5.1</span> An abstract view of function objects</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+把楼上Larger<sub>than函数的对象名换成一个模棱两可的名字</sub>(比如F), 把int换成模板, 就是一个比较抽象的函数对象了.
+因为携带了数据, 函数对象是"有状态"的.
+</p>
+
+<p>
+函数对象是STL参数化的重要手段.
+</p>
+
+<p>
+性能方面, 使用函数对象当做参数优于使用函数. 为了获取最佳性能, 函数对象要以引用的方式专递, 而且operator()最好实现在class内部. 这样可以为编译器提供足够多的信息进行优化.
+</p>
+
+<p>
+比如: 上面的Larger<sub>than可以被编译器优化成一个机器指令</sub>, 而不是进行函数调用. 进行一次函数调用的开销大概是运行比较指令的10-50倍. 另外为函数调用生成的代码也会比较多.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">1.5.2</span> Predicates on class members</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+如果要使用函数对象来比较class member, 那么现有的武器就不太顺手了..我们可能要写许多类似以下的代码:
+</p>
+<pre class="example">
+struct cmp_by_name {
+   bool operator()(const Record&amp; a, const Record&amp; b) { return a.name &lt; b.name; }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7"><span class="section-number-4">1.5.3</span> Lambda expressions</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+C++11 提供对了 lambda表达式. 
+</p>
+<pre class="example">
+auto p = find_if(v.begin(), v.end(), (double a){ return a &gt; 31;});
+</pre>
+
+<p>
+可以理解为(double a){return a &gt; 31;}定义函数对象的语法糖.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">1.6</span> Numerical algorithms</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+数值运算算法在&lt;numeric&gt;中. (如果以后有机会写引擎的话大概会用到吧&#x2026;
+</p>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">1.6.1</span> Accumulate</h4>
+<div class="outline-text-4" id="text-1-6-1">
+<p>
+x = accumulate(b,e,i), 计算[b,e)所有元素与i的和. 返回值x的类型会被用于初始化accumulate, 所以必须明确的把计算结果赋值给一个变量. ( 还真不知道这个..
+</p>
+<pre class="example">
+double s1 = 0;
+s1 = accumulate(v.begin(),v.end(),s1); // ok
+s2 = accumulate(v.begin(),v.end(),s2); // oops
+float3 = 0;
+accumulate(v.begin(),v.end(),s3);      // oops
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">1.6.2</span> Generalizing accumulate()</h4>
+<div class="outline-text-4" id="text-1-6-2">
+<p>
+运算不限于加法. STL提供了一个4参数版本的accumulate, 可以自定义运算:
+</p>
+<pre class="example">
+template&lt;typename In, typename T, typename BinOp&gt;
+// requires Input_iterator&lt;In&gt;() &amp;&amp; Number&lt;T&gt;() &amp;&amp; Binary_operator&lt;BinOp, Value_type&lt;In&gt;, T&gt;()
+T accumulate(In first, In last, T init, BinOp op)
+{
+    while (first != last) {
+        init = op(init, *first);
+        ++first;
+    }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">1.6.3</span> Inner product</h4>
+<div class="outline-text-4" id="text-1-6-3">
+<p>
+内积&#x2026;计算两个序列中每一对元素的和, 最后相加.
+</p>
+<pre class="example">
+int sum = inner_product( v1.begin(), v1.end(), v2.begin, 0); // v2 maybe have more elements than v1, it's ok.
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12"><span class="section-number-4">1.6.4</span> Generalizing inner<sub>product</sub>()</h4>
+<div class="outline-text-4" id="text-1-6-4">
+<p>
+一个比上上节更加冗长的声明:
+</p>
+<pre class="example">
+T inner_product(In first, In last, In2 first2, T init, BinOp op, BinOp2 op2)
+</pre>
+<p>
+(累爱&#x2026;
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">1.7</span> Associative containers</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+最常用的关容器非map莫属. 与map类似的结构体还有:associative array, hash table, red-black trees &#x2026; unordered<sub>map是为字符串key优化过的map</sub>.
+</p>
+
+<p>
+这些容器在&lt;map&gt;,&lt;set&gt;,&lt;unordered<sub>map</sub>&gt;,&lt;unordered<sub>set</sub>&gt;中.
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14"><span class="section-number-4">1.7.1</span> map overview</h4>
+<div class="outline-text-4" id="text-1-7-1">
+<p>
+STL采用了红黑树实现map &#x2013; 左子树的key小于父节点, 右子树大于父节点.
+</p>
+
+<p>
+map的interface:
+</p>
+<pre class="example">
+class map {
+    using value_type = pair&lt;Key, Value&gt;;
+
+    using iterator = sometype1; // 可以理解为一个指向 tree node 的指针
+    using const_iterator = sometype2;
+
+    iterator begin();
+    iterator end();
+    Value&amp; operator[](const Key&amp; k);
+    iterator find(const Key&amp; k);
+    void erase(iterator p);
+    pair&lt;iterator, bool&gt; insert(const value_type&amp;); // 插入一个键值对
+}
+</pre>
+<p>
+map的iterator是一个类似于[指向树节点的指针]的东西.
+</p>
+
+<p>
+insert方法的返回值要特别注意一下, 它是一个&lt;迭代器, bool&gt;键值对.如果插入成功了, bool是true, 并返回指向新元素的iterator. 如果插入失败bool是false. 这个返回值经常会被忽略.
+</p>
+
+<p>
+map支持按照特定方法排序:
+</p>
+<pre class="example">
+map&lt;string, double, No_case&gt; m;
+</pre>
+<p>
+No<sub>case的默认值是less</sub>&lt;Key&gt;.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15"><span class="section-number-4">1.7.2</span> unordered<sub>map</sub></h4>
+<div class="outline-text-4" id="text-1-7-2">
+<p>
+在vector中查找的复杂度是O(N), 在map中查找的复杂度是O(log<sub>2</sub>(N)), 在unordered<sub>map中是O</sub>(1).
+</p>
+
+<p>
+STL的unordered<sub>map是用哈希表实现的</sub>: 把key哈希到一个不太长的vector中,用下标索引, 查找复杂度可以降低到接近O(1).
+</p>
+
+<p>
+关于vector, map和unordered<sub>map的使用提示</sub>:
+</p>
+<ul class="org-ul">
+<li>vector: 没什么事的话就用它吧</li>
+<li>map: 需要根据key查询, 且key支持比较高效的&lt;运算.</li>
+<li>unordered<sub>map</sub>: 需要频繁的查找, 且不需要有序的遍历.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">1.8</span> Set</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+set可以认为是一个只有key的map, 它也是棵红黑树.
+</p>
+<ul class="org-ul">
+<li>set没有value, 它不支持operator[].</li>
+<li>set不需要pair, 使用起来不需要写it-&gt;second这种代码, 比map简洁一些.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23"><span class="section-number-3">1.9</span> Copying</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+STL提供了3种copy操作: copy, unique<sub>copy</sub>, copy<sub>if</sub>
+</p>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">1.9.1</span> basic copy</h4>
+<div class="outline-text-4" id="text-1-9-1">
+<pre class="example">
+template&lt;typename In, typename Out&gt;
+Out copy(In first, In last, Out res)
+{ 
+    while ( first != last ) {
+        *res = *first;
+        ++res;
+        ++first;
+    }
+    return res;
+}
+</pre>
+
+<p>
+注意, res的size需要程序猿自己检查, STL为了性能, 一般不提供边界检查.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19"><span class="section-number-4">1.9.2</span> Stream iterator</h4>
+<div class="outline-text-4" id="text-1-9-2">
+<p>
+可以利用copy把input stream的内容转移到output stream中.
+</p>
+
+<pre class="example">
+string from, to;
+cin &gt;&gt; from &gt;&gt; to; // source and target file name
+ifstream is {from};
+ofstream os {to};
+
+istream_iterator&lt;string&gt; ii {is};
+istream_iterator&lt;string&gt; eof;
+ostream_iterator&lt;string&gt; oo {os, "\n"};
+
+vector&lt;string&gt; b{ii, eos};
+sort(b.begin(), b .end());
+copy(b.begin(), b.end(), oo);
+</pre>
+
+<p>
+传入一对iterator给vector作为初始化参数的意思是"读取[a:b)". 上面vector b会读取输入文件的内容, 直到碰到eof为止.
+据说如果试验一下这个case(回头再说吧..), 会发现input buffer比想象中的小, 很容易利用这个搞一些overflow什么的.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">1.9.3</span> Unique<sub>copy</sub></h4>
+<div class="outline-text-4" id="text-1-9-3">
+<p>
+unique<sub>copy不会拷贝重复的元素</sub>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21"><span class="section-number-4">1.9.4</span> Using a set to keep order</h4>
+<div class="outline-text-4" id="text-1-9-4">
+<p>
+修改一下上面copy例子的最后三行
+</p>
+<pre class="example">
+set&lt;string&gt; b {istream_iterator&lt;string&gt;{is}, istream_iterator&lt;string&gt;{}};
+copy(b.begin(), b.end(), ostream_iterator&lt;string&gt;{os, ""}};
+</pre>
+
+<p>
+这时利用了set的特性:自动去重, 自动排序.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">1.9.5</span> copy<sub>if</sub></h4>
+<div class="outline-text-4" id="text-1-9-5">
+<p>
+跟前面的algorithms方法类似, STL也提供了可以使用函数对象的版本.
+</p>
+<pre class="example">
+Out copy_if(In first, In last, Out res, Pred p);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24"><span class="section-number-3">1.10</span> Sorting and seraching</h3>
+<div class="outline-text-3" id="text-1-10">
+<p>
+如果需要保持数据有序, 我们可以使用有序的容器map和set, 也可以使用sort方法. sort()默认使用&lt;作为排序规则, 也可以自己定义排序函数.
+</p>
+
+<p>
+当数据有序以后, find就高效多了, 可以用二分查找, binary<sub>search</sub>() 和 equal<sub>range</sub>().
+</p>
+<pre class="example">
+bool binary_search(Ran first, Ran last, const T&amp;val);
+</pre>
+<p>
+binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果需要知道元素的位置, 可以用 lower<sub>bound</sub>(), upper<sub>bound</sub>() 或者 equal<sub>range</sub>().
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25"><span class="section-number-3">1.11</span> Container algorithms</h3>
+<div class="outline-text-3" id="text-1-11">
+<p>
+综上所述, 容器的算法大抵是接受一对iterator做参数, 然后返回一个iterator. 这个设定很好的保证了算法的通用性.
+</p>
+
+<p>
+以上.
+</p>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-03-06</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
       <title>princples and practice using c++ ch20 reading note</title>
       <link>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>princples and practice using c++ ch20 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. C++ 11 features:</a></li>
+<li><a href="#orgheadline6">2. STL</a>
+<ul>
+<li><a href="#orgheadline2">2.1. Data interface</a></li>
+<li><a href="#orgheadline3">2.2. Sequences and iterators</a></li>
+<li><a href="#orgheadline4">2.3. Linked lists</a></li>
+<li><a href="#orgheadline5">2.4. General algorithm</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">3. Generalizing vector yet again</a>
+<ul>
+<li><a href="#orgheadline7">3.1. Container traversal</a></li>
+<li><a href="#orgheadline8">3.2. auto</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">4. An example: text editor</a></li>
+</ul>
+</div>
+</div>
+<p>
+本章讲授如何模仿STL的思路写容器和算法.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> C++ 11 features:</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>using</li>
+</ul>
+<pre class="example">
+using Iterator = T*; // 类似typedef
+</pre>
+
+<ul class="org-ul">
+<li>auto</li>
+</ul>
+<pre class="example">
+auto it; // equal to Vector&lt;T&gt;::iterator it;
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">2</span> STL</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+编程中通常和两样东西打交道: 数据和算法. STL提供了一套容器, 以及一些通用的算法.
+</p>
+
+<p>
+引用一下百科:
+</p>
+
+<pre class="example">
+STL = Standard Template Library，标准模板库，惠普实验室开发的一系列软件的统称。它是由Alexander Stepanov、Meng Lee和David R Musser在惠普实验室工作时所开发出来的。从根本上说，STL是一些“容器”的集合，这些“容器”有list,vector,set,map等，STL也是算法和其他一些组件的集合。这里的“容器”和算法的集合指的是世界上很多聪明人很多年的杰作。STL的目的是标准化组件，这样就不用重新开发，可以使用现成的组件。STL现在是C++的一部分，因此不用额外安装什么。
+</pre>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">2.1</span> Data interface</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+数据结构最常用的特性包括:
+</p>
+<ul class="org-ul">
+<li>容器: vector, list, map &#x2026;</li>
+<li>数据组织: 快速查找, 打印等.</li>
+<li>访问: by value, by index, by properties, &#x2026;</li>
+<li>修改: 增删改</li>
+<li>数学运算: +, -, *, etc.</li>
+</ul>
+
+<p>
+另外,程序猿们希望在使用这些特性时不需要关心类型转换的问题.
+我们在上一章中实现的vector&lt;T&gt;就不满足这个需求, vector&lt;int&gt;和vector&lt;double&gt;是不同的类型.
+下面就来看看STL怎么解决这个问题.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">2.2</span> Sequences and iterators</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+序列是STL的核心思想. 序列有头有尾, 我们可以从begin到end遍历它.
+</p>
+
+<p>
+begin和end是iterator(迭代器). 迭代器是一个指向序列元素的对象.
+序列是"half-open"的,因为begin指向序列第一个元素, 而end指向的元素不属于序列,它指向最后一个元素之后的位置.可以这样表示:[begin:end).
+</p>
+
+<p>
+那么iterator是什么, 它看起来像指针, 但其实它是个更抽象的概念:
+</p>
+<ul class="org-ul">
+<li>它指向序列中的元素</li>
+<li>它可以用==或!=比较</li>
+<li>可以使用*取值</li>
+<li>可以用++获取下一个iterator.</li>
+</ul>
+
+<p>
+这样看起来是不是更像指针了23333.
+上面说了,迭代器是一种抽象的概念, 所以指向array的指针的确可以被称为迭代器. 而许多迭代器的功能比指针要多. 比如可以提供边界检查[begin:end).
+</p>
+
+<p>
+迭代器这个概念可以带来巨大的灵活性, 后面会说明.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">2.3</span> Linked lists</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+大家都熟悉的链表..
+</p>
+
+<p>
+在STL中, list被实现为双向链表. 使用iterator来遍历,插入和删除. list不支持下标索引,因为对链表来说下标索引效率太低.
+</p>
+
+<p>
+vector的iterator可以直接利用指针实现, 而list的iterator则复杂一些(注意它是nested class):
+</p>
+<pre class="example">
+template&lt;typename Elem&gt;
+class list&lt;Elem&gt;::iterator {
+    Link&lt;Elem *&gt;curr;
+public:
+   iterator(Link&lt;Elem&gt;* p): curr{p};
+   iterator&amp; operator++() {curr = curr-&gt;succ; return *this;}
+   iterator&amp; operator--() {curr = curr-&gt;prev; return *this;}
+   Elem&amp; operator* () {return curr-&gt;val;} 
+   
+   bool operator==(const iterator&amp; b) const {return curr == b.curr};    
+   bool operator!=(const iterator&amp; b) const {return curr != b.curr};    
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">2.4</span> General algorithm</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+利用iterator,我们可以写出同时支持list和vector等容器的通用算法:
+</p>
+<pre class="example">
+template&lt;typename Iter&gt;
+Iter high(Iter first, Iter last)
+{
+    Iter high = first;
+    for ( Iter p = first; p != last; p++)
+        if ( high &lt; p ) high = p;
+    return p;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">3</span> Generalizing vector yet again</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+是时候改造一下上一章的vector了,我们为它加入iterator:
+</p>
+<pre class="example">
+template&lt;typename T&gt;
+class vector {
+public:
+    using size_type = unsigned long;
+    using value_type = T;
+    using iterator = T*;
+    using const_iterator = const T*;
+    //...
+    iterator begin();
+    iterator end();
+    size_type size();
+    // ... const version
+}
+</pre>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">3.1</span> Container traversal</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+可以利用一个语法糖来实现通用的遍历:
+</p>
+<pre class="example">
+for ( T val : _list) cout &lt;&lt; val &lt;&lt; endl;
+for ( T val : _vector) cout &lt;&lt; val &lt;&lt; endl;
+</pre>
+
+<p>
+没错这个语法糖就是利用iterator实现的.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">3.2</span> auto</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+声明iterator真的很烦有木有
+</p>
+<pre class="example">
+Vector&lt;double&gt;::iterator it;
+</pre>
+<p>
+c++11 为我们贴心的提供了一个语法糖,现在可以愉快的这么写了:
+</p>
+<pre class="example">
+auto it;
+</pre>
+
+<p>
+原则上只要编译期可以明确类型的声明都可以使用auto. 
+(可读性什么的自己权衡吧..)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10"><span class="section-number-2">4</span> An example: text editor</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+呃, 这部分就不做笔记了, 参考原书$20.6.
+</p>
+
+
+<p>
+以上
+</p>
+</div>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-03-04</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
       <title>princples and practice using c++ ch19 reading note</title>
       <link>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>princples and practice using c++ ch19 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. C++ 14 features</a></li>
+<li><a href="#orgheadline2">2. Changing size</a></li>
+<li><a href="#orgheadline10">3. Templates</a>
+<ul>
+<li><a href="#orgheadline3">3.1. Types as templates parameters</a></li>
+<li><a href="#orgheadline4">3.2. Generic programming</a></li>
+<li><a href="#orgheadline5">3.3. Concepts</a></li>
+<li><a href="#orgheadline6">3.4. Containers and inheritance</a></li>
+<li><a href="#orgheadline7">3.5. Integers as template parameters</a></li>
+<li><a href="#orgheadline8">3.6. Template argument deduction</a></li>
+<li><a href="#orgheadline9">3.7. Generalizing vector</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline11">4. Range checking and exceptions</a></li>
+<li><a href="#orgheadline18">5. Resource and exceptions</a>
+<ul>
+<li><a href="#orgheadline12">5.1. Potential resource management problems</a></li>
+<li><a href="#orgheadline13">5.2. Resource acquisition is initialization</a></li>
+<li><a href="#orgheadline14">5.3. Guarantee</a></li>
+<li><a href="#orgheadline15">5.4. unique<sub>ptr</sub></a></li>
+<li><a href="#orgheadline16">5.5. Return by moving</a></li>
+<li><a href="#orgheadline17">5.6. RAII for vector</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> C++ 14 features</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Mechanism for checking template interface.</li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Changing size</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+上一章的vector仅使用固定的数组来实现, 难以支持'push<sub>back</sub>()', 'resize()'等功能. 本节介绍了如何通过reserve操作实现可以动态改变大小的vector.
+</p>
+
+<p>
+上一章的vector长度储存在sz中, 现在增加一个space变量, 用于储存vector的总可用空间(已用空间+空闲空间). 
+当有新成员放入vector时, 先从空闲空间中找位置, 如果空闲空间已被用完, 再申请一块新的空间. 这样可以减少频繁进行内存申请造成的性能损失.
+</p>
+
+<pre class="example">
+template&lt;typename T&gt;
+void Vector&lt;T&gt;::reserve(int newalloc)
+{
+  if (newalloc &lt; space) return;
+  T *p = new T[newalloc];
+  for (int i = 0; i &lt; sz; i++) p[i] = elem[i];
+  delete[] elem;
+  elem = p;
+  space = newalloc;
+}
+</pre>
+
+<pre class="example">
+template&lt;typename T&gt;
+void Vector&lt;T&gt;::resize(int newsize)
+{
+ if (newsize &lt; space) return;
+ reserve(newsize);
+ for (int i = sz; i &lt; newsize; i++) elem[i] = 0;
+ sz = newsize;
+}
+</pre>
+
+<pre class="example">
+template&lt;typename T&gt;
+void Vector&lt;T&gt;::push_back(T value)
+{
+ if ( space == 0 ) reserve(8);
+ if ( space == sz) reserve(2*space);
+ elem[sz] = value;
+ sz ++;
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10"><span class="section-number-2">3</span> Templates</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">3.1</span> Types as templates parameters</h3>
+<div class="outline-text-3" id="text-3-1">
+<pre class="example">
+template&lt;typename T&gt;
+</pre>
+<p>
+or
+</p>
+<pre class="example">
+template&lt;class T&gt; // include built-in type
+</pre>
+
+<p>
+编译器会在编译阶段或link阶段进行模板展开
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">3.2</span> Generic programming</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+使用模板是泛型编程的基础.
+</p>
+
+<p>
+一般所说的多态包括两种类型:
+</p>
+<ul class="org-ul">
+<li>parametic polymorphism: 依赖于模板参数(泛型编程)</li>
+<li>hoc polymorphism: 使用类继承, 虚函数(面向对象编程)</li>
+</ul>
+
+<p>
+需要注意的差异:
+</p>
+<ul class="org-ul">
+<li>决定被调用函数的时机: 面向对象编程在运行时决定, 而泛型编程在编译时决定.</li>
+</ul>
+
+<p>
+两者结合使用的例子:
+</p>
+<pre class="example">
+void draw_all(Vector&lt;Shape*&gt;&amp; v)
+{
+   for ( int i = 0; i &lt; v.size(); i++ ) v[i]-&gt;draw();
+}
+</pre>
+<p>
+在泛型的vector中储存shape, 然后调用它们的虚函数draw().
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">3.3</span> Concepts</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+模板虽好, 也有缺点. 模板的内部检查比较薄弱,而且可能在编译晚期才发现问题.
+</p>
+
+<p>
+我写了个test case:
+</p>
+<pre class="example">
+template&lt;typename T&gt;
+class test {
+public:
+ test(T&amp; v):val{v}{};
+ T val;
+ T operator+(T v) {  return this-&gt;val + v; }
+};
+</pre>
+
+<p>
+如果类型T支持'+'操作, 一切ok. 但如果T不支持'+', 且调用了test的+方法, 编译器会报错:no mach for operator+.
+</p>
+
+<p>
+c++14提供了一套机制来规定对类型T的要求, 叫concepts
+</p>
+
+<p>
+最常用的,如果要求T实现了拷贝/移动/默认构造函数, 则在template后追加requires Element.
+</p>
+
+<pre class="example">
+template&lt;typename T&gt; requires&lt;Element T&gt;
+</pre>
+<p>
+or
+</p>
+<pre class="example">
+template&lt;Element T&gt;
+</pre>
+
+<p>
+Element是满足一系列条件的集合.
+相应的还有许多其它集合:如果要求T可以分配和释放内存, 可以使用Allocator. 如果要求T是容器, 可以使用Container, 等等. 查阅19.3.3.
+</p>
+
+<p>
+c++14之前的版本不支持concepts, 只能通过一些约定来限定了.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">3.4</span> Containers and inheritance</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+两个有继承关系的类型搁到模板类中以后就没有任何关系了, 模板展开后它们是完全不同的两个类型.
+</p>
+
+<p>
+下面是错误示范:
+</p>
+<pre class="example">
+vector&lt;Shape&gt; vs;
+vector&lt;Circle&gt; vc;
+vs = vc;                 // error
+void f(vector&lt;Shape&gt; &amp;);
+f(vc);                   // error
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">3.5</span> Integers as template parameters</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+除了类型外, 模板还可以传递其它参数, 最常用的是int.
+</p>
+
+<pre class="example">
+template&lt;typename T, int N&gt; 
+</pre>
+
+<p>
+其它类型参数不太常用, 并且需要开发者非常熟悉语言特性.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">3.6</span> Template argument deduction</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+对函数模版参数来说, 当编译期能够通过函数参数确定模板参数的值, 通常可以不显示书写模板参数. 
+</p>
+
+<pre class="example">
+template&lt;typename T, int N&gt; fill(array&lt;T,N&gt;&amp; a, T&amp; v);
+array&lt;double,10&gt; d;
+fill(d,0);  // 相当于  fill&lt;double,10&gt;(d,0);
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">3.7</span> Generalizing vector</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+现在我们的vector离实用还差一些. 比如以下两个问题:
+</p>
+<ul class="org-ul">
+<li>如果Vector&lt;X&gt;的X没有默认值咋办?</li>
+<li>怎么保证当vector销毁时, 它包含的所有元素也能被销毁?</li>
+</ul>
+
+<p>
+对于第一个问题, 可以让用户提供默认值:
+</p>
+
+<pre class="example">
+template&lt;typename T&gt;void vector&lt;T&gt;::resize(int newsize, T def = T());
+</pre>
+
+<p>
+如果用户不提供默认值, 则使用T().
+</p>
+
+<p>
+对于第二个问题, 解决方案是使用allocator:
+</p>
+
+<pre class="example">
+template&lt;typename T&gt; class allocator {
+public:
+    T* allocate(int n); // 分配n个T的内存
+    void deallocate(T*, int n); // 回收n个T的空间
+    void construct(T*, const T&amp;); // 拷贝一个T
+    void destory(T*); // 回收T
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11"><span class="section-number-2">4</span> Range checking and exceptions</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+边界检查使程序更健壮, 但降低效率.
+</p>
+
+<p>
+标准容器会提供带有边界检查的索引方式 at(), 也会提供快速的, 不检查边界的索引 operator[]().
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">5</span> Resource and exceptions</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+resource需要被申请和释放, 常用的资源包括: Memory, Locks, File handles, Thread handles, Sockets, Windows.
+</p>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">5.1</span> Potential resource management problems</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+下面以memory为例进行说明.
+</p>
+
+<p>
+new和delete应该是成对出现的, 然而它们之间会发生什么奇怪的事情就不知道了:
+</p>
+
+<pre class="example">
+int p* = new p[10];
+// p = q;              // p 可能指向了别处
+// return;             // 程序可能已经返回 
+// try{..} catch{..}   // 可能抛出异常
+delete[] p;
+</pre>
+
+<p>
+为了确保p能够被释放, 一个稍微好一点的版本可能长这样:
+</p>
+
+<pre class="example">
+int p* = new p[10];
+try { ... }
+catch() { 
+   delete[] p;
+   return;
+}
+delete[] p;
+</pre>
+
+<p>
+虽然有点搓, 但至少解决了温饱. 那么问题来了, 如果我们有一大波p需要被delete怎么办.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">5.2</span> Resource acquisition is initialization</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+接上节. 当面临一大波p时, 好在还有vector:
+</p>
+
+<pre class="example">
+void f()
+{
+    vector&lt;int&gt; p(10);
+    vector&lt;int&gt; q(10);
+}
+</pre>
+
+<p>
+这样我们就不用担心delete的问题了:
+</p>
+<ul class="org-ul">
+<li>vector初始化函数负责new,析构函数中delete.</li>
+<li>p不是指针,不必担心中途被改变.</li>
+<li>离开作用域时,所有fully-constructed object(以及sub-object)的析构函数自动被调用.</li>
+</ul>
+
+
+<p>
+引用一下百度百科:
+</p>
+
+<p>
+RAII （Resource Acquisition Is Initialization）,也称为“资源获取就是初始化”，是C++语言的一种管理资源、避免泄漏的惯用法。C++标准保证任何情况下，已构造的对象最终会销毁，即它的析构函数最终会被调用。简单的说，RAII 的做法是使用一个对象，在其构造时获取资源，在对象生命期控制对资源的访问使之始终保持有效，最后在对象析构的时候释放资源。
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">5.3</span> Guarantee</h3>
+<div class="outline-text-3" id="text-5-3">
+<p>
+一个常见的场景, 我们可能希望在在作用域之外使用p:
+</p>
+
+<pre class="example">
+void make_vec() {
+    vector&lt;int&gt; p = new vector&lt;int&gt;();
+    // ...
+    return p;
+}
+</pre>
+
+<p>
+同delete的问题类似, p可能活不到被return. 类似的, 这里也可以使用try-catch来解决.
+这就是所谓的basic-guarantee.
+</p>
+
+<ul class="org-ul">
+<li>basic-guarantee: 确保没有内存泄露.</li>
+<li>strong-guarantee: 在basic的基础上, 还要确保所有observable value(非本地变量)的值不变, 除了抛出异常外. 这样的函数是可重入的.</li>
+<li>no-throw-guarantee: 足够安全,不throw. 所有c++内置的工具提供no throw guarantee, 只要开发者不使用throw,new,dynamic<sub>cast这三种操作</sub>.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">5.4</span> unique<sub>ptr</sub></h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+try-catch还是太丑了. 这里介绍一个更牛逼的RAII工具, &lt;memory&gt;的unique<sub>ptr</sub>.
+</p>
+
+<pre class="example">
+vector&lt;int&gt; *make_vec() {
+    unique_ptr&lt;vector&lt;int&gt;&gt; p {new vector&lt;int&gt;};
+    // fill ..., may throw a exception.
+    return p.release();
+}
+</pre>
+
+<p>
+unique<sub>ptr</sub> 是一个拥有指针的实例, 它被析构时(离开make<sub>vec的作用域</sub>), 会负责销毁所拥有的指针. p.release()把vector从p中解绑, 这样以后p会指向一个nullptr, 被销毁时不会释放掉vector.
+</p>
+
+<p>
+最好不要在unique<sub>ptr中嵌套unique</sub><sub>ptr</sub>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">5.5</span> Return by moving</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+对容器来说,有一种更加优雅的解决方案: 使用move constructor传递内容.
+</p>
+<pre class="example">
+void make_vec() {
+    vector&lt;int&gt; m;
+    // ...
+    return m; // the move constructor efficiently transfers ownership.
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">5.6</span> RAII for vector</h3>
+<div class="outline-text-3" id="text-5-6">
+<p>
+如果使用了smart pointer - 比如unique<sub>ptr</sub>, 问题依旧存在..
+</p>
+<ul class="org-ul">
+<li>怎样保证所有的pointer都被保护起来了?</li>
+<li>如果有些实例在退出作用域时不需要被销毁怎么办? (你烦不烦&#x2026;</li>
+</ul>
+
+<p>
+参考前面使用allocator的reserve实现.
+</p>
+
+<p>
+其中, alloc.construct(&amp;p[i], elem[i])可能会抛异常, 这样后面的alloc.destory(&amp;elem[i])就执行不到了..似曾相识的状况..
+</p>
+
+<p>
+好一点的解决方案是:把vector的memory(包括sz,elem,space)当做resource:
+</p>
+<pre class="example">
+struct vector_base {
+    A alloc;
+    T* elem;
+    int sz;
+    int space;
+
+    vector_base(const A&amp; a, int n);
+    ~vector_base();    
+}
+</pre>
+
+<p>
+vector可以继承vector<sub>base</sub>
+</p>
+<pre class="example">
+class vector: private vector_base&lt;T,A&gt;
+</pre>
+
+<p>
+重新实现reserve():
+</p>
+<pre class="example">
+void vector&lt;T,A&gt;::reserve(int newalloc) 
+{
+    if ( newalloc &lt;= this-&gt;space ) return;
+    vector_base&lt;T,A&gt; b(this-&gt;alloc, newalloc);
+    uninitialized_copy(b.elem, &amp;b.elem[this-&gt;sz], this-&gt;elem); // copy
+    for ( int i = 0; i &lt; this-&gt;sz; i++ )
+        this-&gt;alloc.destory(&amp;this-&gt;elem[i]);
+    swap&lt;vector_base&lt;T,A&gt;&gt;(*this, p);
+}
+</pre>
+
+<p>
+uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. 如果中间抛了异常, 则新的p会在离开作用域时被析构.
+</p>
+
+<p>
+有一点要注意, 这里*this和p是不同类型, 所以在调用swap时需要显示指定一下类型.
+</p>
+
+
+
+<ul class="org-ul">
+<li>以上</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-02-28</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
       <pubDate>2016-02-12</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
       <title>PPPUC++ Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>PPPUC++ Reading Note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline6">1. CH. 17  Memory, Address</a>
+<ul>
+<li><a href="#orgheadline1">1.1. 初始化:</a></li>
+<li><a href="#orgheadline2">1.2. 空指针:</a></li>
+<li><a href="#orgheadline3">1.3. Free-Store:</a></li>
+<li><a href="#orgheadline4">1.4. 析构函数:</a></li>
+<li><a href="#orgheadline5">1.5. 指针和引用:</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">2. CH. 18 Vector and Array</a>
+<ul>
+<li><a href="#orgheadline7">2.1. Copying</a></li>
+<li><a href="#orgheadline8">2.2. Moving</a></li>
+<li><a href="#orgheadline9">2.3. explicit</a></li>
+<li><a href="#orgheadline10">2.4. Get &amp; Set</a></li>
+<li><a href="#orgheadline11">2.5. Array</a></li>
+<li><a href="#orgheadline12">2.6. Excrise</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">1</span> CH. 17  Memory, Address</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-c++">int main()
+{
+  char a = 'a';
+  char b = 'b';
+  void *pv = &amp;a;
+  int *pa = (int*)pv;
+  std:: cout &lt;&lt;*pa&lt;&lt;std::endl;
+  *pa = 65535;
+  std:: cout &lt;&lt;(char*)&amp;a&lt;&lt;" "&lt;&lt;(char*)&amp;b&lt;&lt;std::endl;
+  std:: cout &lt;&lt;a&lt;&lt;" "&lt;&lt;b&lt;&lt;std::endl;
+  return 0;
+}
+
+�� b��
+� b
+</pre>
+</div>
+
+<p>
+实测堆上分配的内存并没有溢出
+</p>
+
+<p>
+int* 和 char* 不能直接互相赋值的原因: 索引数组时地址跨越长度
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 初始化:</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+为了避免误用未初始化的变量, 尽量保证变量在被声明的同时初始化.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 空指针:</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+c++11 引入了nullptr, 旨在于解决null的二义性问题
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Free-Store:</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Free-Store由Store Manager管理
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> 析构函数:</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+占用Free-Store的类都需要析构函数
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">1.5</span> 指针和引用:</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+传值和传指针: 指针允许nullptr, 可能需要额外写防御代码.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13"><span class="section-number-2">2</span> CH. 18 Vector and Array</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>initializer<sub>list</sub></li>
+<li>copy constructor</li>
+<li>copy assignment</li>
+</ul>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">2.1</span> Copying</h3>
+</div>
+
+
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">2.2</span> Moving</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+&amp;&amp; ?
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">2.3</span> explicit</h3>
+</div>
+
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">2.4</span> Get &amp; Set</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+索引靠重载[]运算符实现, 并返回reference. 
+</p>
+<ul class="org-ul">
+<li>若返回值则只能get无法set(可用作const版本), 返回指针则书写起来比较别扭.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">2.5</span> Array</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+array的问题: 编译器难以做到边界检查
+pointer arithmetic
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">2.6</span> Excrise</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+<i>/
+/</i>  main.cpp
+<i>/  PPPUC
+/</i>
+<i>/  Created by Tsubasa on 1/30/16.
+/</i>  Copyright (c) 2016 tsu. All rights reserved.
+//
+</p>
+
+<p>
+#include &lt;iostream&gt;
+using namespace std;
+</p>
+
+<p>
+class Vector
+{
+  int sz;
+  double * elem;
+public:
+  Vector(int s): sz{s}, elem{new double[s]}
+  {
+    for(int i = 0; i &lt; sz; i++) elem[i] = 0;
+  }
+</p>
+
+<p>
+Vector(initializer<sub>list</sub>&lt;double&gt; lst): sz{(int)lst.size()},elem{new double[lst.size()]}
+{
+  copy(lst.begin(),lst.end(),elem);
+}
+</p>
+
+<p>
+Vector(const Vector&amp;);
+</p>
+
+<p>
+Vector&amp; operator=(const Vector&amp;);
+</p>
+
+<p>
+  ~Vector(){delete[] elem;}
+  void Set(int, double);
+  void Print();
+};
+</p>
+
+<p>
+void Vector::Set(int index, double value)
+{
+  if (index &gt;= sz) return;
+  elem[index] = value;
+}
+</p>
+
+<p>
+void Vector::Print()
+{
+  for (int i = 0; i &lt; sz; i++)
+    {
+      cout&lt;&lt;(elem[i])&lt;&lt;endl;
+    }
+}
+</p>
+
+<p>
+Vector::Vector(const Vector&amp; arg)
+  :sz(arg.sz),elem(new double[arg.sz])
+{
+  copy(arg.elem,arg.elem+arg.sz,elem);
+}
+</p>
+
+<p>
+Vector&amp; Vector::operator=(const Vector&amp; arg)
+{
+  double *d = new double[arg.sz];
+  copy(arg.elem,arg.elem+arg.sz,d);
+  delete[] elem;
+  elem = d;
+  sz = arg.sz;
+  return *this;
+}
+</p>
+
+<p>
+// exc 1
+char <b>strup(const char</b> a)
+{
+  int sz = 0;
+  while ( a[sz] != 0 )  sz++;
+</p>
+
+<p>
+char * res = new char[sz+1];
+for(int i = 0; i &lt;= sz; i++) res[i] = *a+i;
+</p>
+
+<p>
+  return res;
+}
+</p>
+
+<p>
+// exc 2
+</p>
+
+
+<p>
+int main(int argc, const char * argv[]) {
+</p>
+
+<p>
+  return 0;
+}
+</p>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-02-01</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
       <title>[阅记] 解忧杂货铺 - 来自上天的祈祷</title>
       <link>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>[阅记] 解忧杂货铺 - 来自上天的祈祷</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. 前言</a></li>
+<li><a href="#orgheadline16">2. 时间线</a>
+<ul>
+<li><a href="#orgheadline2">2.1. - 1968</a></li>
+<li><a href="#orgheadline3">2.2. - 1969</a></li>
+<li><a href="#orgheadline4">2.3. - 1970</a></li>
+<li><a href="#orgheadline5">2.4. - 1978</a></li>
+<li><a href="#orgheadline9">2.5. - 1979</a></li>
+<li><a href="#orgheadline14">2.6. - 1980</a></li>
+<li><a href="#orgheadline15">2.7. - 2012</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline21">3. 反思</a></li>
+<li><a href="#orgheadline22">4. 最后</a></li>
+</ul>
+</div>
+</div>
+<p>
+[内含微量剧透]
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> 前言</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+解忧杂货铺有点像微小说集, 由几个治愈系小故事串联而成, 跨越时间和空间, 被大叔用脑洞联系在了一起.
+</p>
+
+<p>
+这是我读到的东野圭吾的第4部作品, 可能因为第一部&lt;嫌疑人x的献身&gt;让人感到太震(meng)撼(bi), 所以后来看的几本带来的惊喜感没有那么强烈. 
+这不是一部推理小说, 然而书中的角角落落都布满可疑的线索, 让人不得不在意. 当脑中充满混乱的线索, 毫无头绪时, 我不幸的迎来了看起来有点哲学意味的结局.
+当时十分失落, 随后就关掉手机睡觉了. 但那些奇怪的线索似乎不甘心就这样被遗忘掉, 总是在脑中盘旋, 早上醒来后依旧满脑这个故事.
+于是我在心里按照小说里的时间线粗略的梳理, 越想越乱, 这个故事里似乎充满了矛盾, 又没有明确的谜题. 圭吾大叔你是要闹哪样啊!
+</p>
+
+<p>
+思前想后,感觉首先需要解决的问题有2个:
+</p>
+<ul class="org-ul">
+<li>这个平行空间的设定到底是怎样的? 为什么在同一夜中, 过去与现在的时间跨度不同?</li>
+<li>为什么浪矢可以预知自己的祭日?</li>
+</ul>
+
+<p>
+由于智商低, 只好求助于纸笔. 我又从头翻阅小说梳理了一下时间线, 希望能得到一些启示:
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-2">
+<h2 id="orgheadline16"><span class="section-number-2">2</span> 时间线</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">2.1</span> - 1968</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+贵之母亲去世
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">2.2</span> - 1969</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+皆月晓子去世
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">2.3</span> - 1970</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+孤独的浪矢开始解答孩子们的疑问,心情开始变好
+</p>
+<ul class="org-ul">
+<li>回答了询问怎样考100分的孩子, 百分小毛头</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">2.4</span> - 1978</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+贵之发现手表时间异常, 杂货铺内时间流逝变快
+</p>
+
+<p>
+浪矢回答了绿河的咨询
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">2.5</span> - 1979</h3>
+<div class="outline-text-3" id="text-2-5">
+</div><ol class="org-ol"><li><a id="orgheadline6"></a>1979.6<br  /><div class="outline-text-5" id="text-2-5-0-1">
+<p>
+浪矢看到报道:绿河在开车是因贫血昏迷并坠河, 死前救了副驾上1岁左右的女儿
+</p>
+
+<p>
+贵之听说父亲关店回家看望时,门锁着
+</p>
+
+<p>
+杂货铺关闭
+</p>
+
+<p>
+浪矢开始梦到自己的灵魂能看到几十年后杂货店中发生的事
+</p>
+</div></li>
+
+<li><a id="orgheadline7"></a>1979.9.13<br  /><div class="outline-text-5" id="text-2-5-0-2">
+<p>
+浪矢写了遗书, 明确知道自己会在9.13号这天去世
+</p>
+
+<p>
+浪矢搬回杂货店过了一夜, 并收到了来自未来的来信
+</p>
+<ul class="org-ul">
+<li>百分小毛头</li>
+<li>川边绿的女儿, 见证孤儿院火灾, 后成为歌手女的经济人</li>
+<li>保罗的感谢信</li>
+<li>一张白纸</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline8"></a>1979.11<br  /><div class="outline-text-5" id="text-2-5-0-3">
+<p>
+月兔投出了咨询信, 2012年的小偷三人组收到并回了信
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">2.6</span> - 1980</h3>
+<div class="outline-text-3" id="text-2-6">
+</div><ol class="org-ol"><li><a id="orgheadline10"></a>1980.7<br  /><div class="outline-text-5" id="text-2-6-0-1">
+<p>
+鱼店音乐人写信咨询, 三人组回复
+</p>
+</div></li>
+
+<li><a id="orgheadline11"></a>1980.9.13<br  /><div class="outline-text-5" id="text-2-6-0-2">
+<p>
+浪矢去世
+</p>
+</div></li>
+
+<li><a id="orgheadline12"></a>1980.10<br  /><div class="outline-text-5" id="text-2-6-0-3">
+<p>
+迷途的小狗(晴美)写信咨询, 三人组回复
+</p>
+</div></li>
+
+<li><a id="orgheadline13"></a>1988.12.24<br  /><div class="outline-text-5" id="text-2-6-0-4">
+<p>
+丸光园发生火灾, 鱼店音乐人为了救人丧命. 
+</p>
+
+<p>
+这场火灾影响到本书中几乎所有人物.
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">2.7</span> - 2012</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+在约定的9月13日, 小偷三人组在0点左右抢劫了晴美, 抢到了她装有感谢信的手包. 2:30分到达杂货店, 在6:00离开, 期间为三个人解答过烦恼. 
+</p>
+
+<p>
+三人组在离开之前, 把一张白纸投入了门口信箱中, 并得到来自过去的浪矢的回复.
+</p>
+
+<p>
+三人组在偷来的手包中 发现了晴美写给他们的感谢信
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21"><span class="section-number-2">3</span> 反思</h2>
+<div class="outline-text-2" id="text-3">
+</div><ol class="org-ol"><li><a id="orgheadline17"></a>第一个问题: 时间线<br  /><div class="outline-text-5" id="text-3-0-0-1">
+<p>
+仔细梳理后, 不得不承认, 杂货铺中存在着两条不同的时间线, 而这两条线的关系看起来有点牵强&#x2026;
+</p>
+
+<p>
+第一条: 1979年9月13日0点-6点, 浪矢爷爷可以收到来自2012年9月13日0点-6点间的来信, 这也能解释为何三人组最后寄出的白纸可以被收到.
+</p>
+
+<p>
+第二条: 2012年9月13日0点-6点, 三人组可以与1979年9月-1980年10月这一年左右的时间联通.
+</p>
+</div></li>
+
+<li><a id="orgheadline18"></a>第二个问题: 祭日<br  /><div class="outline-text-5" id="text-3-0-0-2">
+<p>
+反复看小说与时间表, 只能找到这样的解释: 浪矢在得知绿川死后, 并生病住院的期间, 反复做着预知梦. 他在梦中得知33年后杂货铺会连通现在与过去, 并以为自己会在1979年9月13号这天去世, 所以留了信给贵之,并要求这一天晚上去杂货店中收信.
+</p>
+
+<p>
+[这个解释我并不满意, 为什么浪矢爷爷可准确的在1年后(1980)的这一天去世? 为什么公告上写33周年祭日, 而不是实际的22周年?]
+</p>
+</div></li>
+
+<li><a id="orgheadline19"></a>没有用到的线索<br  /><div class="outline-text-5" id="text-3-0-0-3">
+<ul class="org-ul">
+<li>红豆包: 在1978年贵之的家中出现过一次,浪矢把它放在了佛龛上. 1979年浪矢病中出现过一次,浪矢没有在意.</li>
+
+<li>贵之的手表: 1978年左右这个手表开始出现变慢的现象, 本以为从此时开始, 贵之的家中(既杂货铺)时间流逝开始变得异常. 但最后贵之的孙子接手这块表时, 表依旧每小时慢5分钟, 所以这个线索大概是故布疑阵吧.</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline20"></a>关于晓子<br  /><div class="outline-text-5" id="text-3-0-0-4">
+<p>
+晓子临终前说, "我会在天上为大家的幸福祈祷".
+</p>
+
+<p>
+这里几乎所有人物都与孤儿院产生过联系, 他们最后都过得还不错(除了歌手), 不知扭曲时空的力量是不是晓子的杰作.
+</p>
+
+<p>
+于是末章标题总结了这整本书: 来自上天的祈祷
+</p>
+</div></li></ol>
+</div>
+
+
+<div id="outline-container-orgheadline22" class="outline-2">
+<h2 id="orgheadline22"><span class="section-number-2">4</span> 最后</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+这本小说的主要目的是说故事, 并不是推理. 前面碎碎念了一大坨没用的推导, 也该说说故事本身了. 
+5个小故事形态各异, 主人公们各自背负着无奈的命运, 最后都直接或间接的通过杂货铺得到启示, 走向了各自的人生之路. 
+</p>
+
+<p>
+我在微信阅读读到的这本书(没办法最近它太火了, 天天在眼前晃), 这个app可以在书中看到其他人对字句的短评. 每个故事中都有人热情的评论, 大家都能找到各自的共鸣点.  
+我自己则是在歌手妹子在舞台上唱起&lt;重生&gt;时泪蹦了, 完全沉浸在了鱼店歌手的挣扎中, 这就是大部分有梦想没天赋的普通人的命运吧.
+</p>
+
+<p>
+好的文学作品可以让各种人得到启发, 这本小说做到了 ( 虽然更喜欢作者的推理 :p
+</p>
+
+
+
+<p>
+最后, 但愿这些胡乱猜测没有过分歪曲圭吾大叔的本意 (￣.￣) 
+</p>
+</div>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-01-30</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
       <title>Hello World</title>
       <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>Hello World</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. First Blog From Org-Page</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> First Blog From Org-Page</h2>
+</div>
+
+</div>
+</div>]]></description>
       <pubDate>2016-01-17</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
       <title>制作下雨场景</title>
       <link>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</link>
-      <description><![CDATA[]]></description>
+      <description><![CDATA[rain]]></description>
       <pubDate>2016-01-17</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</guid>
     </item>
