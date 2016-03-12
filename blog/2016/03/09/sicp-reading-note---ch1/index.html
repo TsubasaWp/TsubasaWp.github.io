@@ -34,9 +34,9 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline9">1. 构造过程抽象</a>
+<li><a href="#orgheadline14">1. 构造过程抽象</a>
 <ul>
-<li><a href="#orgheadline7">1.1. 程序设计的基本元素</a>
+<li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
 <li><a href="#orgheadline1">1.1.1. 表达式</a></li>
 <li><a href="#orgheadline2">1.1.2. 命名和环境</a></li>
@@ -44,9 +44,20 @@
 <li><a href="#orgheadline4">1.1.4. 复合过程</a></li>
 <li><a href="#orgheadline5">1.1.5. 过程应用的代换模型</a></li>
 <li><a href="#orgheadline6">1.1.6. 条件表达式和谓词</a></li>
+<li><a href="#orgheadline7">1.1.7. [习题]</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline8">1.2. [习题]</a></li>
+<li><a href="#orgheadline10">1.2. 实例:采用牛顿法求平方根</a>
+<ul>
+<li><a href="#orgheadline9">1.2.1. [习题]</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">1.3. 过程作为黑箱抽象</a>
+<ul>
+<li><a href="#orgheadline11">1.3.1. 局部名</a></li>
+<li><a href="#orgheadline12">1.3.2. 内部定义和块结构</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -66,8 +77,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline9" class="outline-2">
-<h2 id="orgheadline9"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -78,9 +89,13 @@ ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这
 </p>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7"><span class="section-number-3">1.1</span> 程序设计的基本元素</h3>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">1.1</span> 程序设计的基本元素</h3>
 <div class="outline-text-3" id="text-1-1">
+<p>
+一个powerful的语言, 除了能够执行任务, 更应该能帮助程序猿组织自己的思想.
+</p>
+
 <ul class="org-ul">
 <li>基本表达形式</li>
 <li>组合的方法</li>
@@ -221,7 +236,8 @@ lisp采用应用序求值, 部分原因在于这样可以避免对于表达式�
 <h4 id="orgheadline6"><span class="section-number-4">1.1.6</span> 条件表达式和谓词</h4>
 <div class="outline-text-4" id="text-1-1-6">
 <p>
-条件表达式
+    条件表达式
+依据不同情况采取不同动作的结构叫做 <code>分情况分析</code>
 <code>cond</code>
 </p>
 <pre class="example">
@@ -242,11 +258,10 @@ if是cond的一种受限形式, 适用于只有两种情况的分析.
 </p>
 </div>
 </div>
-</div>
 
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">1.2</span> [习题]</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7"><span class="section-number-4">1.1.7</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-1-7">
 <ul class="org-ul">
 <li>1.1 .求值(选做一部分)</li>
 </ul>
@@ -257,19 +272,222 @@ if是cond的一种受限形式, 适用于只有两种情况的分析.
 </p>
 
 <ul class="org-ul">
-<li>1.2 将下面表达式变换为前缀形式</li>
+<li>1.2 将下面表达式变换为前缀形式:</li>
 </ul>
 <p>
 (5+4+(2-(3-(6+5/4))))/(3*(6-2)(2-7))
 </p>
 
-<p>
+<pre class="example">
 (/ (+ 5 4 (- 2 (- 3 ( + 6 (/ 5 4))))) (* 3 (- 6 2) ( - 2 7)))
+</pre>
+
+<ul class="org-ul">
+<li>1.3 定义一个过程, 它以三个数为参数, 返回其中较大的两个数之和</li>
+</ul>
+<pre class="example">
+(define (min x y z) 
+      (cond (((&lt; x y) and (&lt; x z))  x)
+        (((&lt; y x) and (&lt; y z))  y)
+        (else z)))
+(define (sum2 x y z) (- (+ x y z) (min x y z )))
+</pre>
+
+<ul class="org-ul">
+<li>1.4 仔细考察上面给出的允许运算符为复合表达式的组合式的求值模型, 根据对这一模型的认知描述下面过程的行为:</li>
+</ul>
+<pre class="example">
+(define (a-plus-abs-b a b) ((if (&gt; b 0)  + -) a b))
+</pre>
+<ul class="org-ul">
+<li>对子表达式(&gt; b 0)求值, 得结果r1</li>
+<li>对子表达式(if (r1) + -)求值, 得到结果r2, r2是运算过程.</li>
+<li>对(r2 a b)求值</li>
+
+<li>1.5 Ben发明了一种检测方法,能够确定解释器以正则序求值, 还是以应用序求值. 他定义了下面两个过程:</li>
+</ul>
+<pre class="example">
+(define (p) (p))
+(define (test x y) (if ( = x 0) 0 y))
+(test 0 (p))
+</pre>
+<p>
+用应用序和正则序解释器运行它们, 最终会发生什么?
+</p>
+<ul class="org-ul">
+<li>应用序: 0</li>
+<li>正则序: 无限循环. 因为无论(= x 0)的结果如何, y都会被求值.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">1.2</span> 实例:采用牛顿法求平方根</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+上面介绍的过程都很像常规数学函数, 然而数学和计算机过程有一些区别:
+</p>
+<ul class="org-ul">
+<li>数学关心说明性的描述(是什么)</li>
+<li>计算机关心行动性的描述(怎么做)</li>
+</ul>
+
+<p>
+一个求平方根的数学描述是: squrt(x) = y, y&gt;=0 &amp;&amp; y<sup>2</sup>=x. 我们无法把它直译成计算机函数.
+计算机求平方根的常用方法是:
+<code>牛顿逐步逼近法</code> : 先猜测一个值a, 并计算b = x/a, 比较a和b是否足够相似, 如果不满足条件则执行一些操作得到更好的猜测a2, 循环往复直到求出平方根.
 </p>
 
 <p>
-test<sub>subscript</sub>
+基本策略:
 </p>
+<pre class="example">
+(define (sqrt-iter guess x)
+  (if (good-enough guess x)
+      guess
+      (sqrt-iter (improve guess x) x)))
+</pre>
+
+<p>
+填充细节:
+</p>
+<pre class="example">
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y) (/ (+ x y) 2))
+
+(define (good-enough guess x)
+        (&lt; (abs (- (square guess) x)) 0.001))
+</pre>
+
+<p>
+启动:
+</p>
+<pre class="example">
+(define (squrt x) (sqrt-iter 1.0 x))    
+</pre>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">1.2.1</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>1.6 可否通过cond定义一个常规过程来代替if呢? Eva尝试写了以下程序,</li>
+</ul>
+<p>
+问: 如果用这个new-if来实现求平方根程序sqrt-iter,会有什么问题
+</p>
+<pre class="example">
+(define (new-if predicate then-clause else-clause)
+        (cond (predicate then-clause)
+              (else else-clause)))
+</pre>
+<p>
+答: 问题在于cond的所有分支都会被求值. 
+sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止递归调用.
+而new-if由于所有分支都会无条件求值, 所以它应用于递归函数时根本停不下来.
+</p>
+
+<ul class="org-ul">
+<li>1.7 上面good-enough的实现对于很小或很大的数来说不太好, 请给出证明.</li>
+</ul>
+<p>
+如果使用监测猜测值改变比率的方式, 对于大数或小数来说可以工作吗?
+</p>
+<ul class="org-ul">
+<li>对于小于0.001(good-enough的临界值)的小数,good-enough无法进行正确的判断.</li>
+</ul>
+<p>
+对于大数来说, 由于精度不足以表示guess和x之间的差(good-enough几乎永远为false), 程序陷入死循环.
+</p>
+<ul class="org-ul">
+<li>改变比率的算法对大数和小数都可以工作.</li>
+</ul>
+<pre class="example">
+(define (good-enough old-guess new-guess)
+        (&lt; (/ (abs (- old-guess new-guess)) old-guess) 0.01))
+</pre>
+
+<ul class="org-ul">
+<li>1.8 用牛顿法求立方根</li>
+</ul>
+<p>
+如果y是x立方根的一个近似值,那么下面公式可以给出一个更好的近似值: (x/y<sup>2</sup> +2*y)/3
+</p>
+<pre class="example">
+(define (cube-iter guess x)
+  (if (good-enough-cube guess x)
+      guess
+      (cube-iter (improve-cube guess x) x)))
+
+(define (good-enough-cube guess x)
+        (&lt; (abs (- (* guess guess  guess) x)) 0.001))
+
+(define (improve-cube y x)
+    (/ (+ (/ x (* y y)) (* 2 y)) 3))
+
+(define (cube x) (cube-iter 1 x))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">1.3</span> 过程作为黑箱抽象</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+<code>过程抽象</code> 一个过程的定义应当能隐藏起一些细节,使得过程的使用者可以直接复用而不必关心实现细节.
+</p>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">1.3.1</span> 局部名</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+过程的意义应该不依赖于其作者为形式参数所选定的名字.
+</p>
+
+<p>
+一个过程的定义 <code>约束</code> 了它所有形式参数,形参的具体名字完全没有关系, 这样的名字称为 <code>约束变量</code> .
+相反如果一个变量不是被约束的, 它就是 <code>自由的</code>. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12"><span class="section-number-4">1.3.2</span> 内部定义和块结构</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+平方根程序有个问题, 它由许多分离的过程组成, 而实际用户只关心sqrt这一个过程, 其它过程不必暴露给用户.
+(要运行这个程序也很蛋疼啊&#x2026;)
+</p>
+
+<p>
+所以,我们需要把这些麻烦的子过程局部化, 把它们隐藏到sqrt里面.
+</p>
+
+<pre class="example">
+(define (sqrt x)
+   (define (good-enough ...))
+   (define (improve-guess ...))
+   (if (good-enough ...) ...)) ;;懒得敲了,自行脑补吧...
+</pre>
+
+<p>
+这种嵌套的定义称为 <code>块结构</code>. 它是最简单的名字包装问题的一种正确解决方式. (讲道理这话真的是绕&#x2026;
+</p>
+
+<p>
+另外, 采用这种结构除了可以把辅助过程隐藏之外, 还可以利用 <code>词法作用域</code> 来简化辅助过程的形参.
+对这个例子来说,可以省略掉许多x.
+</p>
+
+<p>
+[小历史] 块结构的思想来自程序设计语言Algol 60.
+</p>
+</div>
 </div>
 </div>
 </div>
@@ -279,7 +497,7 @@ test<sub>subscript</sub>
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-03-09</span>
-        <span title="last modification date" class="post-info">2016-03-11</span>
+        <span title="last modification date" class="post-info">2016-03-12</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
