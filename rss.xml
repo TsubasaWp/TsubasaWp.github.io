@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 13 Mar 2016 23:49:17 CST</pubDate>
-    <lastBuildDate>Sun, 13 Mar 2016 23:49:17 CST</lastBuildDate>
+    <pubDate>Wed, 16 Mar 2016 22:28:03 CST</pubDate>
+    <lastBuildDate>Wed, 16 Mar 2016 22:28:03 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -18,7 +18,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline18">1. 构造过程抽象</a>
+<li><a href="#orgheadline22">1. 构造过程抽象</a>
 <ul>
 <li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
@@ -42,10 +42,12 @@
 <li><a href="#orgheadline12">1.3.2. 内部定义和块结构</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline17">1.4. 过程与它们所产生的计算</a>
+<li><a href="#orgheadline21">1.4. 过程与它们所产生的计算</a>
 <ul>
 <li><a href="#orgheadline14">1.4.1. 线性的递归和迭代</a></li>
-<li><a href="#orgheadline16">1.4.2. [习题]</a></li>
+<li><a href="#orgheadline17">1.4.2. [习题]</a></li>
+<li><a href="#orgheadline18">1.4.3. 树形递归</a></li>
+<li><a href="#orgheadline20">1.4.4. [习题]</a></li>
 </ul>
 </li>
 </ul>
@@ -67,8 +69,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline18" class="outline-2">
-<h2 id="orgheadline18"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline22" class="outline-2">
+<h2 id="orgheadline22"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -484,8 +486,8 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 
 
 
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 能够看清所考虑的动作的后果的能力, 是非常重要的. 只有在此之后, 人们才能 <code>反向推理</code>
@@ -512,13 +514,10 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 </div>
 </div>
 
-<div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16"><span class="section-number-4">1.4.2</span> [习题]</h4>
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17"><span class="section-number-4">1.4.2</span> [习题]</h4>
 <div class="outline-text-4" id="text-1-4-2">
 </div><ol class="org-ol"><li><a id="orgheadline15"></a>1.9 用代换模型展示下面两个过程在求值(+ 4 5)时所产生的计算过程. 它们是递归或者迭代吗?<br  /><div class="outline-text-5" id="text-1-4-2-1">
-<ol class="org-ol">
-<li></li>
-</ol>
 <pre class="example">
 (define (+ a b) (if (= a 0) b (inc (+ (dec a) b))))
 </pre>
@@ -541,11 +540,9 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 它是递归计算过程
 </p>
 
-<ol class="org-ol">
-<li><pre class="example">
+<pre class="example">
 (define (+ a b) (if (= a 0) b (+ (dec a) (inc b))))
-</pre></li>
-</ol>
+</pre>
 <p>
 计算过程:
 </p>
@@ -560,6 +557,93 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 <p>
 它是迭代计算过程
 </p>
+</div></li>
+
+<li><a id="orgheadline16"></a>下面是一个称为ackermann函数的数学函数<br  /><div class="outline-text-5" id="text-1-4-2-2">
+<p>
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1) (A x (- y 1))))))
+</p>
+
+<p>
+下面各表达式的值是什么(人肉算啊!)
+</p>
+<ul class="org-ul">
+<li>(A 1 10) 1024</li>
+<li>(A 2 4) 65536</li>
+</ul>
+<p>
+(a 1 (a 2 3)).. (a 1 (a 1 (a 1 (a 2 1)))),(a 1 (a 1 (a 1 2))),
+(a 1 (a 1 (a 0 (a 1 1)))),(a 1(a 1 (* 2 2))),(a 1(a 1 4)),(a 1 16),2<sup>16</sup>
+</p>
+<ul class="org-ul">
+<li>(A 3 3) 65536</li>
+</ul>
+<p>
+(a 2 (a 3 2)),(a 2(a 2(a 3 1))),(a 2 (a 2 2)),(a 2 4),65536
+</p>
+
+
+<p>
+下面过程的数学定义是?
+</p>
+<ul class="org-ul">
+<li>(define (f n) (A 0 n)) : f = 2*n</li>
+<li>(define (g n) (A 1 n)) : g = 2<sup>n</sup></li>
+<li>(define (h n) (A 2 n)) : h = 2^(2<sup>(2&#x2026;)</sup></li>
+</ul>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">1.4.3</span> 树形递归</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+另一种常见的例子🌰,比如菲波那切数列.
+</p>
+
+<p>
+朴素的树形递归:
+</p>
+<pre class="example">
+(define (fib n)
+ (cond ((= n 0) 0)
+        ((= n 1) 1)
+        (else (+ (fib (- n 1)) (fib ( - n 2))))))
+</pre>
+<p>
+优化的迭代版本:
+</p>
+<pre class="example">
+(define (fib-it a b count)
+(cond ((= count 0) b)
+        (else (fib-it (+ a b) a (- count 1)))))
+(define (fib2 n) (fib-it 1 0 n))
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">1.4.4</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-4">
+</div><ol class="org-ol"><li><a id="orgheadline19"></a>函数f由如下规则定义: 如果n&lt;3, 那么f(n)=n, 如果n&gt;=3, 那么f(n)=f(n-1)+2f(n-1)+3f(n-3).分别实现递归和迭代版本.<br  /><div class="outline-text-5" id="text-1-4-4-1">
+<pre class="example">
+;;递归
+(define (f11 n)
+  (cond ((&lt; n 3) n)
+  (else (+ (f11 (- n 1))
+           (* 2 (f11 (- n 2)))
+           (* 3 (f11 (- n 3)))))))
+;; 迭代
+(define (f11-it a b c n)
+  (cond ((&lt; n 3) a)
+        (else (f11-it (+ a (* 2 b) (* 3 c)) a b (- n 1)))))
+(define (f112 n) (f11-it 2 1 0 n))
+</pre>
 </div></li></ol>
 </div>
 </div>
@@ -567,7 +651,7 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-03-13</pubDate>
+      <pubDate>2016-03-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</guid>
     </item>
     <item>
