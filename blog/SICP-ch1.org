@@ -336,6 +336,7 @@ o(f(n))=(1+2+3+...n/50)*n = ((1+n/50)*(n/50)/2)*n = o(n^2).
 
 **** 1.15 题目略.
 [吐槽:原来可以这样实现sin,长姿势了]
+
 如果解释器的代换模型是是 =应用序= ,则这个问题是线性迭代:
 - p将被使用多少次?  5次.
 - 空间增长的阶: n/(3^k) = 0.1, k=log_3 (10*n), 所以是O(lg n)
@@ -345,6 +346,30 @@ o(f(n))=(1+2+3+...n/50)*n = ((1+n/50)*(n/50)/2)*n = o(n^2).
 - 增长的阶: O(4^n)
 
 *** 求幂
+快速求幂法fast-expt:
+: b^n = (b^(n/2))^2 ;;若n是偶数
+: b^n = b * b^(n-1) ;;若n是奇数
+
+*** 习题
+**** 1.16 用fast-expt的思路定义一个过程, 它按照迭代的方式产生出求幂的计算过程.
+: (define (expt-iter b n a)
+:   (cond ((= n 0) a)
+: 	((even? n) (expt-iter  (* b b)  (/ n 2)  a))
+: 	(else (expt-iter  b (- n 1) (* b a)))))
+
+**** 1.17 用fast-expt的思路实现一个反复使用加法计算乘积的过程.
+: (define (fast-mul a n)
+:   (cond ((= n 0) 0)
+: 	((= n 1) a)
+: 	((even? n) (fast-mul (+ a a) (/ n 2)))
+: 	(else (+ a (fast-mul a (- n 1))))))
+
+**** 1.18 求两个整数的乘积
+: (define (mul-iter b n a)
+:   (cond ((= n 0) a)
+: 	((even? n) (mul-iter (+ b b) (/ n 2) a))
+: 	(else (mul-iter b (- n 1) (+ a b)))))
+
 
 
   
