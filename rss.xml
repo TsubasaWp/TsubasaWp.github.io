@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 22 Mar 2016 22:14:06 CST</pubDate>
-    <lastBuildDate>Tue, 22 Mar 2016 22:14:06 CST</lastBuildDate>
+    <pubDate>Wed, 23 Mar 2016 08:18:56 CST</pubDate>
+    <lastBuildDate>Wed, 23 Mar 2016 08:18:56 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -18,7 +18,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline34">1. 构造过程抽象</a>
+<li><a href="#orgheadline38">1. 构造过程抽象</a>
 <ul>
 <li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline12">1.3.2. 内部定义和块结构</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline33">1.4. 过程与它们所产生的计算</a>
+<li><a href="#orgheadline37">1.4. 过程与它们所产生的计算</a>
 <ul>
 <li><a href="#orgheadline14">1.4.1. 线性的递归和迭代</a></li>
 <li><a href="#orgheadline17">1.4.2. [习题]</a></li>
@@ -52,6 +52,9 @@
 <li><a href="#orgheadline26">1.4.6. [习题]</a></li>
 <li><a href="#orgheadline27">1.4.7. 求幂</a></li>
 <li><a href="#orgheadline32">1.4.8. 习题</a></li>
+<li><a href="#orgheadline33">1.4.9. 最大公约数</a></li>
+<li><a href="#orgheadline35">1.4.10. 习题</a></li>
+<li><a href="#orgheadline36">1.4.11. 素数检测</a></li>
 </ul>
 </li>
 </ul>
@@ -73,8 +76,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline34" class="outline-2">
-<h2 id="orgheadline34"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline38" class="outline-2">
+<h2 id="orgheadline38"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -490,8 +493,8 @@ sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止�
 
 
 
-<div id="outline-container-orgheadline33" class="outline-3">
-<h3 id="orgheadline33"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 能够看清所考虑的动作的后果的能力, 是非常重要的. 只有在此之后, 人们才能 <code>反向推理</code>
@@ -807,12 +810,79 @@ b^n = b * b^(n-1) ;;若n是奇数
 </pre>
 </div></li></ol>
 </div>
+
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33"><span class="section-number-4">1.4.9</span> 最大公约数</h4>
+<div class="outline-text-4" id="text-1-4-9">
+<p>
+GCD(a,b)=GCD(b,r), r是a除以b的余数.
+</p>
+<pre class="example">
+(define (gcd a b)
+  (cond ((= b 0) a)
+        (else (gcd b (remainder a b)))))
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35"><span class="section-number-4">1.4.10</span> 习题</h4>
+<div class="outline-text-4" id="text-1-4-10">
+</div><ol class="org-ol"><li><a id="orgheadline34"></a>1.20 解释器是应用序和正则序时,上述算法求(206 40)的计算过程分别是怎样的,remander分别调用多少次<br  /><div class="outline-text-5" id="text-1-4-10-1">
+<ul class="org-ul">
+<li>应用序</li>
+</ul>
+<pre class="example">
+(gcd 206 40)
+(gcd 40 6)
+(gcd 6 4)
+(gcd 4 2)
+(gcd 2 0)
+2
+</pre>
+<p>
+一共4次remander
+</p>
+
+<ul class="org-ul">
+<li>正则序</li>
+</ul>
+<pre class="example">
+(gcd 206 40)
+cond ...
+(gcd 40 (re 206 40)) ;;b=6
+cond ...  ;; +1
+(gcd (re 206 40) (re 40 (re 206 40))) ;;b=4
+cond ...  ;; +2
+(gcd (re 40 (re 206 40)) (re (re 206 40) (re 40 (re 206 40)))) ;;b=2
+cond ...  ;; +4
+(gcd .......) ;; b=0
+cond ...  ;; + 7
+a = (re (re 206 40) (re 40 (re 206 40) = (re 6 4) = 2 ;; +4
+</pre>
+<p>
+一共18次remander
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36"><span class="section-number-4">1.4.11</span> 素数检测</h4>
+<div class="outline-text-4" id="text-1-4-11">
+<p>
+本节描述两种检查整数n是否为素数的方法,第一个具有O(n<sup>1</sup>/2)的增长阶,第二个具有O(log n)的增长阶.
+</p>
+<ul class="org-ul">
+<li>寻找因子</li>
+<li>费马检查</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-03-22</pubDate>
+      <pubDate>2016-03-23</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</guid>
     </item>
     <item>
