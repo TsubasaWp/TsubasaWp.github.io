@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Wed, 23 Mar 2016 21:19:23 CST</pubDate>
-    <lastBuildDate>Wed, 23 Mar 2016 21:19:23 CST</lastBuildDate>
+    <pubDate>Wed, 23 Mar 2016 21:47:44 CST</pubDate>
+    <lastBuildDate>Wed, 23 Mar 2016 21:47:44 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -51,9 +51,9 @@
 <li><a href="#orgheadline23">1.4.5. 增长的阶</a></li>
 <li><a href="#orgheadline26">1.4.6. [习题]</a></li>
 <li><a href="#orgheadline27">1.4.7. 求幂</a></li>
-<li><a href="#orgheadline32">1.4.8. 习题</a></li>
+<li><a href="#orgheadline32">1.4.8. [习题]</a></li>
 <li><a href="#orgheadline33">1.4.9. 最大公约数</a></li>
-<li><a href="#orgheadline35">1.4.10. 习题</a></li>
+<li><a href="#orgheadline35">1.4.10. [习题]</a></li>
 <li><a href="#orgheadline36">1.4.11. 素数检测</a></li>
 </ul>
 </li>
@@ -752,7 +752,7 @@ b^n = b * b^(n-1) ;;若n是奇数
 </div>
 
 <div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32"><span class="section-number-4">1.4.8</span> 习题</h4>
+<h4 id="orgheadline32"><span class="section-number-4">1.4.8</span> [习题]</h4>
 <div class="outline-text-4" id="text-1-4-8">
 </div><ol class="org-ol"><li><a id="orgheadline28"></a>1.16 用fast-expt的思路定义一个过程, 它按照迭代的方式产生出求幂的计算过程.<br  /><div class="outline-text-5" id="text-1-4-8-1">
 <pre class="example">
@@ -781,8 +781,6 @@ b^n = b * b^(n-1) ;;若n是奇数
         (else (mul-iter b (- n 1) (+ a b)))))
 </pre>
 </div></li>
-
-
 
 
 <li><a id="orgheadline31"></a>1.19 用对数步数计算菲波那切数列<br  /><div class="outline-text-5" id="text-1-4-8-4">
@@ -825,7 +823,7 @@ GCD(a,b)=GCD(b,r), r是a除以b的余数.
 </div>
 </div>
 <div id="outline-container-orgheadline35" class="outline-4">
-<h4 id="orgheadline35"><span class="section-number-4">1.4.10</span> 习题</h4>
+<h4 id="orgheadline35"><span class="section-number-4">1.4.10</span> [习题]</h4>
 <div class="outline-text-4" id="text-1-4-10">
 </div><ol class="org-ol"><li><a id="orgheadline34"></a>1.20 解释器是应用序和正则序时,上述算法求(206 40)的计算过程分别是怎样的,remander分别调用多少次<br  /><div class="outline-text-5" id="text-1-4-10-1">
 <ul class="org-ul">
@@ -869,12 +867,17 @@ a = (re (re 206 40) (re 40 (re 206 40) = (re 6 4) = 2 ;; +4
 <h4 id="orgheadline36"><span class="section-number-4">1.4.11</span> 素数检测</h4>
 <div class="outline-text-4" id="text-1-4-11">
 <p>
-本节描述两种检查整数n是否为素数的方法,第一个具有O(n<sup>1</sup>/2)的增长阶,第二个具有O(log n)的增长阶.
-$$n<sup>1/2</sup>
+本节描述两种检查整数n是否为素数的方法,第一个具有O(\sqrt{n})的增长阶,
+第二个具有O(log n)的增长阶.
 </p>
 <ul class="org-ul">
-<li>寻找因子</li>
-<li>费马检查</li>
+<li>寻找因子:用从2开始的连续整数开始依次检查它们是否能整除n.</li>
+</ul>
+<p>
+如果n不是素数,必然有小于或等于\sqrt{n}的因子,由此可知这个算法拥有O(\sqrt{n})的增长阶.
+</p>
+<ul class="org-ul">
+<li>费马检查:</li>
 </ul>
 </div>
 </div>
