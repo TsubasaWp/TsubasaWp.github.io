@@ -423,9 +423,47 @@ GCD(a,b)=GCD(b,r), r是a除以b的余数.
 一共18次remander
 
 *** 素数检测
-本节描述两种检查整数n是否为素数的方法,第一个具有O ( $$\sqrt{n} )的增长阶,
+(终于学会打公式了○|￣|_)
+
+本节描述两种检查整数n是否为素数的方法,第一个具有O($\sqrt{n}$)的增长阶,
 第二个具有O(log n)的增长阶.
-- 寻找因子:用从2开始的连续整数开始依次检查它们是否能整除n.
-如果n不是素数,必然有小于或等于\sqrt{n}的因子,由此可知这个算法拥有O(\sqrt{n})的增长阶.
-- 费马检查:
-111
+
+- 寻找因子:用从2开始的连续整数开始依次检查它们是否能整除n.如果n不是素数,必然有小于或等于 $\sqrt{n}$ 的因子,由此可知这个算法拥有O($\sqrt{n}$)的增长阶.
+- 费马检查:O(log n)的检查基于数论中著名的费马小定理(数论全忘光了...桑不起)
+
+=费马小定理=: 如果n是一个素数,a是小于n的任意正整数,那么a的n次方与a模n同余.
+而如果= 不是素数 =,则大部分a<n都将满足上面的关系,这就引出了检查素数的算法: 如果发现不满足关系的a那么n肯定不是素数.
+
+=费马检查=: 采用许多随机的a来检查,通过的检查越多则n是素数的概率越大.
+
+首先定义一个O(log n)的迭代过程计算 $a^n$ 对m取模的结果(a<n,a<m)
+: (define (expmod bas exp m)
+:   (cond ((= exp 0 ) 1)
+: 	((even? exp)
+: 	 (remainder (square (expmod bas (/ exp 2) m)) m))
+: 	(else
+: 	 ;;  $(a*a^{n/2}*a^{n/2})%n = (a%n)*(a^{n/2}%n)^2 = a*(a^{n/2}%n)^2
+: 	 (remainder (* bas (expmod bas (- exp 1) m)) m))))
+
+其中关于连续求平方的推导如下:
+
+$\gcd((a^{n/2}a^{n/2}),n)=\gcd(a^{n/2},n)\gcd(a^{n/2},n)=\gcd(a^{n/2},n)^2$
+
+$\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a\gcd(a^{n/2},n)$
+
+然后随机1和n-1之间的整数进行测试:
+: (define (fermat-test n)
+:   (define (try-it a)
+:     (= (expmod a n n) a))
+:   (try-it (+ 1 (random (- n 1)))))
+: 
+: (define (fast-prime? n times)
+:   (cond ((= times 0) true)
+: 	((fermat-test n) (fast-prime? n (- times 1)))
+: 	(else false)))
+
+*** 概率方法
+费马检查的结果只有概率上的正确性..但能够证明存在使出错概率任意小的算法.
+
+
+
