@@ -449,7 +449,7 @@ GCD(a,b)=GCD(b,r), r是a除以b的余数.
 
 $\gcd((a^{n/2}a^{n/2}),n)=\gcd(a^{n/2},n)\gcd(a^{n/2},n)=\gcd(a^{n/2},n)^2$
 
-$\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a\gcd(a^{n/2},n)$
+$\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)$
 
 然后随机1和n-1之间的整数进行测试:
 : (define (fermat-test n)
@@ -465,5 +465,42 @@ $\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a\gcd(a^{n/2},n)$
 *** 概率方法
 费马检查的结果只有概率上的正确性..但能够证明存在使出错概率任意小的算法.
 
+*** [习题]
 
+**** 使用smallest-divisor过程找出下面各数的最小因子:199,1999,19999
+首先设计了一个(有点挫)的算法,从2到n遍历,寻找第一个能够整除n的素数.(能够想到的优化版算法只有素数表了orz.
+: (define (divisor-test a n)
+:   (cond ((= n 1) 1)
+: 	((= n 0) 0)
+: 	((and (fast-prime? a 10) (= (remainder n a) 0)) a)
+: 	(else (divisor-test (+ a 1) n))))
+: 
+: (define (smallest-divisor n) (divisor-test 2 n))计算结果是199:199,1999:1999,19999:7.
 
+**** 观察查找素数的时间.题目略...
+: (define (search-for-prime n)
+:   (cond ((fast-prime? n 50) 
+: 	(display n))
+: 	(else 
+: 	 (cond ((even? n)
+: 		(search-for-prime (+ n 1)))
+: 	       (else 
+: 		(search-for-prime (+ n 2)))))))
+: 
+: (define (start-search-prime n start-time)
+:   (search-for-prime n)
+:   (newline)
+:   (display (- (real-time-clock) start-time)))
+: 
+: (define (time-for-search-prime n)
+:   (start-search-prime n (real-time-clock)))
+一开始使用题目给的(runtime)计算时钟周期,结果无论后面加多少个零,结果几乎都在1e-2左右.
+后来得知现在的MIT-scheme的runtime按秒计时,换成以tick计时的real-time-clock就对了.
+
+测试结果是:
+- 1000:2 
+- 10000:2
+- 100000:3
+- 10000000:4
+- 1000000000000:8
+完全没有按照 $\sqrt{10}$ 增长.
