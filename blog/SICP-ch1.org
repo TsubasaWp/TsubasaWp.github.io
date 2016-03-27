@@ -580,7 +580,7 @@ Alyssa的方法理论上比本节的算法步数只有1步,但容易溢出.
 $log_2{n}$ 次
 
 **** 证明注脚47中列出的Carmichael数确实能骗过费马检查.
-首先写一个过程,检验 *所有* 小于n的a,看a^n是否与a模n同余.
+首先写一个过程,检验 *所有* 小于n的a,看$a^{n}$是否与a模n同余.
 : (check-prime? 561) => #t
 : (check-prime? 1105) => #t
 : (check-prime? 1729) => #t
@@ -589,7 +589,6 @@ $log_2{n}$ 次
 : (check-prime? 6601) => #t
 
 **** Miller-Rabin检查
-
 
 
 
