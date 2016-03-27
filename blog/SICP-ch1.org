@@ -557,5 +557,45 @@ $\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)$
 
 [Mark] 学习完后面的内容可能会在解释器层面上对这个问题有新的见解,到时候再补充吧.
 
+**** 分析Alyssa的方法是否实用
+Alyssa的方法理论上比本节的算法步数只有1步,但容易溢出.
+本节的方法虽然步数多了一些, 但它不会真正进行巨大的乘幂运算, 所以本节的方法更加实用.
 
+**** 分析fast-prime?中的expmod使用显示乘法为何会把O(log n)的算法变成O(n)的.
+下面把(expmod base (/ exp 2) m)简写为 =ep(n)=
+
+使用乘法:
+: ep(n)
+: (* ep(n/2) ep(n/2))
+: (* (* ep(n/4) ep(n/4)) (* ep(n/4) ep(n/4)))
+: (* (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))) (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))))
+: ...
+展开后可得进行expmod运算的次数是 $2^{log_2{n}}=n$ 次
+
+使用square:
+: ep(n)
+: (square ep(n/2))
+: (square (square ep(n/4)))
+: ...
+$log_2{n}$ 次
+
+**** 证明注脚47中列出的Carmichael数确实能骗过费马检查.
+首先写一个过程,检验 *所有* 小于n的a,看a^n是否与a模n同余.
+: (check-prime? 561) => #t
+: (check-prime? 1105) => #t
+: (check-prime? 1729) => #t
+: (check-prime? 2465) => #t
+: (check-prime? 2821) => #t
+: (check-prime? 6601) => #t
+
+**** Miller-Rabin检查
+
+
+
+
+     
+     
+     
+
+     
 
