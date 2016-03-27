@@ -479,13 +479,12 @@ $\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)$
 
 **** 观察查找素数的时间.题目略...
 : (define (search-for-prime n)
-:   (cond ((fast-prime? n 50) 
+:   (cond ((prime? n) 
 : 	(display n))
-: 	(else 
-: 	 (cond ((even? n)
-: 		(search-for-prime (+ n 1)))
-: 	       (else 
-: 		(search-for-prime (+ n 2)))))))
+: 	(else (cond ((even? n)
+: 		     (search-for-prime (+ n 1)))
+: 		    (else 
+: 		     (search-for-prime (+ n 2)))))))
 : 
 : (define (start-search-prime n start-time)
 :   (search-for-prime n)
@@ -498,9 +497,65 @@ $\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)$
 后来得知现在的MIT-scheme的runtime按秒计时,换成以tick计时的real-time-clock就对了.
 
 测试结果是:
+- 1000:1 (结果是1009,6次测试,平均0.17ms每次)
+- 10000:1 (5,0.25)
+- 100000:1 (3,0.33)
+- 1000000:2 (3,0.67)
+- 10000000:8 (10,0.8)
+- 100000000:15 (5,3)
+- 1000000000:37 (5,7.4)
+- 10000000000:169 (10,16.9)
+1000000以下的测试结果差别很小, 1000000以上差异是2.x倍, 可见测试结果与预期的$/sqrt{n}$不符.
+
+**** 修改本节开始的smallest-divisor过程,使其步数减半,并检验结果是否符合预期
+: (define (smallest-divisor-fast n)
+:   (let  ((t (real-time-clock)))
+:     (display (find-divisor-fast n 2))
+:     (- (real-time-clock) t)))
+: 
+: (define (find-divisor-fast n test)
+:   (cond ((> (square test) n) n)
+: 	((divides? n test) test)
+: 	(else (find-divisor-fast n (next test)))))
+: 
+: (define (next n)
+:   (cond ((even? n) (+ n 1))
+: 	(else (+ n 2))))
+
+为了使差别比较显著,挑选2个相差10倍左右的素数进行测试:1009,10009
+- (smallest-divisor-fast (* 1009 10009))  ==> 1
+- (smallest-divisor (* 1009 10009))       ==> 2
+- (smallest-divisor-fast (* 10009 10009)) ==> 9
+- (smallest-divisor (* 10009 10009))      ==> 14
+- (smallest-divisor-fast (* 20029 20029)) ==> 16
+- (smallest-divisor-sqre (* 20029 20029)) ==> 26
+可见fast版本速度比原有版本快,但两个算法速度比值比2小.
+
+初步推测,当算法复杂度低且参数比较小时,这个算法本身的耗时在一个过程的执行过程中占比非常低.
+而执行过程所需的大量递归调用,变量绑定等操作消耗掉绝大部分CPU资源,导致我们得到的结果不准确.
+而当参数增大时,算法本身占用的资源比例变大,使得结果与我们的预测越来越接近.
+
+所以估算算法复杂度并不能完全预测过程的实际执行时间.
+
+**** 使用fast-prime?代替prime?实现第二题.并检验结果是否符合预期.
+把上上道题目代码中的prime?换成fast-prime就可以了.
+: (define (search-for-prime n)
+:   (cond ((fast-prime? n 50) 
+: 	(display n))
+: 	(else 
+: 	 (cond ((even? n)
+: 		(search-for-prime (+ n 1)))
+: 	       (else 
+: 		(search-for-prime (+ n 2)))))))
+测试结果:
 - 1000:2 
 - 10000:2
 - 100000:3
 - 10000000:4
 - 1000000000000:8
-完全没有按照 $\sqrt{10}$ 增长.
+差距比预期小的多,但参数越大差别越明显.解释见上一题.
+
+[Mark] 学习完后面的内容可能会在解释器层面上对这个问题有新的见解,到时候再补充吧.
+
+
+
