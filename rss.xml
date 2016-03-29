@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 27 Mar 2016 22:28:16 CST</pubDate>
-    <lastBuildDate>Sun, 27 Mar 2016 22:28:16 CST</lastBuildDate>
+    <pubDate>Tue, 29 Mar 2016 08:22:22 CST</pubDate>
+    <lastBuildDate>Tue, 29 Mar 2016 08:22:22 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -18,7 +18,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline48">1. 构造过程抽象</a>
+<li><a href="#orgheadline52">1. 构造过程抽象</a>
 <ul>
 <li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
@@ -59,6 +59,13 @@
 <li><a href="#orgheadline46">1.4.13. [习题]</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline51">1.5. 用高阶函数做抽象</a>
+<ul>
+<li><a href="#orgheadline48">1.5.1. 过程作为参数</a></li>
+<li><a href="#orgheadline49">1.5.2. [练习]</a></li>
+<li><a href="#orgheadline50">1.5.3. 用lambda构造过程</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -78,8 +85,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline48" class="outline-2">
-<h2 id="orgheadline48"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline52" class="outline-2">
+<h2 id="orgheadline52"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -1119,7 +1126,7 @@ ep(n)
 
 <li><a id="orgheadline44"></a>证明注脚47中列出的Carmichael数确实能骗过费马检查.<br  /><div class="outline-text-5" id="text-1-4-13-7">
 <p>
-首先写一个过程,检验 <b>所有</b> 小于n的a,看$a<sup>n</sup>$是否与a模n同余.
+首先写一个过程,检验 <b>所有</b> 小于n的a,看 \(a^{n}\) 是否与a模n同余.
 </p>
 <pre class="example">
 (check-prime? 561) =&gt; #t
@@ -1131,14 +1138,100 @@ ep(n)
 </pre>
 </div></li>
 
-<li><a id="orgheadline45"></a>Miller-Rabin检查<br  /></li></ol>
+<li><a id="orgheadline45"></a>Miller-Rabin检查<br  /><div class="outline-text-5" id="text-1-4-13-8">
+<p>
+把前面fast-prime过程中的fermat-test替换为miller-test
+</p>
+<pre class="example">
+(define (miller-test n)
+  (define (try-it a)
+    (= (expmod a (- n 1) n) 1))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= n 1) true)
+        ((= times 0) true)
+        ((miller-test n) (fast-prime? n (- times 1)))
+        (else false)))
+</pre>
+<p>
+使用前面的carmichael数测试,结果都为#f
+</p>
+</div></li></ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+在作用上,过程也是一类抽象,它们描述了一些对于数的复合操作,但不依赖特定的数,甚至不只用数作为参数.
+</p>
+
+<p>
+<code>高阶过程</code> 是能操作过程的过程, 它能以过程作为参数,或者以过程作为返回值.
+</p>
+
+<p>
+这也是lisp的一个厉害之处.
+</p>
+</div>
+
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">1.5.1</span> 过程作为参数</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+教材🌰:
+</p>
+<pre class="example">
+(define (sum term a next b)
+  (if (&gt; a b)
+      0
+      (+ (term a) (sum term (next a) next b))))
+
+(define (cub n) (* n n n))
+(define (add n) (+ n 1))
+(define (sum-cube a b) (sum cub a add b))
+</pre>
+<p>
+使用其它高级语言实现这种过程作为参数的过程时,绝对不会这么简洁.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49"><span class="section-number-4">1.5.2</span> [练习]</h4>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-4">
+<h4 id="orgheadline50"><span class="section-number-4">1.5.3</span> 用lambda构造过程</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+为了省去单独定义一些简单函数的麻烦,引入lambda特殊形式来完成这类描述,而不必给每个过程绑定名字.
+</p>
+<pre class="example">
+(lambda (x) (+ x 4))
+</pre>
+<p>
+实际上, (define (&lt;name&gt; &lt;param &#x2026;&gt;) ()) 是lambda的一种语法糖.
+</p>
+<pre class="example">
+(define (plus4 n) (+ n 4))
+</pre>
+<p>
+等价于:
+</p>
+<pre class="example">
+(define plus (lambda (n) (+ n 4)))
+</pre>
+</div>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-03-27</pubDate>
+      <pubDate>2016-03-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</guid>
     </item>
     <item>
