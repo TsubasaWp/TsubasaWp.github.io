@@ -629,7 +629,39 @@ $log_2{n}$ 次
 实际上, (define (<name> <param ...>) ()) 是lambda的一种语法糖.
 : (define (plus4 n) (+ n 4))
 等价于:
-: (define plus (lambda (n) (+ n 4)))
+: (define plus4 (lambda (n) (+ n 4)))
+lambda表达式可以用做 *组合式的运算符*:
+: ((lambda (x) (+ x 4)) 1)
+
+*** 用let创建局部变量
+lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 =let=
+: (define (f x y)
+:  ((lambda (a b)
+:   (+ (* x (square a))
+:     (* y b)
+:     (* a b)))
+:   (+ 1 (x y))
+:   (- 1 y)))
+用let形式可以简化为
+: (define (f x y)
+:  (let ((a (+ 1 (x y)))
+:        (b (- 1 y)))
+:    (+ (* x (square a))
+:       (* y b)
+:       (* a b))))
+注意使用let约束的局部变量必须在let的body中.
+- let使人能在尽可能接近其使用的地方建立局部变量约束.
+- 变量的值是在let之外计算的. 如下面过程
+: ....
+: (let (x 3)
+:      (y x))
+如果x在let之前的值是2,在let内x=3, 而y=2.
+
+有时在过程内部define也有与let一样的效果:
+: (define (f x y)
+:   (define a (...))
+:   (define b (...))
+:   (+ a b))
 
 
 
