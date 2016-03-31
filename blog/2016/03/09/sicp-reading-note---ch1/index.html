@@ -1230,7 +1230,36 @@ ep(n)
 </pre>
 </div></li>
 
-<li><a id="orgheadline50"></a>写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.<br  /></li></ol>
+<li><a id="orgheadline50"></a>写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.<br  /><div class="outline-text-5" id="text-1-5-2-2">
+<pre class="example">
+;; 递归
+(define (product a b term)
+ (if (&gt; a b)
+       1
+       (* (term a) (product (+ a 1) b term))))
+
+;; 迭代
+(define (product-iter a b next)
+  (define (iter n result)
+    (if (&gt; n b) 
+        result
+        (iter (+ n 1) (* result (term n)))))
+  (iter a 0))
+
+;; 分子
+(define (term-numer a)
+  (cond ((odd? a) (+ a 1))
+        (else (+ a 2))))
+;; 分母
+(define (term-deno a)
+  (cond ((even? a) (+ a 1))
+        (else (+ a 2))))
+
+;; pi/4
+(define (quarter-pi n)
+  (/ (product 1 n term-numer) (product 1 n term-deno)))
+</pre>
+</div></li></ol>
 </div>
 
 
