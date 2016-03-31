@@ -623,6 +623,17 @@ $log_2{n}$ 次
 
 *** [练习]
 
+**** 上面的sum过程产生一个线性递归, 使用迭代方式重写该过程.
+: (define (sum term a next b)
+:   (define (iter n result)
+:     (if (> n b) 
+: 	result
+: 	(iter (next n) (+ result (term n)))))
+:   (iter a 0))
+
+**** 写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.
+
+
 *** 用lambda构造过程
 为了省去单独定义一些简单函数的麻烦,引入lambda特殊形式来完成这类描述,而不必给每个过程绑定名字.
 : (lambda (x) (+ x 4))
@@ -662,6 +673,7 @@ lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 
 :   (define a (...))
 :   (define b (...))
 :   (+ a b))
+
 
 
 
