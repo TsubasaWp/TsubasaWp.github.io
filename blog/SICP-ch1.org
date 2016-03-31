@@ -632,6 +632,32 @@ $log_2{n}$ 次
 :   (iter a 0))
 
 **** 写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.
+: ;; 递归
+: (define (product a b term)
+:  (if (> a b)
+:        1
+:        (* (term a) (product (+ a 1) b term))))
+: 
+: ;; 迭代
+: (define (product-iter a b next)
+:   (define (iter n result)
+:     (if (> n b) 
+: 	result
+: 	(iter (+ n 1) (* result (term n)))))
+:   (iter a 0))
+: 
+: ;; 分子
+: (define (term-numer a)
+:   (cond ((odd? a) (+ a 1))
+: 	(else (+ a 2))))
+: ;; 分母
+: (define (term-deno a)
+:   (cond ((even? a) (+ a 1))
+: 	(else (+ a 2))))
+: 
+: ;; pi/4
+: (define (quarter-pi n)
+:   (/ (product 1 n term-numer) (product 1 n term-deno)))
 
 
 *** 用lambda构造过程
