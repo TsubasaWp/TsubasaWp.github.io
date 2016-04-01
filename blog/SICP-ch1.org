@@ -659,6 +659,23 @@ $log_2{n}$ 次
 : (define (quarter-pi n)
 :   (/ (product 1 n term-numer) (product 1 n term-deno)))
 
+**** 请说明sum和product都是称为accumulate的更一般概念的特殊情况.使用accumulate定义出sum和product.
+: (define (accumulate combinder null-value term a next b)
+:   (if (> a b) null-value
+:       (combinder (term a) (accumulate combinder null-value term (next a) next b))))
+: 
+: (define (sum a b) (accumulate + 0 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
+: (define (product a b) (accumulate * 1 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
+
+**** 实现filtered-accumulate
+: (define (filtered-accumulate filter combinder null-value term a next b)
+:   (cond ((> a b) null-value)
+: 	((filter a) 
+: 	 (combinder (term a) 
+: 	      (filtered-accumulate filter combinder null-value term (next a) next b)))
+: 	(else 
+: 	 (combinder null-value
+: 	 (filtered-accumulate filter combinder null-value term (next a) next b)))))
 
 *** 用lambda构造过程
 为了省去单独定义一些简单函数的麻烦,引入lambda特殊形式来完成这类描述,而不必给每个过程绑定名字.
