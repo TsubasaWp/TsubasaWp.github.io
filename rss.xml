@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 03 Apr 2016 17:53:35 CST</pubDate>
-    <lastBuildDate>Sun, 03 Apr 2016 17:53:35 CST</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2016 19:46:10 CST</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 19:46:10 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -1493,12 +1493,9 @@ k取6时结果具有4位精度, 但不够准确.k越大时,结果越逼近 \(1/\
 (define (e k)
   (+ 2 (de-frac k)))
 </pre>
-<p>
-结果:2.7182818&#x2026;
-</p>
 </div></li>
 
-<li><a id="orgheadline65"></a><br  /></li></ol>
+<li><a id="orgheadline65"></a>定义过程(tan-cf x k),基于Lambert公式计算正切函数的近似值.<br  /></li></ol>
 </div>
 </div>
 </div>
