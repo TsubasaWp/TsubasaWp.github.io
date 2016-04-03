@@ -4,10 +4,22 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Fri, 01 Apr 2016 08:21:13 CST</pubDate>
-    <lastBuildDate>Fri, 01 Apr 2016 08:21:13 CST</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2016 09:15:38 CST</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2016 09:15:38 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
+    <item>
+      <title>Untitled</title>
+      <link>http://tsubasawp.github.io/blog/2016/04/03/untitled/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>Untitled</h1>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-04-03</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/04/03/untitled/</guid>
+    </item>
     <item>
       <title>SICP Reading Note - ch1</title>
       <link>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</link>
@@ -18,7 +30,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline57">1. 构造过程抽象</a>
+<li><a href="#orgheadline66">1. 构造过程抽象</a>
 <ul>
 <li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
@@ -59,12 +71,15 @@
 <li><a href="#orgheadline46">1.4.13. [习题]</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline56">1.5. 用高阶函数做抽象</a>
+<li><a href="#orgheadline65">1.5. 用高阶函数做抽象</a>
 <ul>
 <li><a href="#orgheadline48">1.5.1. 过程作为参数</a></li>
 <li><a href="#orgheadline53">1.5.2. [练习]</a></li>
 <li><a href="#orgheadline54">1.5.3. 用lambda构造过程</a></li>
 <li><a href="#orgheadline55">1.5.4. 用let创建局部变量</a></li>
+<li><a href="#orgheadline57">1.5.5. [习题]</a></li>
+<li><a href="#orgheadline60">1.5.6. 过程作为一般性的方法</a></li>
+<li><a href="#orgheadline64">1.5.7. [习题]</a></li>
 </ul>
 </li>
 </ul>
@@ -86,8 +101,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline57" class="outline-2">
-<h2 id="orgheadline57"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline66" class="outline-2">
+<h2 id="orgheadline66"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -1162,8 +1177,8 @@ ep(n)
 </div>
 </div>
 
-<div id="outline-container-orgheadline56" class="outline-3">
-<h3 id="orgheadline56"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
+<div id="outline-container-orgheadline65" class="outline-3">
+<h3 id="orgheadline65"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 在作用上,过程也是一类抽象,它们描述了一些对于数的复合操作,但不依赖特定的数,甚至不只用数作为参数.
@@ -1270,6 +1285,7 @@ ep(n)
 </div></li></ol>
 </div>
 
+
 <div id="outline-container-orgheadline54" class="outline-4">
 <h4 id="orgheadline54"><span class="section-number-4">1.5.3</span> 用lambda构造过程</h4>
 <div class="outline-text-4" id="text-1-5-3">
@@ -1353,12 +1369,93 @@ lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 
 </pre>
 </div>
 </div>
+
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57"><span class="section-number-4">1.5.5</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-5-5">
+</div><ol class="org-ol"><li><a id="orgheadline56"></a>执行(f f)会发生什么<br  /><div class="outline-text-5" id="text-1-5-5-1">
+<p>
+(f f)-&gt;(f 2)-&gt;(2 2). 而2不是一个可以应用的过程, 会报错.
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline60" class="outline-4">
+<h4 id="orgheadline60"><span class="section-number-4">1.5.6</span> 过程作为一般性的方法</h4>
+<div class="outline-text-4" id="text-1-5-6">
+</div><ol class="org-ol"><li><a id="orgheadline58"></a>通过区间折半法寻找方程的根<br  /><div class="outline-text-5" id="text-1-5-6-1">
+<p>
+代码略&#x2026;
+</p>
+</div></li>
+
+<li><a id="orgheadline59"></a>找出函数的不动点<br  /><div class="outline-text-5" id="text-1-5-6-2">
+<p>
+数x称为函数f的不动点,如果x满足方程 \(f(x)=x\) . 
+</p>
+<pre class="example">
+(define tolerance 0.00001)
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (&lt; (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next)))) ;; 这里需要保证收敛
+  (try first-guess))
+</pre>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline64" class="outline-4">
+<h4 id="orgheadline64"><span class="section-number-4">1.5.7</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-5-7">
+</div><ol class="org-ol"><li><a id="orgheadline61"></a>使用fixed-point找出黄金分割 \(phi\) 的值: x-&gt;1+1/x.<br  /><div class="outline-text-5" id="text-1-5-7-1">
+<pre class="example">
+(fixed-point (lambda (x) (+ 1 (/ 1 x)))  1.0)
+</pre>
+<p>
+x=1.6180327868852458
+</p>
+</div></li>
+
+<li><a id="orgheadline62"></a>修改fixed-point,使他打印出计算过程.确定x<sup>x</sup>=1000的一个根,并比较采用平均阻尼和不用平均阻尼的计算步骤.<br  /><div class="outline-text-5" id="text-1-5-7-2">
+<p>
+不用平均阻尼
+</p>
+<pre class="example">
+(fixed-point-log  (lambda (x)  (/ (log 1000) (log x))) 2)
+</pre>
+<p>
+33步
+</p>
+
+<p>
+使用平均阻尼:
+</p>
+<pre class="example">
+(define (average n) (/ n 2))
+(fixed-point-log  (lambda (x) (average (+ x (/ (log 1000) (log x))))) 2)
+</pre>
+<p>
+8步
+</p>
+</div></li>
+
+<li><a id="orgheadline63"></a>一个无穷连分式是一个如下形式的表达式:<br  /><div class="outline-text-5" id="text-1-5-7-3">
+<p>
+\(\Large x=\frac{N_1}{D1 + \frac{N_2}{D2 + \frac{N_3}{D_3+...}}}\)
+证明当Di和Ni都等于1时,这一连分式产生出\(1/\phi\)
+</p>
+</div></li></ol>
+</div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-01</pubDate>
+      <pubDate>2016-04-03</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</guid>
     </item>
     <item>
@@ -1416,13 +1513,6 @@ lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 
       <description><![CDATA[]]></description>
       <pubDate>2016-01-17</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
-    </item>
-    <item>
-      <title>制作下雨场景</title>
-      <link>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</link>
-      <description><![CDATA[]]></description>
-      <pubDate>2016-01-17</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</guid>
     </item>
   </channel>
 </rss>
