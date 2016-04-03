@@ -748,7 +748,14 @@ lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 
 x=1.6180327868852458
 
 **** 修改fixed-point,使他打印出计算过程.确定x^x=1000的一个根,并比较采用平均阻尼和不用平均阻尼的计算步骤.
+不用平均阻尼
+: (fixed-point-log  (lambda (x)  (/ (log 1000) (log x))) 2)
+33步
 
+使用平均阻尼:
+: (define (average n) (/ n 2))
+: (fixed-point-log  (lambda (x) (average (+ x (/ (log 1000) (log x))))) 2)
+8步
 
 **** 一个无穷连分式是一个如下形式的表达式:
 $\Large x=\frac{N_1}{D1 + \frac{N_2}{D2 + \frac{N_3}{D_3+...}}}$
