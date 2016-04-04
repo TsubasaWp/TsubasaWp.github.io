@@ -34,7 +34,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline76">1. 构造过程抽象</a>
+<li><a href="#orgheadline79">1. 构造过程抽象</a>
 <ul>
 <li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
 <ul>
@@ -75,7 +75,7 @@
 <li><a href="#orgheadline46">1.4.13. [习题]</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline75">1.5. 用高阶函数做抽象</a>
+<li><a href="#orgheadline78">1.5. 用高阶函数做抽象</a>
 <ul>
 <li><a href="#orgheadline48">1.5.1. 过程作为参数</a></li>
 <li><a href="#orgheadline53">1.5.2. [练习]</a></li>
@@ -85,7 +85,7 @@
 <li><a href="#orgheadline60">1.5.6. 过程作为一般性的方法</a></li>
 <li><a href="#orgheadline66">1.5.7. [习题]</a></li>
 <li><a href="#orgheadline69">1.5.8. 过程作为返回值</a></li>
-<li><a href="#orgheadline74">1.5.9. [习题]</a></li>
+<li><a href="#orgheadline77">1.5.9. [习题]</a></li>
 </ul>
 </li>
 </ul>
@@ -107,8 +107,8 @@ sicp窝终于回来了&#x2026;
 ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
 </p>
 
-<div id="outline-container-orgheadline76" class="outline-2">
-<h2 id="orgheadline76"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div id="outline-container-orgheadline79" class="outline-2">
+<h2 id="orgheadline79"><span class="section-number-2">1</span> 构造过程抽象</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
@@ -1182,8 +1182,8 @@ ep(n)
 </div>
 </div>
 
-<div id="outline-container-orgheadline75" class="outline-3">
-<h3 id="orgheadline75"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
+<div id="outline-container-orgheadline78" class="outline-3">
+<h3 id="orgheadline78"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
 <div class="outline-text-3" id="text-1-5">
 <p>
 在作用上,过程也是一类抽象,它们描述了一些对于数的复合操作,但不依赖特定的数,甚至不只用数作为参数.
@@ -1588,8 +1588,8 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 </div></li></ol>
 </div>
 
-<div id="outline-container-orgheadline74" class="outline-4">
-<h4 id="orgheadline74"><span class="section-number-4">1.5.9</span> [习题]</h4>
+<div id="outline-container-orgheadline77" class="outline-4">
+<h4 id="orgheadline77"><span class="section-number-4">1.5.9</span> [习题]</h4>
 <div class="outline-text-4" id="text-1-5-9">
 </div><ol class="org-ol"><li><a id="orgheadline70"></a>请定义一个过程cubic,它和newtons-method一起使用在下面的表达式里,逼近三次方程x<sup>3</sup>+aX<sup>2</sup>+c的零点<br  /><div class="outline-text-5" id="text-1-5-9-1">
 <p>
@@ -1638,6 +1638,72 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 ((repeated square 2) 5)
 ; Value: 625
 </pre>
+</div></li>
+
+<li><a id="orgheadline74"></a>实现平滑函数<br  /><div class="outline-text-5" id="text-1-5-9-5">
+<pre class="example">
+(define (smooth f)
+  (lambda (x) 
+    (/ (+ (f x) (f (- x dx)) (f (+ x dx))) 3)))
+
+(define (smooth-k f k)
+  ((repeated smooth k) f))
+</pre>
+</div></li>
+
+<li><a id="orgheadline75"></a>试验求$x/y<sup>n-1</sup>$需要多少次平均阻尼<br  /><div class="outline-text-5" id="text-1-5-9-6">
+<pre class="example">
+;;前面定义的求幂过程expt-iter
+(define (expt-iter b n a)
+  (cond ((= n 0) a)
+        ((even? n) (expt-iter  (* b b)  (/ n 2)  a))
+        (else (expt-iter  b (- n 1) (* b a)))))
+;;定义过程x-&gt;x/y^n
+(define (root n x)
+  (lambda (y) (/ x (expt-iter y n 1))))
+;;应用k次阻尼
+(define (repeated-damp f k)
+  ((repeated average-damp k) f))
+
+(define (squrt-n n x damp-cnt)
+  (fixed-point-log (repeated-damp (root n x) damp-cnt) 1))
+</pre>
+
+<p>
+试验下来大约至少需要$log{n}$次平均阻尼.
+</p>
+</div></li>
+
+<li><a id="orgheadline76"></a>写一个过程interative-improve, 它以两个过程为参数. 其中之一用于判定结果是否足够好,另外一个用于猜测更好的结果.<br  /><div class="outline-text-5" id="text-1-5-9-7">
+<pre class="example">
+(define (iterative-improve good-enough? f)
+  (lambda (x)
+    (define (try guess)
+      (let ((next (f guess)))
+        (if (good-enough? guess next)
+            next
+            (try next))))
+    (try x)))
+;;定义good-enough?
+(define (close-enough? v1 v2)
+  (&lt; (abs (- v1 v2)) tolerance))
+
+(define (fixed-point f guess)
+  ((iterative-improve close-enough? f) guess))
+
+(define (sqrt n guess)
+    ((iterative-improve 
+      close-enough? (lambda (x) (/ (+ x (/ n x)) 2))) guess))
+</pre>
+
+
+<p>
+以上.
+</p>
+
+<p>
+(几乎一个月过去了/(ㄒoㄒ)/~~)
+</p>
 </div></li></ol>
 </div>
 </div>
@@ -1648,7 +1714,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-03-09</span>
-        <span title="last modification date" class="post-info">2016-04-03</span>
+        <span title="last modification date" class="post-info">2016-04-04</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
