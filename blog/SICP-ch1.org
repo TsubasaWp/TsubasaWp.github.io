@@ -882,6 +882,53 @@ List给了 *过程* 完全第一级状态, 这是非常牛逼的(主要是难以
 : ((repeated square 2) 5)
 : ; Value: 625
 
+**** 实现平滑函数
+: (define (smooth f)
+:   (lambda (x) 
+:     (/ (+ (f x) (f (- x dx)) (f (+ x dx))) 3)))
+: 
+: (define (smooth-k f k)
+:   ((repeated smooth k) f))
+
+**** 试验求$x/y^{n-1}$需要多少次平均阻尼
+: ;;前面定义的求幂过程expt-iter
+: (define (expt-iter b n a)
+:   (cond ((= n 0) a)
+: 	((even? n) (expt-iter  (* b b)  (/ n 2)  a))
+: 	(else (expt-iter  b (- n 1) (* b a)))))
+: ;;定义过程x->x/y^n
+: (define (root n x)
+:   (lambda (y) (/ x (expt-iter y n 1))))
+: ;;应用k次阻尼
+: (define (repeated-damp f k)
+:   ((repeated average-damp k) f))
+: 
+: (define (squrt-n n x damp-cnt)
+:   (fixed-point-log (repeated-damp (root n x) damp-cnt) 1))
+
+试验下来大约至少需要$\log{n}$次平均阻尼.
+
+**** 写一个过程interative-improve, 它以两个过程为参数. 其中之一用于判定结果是否足够好,另外一个用于猜测更好的结果.
+: (define (iterative-improve good-enough? f)
+:   (lambda (x)
+:     (define (try guess)
+:       (let ((next (f guess)))
+: 	(if (good-enough? guess next)
+: 	    next
+: 	    (try next))))
+:     (try x)))
+: ;;定义good-enough?
+: (define (close-enough? v1 v2)
+:   (< (abs (- v1 v2)) tolerance))
+: 
+: (define (fixed-point f guess)
+:   ((iterative-improve close-enough? f) guess))
+: 
+: (define (sqrt n guess)
+:     ((iterative-improve 
+:       close-enough? (lambda (x) (/ (+ x (/ n x)) 2))) guess))
+
+
 
 
 
