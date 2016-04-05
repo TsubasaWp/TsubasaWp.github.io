@@ -1,4 +1,4 @@
-#+TITLE:     SICP Reading Note - ch1
+#+TITLE:     SICP-CH1-构造过程抽象
 #+AUTHOR:    Tsubasa
 #+EMAIL:     tsubasa.wp@gmail.com
 #+DATE:      2016-03-09
