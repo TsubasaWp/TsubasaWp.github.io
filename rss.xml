@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Wed, 06 Apr 2016 00:36:48 CST</pubDate>
-    <lastBuildDate>Wed, 06 Apr 2016 00:36:48 CST</lastBuildDate>
+    <pubDate>Wed, 06 Apr 2016 00:41:15 CST</pubDate>
+    <lastBuildDate>Wed, 06 Apr 2016 00:41:15 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -28,6 +28,13 @@
       <description><![CDATA[]]></description>
       <pubDate>2016-04-06</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-reading-note---ch1/</guid>
+    </item>
+    <item>
+      <title>SICP-ch2-构造数据抽象</title>
+      <link>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</link>
+      <description><![CDATA[]]></description>
+      <pubDate>2016-04-06</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
@@ -70,13 +77,6 @@
       <description><![CDATA[]]></description>
       <pubDate>2016-04-06</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
-    </item>
-    <item>
-      <title>制作下雨场景</title>
-      <link>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</link>
-      <description><![CDATA[]]></description>
-      <pubDate>2016-04-06</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/01/17/rain-scene</guid>
     </item>
   </channel>
 </rss>
