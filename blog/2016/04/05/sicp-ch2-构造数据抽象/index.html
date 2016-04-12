@@ -34,17 +34,69 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">1. 数据抽象索引</a></li>
+<li><a href="#orgheadline3">1. 数据抽象索引</a>
+<ul>
+<li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
+<li><a href="#orgheadline2">1.2. 习题2.1</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="section-number-2">1</span> 数据抽象索引</h2>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">1</span> 数据抽象索引</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-test ssh
+<code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
+<code>选择函数</code>
+=构造函数
 </p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 实例:有理数的算术运算</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<code>表数据结构</code> 从序对构造起来的数据对象
+cond, car, cdr
+</p>
+
+<p>
+定义有理数过程:
+</p>
+<pre class="example">
+;; 定义有理数并用gcd优化
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (cons (/ n g)  (/ d g))))
+;; 分子
+(define (number x) (car x))
+;; 分母
+(define (denom x) (cdr x))
+;; print
+(define (print-rat x)
+  (newline)
+  (display (number x))
+  (display "/")
+  (display (denom x)))
+;; test val-&gt;1/2
+(print-rat (make-rat 2 -4))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 习题2.1</h3>
+<div class="outline-text-3" id="text-1-2">
+<pre class="example">
+(define (make-rat n d)
+  (let ((g (gcd (abs n) (abs d))))
+    (cond ((&gt; (* n d) 0)
+           (cons (/ (abs n) g)  (/ (abs d) g)))
+          (else  (cons (- 0 (/ (abs n) g)) (/ (abs d) g))))))
+</pre>
+</div>
 </div>
 </div>
 
@@ -53,7 +105,7 @@ test ssh
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-06</span>
+        <span title="last modification date" class="post-info">2016-04-12</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
