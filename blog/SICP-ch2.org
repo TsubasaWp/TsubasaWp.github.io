@@ -5,5 +5,39 @@
 #+STARTUP:   latexpreview
 
 * 数据抽象索引
+=数据抽象= 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
+=选择函数=
+=构造函数
 
-test ssh
+** 实例:有理数的算术运算
+=表数据结构= 从序对构造起来的数据对象
+cond, car, cdr
+
+定义有理数过程:
+: ;; 定义有理数并用gcd优化
+: (define (make-rat n d)
+:   (let ((g (gcd n d)))
+:     (cons (/ n g)  (/ d g))))
+: ;; 分子
+: (define (number x) (car x))
+: ;; 分母
+: (define (denom x) (cdr x))
+: ;; print
+: (define (print-rat x)
+:   (newline)
+:   (display (number x))
+:   (display "/")
+:   (display (denom x)))
+: ;; test val->1/2
+: (print-rat (make-rat 2 -4))
+: 
+:
+
+** 习题2.1
+: (define (make-rat n d)
+:   (let ((g (gcd (abs n) (abs d))))
+:     (cond ((> (* n d) 0)
+:            (cons (/ (abs n) g)  (/ (abs d) g)))
+:           (else  (cons (- 0 (/ (abs n) g)) (/ (abs d) g))))))
+
+
