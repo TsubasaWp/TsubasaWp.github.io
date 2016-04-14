@@ -119,6 +119,35 @@
 
 在第三章可以看到,数据的过程性表示在设计中扮演着一种重要的角色,这种风格叫做 =消息传递=
 
+** 习题2.4
+代换过程:
+: (car (cons x y))
+: ((cons x y) (lambda (p q) p))
+: ;把(lambda (p q))作为m带入(lambda (m) (m x y))
+: ((lambda (p q) p) x y)
+: ;应用x,y,得到
+: value->x
+
+** 习题2.5
+2和3都是质数,可以利用质数相乘的性质储存a和b.
+: (define (cons-expt x y)
+:   (* (expt 2 x) (expt 3 y)))
+: (cons-expt 2 2)
+: (define (car-expt x)
+:   (define (iter a n)
+:     (cond ((= 0 (remainder a 2)) (iter (/ a 2) (+ n 1)))
+:           (else n)))
+:   (iter x 0))
+: 
+: (define (cdr-expt x)
+:   (define (iter a n)
+:     (cond ((= 0 (remainder a 3)) (iter (/ a 3) (+ n 1)))
+:           (else n)))
+:   (iter x 0))
+: 
+: (car-expt (cons-expt 5 6))
+: (cdr-expt (cons-expt 5 6))
+
 
 
 
