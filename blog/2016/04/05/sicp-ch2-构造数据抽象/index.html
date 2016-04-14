@@ -34,7 +34,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline7">1. 数据抽象索引</a>
+<li><a href="#orgheadline9">1. 数据抽象索引</a>
 <ul>
 <li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
 <li><a href="#orgheadline2">1.2. 习题2.1</a></li>
@@ -42,14 +42,16 @@
 <li><a href="#orgheadline4">1.4. 习题2.2</a></li>
 <li><a href="#orgheadline5">1.5. 习题2.3</a></li>
 <li><a href="#orgheadline6">1.6. 数据意味着什么</a></li>
+<li><a href="#orgheadline7">1.7. 习题2.4</a></li>
+<li><a href="#orgheadline8">1.8. 习题2.5</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7"><span class="section-number-2">1</span> 数据抽象索引</h2>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">1</span> 数据抽象索引</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
@@ -215,6 +217,51 @@
 <p>
 在第三章可以看到,数据的过程性表示在设计中扮演着一种重要的角色,这种风格叫做 <code>消息传递</code>
 </p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">1.7</span> 习题2.4</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+代换过程:
+</p>
+<pre class="example">
+(car (cons x y))
+((cons x y) (lambda (p q) p))
+;把(lambda (p q))作为m带入(lambda (m) (m x y))
+((lambda (p q) p) x y)
+;应用x,y,得到
+value-&gt;x
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">1.8</span> 习题2.5</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+2和3都是质数,可以利用质数相乘的性质储存a和b.
+</p>
+<pre class="example">
+(define (cons-expt x y)
+  (* (expt 2 x) (expt 3 y)))
+(cons-expt 2 2)
+(define (car-expt x)
+  (define (iter a n)
+    (cond ((= 0 (remainder a 2)) (iter (/ a 2) (+ n 1)))
+          (else n)))
+  (iter x 0))
+
+(define (cdr-expt x)
+  (define (iter a n)
+    (cond ((= 0 (remainder a 3)) (iter (/ a 3) (+ n 1)))
+          (else n)))
+  (iter x 0))
+
+(car-expt (cons-expt 5 6))
+(cdr-expt (cons-expt 5 6))
+</pre>
 </div>
 </div>
 </div>
