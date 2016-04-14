@@ -6,12 +6,11 @@
 
 * 数据抽象索引
 =数据抽象= 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
-=选择函数=
-=构造函数
 
 ** 实例:有理数的算术运算
 =表数据结构= 从序对构造起来的数据对象
-cond, car, cdr
+
+关键字:cond, car, cdr
 
 定义有理数过程:
 : ;; 定义有理数并用gcd优化
@@ -39,5 +38,87 @@ cond, car, cdr
 :     (cond ((> (* n d) 0)
 :            (cons (/ (abs n) g)  (/ (abs d) g)))
 :           (else  (cons (- 0 (/ (abs n) g)) (/ (abs d) g))))))
+
+** 抽象屏障
+数据抽象的基本思想是:为每一类数据对象标识出一组操作,使得对这类数据对象的操作都可以基于它们表述,并且只使用它们.
+** 习题2.2
+: (define (make-point x y) (cons x y))
+: (define (x-point x) (car x))
+: (define (y-point x) (cdr x))
+: (define (make-segment x y) (cons x y))
+: (define (start-point x) (car x))
+: (define (end-point x) (cdr x))
+: (define (print-point p)
+:   (newline)
+:   (display "(")
+:   (display (x-point p))
+:   (display ",")
+:   (display (y-point p))
+:   (display ")"))
+: 
+: (define (mid-point segment)
+:   (print-point (make-point
+:    (/ (+ (x-point (start-point segment)) (x-point (end-point segment))) 2)
+:    (/ (+ (y-point (start-point segment)) (y-point (end-point segment))) 2))))
+: 
+: (mid-point (make-segment (make-point 1.0 1.0) (make-point 4 5)))
+: ;; value-> (2.5,3.)
+
+** 习题2.3
+: (define (double x) (* x x))
+: (define (make-rect p1 p2 p3)
+:   (cons (make-segment p1 p2) (make-segment p2 p3)))
+: (define (h-side rect) (car rect))
+: (define (v-side rect) (cdr rect))
+: (define (lenth seg)
+:   (let ((p1 (x-point seg))
+:         (p2 (y-point seg)))
+:   (sqrt
+:    (+
+:     (double (- (x-point p1) (x-point p2)))
+:     (double (- (y-point p1) (y-point p2)))))))
+: (define (rect-length rect)
+:   (* (+
+:       (lenth (h-side rect))
+:       (lenth (v-side rect)))
+:      2))
+: (define (rect-area rect)
+:   (*  (lenth (h-side rect))
+:       (lenth (v-side rect))))
+: 
+: ;; test
+: (lenth (make-segment (make-point 1 1) (make-point 2 2))) 
+: ;Value: 1.4142135623730951
+: 
+: (rect-length
+:  (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
+: ;Value: 6.82842712474619
+: 
+: (rect-area
+:  (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
+: ;Value: 2.8284271247461903
+
+** 数据意味着什么
+=数据= 是一组适当的 *构造函数* 和 *选择函数* ,以及为了使这些过程成为一套合法的表示, 它们必须满足的一组*特定条件*
+
+条件可能不太好理解, 举例来说, *序对* 这种数据的car和cdr操作需要满足的条件就是:
+任何对象x和y, 如果z是(cons x y),那么(car z)就是x, (cdr z)就是y.
+
+=数据的过程性表示= lisp/scheme甚至可以用过程来表示序对:
+: (define (cons x y)
+:  (define (dispatch m)
+:    (cond ((= m 0) x)
+:          ((= m 1) y)
+:          (else (error "argument not 0 or 1")))
+:   dispatch))
+: 
+: (define (car z) (z 0))
+: (define (cdr z) (z 1))
+
+(cons x y)返回一个过程. 当然scheme和一般的lisp并不会这样实现序对,主要是出于性能考虑.
+
+在第三章可以看到,数据的过程性表示在设计中扮演着一种重要的角色,这种风格叫做 =消息传递=
+
+
 
 
