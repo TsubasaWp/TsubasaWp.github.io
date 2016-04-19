@@ -34,7 +34,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline17">1. 数据抽象索引</a>
+<li><a href="#orgheadline18">1. 数据抽象索引</a>
 <ul>
 <li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
 <li><a href="#orgheadline2">1.2. 习题2.1</a></li>
@@ -52,14 +52,15 @@
 <li><a href="#orgheadline14">1.14. 习题2.10</a></li>
 <li><a href="#orgheadline15">1.15. 习题2.11</a></li>
 <li><a href="#orgheadline16">1.16. 习题2.12</a></li>
+<li><a href="#orgheadline17">1.17. 习题2.13</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-2">
-<h2 id="orgheadline17"><span class="section-number-2">1</span> 数据抽象索引</h2>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">1</span> 数据抽象索引</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
@@ -502,6 +503,58 @@ A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
 
 <div id="outline-container-orgheadline16" class="outline-3">
 <h3 id="orgheadline16"><span class="section-number-3">1.16</span> 习题2.12</h3>
+<div class="outline-text-3" id="text-1-16">
+<pre class="example">
+(define (make-center-percent center percent)
+  (make-interval (- center (* center percent))
+                 (+ center (* center percent))))
+(define (percent range)
+  (let ((width (/ (- (upper-bound range) (lower-bound range)) 2))
+        (mid (/ (+ (upper-bound range) (lower-bound range)) 2)))
+        (/ width mid)))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">1.17</span> 习题2.13</h3>
+<div class="outline-text-3" id="text-1-17">
+<p>
+计算精度的公式是简单相加:
+</p>
+<pre class="example">
+(define (percent-mul r1 r2)
+  (+ (percent r1) (percent r2)))
+</pre>
+<p>
+测试一下
+</p>
+<pre class="example">
+(percent (mul-interval (make-interval 9.99 10.01) (make-interval 9.99 10.01)))
+(percent-mul (make-interval 9.99 10.01) (make-interval 9.99 10.01))
+</pre>
+
+
+<p>
+然后分析part1,part2的问题:
+</p>
+<pre class="example">
+(define (part1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+(define (part2 r1 r2)
+  (let ((one (make-interval 1 1)))
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                                (div-interval one r2)))))
+
+(part1 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.25,2)
+(part2 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.5 1)
+</pre>
+<p>
+猜测是运算顺序不同导致精度变化不同
+</p>
+</div>
 </div>
 </div>
 
@@ -510,7 +563,7 @@ A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-17</span>
+        <span title="last modification date" class="post-info">2016-04-19</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
