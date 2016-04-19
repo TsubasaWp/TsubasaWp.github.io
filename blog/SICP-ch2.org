@@ -312,4 +312,36 @@ A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以$w(A/B)\neq w(A)/w(B)$.
 : ;; Value : (-5, 10)
 
 ** 习题2.12
+: (define (make-center-percent center percent)
+:   (make-interval (- center (* center percent))
+:                  (+ center (* center percent))))
+: (define (percent range)
+:   (let ((width (/ (- (upper-bound range) (lower-bound range)) 2))
+:         (mid (/ (+ (upper-bound range) (lower-bound range)) 2)))
+:         (/ width mid)))
+
+** 习题2.13
+计算精度的公式是简单相加:
+: (define (percent-mul r1 r2)
+:   (+ (percent r1) (percent r2)))
+测试一下
+: (percent (mul-interval (make-interval 9.99 10.01) (make-interval 9.99 10.01)))
+: (percent-mul (make-interval 9.99 10.01) (make-interval 9.99 10.01))
+
+
+然后分析part1,part2的问题:
+: (define (part1 r1 r2)
+:   (div-interval (mul-interval r1 r2)
+:                 (add-interval r1 r2)))
+: (define (part2 r1 r2)
+:   (let ((one (make-interval 1 1)))
+:     (div-interval one
+:                   (add-interval (div-interval one r1)
+:                                 (div-interval one r2)))))
+: 
+: (part1 (make-interval 1 2) (make-interval 1 2)) ;val-> (.25,2)
+: (part2 (make-interval 1 2) (make-interval 1 2)) ;val-> (.5 1)
+猜测是运算顺序不同导致精度变化不同
+
+
 
