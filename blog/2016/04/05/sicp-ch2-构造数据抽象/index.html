@@ -34,7 +34,7 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline18">1. 数据抽象索引</a>
+<li><a href="#orgheadline21">1. 数据抽象索引</a>
 <ul>
 <li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
 <li><a href="#orgheadline2">1.2. 习题2.1</a></li>
@@ -53,14 +53,17 @@
 <li><a href="#orgheadline15">1.15. 习题2.11</a></li>
 <li><a href="#orgheadline16">1.16. 习题2.12</a></li>
 <li><a href="#orgheadline17">1.17. 习题2.13</a></li>
+<li><a href="#orgheadline18">1.18. 习题2.14</a></li>
+<li><a href="#orgheadline19">1.19. 习题2.15</a></li>
+<li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-2">
-<h2 id="orgheadline18"><span class="section-number-2">1</span> 数据抽象索引</h2>
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21"><span class="section-number-2">1</span> 数据抽象索引</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 <code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
@@ -556,6 +559,72 @@ A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18"><span class="section-number-3">1.18</span> 习题2.14</h3>
+<div class="outline-text-3" id="text-1-18">
+<p>
+首先验证上面的猜测
+</p>
+<pre class="example">
+(let ((r1 (make-interval 1.0 2))
+       (r2 (make-interval 1.0 2))
+      (one (make-interval 1.0 1.0)))
+  (percent r1)  ; .33
+  (percent (mul-interval r1 r2)) ; .6 放大2倍
+  (percent (div-interval r1 r2)) ; .6 放大2倍
+  (percent (add-interval r1 r2)) ; .33 不变
+  (percent (div-interval one r1)) ; .33 不变
+  (percent (part1 r1 r2)) ; .77 放大2.28倍
+  (percent (part2 r1 r2)) ; .33 
+  )
+</pre>
+
+<p>
+可见,直接对两个区间进行乘法或除法操作会将精度放大.而加法以及被one除不会放大精度.
+</p>
+
+<p>
+在part1的运算过程中,乘法将精度放大2倍, 用放大的乘积除以和之后从0.6放大到0.77. 
+而在part2中,由于全是除以1的操作.精度没有发生变化.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19"><span class="section-number-3">1.19</span> 习题2.15</h3>
+<div class="outline-text-3" id="text-1-19">
+<p>
+eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好的程序.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">1.20</span> 习题2.16</h3>
+<div class="outline-text-3" id="text-1-20">
+<p>
+(作者说此题非常难&#x2026;怕
+</p>
+
+<p>
+我先想到了除法运算可能长这样:
+</p>
+<pre class="example">
+(define (better-div-interval r1 r2)
+  (let ((one (make-interval 1 1)))
+    (better-mul-interval r1  (div-interval one r2))))
+</pre>
+<p>
+但首先要能定义出一个better-mul-interval
+</p>
+
+<p>
+考虑利用2.13的公式:
+\(\frac{r1*r2}{r1+r2}=\frac1{\frac1{r1}+\frac1{r2}}\)
+</p>
+</div>
+</div>
 </div>
 
 </div>
@@ -563,7 +632,7 @@ A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-19</span>
+        <span title="last modification date" class="post-info">2016-04-20</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
