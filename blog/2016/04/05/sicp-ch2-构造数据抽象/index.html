@@ -58,6 +58,20 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline29">2. 层次性数据和闭包性质</a>
+<ul>
+<li><a href="#orgheadline28">2.1. 序列的表示</a>
+<ul>
+<li><a href="#orgheadline22">2.1.1. 对表的操作</a></li>
+<li><a href="#orgheadline23">2.1.2. 习题2.17</a></li>
+<li><a href="#orgheadline24">2.1.3. 习题2.18</a></li>
+<li><a href="#orgheadline25">2.1.4. 习题2.19</a></li>
+<li><a href="#orgheadline26">2.1.5. 习题2.20</a></li>
+<li><a href="#orgheadline27">2.1.6. 对表的映射</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -620,9 +634,189 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </p>
 
 <p>
-考虑利用2.13的公式:
-\(\frac{r1*r2}{r1+r2}=\frac1{\frac1{r1}+\frac1{r2}}\)
+我实在编不下去了! google了一下,这道题真的很难,涉及到比较艰深的数学问题. 贴个链接在这里吧:
+<a href="http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme">http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme</a>
 </p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-2">
+<h2 id="orgheadline29"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
+</p>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28"><span class="section-number-3">2.1</span> 序列的表示</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+序列可以通过嵌套cons操作构造起来
+</p>
+<pre class="example">
+(cons 1
+    (cons 2
+        (cons 3
+            (cons 4 ))))
+</pre>
+
+<p>
+scheme为了方便表的构造而提供了一个基本操作list.所以上面序列也可以通过以下方式产生:
+</p>
+<pre class="example">
+(list 1 2 3 4)
+</pre>
+<p>
+它们是等价的.
+</p>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">2.1.1</span> 对表的操作</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+<code>car</code> 可以被看做获取表第一项元素的操作
+<code>cdr</code> 可以看做获取表剩下的元素的操作
+<code>nil</code> 用于表示序对链的结束
+</p>
+
+<p>
+可以这样实现索引:
+</p>
+<pre class="example">
+(define (list-ref item n)
+  (if (= n 0)
+      (car item)
+      (list-ref (cdr item) (- n 1))))
+</pre>
+
+<p>
+<code>null?</code> 用于检查是否是空表.
+利用null实现length:
+</p>
+<pre class="example">
+(define (length items)
+  (if (null? items)
+      0
+      (+ 1 (length (cdr items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23"><span class="section-number-4">2.1.2</span> 习题2.17</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+获取序列的最后一个元素
+</p>
+<pre class="example">
+(define (last-pair items)
+  (if (= 1 (length items))
+      (list (car items))
+      (last-pair (cdr items))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24"><span class="section-number-4">2.1.3</span> 习题2.18</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+返回逆序序列
+</p>
+<pre class="example">
+(define (reverse items)
+  (if (= 1 (length items))
+      items
+      (append (reverse (cdr items)) (list (car items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25"><span class="section-number-4">2.1.4</span> 习题2.19</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+利用序列优化1.22的找硬币程序,把币种存储在序列中
+</p>
+<pre class="example">
+(define us-coins (list 50 25 10 5 1))
+(define uk-coins (list 100 50 20 10 5 2 1 0.5))
+(define (except-first-denomination coin-values) (cdr coin-values))
+(define (first-denomination coin-values) (car coin-values))
+(define (no-more? coin-values) (if (null? coin-values) true false))
+(define (cc amount coin-values)
+  (cond ((= amount 0 ) 1)
+        ((or (&lt; amount 0) (no-more? coin-values)) 0)
+        (else
+         (+ (cc amount
+                (except-first-denomination coin-values))
+            (cc (- amount
+                   (first-denomination coin-values))
+                coin-values)))))
+</pre>
+<p>
+币种的排序不会影响结果.因为针对每种硬币,都会从总金额amount开始重新计算, 测试结果是互相独立的.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26"><span class="section-number-4">2.1.5</span> 习题2.20</h4>
+<div class="outline-text-4" id="text-2-1-5">
+<p>
+这道题说明了scheme怎样定义带有任意多参数的过程
+</p>
+
+<p>
+具体方式是使用点尾:
+</p>
+<pre class="example">
+(define (f x y . z) &lt;body&gt;)
+</pre>
+<p>
+那么如果求值(f 1 2 3 4 5),则x=1,y=2,然后z=(3,4,5),是一个list. (原来是这样&#x2026;
+</p>
+
+<p>
+请用这种记法写出same-parity:返回与其第一个参数有同样奇偶性质的表
+</p>
+<pre class="example">
+;首先定义一个选择器,它接受一个过程参数f,然后用f来过滤出子序列
+(define (filter items f)
+  (cond
+   ((null? items) (list))
+   ((f (car items))
+    (append (list (car items)) (filter (cdr items) f)))
+   (else
+    (append (list) (filter (cdr items) f)))))
+</pre>
+<p>
+然后定义same-party.为了简化我首先利用append把x,y,z整合成一个序列������:
+</p>
+<pre class="example">
+(define (same-party x y . z)
+  (let ((param-list
+         (append (list x) (append (list y) z))))
+    (if
+     (odd? x)
+     (filter param-list odd?)
+     (filter param-list even?))))
+</pre>
+<p>
+测试
+</p>
+<pre class="example">
+(same-party 2 1 2 3 4 5 6 7 8) ; value: (1 3 5 7)
+(same-party 1 2 3 4 5 6 7 8)   ; value: (2 2 4 6 8)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27"><span class="section-number-4">2.1.6</span> 对表的映射</h4>
 </div>
 </div>
 </div>
@@ -632,7 +826,7 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-20</span>
+        <span title="last modification date" class="post-info">2016-04-21</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
