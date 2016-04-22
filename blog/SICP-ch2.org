@@ -470,4 +470,41 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 : (same-party 1 2 3 4 5 6 7 8)   ; value: (2 2 4 6 8)
 
 *** 对表的映射
+=map= 是一种公共模式,而且建立起了一种处理表的高层抽象
+: (define (map proc items)
+:   (if (null? items)
+:       (list)
+:       (cons (proc (car items))
+:             (map proc (cdr items)))))
+
+*** 习题2.21
+: (define (square-list items)
+:   (if (null? items)
+:       '()
+:       (cons (square (car items)) (square-list (cdr items)))))
+: 
+: (define (square-list items)
+:   (map square items))
+
+*** 习题2.22
+第一个迭代错在cons的顺序,把answer放在最后会变成倒序
+: (cons (...) answer)
+而修改后的程序把answer放在前面,虽然看起来顺序对了,但cons的第一个参数是嵌套的cons,最后生成的序列会长这样:
+: ((((. .) .) .) .)
+
+*** 习题2.23
+实现一个for-each
+: (define (for-each proc items)
+:   (if (null? items)
+:       '()
+:       (begin
+:         (proc (car items))
+:         (for-each proc (cdr items)))))
+
+** 层次结构
+将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列
+
+
+
+
 
