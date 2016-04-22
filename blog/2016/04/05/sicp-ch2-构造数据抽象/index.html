@@ -58,9 +58,9 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline29">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline33">2. 层次性数据和闭包性质</a>
 <ul>
-<li><a href="#orgheadline28">2.1. 序列的表示</a>
+<li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
 <li><a href="#orgheadline22">2.1.1. 对表的操作</a></li>
 <li><a href="#orgheadline23">2.1.2. 习题2.17</a></li>
@@ -68,8 +68,12 @@
 <li><a href="#orgheadline25">2.1.4. 习题2.19</a></li>
 <li><a href="#orgheadline26">2.1.5. 习题2.20</a></li>
 <li><a href="#orgheadline27">2.1.6. 对表的映射</a></li>
+<li><a href="#orgheadline28">2.1.7. 习题2.21</a></li>
+<li><a href="#orgheadline29">2.1.8. 习题2.22</a></li>
+<li><a href="#orgheadline30">2.1.9. 习题2.23</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline32">2.2. 层次结构</a></li>
 </ul>
 </li>
 </ul>
@@ -641,16 +645,16 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline29" class="outline-2">
-<h2 id="orgheadline29"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline33" class="outline-2">
+<h2 id="orgheadline33"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
 </p>
 </div>
 
-<div id="outline-container-orgheadline28" class="outline-3">
-<h3 id="orgheadline28"><span class="section-number-3">2.1</span> 序列的表示</h3>
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31"><span class="section-number-3">2.1</span> 序列的表示</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 序列可以通过嵌套cons操作构造起来
@@ -817,6 +821,77 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 
 <div id="outline-container-orgheadline27" class="outline-4">
 <h4 id="orgheadline27"><span class="section-number-4">2.1.6</span> 对表的映射</h4>
+<div class="outline-text-4" id="text-2-1-6">
+<p>
+<code>map</code> 是一种公共模式,而且建立起了一种处理表的高层抽象
+</p>
+<pre class="example">
+(define (map proc items)
+  (if (null? items)
+      (list)
+      (cons (proc (car items))
+            (map proc (cdr items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28"><span class="section-number-4">2.1.7</span> 习题2.21</h4>
+<div class="outline-text-4" id="text-2-1-7">
+<pre class="example">
+(define (square-list items)
+  (if (null? items)
+      '()
+      (cons (square (car items)) (square-list (cdr items)))))
+
+(define (square-list items)
+  (map square items))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29"><span class="section-number-4">2.1.8</span> 习题2.22</h4>
+<div class="outline-text-4" id="text-2-1-8">
+<p>
+第一个迭代错在cons的顺序,把answer放在最后会变成倒序
+</p>
+<pre class="example">
+(cons (...) answer)
+</pre>
+<p>
+而修改后的程序把answer放在前面,虽然看起来顺序对了,但cons的第一个参数是嵌套的cons,最后生成的序列会长这样:
+</p>
+<pre class="example">
+((((. .) .) .) .)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30"><span class="section-number-4">2.1.9</span> 习题2.23</h4>
+<div class="outline-text-4" id="text-2-1-9">
+<p>
+实现一个for-each
+</p>
+<pre class="example">
+(define (for-each proc items)
+  (if (null? items)
+      '()
+      (begin
+        (proc (car items))
+        (for-each proc (cdr items)))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><span class="section-number-3">2.2</span> 层次结构</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列
+</p>
 </div>
 </div>
 </div>
@@ -826,7 +901,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-21</span>
+        <span title="last modification date" class="post-info">2016-04-22</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
