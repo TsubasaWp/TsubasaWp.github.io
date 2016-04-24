@@ -494,17 +494,183 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 
 *** 习题2.23
 实现一个for-each
-: (define (for-each proc items)
-:   (if (null? items)
-:       '()
-:       (begin
-:         (proc (car items))
-:         (for-each proc (cdr items)))))
+#+BEGIN_SRC scheme
+(define (for-each proc items)
+  (if (null? items)
+       '()
+       (begin
+         (proc (car items))
+         (for-each proc (cdr items)))))
+#+END_SRC
 
 ** 层次结构
-将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列
+将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列,也就是
+=树=. 
 
+=pair?= scheme提供的基本过程, 检查参数是否为序对.
 
+*** 习题2.24
+#+BEGIN_SRC scheme
+(list 1 (list 2 (list 3 4) 5))
+;Value 89: (1 (2 (3 4) 5))
+#+END_SRC
 
+#+BEGIN_SRC c
+     N
+  /     \
+1        N    
+       / | \  
+      2  N  5
+        / \
+       3   4
+#+END_SRC
 
+*** 习题2.25
+#+BEGIN_SRC scheme
+(cdr (car (cdr (cdr mt1))))
+(cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr mt2)))))))))))
+#+END_SRC
 
+*** 习题2.26
+#+BEGIN_SRC scheme
+(append x y) ;Value 101: (1 2 3 4 5 6)
+(cons x y)   ;Value 102: ((1 2 3) 4 5 6)
+(list x y)   ;Value 103: ((1 2 3) (4 5 6))
+#+END_SRC
+
+*** 习题2.27
+实现深度逆序.这道题目真是折腾死宝宝了,一开始有个关键点没搞明白,导致瞎写了一通.
+这个关键的地方是:如果(cdr list)是一个list:
+: (list 1 (list 2 3))
+那么它的逆序则是
+: (append (cdr list) (car list))
+但如果(car list)是list,就稍微有点绕:
+: (list (list 1 2) 3)
+那么它的逆序则是
+: (append (cdr list) (list (car list)))
+原因是append或者cons会把第二个参数展开(去掉一层list), 所以不能直接使用(car x)当做第二个参数.           
+
+深度逆序:
+#+BEGIN_SRC scheme
+(define (deep-revers tree)
+  (cond
+   ((null? tree) '())
+   ((not (pair? tree)) (list tree))
+   ((pair? (car tree))
+      (append (deep-revers (cdr tree)) (list (deep-revers (car tree)))))
+   (else
+      (append (deep-revers (cdr tree)) (deep-revers (car tree))))))
+#+END_SRC
+
+*** 习题2.28
+#+BEGIN_SRC scheme
+(define (fringe tree)
+  (cond
+   ((null? tree) '())
+   ((not (pair? tree)) (list tree))
+   (else
+    (append (fringe (car tree))
+            (fringe (cdr tree)))
+        )))
+#+END_SRC
+
+*** 习题2.29
+-a) 获取左右子树,右子树稍稍注意:
+#+BEGIN_SRC scheme
+(define (make-mobile left right)
+  (list left right))
+(define (make-branch length structure)
+  (list length structure))
+(define (left-branch mobile)
+  (car mobile))
+(define (right-branch mobile)
+  (car (cdr mobile)))
+#+END_SRC
+
+- b) 递归计算子树长度(左边叶子之和)
+#+BEGIN_SRC scheme
+(define (branch-length branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) 0)
+   (else
+    (+ (car branch) (branch-length (right-branch branch))))))
+#+END_SRC
+
+递归计算重量(右叶子之和)
+#+BEGIN_SRC scheme
+(define (branch-weight branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) branch)
+   (else
+    (branch-weight (right-branch branch)))))
+
+(define (total-weight mobile)
+  (+
+   (branch-length (left-branch mobile))
+   (branch-length (right-branch mobile))))
+#+END_SRC
+
+- c) 计算是否平衡,简单的乘法.
+#+BEGIN_SRC scheme
+(define (is-balance mobile)
+  (=
+   (* (branch-weight (left-branch mobile)) (branch-length (left-branch mobile)))
+   (* (branch-weight (left-branch mobile)) (branch-length (right-branch mobile)))))
+#+END_SRC
+
+- d) 只需修改right-branch方法
+#+BEGIN_SRC scheme
+(define (right-branch mobile)
+  (cdr mobile))
+#+END_SRC
+
+*** 对树的映射
+把map与递归结合是处理树的一种强有力的抽象
+
+*** 习题2.30
+定义square-tree
+#+BEGIN_SRC scheme
+定义square-tree
+(define (map-tree tree f)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (map-tree sub-tree f)
+             (f sub-tree)))
+       tree))
+(map-tree (list 1 2 (list 3 4)) square)
+; value: (1 4 (9 16))
+#+END_SRC
+
+*** 习题2.31
+将2.30进一步抽象. (还好宝宝机智,已经抽象好了
+: (define (square-tree tree) (map-tree tree square))
+
+*** 习题2.32
+计算全排列(又学到一种算排列的新姿势
+#+BEGIN_SRC scheme
+(define (subsets s)
+  (if (null? s)
+      ()
+      (let ((reset (subsets (cdr s))))
+        (append reset
+                (cons ;; 这里一定用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
+                 (car s) 
+                 (map (lambda (sub) (append (car s) sub)) reset))))))
+#+END_SRC
+作者道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
+后来修改了之前的append实现才搞定:
+#+BEGIN_SRC scheme
+(define (append list1 list2)
+  (cond ((null? list1)
+         list2)
+        ((null? list2) ;; 对list2=nil的情况进行处理
+         list1)
+        ((and (not (pair? list1)) (not (pair? list2)))
+         (list list1 list2)) ;; 两个都是简单数据时返回list,而不是序对
+        ((not (pair? list1))
+         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr.
+        (else
+         (cons (car list1) (append (cdr list1) list2)))))
+#+END_SRC
