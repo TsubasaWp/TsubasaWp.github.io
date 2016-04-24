@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline33">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline43">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -73,7 +73,20 @@
 <li><a href="#orgheadline30">2.1.9. 习题2.23</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline32">2.2. 层次结构</a></li>
+<li><a href="#orgheadline42">2.2. 层次结构</a>
+<ul>
+<li><a href="#orgheadline32">2.2.1. 习题2.24</a></li>
+<li><a href="#orgheadline33">2.2.2. 习题2.25</a></li>
+<li><a href="#orgheadline34">2.2.3. 习题2.26</a></li>
+<li><a href="#orgheadline35">2.2.4. 习题2.27</a></li>
+<li><a href="#orgheadline36">2.2.5. 习题2.28</a></li>
+<li><a href="#orgheadline37">2.2.6. 习题2.29</a></li>
+<li><a href="#orgheadline38">2.2.7. 对树的映射</a></li>
+<li><a href="#orgheadline39">2.2.8. 习题2.30</a></li>
+<li><a href="#orgheadline40">2.2.9. 习题2.31</a></li>
+<li><a href="#orgheadline41">2.2.10. 习题2.32</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -645,8 +658,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline33" class="outline-2">
-<h2 id="orgheadline33"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline43" class="outline-2">
+<h2 id="orgheadline43"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -874,24 +887,307 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 <p>
 实现一个for-each
 </p>
-<pre class="example">
-(define (for-each proc items)
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (for-each proc items)
   (if (null? items)
-      '()
-      (begin
-        (proc (car items))
-        (for-each proc (cdr items)))))
+       '()
+       (begin
+         (proc (car items))
+         (for-each proc (cdr items)))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline42" class="outline-3">
+<h3 id="orgheadline42"><span class="section-number-3">2.2</span> 层次结构</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列,也就是
+<code>树</code>. 
+</p>
+
+<p>
+<code>pair?</code> scheme提供的基本过程, 检查参数是否为序对.
+</p>
+</div>
+
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32"><span class="section-number-4">2.2.1</span> 习题2.24</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list 1 (list 2 (list 3 4) 5))
+;Value 89: (1 (2 (3 4) 5))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-c">     N
+  /     \
+1        N    
+       / | \  
+      2  N  5
+        / \
+       3   4
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline32" class="outline-3">
-<h3 id="orgheadline32"><span class="section-number-3">2.2</span> 层次结构</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33"><span class="section-number-4">2.2.2</span> 习题2.25</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(cdr (car (cdr (cdr mt1))))
+(cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr mt2)))))))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline34" class="outline-4">
+<h4 id="orgheadline34"><span class="section-number-4">2.2.3</span> 习题2.26</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(append x y) ;Value 101: (1 2 3 4 5 6)
+(cons x y)   ;Value 102: ((1 2 3) 4 5 6)
+(list x y)   ;Value 103: ((1 2 3) (4 5 6))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35"><span class="section-number-4">2.2.4</span> 习题2.27</h4>
+<div class="outline-text-4" id="text-2-2-4">
 <p>
-将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列
+实现深度逆序.这道题目真是折腾死宝宝了,一开始有个关键点没搞明白,导致瞎写了一通.
+这个关键的地方是:如果(cdr list)是一个list:
 </p>
+<pre class="example">
+(list 1 (list 2 3))
+</pre>
+<p>
+那么它的逆序则是
+</p>
+<pre class="example">
+(append (cdr list) (car list))
+</pre>
+<p>
+但如果(car list)是list,就稍微有点绕:
+</p>
+<pre class="example">
+(list (list 1 2) 3)
+</pre>
+<p>
+那么它的逆序则是
+</p>
+<pre class="example">
+(append (cdr list) (list (car list)))
+</pre>
+<p>
+原因是append或者cons会把第二个参数展开(去掉一层list), 所以不能直接使用(car x)当做第二个参数.           
+</p>
+
+<p>
+深度逆序:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (deep-revers tree)
+  (cond
+   ((null? tree) '())
+   ((not (pair? tree)) (list tree))
+   ((pair? (car tree))
+      (append (deep-revers (cdr tree)) (list (deep-revers (car tree)))))
+   (else
+      (append (deep-revers (cdr tree)) (deep-revers (car tree))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36"><span class="section-number-4">2.2.5</span> 习题2.28</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fringe tree)
+  (cond
+   ((null? tree) '())
+   ((not (pair? tree)) (list tree))
+   (else
+    (append (fringe (car tree))
+            (fringe (cdr tree)))
+        )))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37"><span class="section-number-4">2.2.6</span> 习题2.29</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+-a) 获取左右子树,右子树稍稍注意:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-mobile left right)
+  (list left right))
+(define (make-branch length structure)
+  (list length structure))
+(define (left-branch mobile)
+  (car mobile))
+(define (right-branch mobile)
+  (car (cdr mobile)))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>b) 递归计算子树长度(左边叶子之和)</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (branch-length branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) 0)
+   (else
+    (+ (car branch) (branch-length (right-branch branch))))))
+</pre>
+</div>
+
+<p>
+递归计算重量(右叶子之和)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (branch-weight branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) branch)
+   (else
+    (branch-weight (right-branch branch)))))
+
+(define (total-weight mobile)
+  (+
+   (branch-length (left-branch mobile))
+   (branch-length (right-branch mobile))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>c) 计算是否平衡,简单的乘法.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (is-balance mobile)
+  (=
+   (* (branch-weight (left-branch mobile)) (branch-length (left-branch mobile)))
+   (* (branch-weight (left-branch mobile)) (branch-length (right-branch mobile)))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>d) 只需修改right-branch方法</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (right-branch mobile)
+  (cdr mobile))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline38" class="outline-4">
+<h4 id="orgheadline38"><span class="section-number-4">2.2.7</span> 对树的映射</h4>
+<div class="outline-text-4" id="text-2-2-7">
+<p>
+把map与递归结合是处理树的一种强有力的抽象
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline39" class="outline-4">
+<h4 id="orgheadline39"><span class="section-number-4">2.2.8</span> 习题2.30</h4>
+<div class="outline-text-4" id="text-2-2-8">
+<p>
+定义square-tree
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">定义square-tree
+(define (map-tree tree f)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (map-tree sub-tree f)
+             (f sub-tree)))
+       tree))
+(map-tree (list 1 2 (list 3 4)) square)
+; value: (1 4 (9 16))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline40" class="outline-4">
+<h4 id="orgheadline40"><span class="section-number-4">2.2.9</span> 习题2.31</h4>
+<div class="outline-text-4" id="text-2-2-9">
+<p>
+将2.30进一步抽象. (还好宝宝机智,已经抽象好了
+</p>
+<pre class="example">
+(define (square-tree tree) (map-tree tree square))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline41" class="outline-4">
+<h4 id="orgheadline41"><span class="section-number-4">2.2.10</span> 习题2.32</h4>
+<div class="outline-text-4" id="text-2-2-10">
+<p>
+计算全排列(又学到一种算排列的新姿势
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (subsets s)
+  (if (null? s)
+      ()
+      (let ((reset (subsets (cdr s))))
+        (append reset
+                (cons ;; 这里一定用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
+                 (car s) 
+                 (map (lambda (sub) (append (car s) sub)) reset))))))
+</pre>
+</div>
+<p>
+作者道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
+后来修改了之前的append实现才搞定:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (append list1 list2)
+  (cond ((null? list1)
+         list2)
+        ((null? list2) ;; 对list2=nil的情况进行处理
+         list1)
+        ((and (not (pair? list1)) (not (pair? list2)))
+         (list list1 list2)) ;; 两个都是简单数据时返回list,而不是序对
+        ((not (pair? list1))
+         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr.
+        (else
+         (cons (car list1) (append (cdr list1) list2)))))
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -901,7 +1197,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-04-22</span>
+        <span title="last modification date" class="post-info">2016-04-24</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
