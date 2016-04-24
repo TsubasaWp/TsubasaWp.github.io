@@ -457,7 +457,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 :     (append (list (car items)) (filter (cdr items) f)))
 :    (else
 :     (append (list) (filter (cdr items) f)))))
-然后定义same-party.为了简化我首先利用append把x,y,z整合成一个序列������:
+然后定义same-party.为了简化我首先利用append把x,y,z整合成一个序列
 : (define (same-party x y . z)
 :   (let ((param-list
 :          (append (list x) (append (list y) z))))
@@ -497,7 +497,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 #+BEGIN_SRC scheme
 (define (for-each proc items)
   (if (null? items)
-       '()
+       ()
        (begin
          (proc (car items))
          (for-each proc (cdr items)))))
@@ -554,7 +554,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 #+BEGIN_SRC scheme
 (define (deep-revers tree)
   (cond
-   ((null? tree) '())
+   ((null? tree) ())
    ((not (pair? tree)) (list tree))
    ((pair? (car tree))
       (append (deep-revers (cdr tree)) (list (deep-revers (car tree)))))
@@ -566,7 +566,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 #+BEGIN_SRC scheme
 (define (fringe tree)
   (cond
-   ((null? tree) '())
+   ((null? tree) ())
    ((not (pair? tree)) (list tree))
    (else
     (append (fringe (car tree))
@@ -632,7 +632,6 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 *** 习题2.30
 定义square-tree
 #+BEGIN_SRC scheme
-定义square-tree
 (define (map-tree tree f)
   (map (lambda (sub-tree)
          (if (pair? sub-tree)
@@ -655,11 +654,12 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
       ()
       (let ((reset (subsets (cdr s))))
         (append reset
-                (cons ;; 这里一定用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
+                (cons
                  (car s) 
                  (map (lambda (sub) (append (car s) sub)) reset))))))
 #+END_SRC
-作者道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
+倒数第3行用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
+作这道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
 后来修改了之前的append实现才搞定:
 #+BEGIN_SRC scheme
 (define (append list1 list2)
@@ -670,7 +670,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
         ((and (not (pair? list1)) (not (pair? list2)))
          (list list1 list2)) ;; 两个都是简单数据时返回list,而不是序对
         ((not (pair? list1))
-         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr.
+         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr
         (else
          (cons (car list1) (append (cdr list1) list2)))))
 #+END_SRC
