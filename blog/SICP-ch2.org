@@ -674,3 +674,58 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
         (else
          (cons (car list1) (append (cdr list1) list2)))))
 #+END_SRC
+
+** 序列作为一种约定的界面
+这里介绍与数据结构有关的另一种强有力的设计原理 *使用约定的界面*.
+
+举个例子,定义一个过程,枚举所有叶子,并计算出那些值为奇数的叶子的平方和.
+这个过程可以抽象成一个信号流:
+| enumerate:  | filter: | map:   | accumulate: |
+| tree leaves | odd?    | square | +, 0        |
+如果我们能良好的组织成熟,使得 =信号流结构= 明显的表现在写出的过程中,将会大大提高代码的清晰性.
+
+*** 序列操作
+要清晰的反应信号流结构, 最关键的一点就是将注意力集中在处理过程从一个步骤流向下一个步骤的"信号".
+
+- *map* 可以利用2.2.1节的map来表现信号流图中的映射步骤.
+: (map square (list 1 2 3 4 5)
+
+- *filter* 
+#+BEGIN_SRC scheme
+(define (filter predicate sequence)
+  (cond ((null? sequence) ())
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+#+END_SRC
+
+- *accumulate* 定义计算步骤
+#+BEGIN_SRC scheme
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+#+END_SRC
+
+- *enumerate* 定义树的枚举
+#+BEGIN_SRC scheme
+(define (enumerate-tree tree)
+  (cond ((null? tree) ())
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+#+END_SRC
+
+利用这些步骤来定义前面的例子:
+#+BEGIN_SRC scheme
+(define (sum-odd-squares tree)
+  (accumulate +
+              0
+              (map square
+                   (filter odd?
+                           (enumerate-tree tree)))))
+#+END_SRC
+
+这样我们就得到了一个由许多独立程序片段组合构成的设计.
