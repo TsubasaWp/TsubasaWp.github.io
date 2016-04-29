@@ -795,3 +795,20 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 (transpose mm);Value 266: ((1 4) (2 5) (3 6))
 (matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
 #+END_SRC
+
+*** 习题2.38
+#+BEGIN_SRC scheme
+(fold-right / 1 (list 1 2 3)) ;;Value: 3/2
+(fold-left / 1 (list 1 2 3))  ;;Value: 1/6
+(fold-right list () (list 1 2 3));Value 270: (1 (2 (3 ())))
+(fold-left list () (list 1 2 3));Value 271: (((() 1) 2) 3)
+#+END_SRC
+保证fold-right和fold-left都相同的条件是,运算满足交换律.
+
+*** 习题2.39
+#+BEGIN_SRC scheme
+(define (reverse sequence)
+  (fold-right (lambda (x y) (append y (list x))) () sequence))
+(define (reverse sequence)
+  (fold-left (lambda (x y) (cons y x)) ()  sequence))
+#+END_SRC
