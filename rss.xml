@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Wed, 27 Apr 2016 23:16:34 CST</pubDate>
-    <lastBuildDate>Wed, 27 Apr 2016 23:16:34 CST</lastBuildDate>
+    <pubDate>Fri, 29 Apr 2016 08:27:20 CST</pubDate>
+    <lastBuildDate>Fri, 29 Apr 2016 08:27:20 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline48">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline50">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -71,12 +71,14 @@
 <li><a href="#orgheadline41">2.2.10. 习题2.32</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline47">2.3. 序列作为一种约定的界面</a>
+<li><a href="#orgheadline49">2.3. 序列作为一种约定的界面</a>
 <ul>
 <li><a href="#orgheadline43">2.3.1. 序列操作</a></li>
 <li><a href="#orgheadline44">2.3.2. 习题2.33</a></li>
 <li><a href="#orgheadline45">2.3.3. 习题2.34</a></li>
 <li><a href="#orgheadline46">2.3.4. 习题2.35</a></li>
+<li><a href="#orgheadline47">2.3.5. 习题2.36</a></li>
+<li><a href="#orgheadline48">2.3.6. 习题2.37</a></li>
 </ul>
 </li>
 </ul>
@@ -650,8 +652,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline48" class="outline-2">
-<h2 id="orgheadline48"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline50" class="outline-2">
+<h2 id="orgheadline50"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1183,8 +1185,8 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 </div>
 </div>
 
-<div id="outline-container-orgheadline47" class="outline-3">
-<h3 id="orgheadline47"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
+<div id="outline-container-orgheadline49" class="outline-3">
+<h3 id="orgheadline49"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 这里介绍与数据结构有关的另一种强有力的设计原理 <b>使用约定的界面</b>.
@@ -1347,12 +1349,67 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47"><span class="section-number-4">2.3.5</span> 习题2.36</h4>
+<div class="outline-text-4" id="text-2-3-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      ()
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+
+(accumulate-n + 0 (list (list 1 2 3) (list 1 2 3)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">2.3.6</span> 习题2.37</h4>
+<div class="outline-text-4" id="text-2-3-6">
+<p>
+实现矩阵点的各种基本运算
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (dot-product v w)
+  (accumulate + 0 (accumulate-n * 1 (list v w))))
+
+(define (matrix-*-vector m v)
+  (map
+   (lambda (x) (dot-product x v))
+   m))
+(define (transpose m)
+  (accumulate-n (lambda (x y) (cons x y)) () m))
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (col) (matrix-*-vector m col)) cols)))
+</pre>
+</div>
+<p>
+测试:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define mv (list 1 2 3))
+(define mm (list (list 1 2 3) (list 4 5 6) (list 4 5 6)))
+(dot-product mv mv);Value: 14
+(matrix-*-vector mm mv);Value 269: (14 32 32)
+(transpose mm);Value 266: ((1 4) (2 5) (3 6))
+(matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -1376,7 +1433,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -1671,7 +1728,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -3361,14 +3418,14 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -3649,7 +3706,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -4193,7 +4250,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -4452,7 +4509,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -4938,7 +4995,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
@@ -5051,7 +5108,7 @@ int x {2.7} // error: double -&gt; int may narrow.
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-26</pubDate>
+      <pubDate>2016-04-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
     </item>
   </channel>
