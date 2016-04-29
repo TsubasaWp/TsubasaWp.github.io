@@ -4,1414 +4,10 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Fri, 29 Apr 2016 08:27:20 CST</pubDate>
-    <lastBuildDate>Fri, 29 Apr 2016 08:27:20 CST</lastBuildDate>
+    <pubDate>Fri, 29 Apr 2016 23:48:11 CST</pubDate>
+    <lastBuildDate>Fri, 29 Apr 2016 23:48:11 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
-    <item>
-      <title>SICP-CH2-构造数据抽象</title>
-      <link>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</link>
-      <description><![CDATA[<div>
-<div class="post">
-<h1>SICP-CH2-构造数据抽象</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline21">1. 数据抽象索引</a>
-<ul>
-<li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
-<li><a href="#orgheadline2">1.2. 习题2.1</a></li>
-<li><a href="#orgheadline3">1.3. 抽象屏障</a></li>
-<li><a href="#orgheadline4">1.4. 习题2.2</a></li>
-<li><a href="#orgheadline5">1.5. 习题2.3</a></li>
-<li><a href="#orgheadline6">1.6. 数据意味着什么</a></li>
-<li><a href="#orgheadline7">1.7. 习题2.4</a></li>
-<li><a href="#orgheadline8">1.8. 习题2.5</a></li>
-<li><a href="#orgheadline9">1.9. 习题2.6</a></li>
-<li><a href="#orgheadline10">1.10. 扩展练习:区间算术</a></li>
-<li><a href="#orgheadline11">1.11. 习题2.7</a></li>
-<li><a href="#orgheadline12">1.12. 习题2.8</a></li>
-<li><a href="#orgheadline13">1.13. 习题2.9</a></li>
-<li><a href="#orgheadline14">1.14. 习题2.10</a></li>
-<li><a href="#orgheadline15">1.15. 习题2.11</a></li>
-<li><a href="#orgheadline16">1.16. 习题2.12</a></li>
-<li><a href="#orgheadline17">1.17. 习题2.13</a></li>
-<li><a href="#orgheadline18">1.18. 习题2.14</a></li>
-<li><a href="#orgheadline19">1.19. 习题2.15</a></li>
-<li><a href="#orgheadline20">1.20. 习题2.16</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline50">2. 层次性数据和闭包性质</a>
-<ul>
-<li><a href="#orgheadline31">2.1. 序列的表示</a>
-<ul>
-<li><a href="#orgheadline22">2.1.1. 对表的操作</a></li>
-<li><a href="#orgheadline23">2.1.2. 习题2.17</a></li>
-<li><a href="#orgheadline24">2.1.3. 习题2.18</a></li>
-<li><a href="#orgheadline25">2.1.4. 习题2.19</a></li>
-<li><a href="#orgheadline26">2.1.5. 习题2.20</a></li>
-<li><a href="#orgheadline27">2.1.6. 对表的映射</a></li>
-<li><a href="#orgheadline28">2.1.7. 习题2.21</a></li>
-<li><a href="#orgheadline29">2.1.8. 习题2.22</a></li>
-<li><a href="#orgheadline30">2.1.9. 习题2.23</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline42">2.2. 层次结构</a>
-<ul>
-<li><a href="#orgheadline32">2.2.1. 习题2.24</a></li>
-<li><a href="#orgheadline33">2.2.2. 习题2.25</a></li>
-<li><a href="#orgheadline34">2.2.3. 习题2.26</a></li>
-<li><a href="#orgheadline35">2.2.4. 习题2.27</a></li>
-<li><a href="#orgheadline36">2.2.5. 习题2.28</a></li>
-<li><a href="#orgheadline37">2.2.6. 习题2.29</a></li>
-<li><a href="#orgheadline38">2.2.7. 对树的映射</a></li>
-<li><a href="#orgheadline39">2.2.8. 习题2.30</a></li>
-<li><a href="#orgheadline40">2.2.9. 习题2.31</a></li>
-<li><a href="#orgheadline41">2.2.10. 习题2.32</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline49">2.3. 序列作为一种约定的界面</a>
-<ul>
-<li><a href="#orgheadline43">2.3.1. 序列操作</a></li>
-<li><a href="#orgheadline44">2.3.2. 习题2.33</a></li>
-<li><a href="#orgheadline45">2.3.3. 习题2.34</a></li>
-<li><a href="#orgheadline46">2.3.4. 习题2.35</a></li>
-<li><a href="#orgheadline47">2.3.5. 习题2.36</a></li>
-<li><a href="#orgheadline48">2.3.6. 习题2.37</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline21" class="outline-2">
-<h2 id="orgheadline21"><span class="section-number-2">1</span> 数据抽象索引</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-<code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
-</p>
-</div>
-
-<div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 实例:有理数的算术运算</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-<code>表数据结构</code> 从序对构造起来的数据对象
-</p>
-
-<p>
-关键字:cond, car, cdr
-</p>
-
-<p>
-定义有理数过程:
-</p>
-<pre class="example">
-;; 定义有理数并用gcd优化
-(define (make-rat n d)
-  (let ((g (gcd n d)))
-    (cons (/ n g)  (/ d g))))
-;; 分子
-(define (number x) (car x))
-;; 分母
-(define (denom x) (cdr x))
-;; print
-(define (print-rat x)
-  (newline)
-  (display (number x))
-  (display "/")
-  (display (denom x)))
-;; test val-&gt;1/2
-(print-rat (make-rat 2 -4))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 习题2.1</h3>
-<div class="outline-text-3" id="text-1-2">
-<pre class="example">
-(define (make-rat n d)
-  (let ((g (gcd (abs n) (abs d))))
-    (cond ((&gt; (* n d) 0)
-           (cons (/ (abs n) g)  (/ (abs d) g)))
-          (else  (cons (- 0 (/ (abs n) g)) (/ (abs d) g))))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">1.3</span> 抽象屏障</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-数据抽象的基本思想是:为每一类数据对象标识出一组操作,使得对这类数据对象的操作都可以基于它们表述,并且只使用它们.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">1.4</span> 习题2.2</h3>
-<div class="outline-text-3" id="text-1-4">
-<pre class="example">
-(define (make-point x y) (cons x y))
-(define (x-point x) (car x))
-(define (y-point x) (cdr x))
-(define (make-segment x y) (cons x y))
-(define (start-point x) (car x))
-(define (end-point x) (cdr x))
-(define (print-point p)
-  (newline)
-  (display "(")
-  (display (x-point p))
-  (display ",")
-  (display (y-point p))
-  (display ")"))
-
-(define (mid-point segment)
-  (print-point (make-point
-   (/ (+ (x-point (start-point segment)) (x-point (end-point segment))) 2)
-   (/ (+ (y-point (start-point segment)) (y-point (end-point segment))) 2))))
-
-(mid-point (make-segment (make-point 1.0 1.0) (make-point 4 5)))
-;; value-&gt; (2.5,3.)
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5"><span class="section-number-3">1.5</span> 习题2.3</h3>
-<div class="outline-text-3" id="text-1-5">
-<pre class="example">
-(define (double x) (* x x))
-(define (make-rect p1 p2 p3)
-  (cons (make-segment p1 p2) (make-segment p2 p3)))
-(define (h-side rect) (car rect))
-(define (v-side rect) (cdr rect))
-(define (lenth seg)
-  (let ((p1 (x-point seg))
-        (p2 (y-point seg)))
-  (sqrt
-   (+
-    (double (- (x-point p1) (x-point p2)))
-    (double (- (y-point p1) (y-point p2)))))))
-(define (rect-length rect)
-  (* (+
-      (lenth (h-side rect))
-      (lenth (v-side rect)))
-     2))
-(define (rect-area rect)
-  (*  (lenth (h-side rect))
-      (lenth (v-side rect))))
-
-;; test
-(lenth (make-segment (make-point 1 1) (make-point 2 2))) 
-;Value: 1.4142135623730951
-
-(rect-length
- (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
-;Value: 6.82842712474619
-
-(rect-area
- (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
-;Value: 2.8284271247461903
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6"><span class="section-number-3">1.6</span> 数据意味着什么</h3>
-<div class="outline-text-3" id="text-1-6">
-<p>
-<code>数据</code> 是一组适当的 <b>构造函数</b> 和 <b>选择函数</b> ,以及为了使这些过程成为一套合法的表示, 它们必须满足的一组*特定条件*
-</p>
-
-<p>
-条件可能不太好理解, 举例来说, <b>序对</b> 这种数据的car和cdr操作需要满足的条件就是:
-任何对象x和y, 如果z是(cons x y),那么(car z)就是x, (cdr z)就是y.
-</p>
-
-<p>
-<code>数据的过程性表示</code> lisp/scheme甚至可以用过程来表示序对:
-</p>
-<pre class="example">
-(define (cons x y)
- (define (dispatch m)
-   (cond ((= m 0) x)
-         ((= m 1) y)
-         (else (error "argument not 0 or 1")))
-  dispatch))
-
-(define (car z) (z 0))
-(define (cdr z) (z 1))
-</pre>
-
-<p>
-(cons x y)返回一个过程. 当然scheme和一般的lisp并不会这样实现序对,主要是出于性能考虑.
-</p>
-
-<p>
-在第三章可以看到,数据的过程性表示在设计中扮演着一种重要的角色,这种风格叫做 <code>消息传递</code>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7"><span class="section-number-3">1.7</span> 习题2.4</h3>
-<div class="outline-text-3" id="text-1-7">
-<p>
-代换过程:
-</p>
-<pre class="example">
-(car (cons x y))
-((cons x y) (lambda (p q) p))
-;把(lambda (p q))作为m带入(lambda (m) (m x y))
-((lambda (p q) p) x y)
-;应用x,y,得到
-value-&gt;x
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">1.8</span> 习题2.5</h3>
-<div class="outline-text-3" id="text-1-8">
-<p>
-2和3都是质数,可以利用质数相乘的性质储存a和b.
-</p>
-<pre class="example">
-(define (cons-expt x y)
-  (* (expt 2 x) (expt 3 y)))
-
-(define (car-expt x)
-  (define (iter a n)
-    (cond ((= 0 (remainder a 2)) (iter (/ a 2) (+ n 1)))
-          (else n)))
-  (iter x 0))
-
-(define (cdr-expt x)
-  (define (iter a n)
-    (cond ((= 0 (remainder a 3)) (iter (/ a 3) (+ n 1)))
-          (else n)))
-  (iter x 0))
-
-(car-expt (cons-expt 5 6)) ;value-&gt;5
-(cdr-expt (cons-expt 5 6)) ;value-&gt;6
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9"><span class="section-number-3">1.9</span> 习题2.6</h3>
-<div class="outline-text-3" id="text-1-9">
-<p>
-使用church计数的表示形式定义one和two. (讲真我对着这道题发呆好久&#x2026;.
-</p>
-
-<pre class="example">
-(define zero (lambda (f) (lambda (x) x)))
-(define (add-1 n)
-  (lambda (f) (lambda (x) (f (n f) x))))
-
-; 首先展开add-1
-(add-1 zero)
-(lambda (f) (lambda (x) (f ((zero f) x))))
-(lambda (f) (lambda (x) (f ((lambda(x) x) x))))
-(lambda (f) (lambda (x) (f x)))
-(add-1 one)
-(lambda (f) (lambda (x) (f ((one f) x))))
-(lambda (f) (lambda (x) (f ((lambda (x) (f x)) x))))
-(lambda (f) (lambda (x) (f (f x))))
-; 定义one
-(define one (lambda (f) (lambda (x) (f x))))
-; 定义two
-(define two (lambda (f) (lambda (x) (f (f x)))))
-;根据观察得出规律规律:one的定义中应用了一次f, two的定义中应用了2次f, 所以这类过程可以理解为用'应用f的次数'来表示数字.
-</pre>
-<p>
-定义通用的加法:
-</p>
-<pre class="example">
-(define (add a b)
-  (lambda(f) (lambda(x) ((a f) ((b f) x)))))
-</pre>
-<p>
-这个定义的思路是把a和b中应用f的过程叠加. 下面测试一下:
-</p>
-<pre class="example">
-(add one two)
-(lambda(f) (lambda(x) ((lambda(x) (f x)) ((lambda(x) (f (f x))) x))))
-(lambda(f) (lambda(x) ((lambda(x) (f x)) (f (f x)))))
-(lambda(f) (lambda(x) (f (f (f x)))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10"><span class="section-number-3">1.10</span> 扩展练习:区间算术</h3>
-</div>
-
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11"><span class="section-number-3">1.11</span> 习题2.7</h3>
-<div class="outline-text-3" id="text-1-11">
-<pre class="example">
-(define (make-interval a b) (cons a b))
-(define (upper-bound x) (car x))
-(define (lower-bound x) (cdr x))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12"><span class="section-number-3">1.12</span> 习题2.8</h3>
-<div class="outline-text-3" id="text-1-12">
-<pre class="example">
-(define (sub-interval a b)
-  (make-interval (- (upper-bound a) (upper-bound b))
-                 (- (lower-bound a) (lower-bound b))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13"><span class="section-number-3">1.13</span> 习题2.9</h3>
-<div class="outline-text-3" id="text-1-13">
-<p>
-对加/减运算而言:
-\(w(a+b)=(u(a+b)-l(a+b))/2=(((u(a)+u(b))-(l(a)+l(b)))/2=(w(a)+w(b))\)
-所以两个区间的和/差的宽度函数就是被加/减的区间的宽度函数.
-</p>
-
-<p>
-对乘法而言:
-</p>
-
-<p>
-有区间A=[0,2],宽度为1;B=[0,4],宽度为2;
-A*B=[0,8],宽度为4. 所以\(w(A*B)\neq w(A)*w(B)\).
-</p>
-
-<p>
-对除法而言:
-A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="orgheadline14"><span class="section-number-3">1.14</span> 习题2.10</h3>
-<div class="outline-text-3" id="text-1-14">
-<pre class="example">
-; 首先定义一个检查过程
-(define (valid-interval x)
-  (if (&lt; (* (upper-bound x) (lower-bound x)) 0) false true))
-; 重新定义除法
-(define (div-interval x y)
-  (if (and (valid-interval x) (vali-interval y))
-      (mul-interval x
-                    (make-interval (/ 1.0 (upper-bound y))
-                                   (/ 1.0 (lower-bound y))))
-      (display "error:invalid param")))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15"><span class="section-number-3">1.15</span> 习题2.11</h3>
-<div class="outline-text-3" id="text-1-15">
-<p>
-根据区间是否跨过0|是否全为正|是否全为负分为9种情况.
-</p>
-<ul class="org-ul">
-<li>a &gt; 0, b &gt; 0</li>
-<li>a &gt; 0, b &lt; 0</li>
-<li>a &gt; 0, b cross 0</li>
-<li>a cross 0, b &gt; 0</li>
-<li>a cross 0, b &lt; 0</li>
-<li>a cross 0, b cross 0</li>
-<li>a &lt; 0, b &gt; 0</li>
-<li>a &lt; 0, b &lt; 0</li>
-<li>a &lt; 0, b cross 0</li>
-</ul>
-
-<p>
-定义快速乘法(有个问题..当a和b都跨越0时,需要4次乘法运算)
-</p>
-<pre class="example">
-(define (is-cross-zero x)
-  (if (&lt; (* (upper-bound x) (lower-bound x)) 0) true false))
-(define (is-positive x)
-  (if (&gt;= (lower-bound x) 0) true false))
-(define (is-negative x)
-  (if (&lt; (upper-bound x) 0) true false))
-
-(define (fast-mul-interval x y)
-  (cond
-   ((and (is-positive x) (is-positive y))
-    (make-interval
-     (* (lower-bound x) (lower-bound y))
-     (* (upper-bound x) (upper-bound y))))
-   ((and (is-positive x) (is-negative y))
-    (make-interval
-     (* (upper-bound x) (upper-bound y))
-     (* (lower-bound x) (lower-bound y))))
-   ((and (is-positive x) (is-cross-zero y))
-    (make-interval
-     (* (upper-bound x) (lower-bound y))
-     (* (upper-bound x) (upper-bound y))))
-   ((and (is-negative x) (is-positive y))
-    (make-interval
-     (* (lower-bound x) (upper-bound y))
-     (* (upper-bound x) (lower-bound y))))
-   ((and (is-negative x) (is-negative y))
-    (make-interval
-     (* (upper-bound x) (upper-bound y))
-     (* (lower-bound x) (lower-bound y))))
-   ((and (is-negative x) (is-cross-zero y))
-    (make-interval
-     (* (lower-bound x) (upper-bound y))
-     (* (lower-bound x) (lower-bound y))))
-   ((and (is-cross-zero x) (is-positive y))
-    (make-interval
-     (* (lower-bound x) (upper-bound y))
-     (* (upper-bound x) (upper-bound y))))
-   ((and (is-cross-zero x) (is-negative y))
-   (make-interval
-    (* (upper-bound x) (lower-bound y))
-    (* (lower-bound x) (lower-bound y))))
-  ((and (is-cross-zero x) (is-cross-zero y))
-   (make-interval
-    (min (* (lower-bound x) (upper-bound y)) (* (upper-bound x) (lower-bound y)))
-    (max (* (upper-bound x) (upper-bound y)) (* (lower-bound x) (lower-bound y)) )))))
-</pre>
-
-<p>
-与Alyssa的暴力乘法进行比较测试(吐血&#x2026;
-</p>
-<pre class="example">
-(fast-mul-interval (make-interval 1 2) (make-interval 1 2))
-(mul-interval (make-interval 1 2) (make-interval 1 2))
-;; Value : (1 . 4)
-
-(fast-mul-interval (make-interval 1 2) (make-interval -1 -2))
-(mul-interval (make-interval 1 2) (make-interval -1 -2))
-;; Value : (-4 .-1)
-
-(fast-mul-interval (make-interval 1 2) (make-interval -1 2))
-(mul-interval (make-interval 1 2) (make-interval -1 2))
-;; Value : (-2, 4)
-
-(fast-mul-interval (make-interval -2 -1) (make-interval 1 2))
-(mul-interval (make-interval -2 -1) (make-interval 1 2))
-;; Value : (-4, -1)
-
-(fast-mul-interval (make-interval -2 -1) (make-interval -2 -1))
-(mul-interval (make-interval -2 -1) (make-interval -2 -1))
-;; Value : (1, 4)
-
-(fast-mul-interval (make-interval -2 -1) (make-interval -1 2))
-(mul-interval (make-interval -2 -1) (make-interval -1 2))
-;; Value : (-4, 2)
-
-(fast-mul-interval (make-interval -2 1) (make-interval 1 2))
-(mul-interval (make-interval -2 1) (make-interval 1 2))
-;; Value : (-4, 2)
-
-(fast-mul-interval (make-interval -2 1) (make-interval -2 -1))
-(mul-interval (make-interval -2 1) (make-interval -2 -1))
-;; Value : (-2, 4)
-
-(fast-mul-interval (make-interval -2 1) (make-interval -5 2))
-(mul-interval (make-interval -2 1) (make-interval -5 2))
-;; Value : (-5, 10)
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16"><span class="section-number-3">1.16</span> 习题2.12</h3>
-<div class="outline-text-3" id="text-1-16">
-<pre class="example">
-(define (make-center-percent center percent)
-  (make-interval (- center (* center percent))
-                 (+ center (* center percent))))
-(define (percent range)
-  (let ((width (/ (- (upper-bound range) (lower-bound range)) 2))
-        (mid (/ (+ (upper-bound range) (lower-bound range)) 2)))
-        (/ width mid)))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><span class="section-number-3">1.17</span> 习题2.13</h3>
-<div class="outline-text-3" id="text-1-17">
-<p>
-计算精度的公式是简单相加:
-</p>
-<pre class="example">
-(define (percent-mul r1 r2)
-  (+ (percent r1) (percent r2)))
-</pre>
-<p>
-测试一下
-</p>
-<pre class="example">
-(percent (mul-interval (make-interval 9.99 10.01) (make-interval 9.99 10.01)))
-(percent-mul (make-interval 9.99 10.01) (make-interval 9.99 10.01))
-</pre>
-
-
-<p>
-然后分析part1,part2的问题:
-</p>
-<pre class="example">
-(define (part1 r1 r2)
-  (div-interval (mul-interval r1 r2)
-                (add-interval r1 r2)))
-(define (part2 r1 r2)
-  (let ((one (make-interval 1 1)))
-    (div-interval one
-                  (add-interval (div-interval one r1)
-                                (div-interval one r2)))))
-
-(part1 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.25,2)
-(part2 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.5 1)
-</pre>
-<p>
-猜测是运算顺序不同导致精度变化不同
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline18" class="outline-3">
-<h3 id="orgheadline18"><span class="section-number-3">1.18</span> 习题2.14</h3>
-<div class="outline-text-3" id="text-1-18">
-<p>
-首先验证上面的猜测
-</p>
-<pre class="example">
-(let ((r1 (make-interval 1.0 2))
-       (r2 (make-interval 1.0 2))
-      (one (make-interval 1.0 1.0)))
-  (percent r1)  ; .33
-  (percent (mul-interval r1 r2)) ; .6 放大2倍
-  (percent (div-interval r1 r2)) ; .6 放大2倍
-  (percent (add-interval r1 r2)) ; .33 不变
-  (percent (div-interval one r1)) ; .33 不变
-  (percent (part1 r1 r2)) ; .77 放大2.28倍
-  (percent (part2 r1 r2)) ; .33 
-  )
-</pre>
-
-<p>
-可见,直接对两个区间进行乘法或除法操作会将精度放大.而加法以及被one除不会放大精度.
-</p>
-
-<p>
-在part1的运算过程中,乘法将精度放大2倍, 用放大的乘积除以和之后从0.6放大到0.77. 
-而在part2中,由于全是除以1的操作.精度没有发生变化.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline19" class="outline-3">
-<h3 id="orgheadline19"><span class="section-number-3">1.19</span> 习题2.15</h3>
-<div class="outline-text-3" id="text-1-19">
-<p>
-eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好的程序.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline20" class="outline-3">
-<h3 id="orgheadline20"><span class="section-number-3">1.20</span> 习题2.16</h3>
-<div class="outline-text-3" id="text-1-20">
-<p>
-(作者说此题非常难&#x2026;怕
-</p>
-
-<p>
-我先想到了除法运算可能长这样:
-</p>
-<pre class="example">
-(define (better-div-interval r1 r2)
-  (let ((one (make-interval 1 1)))
-    (better-mul-interval r1  (div-interval one r2))))
-</pre>
-<p>
-但首先要能定义出一个better-mul-interval
-</p>
-
-<p>
-我实在编不下去了! google了一下,这道题真的很难,涉及到比较艰深的数学问题. 贴个链接在这里吧:
-<a href="http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme">http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme</a>
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline50" class="outline-2">
-<h2 id="orgheadline50"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-<code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
-</p>
-</div>
-
-<div id="outline-container-orgheadline31" class="outline-3">
-<h3 id="orgheadline31"><span class="section-number-3">2.1</span> 序列的表示</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-序列可以通过嵌套cons操作构造起来
-</p>
-<pre class="example">
-(cons 1
-    (cons 2
-        (cons 3
-            (cons 4 ))))
-</pre>
-
-<p>
-scheme为了方便表的构造而提供了一个基本操作list.所以上面序列也可以通过以下方式产生:
-</p>
-<pre class="example">
-(list 1 2 3 4)
-</pre>
-<p>
-它们是等价的.
-</p>
-</div>
-
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22"><span class="section-number-4">2.1.1</span> 对表的操作</h4>
-<div class="outline-text-4" id="text-2-1-1">
-<p>
-<code>car</code> 可以被看做获取表第一项元素的操作
-<code>cdr</code> 可以看做获取表剩下的元素的操作
-<code>nil</code> 用于表示序对链的结束
-</p>
-
-<p>
-可以这样实现索引:
-</p>
-<pre class="example">
-(define (list-ref item n)
-  (if (= n 0)
-      (car item)
-      (list-ref (cdr item) (- n 1))))
-</pre>
-
-<p>
-<code>null?</code> 用于检查是否是空表.
-利用null实现length:
-</p>
-<pre class="example">
-(define (length items)
-  (if (null? items)
-      0
-      (+ 1 (length (cdr items)))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline23" class="outline-4">
-<h4 id="orgheadline23"><span class="section-number-4">2.1.2</span> 习题2.17</h4>
-<div class="outline-text-4" id="text-2-1-2">
-<p>
-获取序列的最后一个元素
-</p>
-<pre class="example">
-(define (last-pair items)
-  (if (= 1 (length items))
-      (list (car items))
-      (last-pair (cdr items))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline24" class="outline-4">
-<h4 id="orgheadline24"><span class="section-number-4">2.1.3</span> 习题2.18</h4>
-<div class="outline-text-4" id="text-2-1-3">
-<p>
-返回逆序序列
-</p>
-<pre class="example">
-(define (reverse items)
-  (if (= 1 (length items))
-      items
-      (append (reverse (cdr items)) (list (car items)))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline25" class="outline-4">
-<h4 id="orgheadline25"><span class="section-number-4">2.1.4</span> 习题2.19</h4>
-<div class="outline-text-4" id="text-2-1-4">
-<p>
-利用序列优化1.22的找硬币程序,把币种存储在序列中
-</p>
-<pre class="example">
-(define us-coins (list 50 25 10 5 1))
-(define uk-coins (list 100 50 20 10 5 2 1 0.5))
-(define (except-first-denomination coin-values) (cdr coin-values))
-(define (first-denomination coin-values) (car coin-values))
-(define (no-more? coin-values) (if (null? coin-values) true false))
-(define (cc amount coin-values)
-  (cond ((= amount 0 ) 1)
-        ((or (&lt; amount 0) (no-more? coin-values)) 0)
-        (else
-         (+ (cc amount
-                (except-first-denomination coin-values))
-            (cc (- amount
-                   (first-denomination coin-values))
-                coin-values)))))
-</pre>
-<p>
-币种的排序不会影响结果.因为针对每种硬币,都会从总金额amount开始重新计算, 测试结果是互相独立的.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26"><span class="section-number-4">2.1.5</span> 习题2.20</h4>
-<div class="outline-text-4" id="text-2-1-5">
-<p>
-这道题说明了scheme怎样定义带有任意多参数的过程
-</p>
-
-<p>
-具体方式是使用点尾:
-</p>
-<pre class="example">
-(define (f x y . z) &lt;body&gt;)
-</pre>
-<p>
-那么如果求值(f 1 2 3 4 5),则x=1,y=2,然后z=(3,4,5),是一个list. (原来是这样&#x2026;
-</p>
-
-<p>
-请用这种记法写出same-parity:返回与其第一个参数有同样奇偶性质的表
-</p>
-<pre class="example">
-;首先定义一个选择器,它接受一个过程参数f,然后用f来过滤出子序列
-(define (filter items f)
-  (cond
-   ((null? items) (list))
-   ((f (car items))
-    (append (list (car items)) (filter (cdr items) f)))
-   (else
-    (append (list) (filter (cdr items) f)))))
-</pre>
-<p>
-然后定义same-party.为了简化我首先利用append把x,y,z整合成一个序列
-</p>
-<pre class="example">
-(define (same-party x y . z)
-  (let ((param-list
-         (append (list x) (append (list y) z))))
-    (if
-     (odd? x)
-     (filter param-list odd?)
-     (filter param-list even?))))
-</pre>
-<p>
-测试
-</p>
-<pre class="example">
-(same-party 2 1 2 3 4 5 6 7 8) ; value: (1 3 5 7)
-(same-party 1 2 3 4 5 6 7 8)   ; value: (2 2 4 6 8)
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27"><span class="section-number-4">2.1.6</span> 对表的映射</h4>
-<div class="outline-text-4" id="text-2-1-6">
-<p>
-<code>map</code> 是一种公共模式,而且建立起了一种处理表的高层抽象
-</p>
-<pre class="example">
-(define (map proc items)
-  (if (null? items)
-      (list)
-      (cons (proc (car items))
-            (map proc (cdr items)))))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline28" class="outline-4">
-<h4 id="orgheadline28"><span class="section-number-4">2.1.7</span> 习题2.21</h4>
-<div class="outline-text-4" id="text-2-1-7">
-<pre class="example">
-(define (square-list items)
-  (if (null? items)
-      '()
-      (cons (square (car items)) (square-list (cdr items)))))
-
-(define (square-list items)
-  (map square items))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline29" class="outline-4">
-<h4 id="orgheadline29"><span class="section-number-4">2.1.8</span> 习题2.22</h4>
-<div class="outline-text-4" id="text-2-1-8">
-<p>
-第一个迭代错在cons的顺序,把answer放在最后会变成倒序
-</p>
-<pre class="example">
-(cons (...) answer)
-</pre>
-<p>
-而修改后的程序把answer放在前面,虽然看起来顺序对了,但cons的第一个参数是嵌套的cons,最后生成的序列会长这样:
-</p>
-<pre class="example">
-((((. .) .) .) .)
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline30" class="outline-4">
-<h4 id="orgheadline30"><span class="section-number-4">2.1.9</span> 习题2.23</h4>
-<div class="outline-text-4" id="text-2-1-9">
-<p>
-实现一个for-each
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (for-each proc items)
-  (if (null? items)
-       ()
-       (begin
-         (proc (car items))
-         (for-each proc (cdr items)))))
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline42" class="outline-3">
-<h3 id="orgheadline42"><span class="section-number-3">2.2</span> 层次结构</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列,也就是
-<code>树</code>. 
-</p>
-
-<p>
-<code>pair?</code> scheme提供的基本过程, 检查参数是否为序对.
-</p>
-</div>
-
-<div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32"><span class="section-number-4">2.2.1</span> 习题2.24</h4>
-<div class="outline-text-4" id="text-2-2-1">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(list 1 (list 2 (list 3 4) 5))
-;Value 89: (1 (2 (3 4) 5))
-</pre>
-</div>
-
-<div class="org-src-container">
-
-<pre class="src src-c">     N
-  /     \
-1        N    
-       / | \  
-      2  N  5
-        / \
-       3   4
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline33" class="outline-4">
-<h4 id="orgheadline33"><span class="section-number-4">2.2.2</span> 习题2.25</h4>
-<div class="outline-text-4" id="text-2-2-2">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(cdr (car (cdr (cdr mt1))))
-(cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr mt2)))))))))))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline34" class="outline-4">
-<h4 id="orgheadline34"><span class="section-number-4">2.2.3</span> 习题2.26</h4>
-<div class="outline-text-4" id="text-2-2-3">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(append x y) ;Value 101: (1 2 3 4 5 6)
-(cons x y)   ;Value 102: ((1 2 3) 4 5 6)
-(list x y)   ;Value 103: ((1 2 3) (4 5 6))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline35" class="outline-4">
-<h4 id="orgheadline35"><span class="section-number-4">2.2.4</span> 习题2.27</h4>
-<div class="outline-text-4" id="text-2-2-4">
-<p>
-实现深度逆序.这道题目真是折腾死宝宝了,一开始有个关键点没搞明白,导致瞎写了一通.
-这个关键的地方是:如果(cdr list)是一个list:
-</p>
-<pre class="example">
-(list 1 (list 2 3))
-</pre>
-<p>
-那么它的逆序则是
-</p>
-<pre class="example">
-(append (cdr list) (car list))
-</pre>
-<p>
-但如果(car list)是list,就稍微有点绕:
-</p>
-<pre class="example">
-(list (list 1 2) 3)
-</pre>
-<p>
-那么它的逆序则是
-</p>
-<pre class="example">
-(append (cdr list) (list (car list)))
-</pre>
-<p>
-原因是append或者cons会把第二个参数展开(去掉一层list), 所以不能直接使用(car x)当做第二个参数.           
-</p>
-
-<p>
-深度逆序:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (deep-revers tree)
-  (cond
-   ((null? tree) ())
-   ((not (pair? tree)) (list tree))
-   ((pair? (car tree))
-      (append (deep-revers (cdr tree)) (list (deep-revers (car tree)))))
-   (else
-      (append (deep-revers (cdr tree)) (deep-revers (car tree))))))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline36" class="outline-4">
-<h4 id="orgheadline36"><span class="section-number-4">2.2.5</span> 习题2.28</h4>
-<div class="outline-text-4" id="text-2-2-5">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (fringe tree)
-  (cond
-   ((null? tree) ())
-   ((not (pair? tree)) (list tree))
-   (else
-    (append (fringe (car tree))
-            (fringe (cdr tree)))
-        )))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline37" class="outline-4">
-<h4 id="orgheadline37"><span class="section-number-4">2.2.6</span> 习题2.29</h4>
-<div class="outline-text-4" id="text-2-2-6">
-<p>
--a) 获取左右子树,右子树稍稍注意:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (make-mobile left right)
-  (list left right))
-(define (make-branch length structure)
-  (list length structure))
-(define (left-branch mobile)
-  (car mobile))
-(define (right-branch mobile)
-  (car (cdr mobile)))
-</pre>
-</div>
-
-<ul class="org-ul">
-<li>b) 递归计算子树长度(左边叶子之和)</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (branch-length branch)
-  (cond
-   ((null? branch) 0)
-   ((not (pair? branch)) 0)
-   (else
-    (+ (car branch) (branch-length (right-branch branch))))))
-</pre>
-</div>
-
-<p>
-递归计算重量(右叶子之和)
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (branch-weight branch)
-  (cond
-   ((null? branch) 0)
-   ((not (pair? branch)) branch)
-   (else
-    (branch-weight (right-branch branch)))))
-
-(define (total-weight mobile)
-  (+
-   (branch-length (left-branch mobile))
-   (branch-length (right-branch mobile))))
-</pre>
-</div>
-
-<ul class="org-ul">
-<li>c) 计算是否平衡,简单的乘法.</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (is-balance mobile)
-  (=
-   (* (branch-weight (left-branch mobile)) (branch-length (left-branch mobile)))
-   (* (branch-weight (left-branch mobile)) (branch-length (right-branch mobile)))))
-</pre>
-</div>
-
-<ul class="org-ul">
-<li>d) 只需修改right-branch方法</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (right-branch mobile)
-  (cdr mobile))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline38" class="outline-4">
-<h4 id="orgheadline38"><span class="section-number-4">2.2.7</span> 对树的映射</h4>
-<div class="outline-text-4" id="text-2-2-7">
-<p>
-把map与递归结合是处理树的一种强有力的抽象
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline39" class="outline-4">
-<h4 id="orgheadline39"><span class="section-number-4">2.2.8</span> 习题2.30</h4>
-<div class="outline-text-4" id="text-2-2-8">
-<p>
-定义square-tree
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (map-tree tree f)
-  (map (lambda (sub-tree)
-         (if (pair? sub-tree)
-             (map-tree sub-tree f)
-             (f sub-tree)))
-       tree))
-(map-tree (list 1 2 (list 3 4)) square)
-; value: (1 4 (9 16))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline40" class="outline-4">
-<h4 id="orgheadline40"><span class="section-number-4">2.2.9</span> 习题2.31</h4>
-<div class="outline-text-4" id="text-2-2-9">
-<p>
-将2.30进一步抽象. (还好宝宝机智,已经抽象好了
-</p>
-<pre class="example">
-(define (square-tree tree) (map-tree tree square))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline41" class="outline-4">
-<h4 id="orgheadline41"><span class="section-number-4">2.2.10</span> 习题2.32</h4>
-<div class="outline-text-4" id="text-2-2-10">
-<p>
-计算全排列(又学到一种算排列的新姿势
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (subsets s)
-  (if (null? s)
-      ()
-      (let ((reset (subsets (cdr s))))
-        (append reset
-                (cons
-                 (car s) 
-                 (map (lambda (sub) (append (car s) sub)) reset))))))
-</pre>
-</div>
-<p>
-倒数第3行用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
-作这道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
-后来修改了之前的append实现才搞定:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (append list1 list2)
-  (cond ((null? list1)
-         list2)
-        ((null? list2) ;; 对list2=nil的情况进行处理
-         list1)
-        ((and (not (pair? list1)) (not (pair? list2)))
-         (list list1 list2)) ;; 两个都是简单数据时返回list,而不是序对
-        ((not (pair? list1))
-         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr
-        (else
-         (cons (car list1) (append (cdr list1) list2)))))
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline49" class="outline-3">
-<h3 id="orgheadline49"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-这里介绍与数据结构有关的另一种强有力的设计原理 <b>使用约定的界面</b>.
-</p>
-
-<p>
-举个例子,定义一个过程,枚举所有叶子,并计算出那些值为奇数的叶子的平方和.
-这个过程可以抽象成一个信号流:
-</p>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="org-left">enumerate:</td>
-<td class="org-left">filter:</td>
-<td class="org-left">map:</td>
-<td class="org-left">accumulate:</td>
-</tr>
-
-<tr>
-<td class="org-left">tree leaves</td>
-<td class="org-left">odd?</td>
-<td class="org-left">square</td>
-<td class="org-left">+, 0</td>
-</tr>
-</tbody>
-</table>
-<p>
-如果我们能良好的组织成熟,使得 <code>信号流结构</code> 明显的表现在写出的过程中,将会大大提高代码的清晰性.
-</p>
-</div>
-
-<div id="outline-container-orgheadline43" class="outline-4">
-<h4 id="orgheadline43"><span class="section-number-4">2.3.1</span> 序列操作</h4>
-<div class="outline-text-4" id="text-2-3-1">
-<p>
-要清晰的反应信号流结构, 最关键的一点就是将注意力集中在处理过程从一个步骤流向下一个步骤的"信号".
-</p>
-
-<ul class="org-ul">
-<li><b>map</b> 可以利用2.2.1节的map来表现信号流图中的映射步骤.</li>
-</ul>
-<pre class="example">
-(map square (list 1 2 3 4 5)
-</pre>
-
-<ul class="org-ul">
-<li><b>filter</b></li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (filter predicate sequence)
-  (cond ((null? sequence) ())
-        ((predicate (car sequence))
-         (cons (car sequence)
-               (filter predicate (cdr sequence))))
-        (else (filter predicate (cdr sequence)))))
-</pre>
-</div>
-
-<ul class="org-ul">
-<li><b>accumulate</b> 定义计算步骤</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (accumulate op initial sequence)
-  (if (null? sequence)
-      initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
-</pre>
-</div>
-
-<ul class="org-ul">
-<li><b>enumerate</b> 定义树的枚举</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (enumerate-tree tree)
-  (cond ((null? tree) ())
-        ((not (pair? tree)) (list tree))
-        (else (append (enumerate-tree (car tree))
-                      (enumerate-tree (cdr tree))))))
-</pre>
-</div>
-
-<p>
-利用这些步骤来定义前面的例子:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (sum-odd-squares tree)
-  (accumulate +
-              0
-              (map square
-                   (filter odd?
-                           (enumerate-tree tree)))))
-</pre>
-</div>
-
-<p>
-这样我们就得到了一个由许多独立程序片段组合构成的设计.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline44" class="outline-4">
-<h4 id="orgheadline44"><span class="section-number-4">2.3.2</span> 习题2.33</h4>
-<div class="outline-text-4" id="text-2-3-2">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (map p sequence)
-  (accumulate (lambda (x y) (cons (p x) y)) () sequence))
-(define (append seq1 seq2)
-  (accumulate cons seq2 seq1))
-(define (length sequence)
-  (accumulate (lambda (x y) (+ y 1)) 0 sequence))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline45" class="outline-4">
-<h4 id="orgheadline45"><span class="section-number-4">2.3.3</span> 习题2.34</h4>
-<div class="outline-text-4" id="text-2-3-3">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (horner-eval x sequence)
-  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* x higher-terms)))
-              0
-              sequence))
-
-(horner-eval 2 (list 1 3 0 5 0 1));Value: 79
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline46" class="outline-4">
-<h4 id="orgheadline46"><span class="section-number-4">2.3.4</span> 习题2.35</h4>
-<div class="outline-text-4" id="text-2-3-4">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (count-leaves t)
-  (accumulate (lambda (x y) (+ x y))
-              0
-              (map (lambda (x) (length (enumerate-tree x))) t)))
-(count-leaves (list 1 2 (list 2 3 4))) ; Value:5
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline47" class="outline-4">
-<h4 id="orgheadline47"><span class="section-number-4">2.3.5</span> 习题2.36</h4>
-<div class="outline-text-4" id="text-2-3-5">
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (accumulate-n op init seqs)
-  (if (null? (car seqs))
-      ()
-      (cons (accumulate op init (map car seqs))
-            (accumulate-n op init (map cdr seqs)))))
-
-(accumulate-n + 0 (list (list 1 2 3) (list 1 2 3)))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline48" class="outline-4">
-<h4 id="orgheadline48"><span class="section-number-4">2.3.6</span> 习题2.37</h4>
-<div class="outline-text-4" id="text-2-3-6">
-<p>
-实现矩阵点的各种基本运算
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define (dot-product v w)
-  (accumulate + 0 (accumulate-n * 1 (list v w))))
-
-(define (matrix-*-vector m v)
-  (map
-   (lambda (x) (dot-product x v))
-   m))
-(define (transpose m)
-  (accumulate-n (lambda (x y) (cons x y)) () m))
-(define (matrix-*-matrix m n)
-  (let ((cols (transpose n)))
-    (map (lambda (col) (matrix-*-vector m col)) cols)))
-</pre>
-</div>
-<p>
-测试:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-scheme">(define mv (list 1 2 3))
-(define mm (list (list 1 2 3) (list 4 5 6) (list 4 5 6)))
-(dot-product mv mv);Value: 14
-(matrix-*-vector mm mv);Value 269: (14 32 32)
-(transpose mm);Value 266: ((1 4) (2 5) (3 6))
-(matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>]]></description>
-      <pubDate>2016-04-29</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
-    </item>
     <item>
       <title>Hello World</title>
       <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
@@ -1433,7 +29,7 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -1728,7 +324,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -3418,14 +2014,1451 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
+    </item>
+    <item>
+      <title>SICP-CH2-构造数据抽象</title>
+      <link>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>SICP-CH2-构造数据抽象</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline21">1. 数据抽象索引</a>
+<ul>
+<li><a href="#orgheadline1">1.1. 实例:有理数的算术运算</a></li>
+<li><a href="#orgheadline2">1.2. 习题2.1</a></li>
+<li><a href="#orgheadline3">1.3. 抽象屏障</a></li>
+<li><a href="#orgheadline4">1.4. 习题2.2</a></li>
+<li><a href="#orgheadline5">1.5. 习题2.3</a></li>
+<li><a href="#orgheadline6">1.6. 数据意味着什么</a></li>
+<li><a href="#orgheadline7">1.7. 习题2.4</a></li>
+<li><a href="#orgheadline8">1.8. 习题2.5</a></li>
+<li><a href="#orgheadline9">1.9. 习题2.6</a></li>
+<li><a href="#orgheadline10">1.10. 扩展练习:区间算术</a></li>
+<li><a href="#orgheadline11">1.11. 习题2.7</a></li>
+<li><a href="#orgheadline12">1.12. 习题2.8</a></li>
+<li><a href="#orgheadline13">1.13. 习题2.9</a></li>
+<li><a href="#orgheadline14">1.14. 习题2.10</a></li>
+<li><a href="#orgheadline15">1.15. 习题2.11</a></li>
+<li><a href="#orgheadline16">1.16. 习题2.12</a></li>
+<li><a href="#orgheadline17">1.17. 习题2.13</a></li>
+<li><a href="#orgheadline18">1.18. 习题2.14</a></li>
+<li><a href="#orgheadline19">1.19. 习题2.15</a></li>
+<li><a href="#orgheadline20">1.20. 习题2.16</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline52">2. 层次性数据和闭包性质</a>
+<ul>
+<li><a href="#orgheadline31">2.1. 序列的表示</a>
+<ul>
+<li><a href="#orgheadline22">2.1.1. 对表的操作</a></li>
+<li><a href="#orgheadline23">2.1.2. 习题2.17</a></li>
+<li><a href="#orgheadline24">2.1.3. 习题2.18</a></li>
+<li><a href="#orgheadline25">2.1.4. 习题2.19</a></li>
+<li><a href="#orgheadline26">2.1.5. 习题2.20</a></li>
+<li><a href="#orgheadline27">2.1.6. 对表的映射</a></li>
+<li><a href="#orgheadline28">2.1.7. 习题2.21</a></li>
+<li><a href="#orgheadline29">2.1.8. 习题2.22</a></li>
+<li><a href="#orgheadline30">2.1.9. 习题2.23</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline42">2.2. 层次结构</a>
+<ul>
+<li><a href="#orgheadline32">2.2.1. 习题2.24</a></li>
+<li><a href="#orgheadline33">2.2.2. 习题2.25</a></li>
+<li><a href="#orgheadline34">2.2.3. 习题2.26</a></li>
+<li><a href="#orgheadline35">2.2.4. 习题2.27</a></li>
+<li><a href="#orgheadline36">2.2.5. 习题2.28</a></li>
+<li><a href="#orgheadline37">2.2.6. 习题2.29</a></li>
+<li><a href="#orgheadline38">2.2.7. 对树的映射</a></li>
+<li><a href="#orgheadline39">2.2.8. 习题2.30</a></li>
+<li><a href="#orgheadline40">2.2.9. 习题2.31</a></li>
+<li><a href="#orgheadline41">2.2.10. 习题2.32</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline51">2.3. 序列作为一种约定的界面</a>
+<ul>
+<li><a href="#orgheadline43">2.3.1. 序列操作</a></li>
+<li><a href="#orgheadline44">2.3.2. 习题2.33</a></li>
+<li><a href="#orgheadline45">2.3.3. 习题2.34</a></li>
+<li><a href="#orgheadline46">2.3.4. 习题2.35</a></li>
+<li><a href="#orgheadline47">2.3.5. 习题2.36</a></li>
+<li><a href="#orgheadline48">2.3.6. 习题2.37</a></li>
+<li><a href="#orgheadline49">2.3.7. 习题2.38</a></li>
+<li><a href="#orgheadline50">2.3.8. 习题2.39</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21"><span class="section-number-2">1</span> 数据抽象索引</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<code>数据抽象</code> 是一种科学方法,它使我们能将一个复合数据对象的使用,与该数据对象怎样由更基本的数据对象构造起来的细节隔离开.
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 实例:有理数的算术运算</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+<code>表数据结构</code> 从序对构造起来的数据对象
+</p>
+
+<p>
+关键字:cond, car, cdr
+</p>
+
+<p>
+定义有理数过程:
+</p>
+<pre class="example">
+;; 定义有理数并用gcd优化
+(define (make-rat n d)
+  (let ((g (gcd n d)))
+    (cons (/ n g)  (/ d g))))
+;; 分子
+(define (number x) (car x))
+;; 分母
+(define (denom x) (cdr x))
+;; print
+(define (print-rat x)
+  (newline)
+  (display (number x))
+  (display "/")
+  (display (denom x)))
+;; test val-&gt;1/2
+(print-rat (make-rat 2 -4))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 习题2.1</h3>
+<div class="outline-text-3" id="text-1-2">
+<pre class="example">
+(define (make-rat n d)
+  (let ((g (gcd (abs n) (abs d))))
+    (cond ((&gt; (* n d) 0)
+           (cons (/ (abs n) g)  (/ (abs d) g)))
+          (else  (cons (- 0 (/ (abs n) g)) (/ (abs d) g))))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> 抽象屏障</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+数据抽象的基本思想是:为每一类数据对象标识出一组操作,使得对这类数据对象的操作都可以基于它们表述,并且只使用它们.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> 习题2.2</h3>
+<div class="outline-text-3" id="text-1-4">
+<pre class="example">
+(define (make-point x y) (cons x y))
+(define (x-point x) (car x))
+(define (y-point x) (cdr x))
+(define (make-segment x y) (cons x y))
+(define (start-point x) (car x))
+(define (end-point x) (cdr x))
+(define (print-point p)
+  (newline)
+  (display "(")
+  (display (x-point p))
+  (display ",")
+  (display (y-point p))
+  (display ")"))
+
+(define (mid-point segment)
+  (print-point (make-point
+   (/ (+ (x-point (start-point segment)) (x-point (end-point segment))) 2)
+   (/ (+ (y-point (start-point segment)) (y-point (end-point segment))) 2))))
+
+(mid-point (make-segment (make-point 1.0 1.0) (make-point 4 5)))
+;; value-&gt; (2.5,3.)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">1.5</span> 习题2.3</h3>
+<div class="outline-text-3" id="text-1-5">
+<pre class="example">
+(define (double x) (* x x))
+(define (make-rect p1 p2 p3)
+  (cons (make-segment p1 p2) (make-segment p2 p3)))
+(define (h-side rect) (car rect))
+(define (v-side rect) (cdr rect))
+(define (lenth seg)
+  (let ((p1 (x-point seg))
+        (p2 (y-point seg)))
+  (sqrt
+   (+
+    (double (- (x-point p1) (x-point p2)))
+    (double (- (y-point p1) (y-point p2)))))))
+(define (rect-length rect)
+  (* (+
+      (lenth (h-side rect))
+      (lenth (v-side rect)))
+     2))
+(define (rect-area rect)
+  (*  (lenth (h-side rect))
+      (lenth (v-side rect))))
+
+;; test
+(lenth (make-segment (make-point 1 1) (make-point 2 2))) 
+;Value: 1.4142135623730951
+
+(rect-length
+ (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
+;Value: 6.82842712474619
+
+(rect-area
+ (make-rect (make-point 1 1) (make-point 2 2) (make-point 0 2))) 
+;Value: 2.8284271247461903
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">1.6</span> 数据意味着什么</h3>
+<div class="outline-text-3" id="text-1-6">
+<p>
+<code>数据</code> 是一组适当的 <b>构造函数</b> 和 <b>选择函数</b> ,以及为了使这些过程成为一套合法的表示, 它们必须满足的一组*特定条件*
+</p>
+
+<p>
+条件可能不太好理解, 举例来说, <b>序对</b> 这种数据的car和cdr操作需要满足的条件就是:
+任何对象x和y, 如果z是(cons x y),那么(car z)就是x, (cdr z)就是y.
+</p>
+
+<p>
+<code>数据的过程性表示</code> lisp/scheme甚至可以用过程来表示序对:
+</p>
+<pre class="example">
+(define (cons x y)
+ (define (dispatch m)
+   (cond ((= m 0) x)
+         ((= m 1) y)
+         (else (error "argument not 0 or 1")))
+  dispatch))
+
+(define (car z) (z 0))
+(define (cdr z) (z 1))
+</pre>
+
+<p>
+(cons x y)返回一个过程. 当然scheme和一般的lisp并不会这样实现序对,主要是出于性能考虑.
+</p>
+
+<p>
+在第三章可以看到,数据的过程性表示在设计中扮演着一种重要的角色,这种风格叫做 <code>消息传递</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">1.7</span> 习题2.4</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+代换过程:
+</p>
+<pre class="example">
+(car (cons x y))
+((cons x y) (lambda (p q) p))
+;把(lambda (p q))作为m带入(lambda (m) (m x y))
+((lambda (p q) p) x y)
+;应用x,y,得到
+value-&gt;x
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">1.8</span> 习题2.5</h3>
+<div class="outline-text-3" id="text-1-8">
+<p>
+2和3都是质数,可以利用质数相乘的性质储存a和b.
+</p>
+<pre class="example">
+(define (cons-expt x y)
+  (* (expt 2 x) (expt 3 y)))
+
+(define (car-expt x)
+  (define (iter a n)
+    (cond ((= 0 (remainder a 2)) (iter (/ a 2) (+ n 1)))
+          (else n)))
+  (iter x 0))
+
+(define (cdr-expt x)
+  (define (iter a n)
+    (cond ((= 0 (remainder a 3)) (iter (/ a 3) (+ n 1)))
+          (else n)))
+  (iter x 0))
+
+(car-expt (cons-expt 5 6)) ;value-&gt;5
+(cdr-expt (cons-expt 5 6)) ;value-&gt;6
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">1.9</span> 习题2.6</h3>
+<div class="outline-text-3" id="text-1-9">
+<p>
+使用church计数的表示形式定义one和two. (讲真我对着这道题发呆好久&#x2026;.
+</p>
+
+<pre class="example">
+(define zero (lambda (f) (lambda (x) x)))
+(define (add-1 n)
+  (lambda (f) (lambda (x) (f (n f) x))))
+
+; 首先展开add-1
+(add-1 zero)
+(lambda (f) (lambda (x) (f ((zero f) x))))
+(lambda (f) (lambda (x) (f ((lambda(x) x) x))))
+(lambda (f) (lambda (x) (f x)))
+(add-1 one)
+(lambda (f) (lambda (x) (f ((one f) x))))
+(lambda (f) (lambda (x) (f ((lambda (x) (f x)) x))))
+(lambda (f) (lambda (x) (f (f x))))
+; 定义one
+(define one (lambda (f) (lambda (x) (f x))))
+; 定义two
+(define two (lambda (f) (lambda (x) (f (f x)))))
+;根据观察得出规律规律:one的定义中应用了一次f, two的定义中应用了2次f, 所以这类过程可以理解为用'应用f的次数'来表示数字.
+</pre>
+<p>
+定义通用的加法:
+</p>
+<pre class="example">
+(define (add a b)
+  (lambda(f) (lambda(x) ((a f) ((b f) x)))))
+</pre>
+<p>
+这个定义的思路是把a和b中应用f的过程叠加. 下面测试一下:
+</p>
+<pre class="example">
+(add one two)
+(lambda(f) (lambda(x) ((lambda(x) (f x)) ((lambda(x) (f (f x))) x))))
+(lambda(f) (lambda(x) ((lambda(x) (f x)) (f (f x)))))
+(lambda(f) (lambda(x) (f (f (f x)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">1.10</span> 扩展练习:区间算术</h3>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">1.11</span> 习题2.7</h3>
+<div class="outline-text-3" id="text-1-11">
+<pre class="example">
+(define (make-interval a b) (cons a b))
+(define (upper-bound x) (car x))
+(define (lower-bound x) (cdr x))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">1.12</span> 习题2.8</h3>
+<div class="outline-text-3" id="text-1-12">
+<pre class="example">
+(define (sub-interval a b)
+  (make-interval (- (upper-bound a) (upper-bound b))
+                 (- (lower-bound a) (lower-bound b))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">1.13</span> 习题2.9</h3>
+<div class="outline-text-3" id="text-1-13">
+<p>
+对加/减运算而言:
+\(w(a+b)=(u(a+b)-l(a+b))/2=(((u(a)+u(b))-(l(a)+l(b)))/2=(w(a)+w(b))\)
+所以两个区间的和/差的宽度函数就是被加/减的区间的宽度函数.
+</p>
+
+<p>
+对乘法而言:
+</p>
+
+<p>
+有区间A=[0,2],宽度为1;B=[0,4],宽度为2;
+A*B=[0,8],宽度为4. 所以\(w(A*B)\neq w(A)*w(B)\).
+</p>
+
+<p>
+对除法而言:
+A/B=[0,1/2],宽度为1/4. 而w(A)/w(B)=1/2; 所以\(w(A/B)\neq w(A)/w(B)\).
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">1.14</span> 习题2.10</h3>
+<div class="outline-text-3" id="text-1-14">
+<pre class="example">
+; 首先定义一个检查过程
+(define (valid-interval x)
+  (if (&lt; (* (upper-bound x) (lower-bound x)) 0) false true))
+; 重新定义除法
+(define (div-interval x y)
+  (if (and (valid-interval x) (vali-interval y))
+      (mul-interval x
+                    (make-interval (/ 1.0 (upper-bound y))
+                                   (/ 1.0 (lower-bound y))))
+      (display "error:invalid param")))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15"><span class="section-number-3">1.15</span> 习题2.11</h3>
+<div class="outline-text-3" id="text-1-15">
+<p>
+根据区间是否跨过0|是否全为正|是否全为负分为9种情况.
+</p>
+<ul class="org-ul">
+<li>a &gt; 0, b &gt; 0</li>
+<li>a &gt; 0, b &lt; 0</li>
+<li>a &gt; 0, b cross 0</li>
+<li>a cross 0, b &gt; 0</li>
+<li>a cross 0, b &lt; 0</li>
+<li>a cross 0, b cross 0</li>
+<li>a &lt; 0, b &gt; 0</li>
+<li>a &lt; 0, b &lt; 0</li>
+<li>a &lt; 0, b cross 0</li>
+</ul>
+
+<p>
+定义快速乘法(有个问题..当a和b都跨越0时,需要4次乘法运算)
+</p>
+<pre class="example">
+(define (is-cross-zero x)
+  (if (&lt; (* (upper-bound x) (lower-bound x)) 0) true false))
+(define (is-positive x)
+  (if (&gt;= (lower-bound x) 0) true false))
+(define (is-negative x)
+  (if (&lt; (upper-bound x) 0) true false))
+
+(define (fast-mul-interval x y)
+  (cond
+   ((and (is-positive x) (is-positive y))
+    (make-interval
+     (* (lower-bound x) (lower-bound y))
+     (* (upper-bound x) (upper-bound y))))
+   ((and (is-positive x) (is-negative y))
+    (make-interval
+     (* (upper-bound x) (upper-bound y))
+     (* (lower-bound x) (lower-bound y))))
+   ((and (is-positive x) (is-cross-zero y))
+    (make-interval
+     (* (upper-bound x) (lower-bound y))
+     (* (upper-bound x) (upper-bound y))))
+   ((and (is-negative x) (is-positive y))
+    (make-interval
+     (* (lower-bound x) (upper-bound y))
+     (* (upper-bound x) (lower-bound y))))
+   ((and (is-negative x) (is-negative y))
+    (make-interval
+     (* (upper-bound x) (upper-bound y))
+     (* (lower-bound x) (lower-bound y))))
+   ((and (is-negative x) (is-cross-zero y))
+    (make-interval
+     (* (lower-bound x) (upper-bound y))
+     (* (lower-bound x) (lower-bound y))))
+   ((and (is-cross-zero x) (is-positive y))
+    (make-interval
+     (* (lower-bound x) (upper-bound y))
+     (* (upper-bound x) (upper-bound y))))
+   ((and (is-cross-zero x) (is-negative y))
+   (make-interval
+    (* (upper-bound x) (lower-bound y))
+    (* (lower-bound x) (lower-bound y))))
+  ((and (is-cross-zero x) (is-cross-zero y))
+   (make-interval
+    (min (* (lower-bound x) (upper-bound y)) (* (upper-bound x) (lower-bound y)))
+    (max (* (upper-bound x) (upper-bound y)) (* (lower-bound x) (lower-bound y)) )))))
+</pre>
+
+<p>
+与Alyssa的暴力乘法进行比较测试(吐血&#x2026;
+</p>
+<pre class="example">
+(fast-mul-interval (make-interval 1 2) (make-interval 1 2))
+(mul-interval (make-interval 1 2) (make-interval 1 2))
+;; Value : (1 . 4)
+
+(fast-mul-interval (make-interval 1 2) (make-interval -1 -2))
+(mul-interval (make-interval 1 2) (make-interval -1 -2))
+;; Value : (-4 .-1)
+
+(fast-mul-interval (make-interval 1 2) (make-interval -1 2))
+(mul-interval (make-interval 1 2) (make-interval -1 2))
+;; Value : (-2, 4)
+
+(fast-mul-interval (make-interval -2 -1) (make-interval 1 2))
+(mul-interval (make-interval -2 -1) (make-interval 1 2))
+;; Value : (-4, -1)
+
+(fast-mul-interval (make-interval -2 -1) (make-interval -2 -1))
+(mul-interval (make-interval -2 -1) (make-interval -2 -1))
+;; Value : (1, 4)
+
+(fast-mul-interval (make-interval -2 -1) (make-interval -1 2))
+(mul-interval (make-interval -2 -1) (make-interval -1 2))
+;; Value : (-4, 2)
+
+(fast-mul-interval (make-interval -2 1) (make-interval 1 2))
+(mul-interval (make-interval -2 1) (make-interval 1 2))
+;; Value : (-4, 2)
+
+(fast-mul-interval (make-interval -2 1) (make-interval -2 -1))
+(mul-interval (make-interval -2 1) (make-interval -2 -1))
+;; Value : (-2, 4)
+
+(fast-mul-interval (make-interval -2 1) (make-interval -5 2))
+(mul-interval (make-interval -2 1) (make-interval -5 2))
+;; Value : (-5, 10)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16"><span class="section-number-3">1.16</span> 习题2.12</h3>
+<div class="outline-text-3" id="text-1-16">
+<pre class="example">
+(define (make-center-percent center percent)
+  (make-interval (- center (* center percent))
+                 (+ center (* center percent))))
+(define (percent range)
+  (let ((width (/ (- (upper-bound range) (lower-bound range)) 2))
+        (mid (/ (+ (upper-bound range) (lower-bound range)) 2)))
+        (/ width mid)))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">1.17</span> 习题2.13</h3>
+<div class="outline-text-3" id="text-1-17">
+<p>
+计算精度的公式是简单相加:
+</p>
+<pre class="example">
+(define (percent-mul r1 r2)
+  (+ (percent r1) (percent r2)))
+</pre>
+<p>
+测试一下
+</p>
+<pre class="example">
+(percent (mul-interval (make-interval 9.99 10.01) (make-interval 9.99 10.01)))
+(percent-mul (make-interval 9.99 10.01) (make-interval 9.99 10.01))
+</pre>
+
+
+<p>
+然后分析part1,part2的问题:
+</p>
+<pre class="example">
+(define (part1 r1 r2)
+  (div-interval (mul-interval r1 r2)
+                (add-interval r1 r2)))
+(define (part2 r1 r2)
+  (let ((one (make-interval 1 1)))
+    (div-interval one
+                  (add-interval (div-interval one r1)
+                                (div-interval one r2)))))
+
+(part1 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.25,2)
+(part2 (make-interval 1 2) (make-interval 1 2)) ;val-&gt; (.5 1)
+</pre>
+<p>
+猜测是运算顺序不同导致精度变化不同
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18"><span class="section-number-3">1.18</span> 习题2.14</h3>
+<div class="outline-text-3" id="text-1-18">
+<p>
+首先验证上面的猜测
+</p>
+<pre class="example">
+(let ((r1 (make-interval 1.0 2))
+       (r2 (make-interval 1.0 2))
+      (one (make-interval 1.0 1.0)))
+  (percent r1)  ; .33
+  (percent (mul-interval r1 r2)) ; .6 放大2倍
+  (percent (div-interval r1 r2)) ; .6 放大2倍
+  (percent (add-interval r1 r2)) ; .33 不变
+  (percent (div-interval one r1)) ; .33 不变
+  (percent (part1 r1 r2)) ; .77 放大2.28倍
+  (percent (part2 r1 r2)) ; .33 
+  )
+</pre>
+
+<p>
+可见,直接对两个区间进行乘法或除法操作会将精度放大.而加法以及被one除不会放大精度.
+</p>
+
+<p>
+在part1的运算过程中,乘法将精度放大2倍, 用放大的乘积除以和之后从0.6放大到0.77. 
+而在part2中,由于全是除以1的操作.精度没有发生变化.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19"><span class="section-number-3">1.19</span> 习题2.15</h3>
+<div class="outline-text-3" id="text-1-19">
+<p>
+eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好的程序.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20"><span class="section-number-3">1.20</span> 习题2.16</h3>
+<div class="outline-text-3" id="text-1-20">
+<p>
+(作者说此题非常难&#x2026;怕
+</p>
+
+<p>
+我先想到了除法运算可能长这样:
+</p>
+<pre class="example">
+(define (better-div-interval r1 r2)
+  (let ((one (make-interval 1 1)))
+    (better-mul-interval r1  (div-interval one r2))))
+</pre>
+<p>
+但首先要能定义出一个better-mul-interval
+</p>
+
+<p>
+我实在编不下去了! google了一下,这道题真的很难,涉及到比较艰深的数学问题. 贴个链接在这里吧:
+<a href="http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme">http://stackoverflow.com/questions/14130878/sicp-2-16-interval-arithmetic-scheme</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline52" class="outline-2">
+<h2 id="orgheadline52"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+<code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
+</p>
+</div>
+
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31"><span class="section-number-3">2.1</span> 序列的表示</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+序列可以通过嵌套cons操作构造起来
+</p>
+<pre class="example">
+(cons 1
+    (cons 2
+        (cons 3
+            (cons 4 ))))
+</pre>
+
+<p>
+scheme为了方便表的构造而提供了一个基本操作list.所以上面序列也可以通过以下方式产生:
+</p>
+<pre class="example">
+(list 1 2 3 4)
+</pre>
+<p>
+它们是等价的.
+</p>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">2.1.1</span> 对表的操作</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+<code>car</code> 可以被看做获取表第一项元素的操作
+<code>cdr</code> 可以看做获取表剩下的元素的操作
+<code>nil</code> 用于表示序对链的结束
+</p>
+
+<p>
+可以这样实现索引:
+</p>
+<pre class="example">
+(define (list-ref item n)
+  (if (= n 0)
+      (car item)
+      (list-ref (cdr item) (- n 1))))
+</pre>
+
+<p>
+<code>null?</code> 用于检查是否是空表.
+利用null实现length:
+</p>
+<pre class="example">
+(define (length items)
+  (if (null? items)
+      0
+      (+ 1 (length (cdr items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23"><span class="section-number-4">2.1.2</span> 习题2.17</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+获取序列的最后一个元素
+</p>
+<pre class="example">
+(define (last-pair items)
+  (if (= 1 (length items))
+      (list (car items))
+      (last-pair (cdr items))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24"><span class="section-number-4">2.1.3</span> 习题2.18</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+返回逆序序列
+</p>
+<pre class="example">
+(define (reverse items)
+  (if (= 1 (length items))
+      items
+      (append (reverse (cdr items)) (list (car items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25"><span class="section-number-4">2.1.4</span> 习题2.19</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+利用序列优化1.22的找硬币程序,把币种存储在序列中
+</p>
+<pre class="example">
+(define us-coins (list 50 25 10 5 1))
+(define uk-coins (list 100 50 20 10 5 2 1 0.5))
+(define (except-first-denomination coin-values) (cdr coin-values))
+(define (first-denomination coin-values) (car coin-values))
+(define (no-more? coin-values) (if (null? coin-values) true false))
+(define (cc amount coin-values)
+  (cond ((= amount 0 ) 1)
+        ((or (&lt; amount 0) (no-more? coin-values)) 0)
+        (else
+         (+ (cc amount
+                (except-first-denomination coin-values))
+            (cc (- amount
+                   (first-denomination coin-values))
+                coin-values)))))
+</pre>
+<p>
+币种的排序不会影响结果.因为针对每种硬币,都会从总金额amount开始重新计算, 测试结果是互相独立的.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26"><span class="section-number-4">2.1.5</span> 习题2.20</h4>
+<div class="outline-text-4" id="text-2-1-5">
+<p>
+这道题说明了scheme怎样定义带有任意多参数的过程
+</p>
+
+<p>
+具体方式是使用点尾:
+</p>
+<pre class="example">
+(define (f x y . z) &lt;body&gt;)
+</pre>
+<p>
+那么如果求值(f 1 2 3 4 5),则x=1,y=2,然后z=(3,4,5),是一个list. (原来是这样&#x2026;
+</p>
+
+<p>
+请用这种记法写出same-parity:返回与其第一个参数有同样奇偶性质的表
+</p>
+<pre class="example">
+;首先定义一个选择器,它接受一个过程参数f,然后用f来过滤出子序列
+(define (filter items f)
+  (cond
+   ((null? items) (list))
+   ((f (car items))
+    (append (list (car items)) (filter (cdr items) f)))
+   (else
+    (append (list) (filter (cdr items) f)))))
+</pre>
+<p>
+然后定义same-party.为了简化我首先利用append把x,y,z整合成一个序列
+</p>
+<pre class="example">
+(define (same-party x y . z)
+  (let ((param-list
+         (append (list x) (append (list y) z))))
+    (if
+     (odd? x)
+     (filter param-list odd?)
+     (filter param-list even?))))
+</pre>
+<p>
+测试
+</p>
+<pre class="example">
+(same-party 2 1 2 3 4 5 6 7 8) ; value: (1 3 5 7)
+(same-party 1 2 3 4 5 6 7 8)   ; value: (2 2 4 6 8)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27"><span class="section-number-4">2.1.6</span> 对表的映射</h4>
+<div class="outline-text-4" id="text-2-1-6">
+<p>
+<code>map</code> 是一种公共模式,而且建立起了一种处理表的高层抽象
+</p>
+<pre class="example">
+(define (map proc items)
+  (if (null? items)
+      (list)
+      (cons (proc (car items))
+            (map proc (cdr items)))))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28"><span class="section-number-4">2.1.7</span> 习题2.21</h4>
+<div class="outline-text-4" id="text-2-1-7">
+<pre class="example">
+(define (square-list items)
+  (if (null? items)
+      '()
+      (cons (square (car items)) (square-list (cdr items)))))
+
+(define (square-list items)
+  (map square items))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29"><span class="section-number-4">2.1.8</span> 习题2.22</h4>
+<div class="outline-text-4" id="text-2-1-8">
+<p>
+第一个迭代错在cons的顺序,把answer放在最后会变成倒序
+</p>
+<pre class="example">
+(cons (...) answer)
+</pre>
+<p>
+而修改后的程序把answer放在前面,虽然看起来顺序对了,但cons的第一个参数是嵌套的cons,最后生成的序列会长这样:
+</p>
+<pre class="example">
+((((. .) .) .) .)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30"><span class="section-number-4">2.1.9</span> 习题2.23</h4>
+<div class="outline-text-4" id="text-2-1-9">
+<p>
+实现一个for-each
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (for-each proc items)
+  (if (null? items)
+       ()
+       (begin
+         (proc (car items))
+         (for-each proc (cdr items)))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline42" class="outline-3">
+<h3 id="orgheadline42"><span class="section-number-3">2.2</span> 层次结构</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+将表作为序列的方式,可以自然的推广到表示那些元素本身也是序列的序列,也就是
+<code>树</code>. 
+</p>
+
+<p>
+<code>pair?</code> scheme提供的基本过程, 检查参数是否为序对.
+</p>
+</div>
+
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32"><span class="section-number-4">2.2.1</span> 习题2.24</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list 1 (list 2 (list 3 4) 5))
+;Value 89: (1 (2 (3 4) 5))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-c">     N
+  /     \
+1        N    
+       / | \  
+      2  N  5
+        / \
+       3   4
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33"><span class="section-number-4">2.2.2</span> 习题2.25</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(cdr (car (cdr (cdr mt1))))
+(cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr mt2)))))))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline34" class="outline-4">
+<h4 id="orgheadline34"><span class="section-number-4">2.2.3</span> 习题2.26</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(append x y) ;Value 101: (1 2 3 4 5 6)
+(cons x y)   ;Value 102: ((1 2 3) 4 5 6)
+(list x y)   ;Value 103: ((1 2 3) (4 5 6))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35"><span class="section-number-4">2.2.4</span> 习题2.27</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+实现深度逆序.这道题目真是折腾死宝宝了,一开始有个关键点没搞明白,导致瞎写了一通.
+这个关键的地方是:如果(cdr list)是一个list:
+</p>
+<pre class="example">
+(list 1 (list 2 3))
+</pre>
+<p>
+那么它的逆序则是
+</p>
+<pre class="example">
+(append (cdr list) (car list))
+</pre>
+<p>
+但如果(car list)是list,就稍微有点绕:
+</p>
+<pre class="example">
+(list (list 1 2) 3)
+</pre>
+<p>
+那么它的逆序则是
+</p>
+<pre class="example">
+(append (cdr list) (list (car list)))
+</pre>
+<p>
+原因是append或者cons会把第二个参数展开(去掉一层list), 所以不能直接使用(car x)当做第二个参数.           
+</p>
+
+<p>
+深度逆序:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (deep-revers tree)
+  (cond
+   ((null? tree) ())
+   ((not (pair? tree)) (list tree))
+   ((pair? (car tree))
+      (append (deep-revers (cdr tree)) (list (deep-revers (car tree)))))
+   (else
+      (append (deep-revers (cdr tree)) (deep-revers (car tree))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36"><span class="section-number-4">2.2.5</span> 习题2.28</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (fringe tree)
+  (cond
+   ((null? tree) ())
+   ((not (pair? tree)) (list tree))
+   (else
+    (append (fringe (car tree))
+            (fringe (cdr tree)))
+        )))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37"><span class="section-number-4">2.2.6</span> 习题2.29</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+-a) 获取左右子树,右子树稍稍注意:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-mobile left right)
+  (list left right))
+(define (make-branch length structure)
+  (list length structure))
+(define (left-branch mobile)
+  (car mobile))
+(define (right-branch mobile)
+  (car (cdr mobile)))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>b) 递归计算子树长度(左边叶子之和)</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (branch-length branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) 0)
+   (else
+    (+ (car branch) (branch-length (right-branch branch))))))
+</pre>
+</div>
+
+<p>
+递归计算重量(右叶子之和)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (branch-weight branch)
+  (cond
+   ((null? branch) 0)
+   ((not (pair? branch)) branch)
+   (else
+    (branch-weight (right-branch branch)))))
+
+(define (total-weight mobile)
+  (+
+   (branch-length (left-branch mobile))
+   (branch-length (right-branch mobile))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>c) 计算是否平衡,简单的乘法.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (is-balance mobile)
+  (=
+   (* (branch-weight (left-branch mobile)) (branch-length (left-branch mobile)))
+   (* (branch-weight (left-branch mobile)) (branch-length (right-branch mobile)))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>d) 只需修改right-branch方法</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (right-branch mobile)
+  (cdr mobile))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline38" class="outline-4">
+<h4 id="orgheadline38"><span class="section-number-4">2.2.7</span> 对树的映射</h4>
+<div class="outline-text-4" id="text-2-2-7">
+<p>
+把map与递归结合是处理树的一种强有力的抽象
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline39" class="outline-4">
+<h4 id="orgheadline39"><span class="section-number-4">2.2.8</span> 习题2.30</h4>
+<div class="outline-text-4" id="text-2-2-8">
+<p>
+定义square-tree
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (map-tree tree f)
+  (map (lambda (sub-tree)
+         (if (pair? sub-tree)
+             (map-tree sub-tree f)
+             (f sub-tree)))
+       tree))
+(map-tree (list 1 2 (list 3 4)) square)
+; value: (1 4 (9 16))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline40" class="outline-4">
+<h4 id="orgheadline40"><span class="section-number-4">2.2.9</span> 习题2.31</h4>
+<div class="outline-text-4" id="text-2-2-9">
+<p>
+将2.30进一步抽象. (还好宝宝机智,已经抽象好了
+</p>
+<pre class="example">
+(define (square-tree tree) (map-tree tree square))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline41" class="outline-4">
+<h4 id="orgheadline41"><span class="section-number-4">2.2.10</span> 习题2.32</h4>
+<div class="outline-text-4" id="text-2-2-10">
+<p>
+计算全排列(又学到一种算排列的新姿势
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (subsets s)
+  (if (null? s)
+      ()
+      (let ((reset (subsets (cdr s))))
+        (append reset
+                (cons
+                 (car s) 
+                 (map (lambda (sub) (append (car s) sub)) reset))))))
+</pre>
+</div>
+<p>
+倒数第3行用cons比较安全. 如果(map..)计算结果是nil, 则cons会把nil省略而list或append会把()放进结果中.
+作这道题一开始append结果总跟预想的不一样,经测试(append 1 2)的结果是个序对(1 . 2)而不是list(1 2).
+后来修改了之前的append实现才搞定:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (append list1 list2)
+  (cond ((null? list1)
+         list2)
+        ((null? list2) ;; 对list2=nil的情况进行处理
+         list1)
+        ((and (not (pair? list1)) (not (pair? list2)))
+         (list list1 list2)) ;; 两个都是简单数据时返回list,而不是序对
+        ((not (pair? list1))
+         (cons list1 list2)) ;; list1是简单数据时直接cons,否则后面会对它car/cdr
+        (else
+         (cons (car list1) (append (cdr list1) list2)))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+这里介绍与数据结构有关的另一种强有力的设计原理 <b>使用约定的界面</b>.
+</p>
+
+<p>
+举个例子,定义一个过程,枚举所有叶子,并计算出那些值为奇数的叶子的平方和.
+这个过程可以抽象成一个信号流:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">enumerate:</td>
+<td class="org-left">filter:</td>
+<td class="org-left">map:</td>
+<td class="org-left">accumulate:</td>
+</tr>
+
+<tr>
+<td class="org-left">tree leaves</td>
+<td class="org-left">odd?</td>
+<td class="org-left">square</td>
+<td class="org-left">+, 0</td>
+</tr>
+</tbody>
+</table>
+<p>
+如果我们能良好的组织成熟,使得 <code>信号流结构</code> 明显的表现在写出的过程中,将会大大提高代码的清晰性.
+</p>
+</div>
+
+<div id="outline-container-orgheadline43" class="outline-4">
+<h4 id="orgheadline43"><span class="section-number-4">2.3.1</span> 序列操作</h4>
+<div class="outline-text-4" id="text-2-3-1">
+<p>
+要清晰的反应信号流结构, 最关键的一点就是将注意力集中在处理过程从一个步骤流向下一个步骤的"信号".
+</p>
+
+<ul class="org-ul">
+<li><b>map</b> 可以利用2.2.1节的map来表现信号流图中的映射步骤.</li>
+</ul>
+<pre class="example">
+(map square (list 1 2 3 4 5)
+</pre>
+
+<ul class="org-ul">
+<li><b>filter</b></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (filter predicate sequence)
+  (cond ((null? sequence) ())
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><b>accumulate</b> 定义计算步骤</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><b>enumerate</b> 定义树的枚举</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (enumerate-tree tree)
+  (cond ((null? tree) ())
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+</pre>
+</div>
+
+<p>
+利用这些步骤来定义前面的例子:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (sum-odd-squares tree)
+  (accumulate +
+              0
+              (map square
+                   (filter odd?
+                           (enumerate-tree tree)))))
+</pre>
+</div>
+
+<p>
+这样我们就得到了一个由许多独立程序片段组合构成的设计.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline44" class="outline-4">
+<h4 id="orgheadline44"><span class="section-number-4">2.3.2</span> 习题2.33</h4>
+<div class="outline-text-4" id="text-2-3-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) () sequence))
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1))
+(define (length sequence)
+  (accumulate (lambda (x y) (+ y 1)) 0 sequence))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline45" class="outline-4">
+<h4 id="orgheadline45"><span class="section-number-4">2.3.3</span> 习题2.34</h4>
+<div class="outline-text-4" id="text-2-3-3">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (horner-eval x sequence)
+  (accumulate (lambda (this-coeff higher-terms) (+ this-coeff (* x higher-terms)))
+              0
+              sequence))
+
+(horner-eval 2 (list 1 3 0 5 0 1));Value: 79
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46"><span class="section-number-4">2.3.4</span> 习题2.35</h4>
+<div class="outline-text-4" id="text-2-3-4">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (count-leaves t)
+  (accumulate (lambda (x y) (+ x y))
+              0
+              (map (lambda (x) (length (enumerate-tree x))) t)))
+(count-leaves (list 1 2 (list 2 3 4))) ; Value:5
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47"><span class="section-number-4">2.3.5</span> 习题2.36</h4>
+<div class="outline-text-4" id="text-2-3-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      ()
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+
+(accumulate-n + 0 (list (list 1 2 3) (list 1 2 3)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">2.3.6</span> 习题2.37</h4>
+<div class="outline-text-4" id="text-2-3-6">
+<p>
+实现矩阵点的各种基本运算
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (dot-product v w)
+  (accumulate + 0 (accumulate-n * 1 (list v w))))
+
+(define (matrix-*-vector m v)
+  (map
+   (lambda (x) (dot-product x v))
+   m))
+(define (transpose m)
+  (accumulate-n (lambda (x y) (cons x y)) () m))
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (col) (matrix-*-vector m col)) cols)))
+</pre>
+</div>
+<p>
+测试:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define mv (list 1 2 3))
+(define mm (list (list 1 2 3) (list 4 5 6) (list 4 5 6)))
+(dot-product mv mv);Value: 14
+(matrix-*-vector mm mv);Value 269: (14 32 32)
+(transpose mm);Value 266: ((1 4) (2 5) (3 6))
+(matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49"><span class="section-number-4">2.3.7</span> 习题2.38</h4>
+<div class="outline-text-4" id="text-2-3-7">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(fold-right / 1 (list 1 2 3)) ;;Value: 3/2
+(fold-left / 1 (list 1 2 3))  ;;Value: 1/6
+(fold-right list () (list 1 2 3));Value 270: (1 (2 (3 ())))
+(fold-left list () (list 1 2 3));Value 271: (((() 1) 2) 3)
+</pre>
+</div>
+<p>
+保证fold-right和fold-left都相同的条件是,运算满足交换律.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-4">
+<h4 id="orgheadline50"><span class="section-number-4">2.3.8</span> 习题2.39</h4>
+<div class="outline-text-4" id="text-2-3-8">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (reverse sequence)
+  (fold-right (lambda (x y) (append y (list x))) () sequence))
+(define (reverse sequence)
+  (fold-left (lambda (x y) (cons y x)) ()  sequence))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-04-29</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -3706,7 +3739,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -4250,7 +4283,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -4509,7 +4542,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -4995,7 +5028,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
@@ -5108,7 +5141,7 @@ int x {2.7} // error: double -&gt; int may narrow.
 
 </div>
 </div>]]></description>
-      <pubDate>2016-04-27</pubDate>
+      <pubDate>2016-04-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
     </item>
   </channel>

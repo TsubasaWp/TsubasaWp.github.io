@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline50">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline52">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -87,7 +87,7 @@
 <li><a href="#orgheadline41">2.2.10. 习题2.32</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline49">2.3. 序列作为一种约定的界面</a>
+<li><a href="#orgheadline51">2.3. 序列作为一种约定的界面</a>
 <ul>
 <li><a href="#orgheadline43">2.3.1. 序列操作</a></li>
 <li><a href="#orgheadline44">2.3.2. 习题2.33</a></li>
@@ -95,6 +95,8 @@
 <li><a href="#orgheadline46">2.3.4. 习题2.35</a></li>
 <li><a href="#orgheadline47">2.3.5. 习题2.36</a></li>
 <li><a href="#orgheadline48">2.3.6. 习题2.37</a></li>
+<li><a href="#orgheadline49">2.3.7. 习题2.38</a></li>
+<li><a href="#orgheadline50">2.3.8. 习题2.39</a></li>
 </ul>
 </li>
 </ul>
@@ -668,8 +670,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline50" class="outline-2">
-<h2 id="orgheadline50"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline52" class="outline-2">
+<h2 id="orgheadline52"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1201,8 +1203,8 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 </div>
 </div>
 
-<div id="outline-container-orgheadline49" class="outline-3">
-<h3 id="orgheadline49"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
+<div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51"><span class="section-number-3">2.3</span> 序列作为一种约定的界面</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 这里介绍与数据结构有关的另一种强有力的设计原理 <b>使用约定的界面</b>.
@@ -1416,6 +1418,37 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 (matrix-*-vector mm mv);Value 269: (14 32 32)
 (transpose mm);Value 266: ((1 4) (2 5) (3 6))
 (matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49"><span class="section-number-4">2.3.7</span> 习题2.38</h4>
+<div class="outline-text-4" id="text-2-3-7">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(fold-right / 1 (list 1 2 3)) ;;Value: 3/2
+(fold-left / 1 (list 1 2 3))  ;;Value: 1/6
+(fold-right list () (list 1 2 3));Value 270: (1 (2 (3 ())))
+(fold-left list () (list 1 2 3));Value 271: (((() 1) 2) 3)
+</pre>
+</div>
+<p>
+保证fold-right和fold-left都相同的条件是,运算满足交换律.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-4">
+<h4 id="orgheadline50"><span class="section-number-4">2.3.8</span> 习题2.39</h4>
+<div class="outline-text-4" id="text-2-3-8">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (reverse sequence)
+  (fold-right (lambda (x y) (append y (list x))) () sequence))
+(define (reverse sequence)
+  (fold-left (lambda (x y) (cons y x)) ()  sequence))
 </pre>
 </div>
 </div>
