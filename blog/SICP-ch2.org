@@ -809,6 +809,115 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
 #+BEGIN_SRC scheme
 (define (reverse sequence)
   (fold-right (lambda (x y) (append y (list x))) () sequence))
-(define (reverse sequence)
+  (define (reverse sequence)
   (fold-left (lambda (x y) (cons y x)) ()  sequence))
 #+END_SRC
+
+*** 嵌套映射
+我们可以扩充序列泛型,将许多通常用嵌套循环表述的计算包含进来,  比如用append累积map的计算结果:
+#+BEGIN_SRC scheme
+(define (flatmap proc seq)
+  (accumulate append (list) (map proc seq)))
+#+END_SRC
+
+- ep1: 找出n以下所有和为素数的序对:
+#+BEGIN_SRC scheme
+(define (make-pair-sum pair)
+  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (filter prime-sum?
+               (flatmap
+                (lambda (i)
+                  (map (lambda (j) (list i j))
+                       (enumerate-interval 1 (- i 1))))
+                (enumerate-interval 1 n)
+                ))))
+#+END_SRC
+
+-  ep2: 全排列
+#+BEGIN_SRC scheme
+(define (permutations s)
+  (if (null? s)
+      (list (list))
+      (flatmap (lambda (x)
+                 (map (lambda (p) (cons x p))
+                      (permutations (remove x s))))
+               s)))
+(define (remove item sequence)
+  (filter (lambda (x) (not (= x item)))
+          sequence))
+#+END_SRC
+
+*** 习题2.40
+#+BEGIN_SRC scheme
+(define (unique-pairs low high)
+  (flatmap (lambda (x) 
+         (map (lambda (y) (list x y))
+              (enumerate-interval (+ x 1) high)))
+           (enumerate-interval low high)))
+(unique-pairs 1 3);;=> ((1 2) (1 3) (2 3))
+(define (prime-sum-pair n)
+  (filter prime-sum? (unique-pairs 1 n)))
+(prime-sum-pair 3)
+#+END_SRC
+
+*** 习题2.41
+#+BEGIN_SRC scheme
+(define (unique-triples low high)
+  (flatmap (lambda (x)
+             (map (lambda (i) (append x i)) (unique-pairs (+ x 1) high)))
+           (enumerate-interval low high)))
+(unique-triples 1 4)
+(define (prime-sum-triple? list)
+  (prime? (+ (car list) (cadr list) (cadr (cdr list)))))
+(define (prime-sum-triples n)
+  (filter prime-sum-triple? (unique-triples 1 n)))
+(prime-sum-triples 4) ;;=> ((1 2 4) (2 3 4))
+#+END_SRC
+
+*** 习题2.42
+经典的8皇后问题,回溯法.
+#+BEGIN_SRC scheme
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= 0 k)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+        (queen-cols board-size))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define empty-board (list))
+#+END_SRC
+空棋盘就是nil
+#+BEGIN_SRC scheme
+(define (adjoin-position new-row k rest-of-queens)
+  (cons new-row rest-of-queens))
+#+END_SRC
+k其实没有用到,大概留出这个参数是为了便于替换成其它算法.
+
+#+BEGIN_SRC scheme
+(define (safe? k positions)
+  (define (safe-iter x rest distance)
+    (cond ((null? rest) #t)
+          ((= x (car rest)) #f)
+          ((= distance (abs (- x (car rest)))) #f)
+          (else (safe-iter x (cdr rest) (+ distance 1)))))
+  (safe-iter (car positions) (cdr positions) 1))
+(queens 4);;Value 458: ((3 1 4 2) (2 4 1 3))
+#+END_SRC
+遍历rest, 检查相同行中是否存在皇后, 以及对角线是否存在皇后.
+
+*** 习题2.43
+2.42解法只需要递归的计算一遍queen-cols,而Reasoner需要递归T遍,导致最后解题事件变成了 $T^2$.
+
+** 实例:一个图形语言
+
