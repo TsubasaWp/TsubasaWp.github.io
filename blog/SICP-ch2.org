@@ -924,8 +924,6 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
 这一图形语言的优美之处,部分在于语言中只有一个元素,称为画家painter.
 
-...详情见原书吧.
-
 *** 习题2.44
 #+BEGIN_SRC scheme
 (define (up-split painter n)
@@ -937,5 +935,14 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 
 *** 习题2.45
 #+BEGIN_SRC scheme
-
+(define (split t1 t2)
+  (lambda (painter n)
+    (if (= n 0)
+        painter
+        (let ((smaller (painter (- n 1))))
+          (let ((part (t2 smaller smaller)))
+            (t1 painter part))))))
 #+END_SRC
+
+*** 习题2.46
+
