@@ -946,4 +946,34 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 #+END_SRC
 
 *** 习题2.46
+#+BEGIN_SRC scheme
+(define (make-vect x y) (cons x y))
+(define (xcor-vect rect) (car rect))
+(define (ycor-vect rect) (cdr rect))
+(define (add-vect v1 v2)
+  (make-vect
+   (+ (xcor-vect v1) (xcor-vect v2))
+   (+ (ycor-vect v1) (ycor-vect v2))))
+(define (sub-vect v1 v2)
+  (make-vect
+   (- (xcor-vect v1) (xcor-vect v2))
+   (- (ycor-vect v1) (ycor-vect v2))))
+(define (scale-vect s v)
+  (make-vect
+   (* s (xcor-vect v))
+   (* s (ycor-vect v))))
+#+END_SRC
 
+*** 习题2.47
+方案1:
+#+BEGIN_SRC scheme
+(define (origin-frame frame) (car frame))
+(define (edge1-frame frame) (cadr frame))
+(define (edge2-frame frame) (caddr frame))
+#+END_SRC
+方案2:
+#+BEGIN_SRC scheme
+(define (origin-frame frame) (car frame))
+(define (edge1-frame frame) (cadr frame))
+(define (edge2-frame frame) (cddr frame))
+#+END_SRC
