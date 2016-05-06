@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Thu, 05 May 2016 08:22:48 CST</pubDate>
-    <lastBuildDate>Thu, 05 May 2016 08:22:48 CST</lastBuildDate>
+    <pubDate>Fri, 06 May 2016 08:23:47 CST</pubDate>
+    <lastBuildDate>Fri, 06 May 2016 08:23:47 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline60">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline61">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -88,10 +88,11 @@
 <li><a href="#orgheadline55">2.3.13. 习题2.43</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline59">2.4. 实例:一个图形语言</a>
+<li><a href="#orgheadline60">2.4. 实例:一个图形语言</a>
 <ul>
 <li><a href="#orgheadline57">2.4.1. 习题2.44</a></li>
 <li><a href="#orgheadline58">2.4.2. 习题2.45</a></li>
+<li><a href="#orgheadline59">2.4.3. 习题2.46</a></li>
 </ul>
 </li>
 </ul>
@@ -665,8 +666,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline60" class="outline-2">
-<h2 id="orgheadline60"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline61" class="outline-2">
+<h2 id="orgheadline61"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1611,16 +1612,12 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 </div>
 </div>
 
-<div id="outline-container-orgheadline59" class="outline-3">
-<h3 id="orgheadline59"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
+<div id="outline-container-orgheadline60" class="outline-3">
+<h3 id="orgheadline60"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
 这一图形语言的优美之处,部分在于语言中只有一个元素,称为画家painter.
-</p>
-
-<p>
-&#x2026;详情见原书吧.
 </p>
 </div>
 
@@ -1644,16 +1641,28 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 <div class="outline-text-4" id="text-2-4-2">
 <div class="org-src-container">
 
-<pre class="src src-scheme"></pre>
+<pre class="src src-scheme">(define (split t1 t2)
+  (define (process painter n)
+    (if (= n 0)
+        painter
+        (let ((process painter (- n 1)))
+          (let ((part (t2 smaller smaller)))
+            (t1 painter part)))))
+    (lambda (painter n) (process painter n)))
+</pre>
 </div>
 </div>
+</div>
+
+<div id="outline-container-orgheadline59" class="outline-4">
+<h4 id="orgheadline59"><span class="section-number-4">2.4.3</span> 习题2.46</h4>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-05</pubDate>
+      <pubDate>2016-05-06</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -1677,7 +1686,7 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -1972,7 +1981,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -3662,14 +3671,14 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -3950,7 +3959,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -4494,7 +4503,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -4753,7 +4762,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -5239,7 +5248,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
@@ -5352,7 +5361,7 @@ int x {2.7} // error: double -&gt; int may narrow.
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-03</pubDate>
+      <pubDate>2016-05-05</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
     </item>
   </channel>
