@@ -936,12 +936,13 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 *** 习题2.45
 #+BEGIN_SRC scheme
 (define (split t1 t2)
-  (lambda (painter n)
+  (define (process painter n)
     (if (= n 0)
         painter
-        (let ((smaller (painter (- n 1))))
+        (let ((process painter (- n 1)))
           (let ((part (t2 smaller smaller)))
-            (t1 painter part))))))
+            (t1 painter part)))))
+    (lambda (painter n) (process painter n)))
 #+END_SRC
 
 *** 习题2.46
