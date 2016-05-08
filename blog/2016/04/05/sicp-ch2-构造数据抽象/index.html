@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline62">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline65">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -104,12 +104,15 @@
 <li><a href="#orgheadline55">2.3.13. 习题2.43</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline61">2.4. 实例:一个图形语言</a>
+<li><a href="#orgheadline64">2.4. 实例:一个图形语言</a>
 <ul>
 <li><a href="#orgheadline57">2.4.1. 习题2.44</a></li>
 <li><a href="#orgheadline58">2.4.2. 习题2.45</a></li>
 <li><a href="#orgheadline59">2.4.3. 习题2.46</a></li>
 <li><a href="#orgheadline60">2.4.4. 习题2.47</a></li>
+<li><a href="#orgheadline61">2.4.5. 习题2.48</a></li>
+<li><a href="#orgheadline62">2.4.6. 习题2.49</a></li>
+<li><a href="#orgheadline63">2.4.7. 画家的变换和组合</a></li>
 </ul>
 </li>
 </ul>
@@ -683,8 +686,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline62" class="outline-2">
-<h2 id="orgheadline62"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline65" class="outline-2">
+<h2 id="orgheadline65"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1629,8 +1632,8 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 </div>
 </div>
 
-<div id="outline-container-orgheadline61" class="outline-3">
-<h3 id="orgheadline61"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
+<div id="outline-container-orgheadline64" class="outline-3">
+<h3 id="orgheadline64"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
@@ -1721,6 +1724,99 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline61" class="outline-4">
+<h4 id="orgheadline61"><span class="section-number-4">2.4.5</span> 习题2.48</h4>
+<div class="outline-text-4" id="text-2-4-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-segment v1 v2) (cons v1 v2))
+(define (start-segment seg) (car seg))
+(define (end-segment seg) (cdr seg))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline62" class="outline-4">
+<h4 id="orgheadline62"><span class="section-number-4">2.4.6</span> 习题2.49</h4>
+<div class="outline-text-4" id="text-2-4-6">
+<p>
+首先定义一堆获取顶点/边/中点的过程&#x2026;(吐血)&#x2026;
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (top-left frame) (add-vect (origin-frame frame) (edge1-frame frame)))
+(define (top-right frame) (add-vect
+                           (edge2-frame frame)
+                           (add-vect (origin-frame frame) (edge1-frame frame))))
+(define (bottom-left frame) (origin-frame frame))
+(define (bottom-right frame) (add-vect (origin-frame frame) (edge2-frame frame)))
+
+(define (left-mid frame) (add-vect (origin-frame frame)
+                                   (scale-vect 0.5 (edge1-frame frame))))
+(define (top-mid frame) (add-vect
+                         (scale-vect 0.5 (edge2-frame frame))
+                         (add-vect (origin-frame frame)
+                                   (edge1-frame frame))))
+(define (bottom-mid frame) (add-vect (origin-frame frame)
+                                     (scale-vect 0.5 (edge2-frame frame))))
+(define (right-mid frame) (add-vect
+                         (edge2-frame frame)
+                         (add-vect (origin-frame frame)
+                                   (scale-vect 0.5 (edge1-frame frame)))))
+
+(define (top frame)  (make-segment (top-left frame) (top-right frame)))
+(define (left frame) (make-segment (top-left frame) (bottom-left frame)))
+(define (right frame) (make-segment (top-right frame) (bottom-right frame)))
+(define (bottom frame) (make-segment (bottom-left frame) (bottom-right frame)))
+</pre>
+</div>
+<p>
+a) 画出框架的4条边,恩..套用前面定义的过程就好了
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (painter-a f)
+  (segments-&gt;painter
+   (list (left f) (top f) (rignt f) (bottom f))))
+</pre>
+</div>
+<p>
+b) 画出对角线..还ok
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (painter-b f)
+  (segments-&gt;painter
+   (list
+    (make-segment (bottom-left f) (top-right f))
+    (make-segment (bottom-right f) (top-left f)))))
+</pre>
+</div>
+<p>
+c) 画出各边中点连线. 于是有了上面一堆xx-mid过程..
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (painter-c f)
+  (segments-&gt;paiter
+   (list
+    (make-segment (left-mid f) (top-mid f))
+    (make-segment (top-mid f) (right-mid f))
+    (make-segment (right-mid f) (bottom-mid f))
+    (make-segment (bottom-mid f) (left-mid f)))))
+</pre>
+</div>
+<p>
+d) 画出wave (此处沉默1分钟&#x2026;..). 这是体力活无误了, 谁爱写谁写吧&#x2026;.ヾ(･∀･)ﾉ゛
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline63" class="outline-4">
+<h4 id="orgheadline63"><span class="section-number-4">2.4.7</span> 画家的变换和组合</h4>
+</div>
 </div>
 </div>
 
@@ -1729,7 +1825,7 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-06</span>
+        <span title="last modification date" class="post-info">2016-05-08</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
