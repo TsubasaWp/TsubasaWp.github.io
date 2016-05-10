@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 08 May 2016 22:34:45 CST</pubDate>
-    <lastBuildDate>Sun, 08 May 2016 22:34:45 CST</lastBuildDate>
+    <pubDate>Tue, 10 May 2016 23:49:23 CST</pubDate>
+    <lastBuildDate>Tue, 10 May 2016 23:49:23 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline65">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline66">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -88,7 +88,7 @@
 <li><a href="#orgheadline55">2.3.13. 习题2.43</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline64">2.4. 实例:一个图形语言</a>
+<li><a href="#orgheadline65">2.4. 实例:一个图形语言</a>
 <ul>
 <li><a href="#orgheadline57">2.4.1. 习题2.44</a></li>
 <li><a href="#orgheadline58">2.4.2. 习题2.45</a></li>
@@ -96,7 +96,8 @@
 <li><a href="#orgheadline60">2.4.4. 习题2.47</a></li>
 <li><a href="#orgheadline61">2.4.5. 习题2.48</a></li>
 <li><a href="#orgheadline62">2.4.6. 习题2.49</a></li>
-<li><a href="#orgheadline63">2.4.7. 画家的变换和组合</a></li>
+<li><a href="#orgheadline63">2.4.7. 习题2.50</a></li>
+<li><a href="#orgheadline64">2.4.8. 习题2.51</a></li>
 </ul>
 </li>
 </ul>
@@ -670,8 +671,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline65" class="outline-2">
-<h2 id="orgheadline65"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline66" class="outline-2">
+<h2 id="orgheadline66"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1616,8 +1617,8 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 </div>
 </div>
 
-<div id="outline-container-orgheadline64" class="outline-3">
-<h3 id="orgheadline64"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
+<div id="outline-container-orgheadline65" class="outline-3">
+<h3 id="orgheadline65"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
@@ -1799,14 +1800,75 @@ d) 画出wave (此处沉默1分钟&#x2026;..). 这是体力活无误了, 谁爱�
 </div>
 
 <div id="outline-container-orgheadline63" class="outline-4">
-<h4 id="orgheadline63"><span class="section-number-4">2.4.7</span> 画家的变换和组合</h4>
+<h4 id="orgheadline63"><span class="section-number-4">2.4.7</span> 习题2.50</h4>
+<div class="outline-text-4" id="text-2-4-7">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (flip-horiz painter)
+  (transform-painter painter
+                     (make-vect 1.0 0.0)
+                     (make-vect 0.0 0.0)
+                     (make-vect 1.0 1.0)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (flip-180 painter)
+  (transform-painter painter
+                     (make-vect 1.0 1.0)
+                     (make-vect 0.0 1.0)
+                     (make-vect 1.0 0.0)))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (flip-270 painter)
+  (transform-painter painter
+                     (make-vect 0.0 1.0)
+                     (make-vect 0.0 0.0)
+                     (make-vect 1.0 1.0)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline64" class="outline-4">
+<h4 id="orgheadline64"><span class="section-number-4">2.4.8</span> 习题2.51</h4>
+<div class="outline-text-4" id="text-2-4-8">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (below painter1 painter2)
+  (let ((split-point (make-vect 0.0 0.5)))
+    (let ((paint-top
+           (transform-painter painter1
+                              split-point
+                              (make-vect 1 0.5)
+                              (make-vect 0 1)))
+          (paint-below
+           (transform-painter painter2
+                              (make-vect 0 0)
+                              (make-vect 1 0)
+                              (make-vect 0 0.5))))
+      (lambda (frame)
+        (paint-top frame)
+        (paint-bottom frame)))))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme"></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-08</pubDate>
+      <pubDate>2016-05-10</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -1830,7 +1892,7 @@ d) 画出wave (此处沉默1分钟&#x2026;..). 这是体力活无误了, 谁爱�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -2125,7 +2187,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -3815,14 +3877,14 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -4103,7 +4165,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -4647,7 +4709,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -4906,7 +4968,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -5392,7 +5454,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
@@ -5505,7 +5567,7 @@ int x {2.7} // error: double -&gt; int may narrow.
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-06</pubDate>
+      <pubDate>2016-05-08</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
     </item>
   </channel>
