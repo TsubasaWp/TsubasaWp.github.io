@@ -1084,5 +1084,60 @@ d) 画出wave (此处沉默1分钟.....). 这是体力活无误了, 谁爱写谁
 #+END_SRC
 
 #+BEGIN_SRC scheme
-
+(define (below painter1 painter2)
+    (lambda (frame)
+            (rotate90
+                (beside
+                    (rotate270
+                        (flip-horiz painter1))
+                    (rotate270
+                        (flip-horiz painter2))))))
 #+END_SRC
+
+*** 强健的设计语言层次
+=分层设计= 一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言.
+
+*** 练习2.52
+a) 给wave加上一条线段
+#+BEGIN_SRC scheme
+(make-segment (left-mid f) (top-mid f));; 随便加一条线段
+#+END_SRC
+b) 修改corner-split的构造模式
+#+BEGIN_SRC scheme
+(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+            (right (right-split painter (- n 1)))
+            (corner (corner-split painter (- n 1))))
+        (beside (below painter up)
+                (below right corner)))))
+#+END_SRC
+c) 修改square-limit
+#+BEGIN_SRC scheme
+(define (square-limit painter n)
+  (let ((squarter (corner-split (flip-horiz painter) n)))
+    (let ((half (beside (flip-horiz quarter) quarter)))
+      (below (flip-vert half) half))))
+#+END_SRC
+只把原来第二行的painter改成了(flip-horiz painter).
+这道题目的意义大概就在于演示"在良好的分层设计下进行修改是很easy的"吧.
+
+** 符号数据
+这一节将引进任意符号作为数据的功能.
+
+*** 引号
+为了能够直接操作符号,我们的语言需要拥有 *为数据对象加引号* 的能力.
+这样就可以将表和符号标记为应该作为 *数据对象* 看待, 而不是作为应该求值的表达式.
+#+BEGIN_SRC scheme
+(define a 1)
+(define b 2)
+(list a b) -> (1 2)
+(list 'a b) -> (a 2)
+(list 'a 'b) -> (a b)
+#+END_SRC
+注意, 引号只是一种将 =下一个完整的表达式= 用 (quote <expression>)形式包裹起来的语法糖.
+
+基本过程 =eq?= 可以以两个符号作为参数,检查它们是否为同样的符号.
+
+
