@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline66">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline70">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -104,7 +104,7 @@
 <li><a href="#orgheadline55">2.3.13. 习题2.43</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline65">2.4. 实例:一个图形语言</a>
+<li><a href="#orgheadline67">2.4. 实例:一个图形语言</a>
 <ul>
 <li><a href="#orgheadline57">2.4.1. 习题2.44</a></li>
 <li><a href="#orgheadline58">2.4.2. 习题2.45</a></li>
@@ -114,6 +114,13 @@
 <li><a href="#orgheadline62">2.4.6. 习题2.49</a></li>
 <li><a href="#orgheadline63">2.4.7. 习题2.50</a></li>
 <li><a href="#orgheadline64">2.4.8. 习题2.51</a></li>
+<li><a href="#orgheadline65">2.4.9. 强健的设计语言层次</a></li>
+<li><a href="#orgheadline66">2.4.10. 练习2.52</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline69">2.5. 符号数据</a>
+<ul>
+<li><a href="#orgheadline68">2.5.1. 引号</a></li>
 </ul>
 </li>
 </ul>
@@ -687,8 +694,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline66" class="outline-2">
-<h2 id="orgheadline66"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline70" class="outline-2">
+<h2 id="orgheadline70"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1633,8 +1640,8 @@ k其实没有用到,大概留出这个参数是为了便于替换成其它算法
 </div>
 </div>
 
-<div id="outline-container-orgheadline65" class="outline-3">
-<h3 id="orgheadline65"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
+<div id="outline-container-orgheadline67" class="outline-3">
+<h3 id="orgheadline67"><span class="section-number-3">2.4</span> 实例:一个图形语言</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
@@ -1875,8 +1882,104 @@ d) 画出wave (此处沉默1分钟&#x2026;..). 这是体力活无误了, 谁爱�
 
 <div class="org-src-container">
 
-<pre class="src src-scheme"></pre>
+<pre class="src src-scheme">(define (below painter1 painter2)
+    (lambda (frame)
+            (rotate90
+                (beside
+                    (rotate270
+                        (flip-horiz painter1))
+                    (rotate270
+                        (flip-horiz painter2))))))
+</pre>
 </div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline65" class="outline-4">
+<h4 id="orgheadline65"><span class="section-number-4">2.4.9</span> 强健的设计语言层次</h4>
+<div class="outline-text-4" id="text-2-4-9">
+<p>
+<code>分层设计</code> 一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><span class="section-number-4">2.4.10</span> 练习2.52</h4>
+<div class="outline-text-4" id="text-2-4-10">
+<p>
+a) 给wave加上一条线段
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(make-segment (left-mid f) (top-mid f));; 随便加一条线段
+</pre>
+</div>
+<p>
+b) 修改corner-split的构造模式
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+            (right (right-split painter (- n 1)))
+            (corner (corner-split painter (- n 1))))
+        (beside (below painter up)
+                (below right corner)))))
+</pre>
+</div>
+<p>
+c) 修改square-limit
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (square-limit painter n)
+  (let ((squarter (corner-split (flip-horiz painter) n)))
+    (let ((half (beside (flip-horiz quarter) quarter)))
+      (below (flip-vert half) half))))
+</pre>
+</div>
+<p>
+只把原来第二行的painter改成了(flip-horiz painter).
+这道题目的意义大概就在于演示"在良好的分层设计下进行修改是很easy的"吧.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline69" class="outline-3">
+<h3 id="orgheadline69"><span class="section-number-3">2.5</span> 符号数据</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+这一节将引进任意符号作为数据的功能.
+</p>
+</div>
+
+<div id="outline-container-orgheadline68" class="outline-4">
+<h4 id="orgheadline68"><span class="section-number-4">2.5.1</span> 引号</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+为了能够直接操作符号,我们的语言需要拥有 <b>为数据对象加引号</b> 的能力.
+这样就可以将表和符号标记为应该作为 <b>数据对象</b> 看待, 而不是作为应该求值的表达式.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define a 1)
+(define b 2)
+(list a b) -&gt; (1 2)
+(list 'a b) -&gt; (a 2)
+(list 'a 'b) -&gt; (a b)
+</pre>
+</div>
+<p>
+注意, 引号只是一种将 <code>下一个完整的表达式</code> 用 (quote &lt;expression&gt;)形式包裹起来的语法糖.
+</p>
+
+<p>
+基本过程 <code>eq?</code> 可以以两个符号作为参数,检查它们是否为同样的符号.
+</p>
 </div>
 </div>
 </div>
@@ -1887,7 +1990,7 @@ d) 画出wave (此处沉默1分钟&#x2026;..). 这是体力活无误了, 谁爱�
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-10</span>
+        <span title="last modification date" class="post-info">2016-05-12</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
