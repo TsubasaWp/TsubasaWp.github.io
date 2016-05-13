@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline70">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline78">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -118,9 +118,20 @@
 <li><a href="#orgheadline66">2.4.10. 练习2.52</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline69">2.5. 符号数据</a>
+<li><a href="#orgheadline72">2.5. 符号数据</a>
 <ul>
 <li><a href="#orgheadline68">2.5.1. 引号</a></li>
+<li><a href="#orgheadline69">2.5.2. 习题2.53</a></li>
+<li><a href="#orgheadline70">2.5.3. 习题2.54</a></li>
+<li><a href="#orgheadline71">2.5.4. 习题2.55</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline77">2.6. 实例:符号求导</a>
+<ul>
+<li><a href="#orgheadline73">2.6.1. 对抽象数据的求导程序</a></li>
+<li><a href="#orgheadline74">2.6.2. 代数表达式的表示</a></li>
+<li><a href="#orgheadline75">2.6.3. 习题2.56</a></li>
+<li><a href="#orgheadline76">2.6.4. 习题2.57</a></li>
 </ul>
 </li>
 </ul>
@@ -694,8 +705,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline70" class="outline-2">
-<h2 id="orgheadline70"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline78" class="outline-2">
+<h2 id="orgheadline78"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -1949,8 +1960,8 @@ c) 修改square-limit
 </div>
 </div>
 
-<div id="outline-container-orgheadline69" class="outline-3">
-<h3 id="orgheadline69"><span class="section-number-3">2.5</span> 符号数据</h3>
+<div id="outline-container-orgheadline72" class="outline-3">
+<h3 id="orgheadline72"><span class="section-number-3">2.5</span> 符号数据</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 这一节将引进任意符号作为数据的功能.
@@ -1982,6 +1993,243 @@ c) 修改square-limit
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69"><span class="section-number-4">2.5.2</span> 习题2.53</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list 'a 'b 'c);Value 468: (a b c)
+(list (list 'george));Value 469: ((george))
+(cdr '((x1 x2) (y1 y2)));Value 473: ((y1 y2))
+(cadr '((x1 x2) (y1 y2)));(y1 y2)
+(pair? (car '(a short list)));#f
+(menq 'red '((red shoes) (blue socks)));#f
+(menq 'red '(red shoes blue socks));Value 475: (red shoes blue socks)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline70" class="outline-4">
+<h4 id="orgheadline70"><span class="section-number-4">2.5.3</span> 习题2.54</h4>
+<div class="outline-text-4" id="text-2-5-3">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (equal? x y)
+  (cond ((and (not (pair? x)) (not (pair? y))) (eq? x y))
+        ((and (pair? x) (pair? y))
+         (and (eq? (car x) (car y))
+              (equal? (cdr x) (cdr y))))
+        (else false)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline71" class="outline-4">
+<h4 id="orgheadline71"><span class="section-number-4">2.5.4</span> 习题2.55</h4>
+<div class="outline-text-4" id="text-2-5-4">
+<p>
+根据注释100,'a是(quote a)的语法糖, 所以:
+</p>
+<pre class="example">
+(car ''abracadabra)
+</pre>
+<p>
+等价于
+</p>
+<pre class="example">
+(car '(quote abracadabra))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline77" class="outline-3">
+<h3 id="orgheadline77"><span class="section-number-3">2.6</span> 实例:符号求导</h3>
+<div class="outline-text-3" id="text-2-6">
+</div><div id="outline-container-orgheadline73" class="outline-4">
+<h4 id="orgheadline73"><span class="section-number-4">2.6.1</span> 对抽象数据的求导程序</h4>
+<div class="outline-text-4" id="text-2-6-1">
+<p>
+对于加和乘构造起来的表达式,求导工作可以通过以下几条规约完成:
+</p>
+<ul class="org-ul">
+<li>\(\frac{dc}{dx}=0\)</li>
+<li>\(\frac{dx}{dx}=1\)</li>
+<li>\(\frac{d(u+v)}{dx}=\frac{du}{dx}+\frac{dv}{dx}\)</li>
+<li>\(\frac{d(uv)}{dx}=u\frac{dv}{dx}+v\frac{du}{dx}\)</li>
+</ul>
+
+<p>
+假设我们已经有了一些代数运算的基本过程, 那么求导过程可以这样表达
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        ((sum? exp)
+         (make-sum (deriv (addend exp) var)
+                   (deriv (augend exp) var)))
+        ((product? exp)
+         (make-sum
+          (make-product (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
+        (else
+         (error "unknown expression type -- ERIV" exp))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline74" class="outline-4">
+<h4 id="orgheadline74"><span class="section-number-4">2.6.2</span> 代数表达式的表示</h4>
+<div class="outline-text-4" id="text-2-6-2">
+<p>
+有关导数问题的数据表示:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">; 变量就是符号
+(define (variable? x) (symbol? x))
+; 两个变量相同
+(define (same-variable? v1 v2)
+  (and (variable? v1) (variable? v2) (eq? v1 v2)))
+; 和式与乘式的构造函数
+(define (make-sum a1 a2) (list '+ a1 a2))
+(define (make-product m1 m2) (list '* m1 m2))
+; 和式就是第一个元素为'+'的表
+(define (sum? x)
+  (and (pair? x) (eq? (car x) '+)))
+(define (addend s) (cadr s))
+(define (augend s) (caddr s))
+; 乘式是第一个元素为'*'的表
+(define (product? x)
+  (and (pair? x) (eq? (car x) '*)))
+(define (multiplier p) (cadr p))
+(define (multiplicand p) (caddr p))
+</pre>
+</div>
+<p>
+测试求导过程:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(deriv '(+ x 3) 'x);Value 481: (+ (* x 0) (* 1 y))
+(deriv '(* x y) 'x);Value 482: (+ 1 0)
+</pre>
+</div>
+<p>
+结果是对的,但是没有化简. 为了完成化简,我们需要修改构造函数的实现:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (=number? exp num)
+  (and (number? exp) (= exp num)))
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else (list '+ a1 a2))))
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else (list '* m1 m2))))
+</pre>
+</div>
+<p>
+测试
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(deriv '(+ x 3) 'x);Value 1
+(deriv '(* x y) 'x);Value y
+(deriv '(* (* x y) (+ x 3)) 'x);Value 486: (+ (* x y) (* y (+ x 3)))
+</pre>
+</div>
+<p>
+情况好了一些,但第三个例子还是不太对,所以代数化简是非常非常复杂的问题..这里就不继续深究了..
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline75" class="outline-4">
+<h4 id="orgheadline75"><span class="section-number-4">2.6.3</span> 习题2.56</h4>
+<div class="outline-text-4" id="text-2-6-3">
+<p>
+扩展deriv, 增加对指数的求导功能.
+首先定义make-exponention,exponentiation?,base,exponent:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-exponentiation a1 a2) (list '** a1 a2))
+(define (exponentiation? x) (and (pair? x) (eq? (car x) '**)))
+(define (base x) (cadr x))
+(define (exponent x) (caddr x))
+</pre>
+</div>
+<p>
+扩充deriv过程,把以下部分加入cond里:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">((exponentiation? exp)
+         (make-product
+          (make-product (exponent exp)
+                        (make-exponentiation
+                         (base exp)
+                         (make-sum (exponent exp) -1)))
+</pre>
+</div>
+<p>
+测试:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(deriv '(** x 3) 'x);Value 490: (* 3 (** x 2))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline76" class="outline-4">
+<h4 id="orgheadline76"><span class="section-number-4">2.6.4</span> 习题2.57</h4>
+<div class="outline-text-4" id="text-2-6-4">
+<p>
+扩充求导程序,使之能处理任意项的和与乘积..
+设法只修改和与乘积的表示,不修改deriv.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else
+         (cond
+          ((not (pair? a2)) (cons '+ (append a1 (list a2))))
+          (else (cons '+ (append a1 a2)))))))
+
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else
+         (cond
+          ((not (pair? m2)) (cons '* (append m1 (list m2))))
+          (else (cons '* (append m1 m2)))))))
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -1990,7 +2238,7 @@ c) 修改square-limit
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-12</span>
+        <span title="last modification date" class="post-info">2016-05-13</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
