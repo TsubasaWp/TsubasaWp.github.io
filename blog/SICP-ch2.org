@@ -1140,4 +1140,156 @@ c) 修改square-limit
 
 基本过程 =eq?= 可以以两个符号作为参数,检查它们是否为同样的符号.
 
+*** 习题2.53
+#+BEGIN_SRC scheme
+(list 'a 'b 'c);Value 468: (a b c)
+(list (list 'george));Value 469: ((george))
+(cdr '((x1 x2) (y1 y2)));Value 473: ((y1 y2))
+(cadr '((x1 x2) (y1 y2)));(y1 y2)
+(pair? (car '(a short list)));#f
+(menq 'red '((red shoes) (blue socks)));#f
+(menq 'red '(red shoes blue socks));Value 475: (red shoes blue socks)
+#+END_SRC
+
+*** 习题2.54
+#+BEGIN_SRC scheme
+(define (equal? x y)
+  (cond ((and (not (pair? x)) (not (pair? y))) (eq? x y))
+        ((and (pair? x) (pair? y))
+         (and (eq? (car x) (car y))
+              (equal? (cdr x) (cdr y))))
+        (else false)))
+#+END_SRC
+
+*** 习题2.55
+根据注释100,'a是(quote a)的语法糖, 所以:
+: (car ''abracadabra)
+等价于
+: (car '(quote abracadabra))
+
+** 实例:符号求导
+
+*** 对抽象数据的求导程序
+对于加和乘构造起来的表达式,求导工作可以通过以下几条规约完成:
+- $\frac{dc}{dx}=0$
+- $\frac{dx}{dx}=1$
+- $\frac{d(u+v)}{dx}=\frac{du}{dx}+\frac{dv}{dx}$
+- $\frac{d(uv)}{dx}=u\frac{dv}{dx}+v\frac{du}{dx}$
+
+假设我们已经有了一些代数运算的基本过程, 那么求导过程可以这样表达
+#+BEGIN_SRC scheme
+(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        ((sum? exp)
+         (make-sum (deriv (addend exp) var)
+                   (deriv (augend exp) var)))
+        ((product? exp)
+         (make-sum
+          (make-product (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
+        (else
+         (error "unknown expression type -- ERIV" exp))))
+#+END_SRC
+
+*** 代数表达式的表示
+有关导数问题的数据表示:
+#+BEGIN_SRC scheme
+; 变量就是符号
+(define (variable? x) (symbol? x))
+; 两个变量相同
+(define (same-variable? v1 v2)
+  (and (variable? v1) (variable? v2) (eq? v1 v2)))
+; 和式与乘式的构造函数
+(define (make-sum a1 a2) (list '+ a1 a2))
+(define (make-product m1 m2) (list '* m1 m2))
+; 和式就是第一个元素为'+'的表
+(define (sum? x)
+  (and (pair? x) (eq? (car x) '+)))
+(define (addend s) (cadr s))
+(define (augend s) (caddr s))
+; 乘式是第一个元素为'*'的表
+(define (product? x)
+  (and (pair? x) (eq? (car x) '*)))
+(define (multiplier p) (cadr p))
+(define (multiplicand p) (caddr p))
+#+END_SRC
+测试求导过程:
+#+BEGIN_SRC scheme
+(deriv '(+ x 3) 'x);Value 481: (+ (* x 0) (* 1 y))
+(deriv '(* x y) 'x);Value 482: (+ 1 0)
+#+END_SRC
+结果是对的,但是没有化简. 为了完成化简,我们需要修改构造函数的实现:
+#+BEGIN_SRC scheme
+(define (=number? exp num)
+  (and (number? exp) (= exp num)))
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else (list '+ a1 a2))))
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else (list '* m1 m2))))
+#+END_SRC
+测试
+#+BEGIN_SRC scheme
+(deriv '(+ x 3) 'x);Value 1
+(deriv '(* x y) 'x);Value y
+(deriv '(* (* x y) (+ x 3)) 'x);Value 486: (+ (* x y) (* y (+ x 3)))
+#+END_SRC
+情况好了一些,但第三个例子还是不太对,所以代数化简是非常非常复杂的问题..这里就不继续深究了..
+
+*** 习题2.56
+扩展deriv, 增加对指数的求导功能.
+首先定义make-exponention,exponentiation?,base,exponent:
+#+BEGIN_SRC scheme
+(define (make-exponentiation a1 a2) (list '** a1 a2))
+(define (exponentiation? x) (and (pair? x) (eq? (car x) '**)))
+(define (base x) (cadr x))
+(define (exponent x) (caddr x))
+#+END_SRC
+扩充deriv过程,把以下部分加入cond里:
+#+BEGIN_SRC scheme
+((exponentiation? exp)
+         (make-product
+          (make-product (exponent exp)
+                        (make-exponentiation
+                         (base exp)
+                         (make-sum (exponent exp) -1)))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(deriv '(** x 3) 'x);Value 490: (* 3 (** x 2))
+#+END_SRC
+
+*** 习题2.57
+扩充求导程序,使之能处理任意项的和与乘积..
+设法只修改和与乘积的表示,不修改deriv.
+#+BEGIN_SRC scheme
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else
+         (cond
+          ((not (pair? a2)) (cons '+ (append a1 (list a2))))
+          (else (cons '+ (append a1 a2)))))))
+
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else
+         (cond
+          ((not (pair? m2)) (cons '* (append m1 (list m2))))
+          (else (cons '* (append m1 m2)))))))
+#+END_SRC
 
