@@ -1293,3 +1293,38 @@ c) 修改square-limit
           (else (cons '* (append m1 m2)))))))
 #+END_SRC
 
+***  习题2.58
+a).支持乘法和加法的中缀运算.
+#+BEGIN_SRC scheme
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else
+         (cond
+          ((not (pair? a2)) (append a1 (append (list '+) (list a2))))
+          (else (append a1 (append (list '+) a2)))))))
+
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else
+         (cond
+          ((not (pair? m2)) (append m1 (append (list '*) (list m2))))
+          (else (append m1 (append (list '*) m2)))))))
+(define (sum? x)
+  (and (pair? x) (eq? (cadr x) '+)))
+(define (addend s) (car s))
+(define (augend s) (caddr s))
+(define (product? x)
+  (and (pair? x) (eq? (cadr x) '*)))
+(define (multiplier p) (car p))
+(define (multiplicand p) (caddr p))
+#+END_SRC
+修改make-sum和make-product即可, 不需要修改deriv.
+
+b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号优先级的功能.
+
+** 实例:集合的表示
