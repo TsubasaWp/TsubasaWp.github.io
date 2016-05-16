@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Mon, 16 May 2016 08:49:51 CST</pubDate>
-    <lastBuildDate>Mon, 16 May 2016 08:49:51 CST</lastBuildDate>
+    <pubDate>Tue, 17 May 2016 07:10:46 CST</pubDate>
+    <lastBuildDate>Tue, 17 May 2016 07:10:46 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline82">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline83">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -119,10 +119,11 @@
 <li><a href="#orgheadline77">2.6.5. 习题2.58</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline81">2.7. 实例:集合的表示</a>
+<li><a href="#orgheadline82">2.7. 实例:集合的表示</a>
 <ul>
 <li><a href="#orgheadline79">2.7.1. 集合作为未排序的表</a></li>
 <li><a href="#orgheadline80">2.7.2. 习题2.59</a></li>
+<li><a href="#orgheadline81">2.7.3. 习题2.60</a></li>
 </ul>
 </li>
 </ul>
@@ -696,8 +697,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline82" class="outline-2">
-<h2 id="orgheadline82"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline83" class="outline-2">
+<h2 id="orgheadline83"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -2269,8 +2270,8 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 </div>
 </div>
 
-<div id="outline-container-orgheadline81" class="outline-3">
-<h3 id="orgheadline81"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
+<div id="outline-container-orgheadline82" class="outline-3">
+<h3 id="orgheadline82"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
@@ -2348,12 +2349,97 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline81" class="outline-4">
+<h4 id="orgheadline81"><span class="section-number-4">2.7.3</span> 习题2.60</h4>
+<div class="outline-text-4" id="text-2-7-3">
+<p>
+定义可重复集合的基本操作.
+首先定义最简单的adjoin,既然集合元素可重复,那么就不必判断element-of-set?了
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (adjoin-set x set) (cons x set))
+</pre>
+</div>
+
+<p>
+element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个数
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (element-of-set? x set)
+  (define (iter x set count)
+    (cond ((null? set) count)
+          ((equal? x (car set))
+                   (iter x (cdr set) (+ count 1)))
+          (else (iter x (cdr set) count))))
+  (iter x set 0))
+</pre>
+</div>
+
+<p>
+交集有点麻烦,在cons时需要借助cons-n过程,计入某个x在set1和set2中的最小个数
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (cons-n x set n)
+  (cond ((= n 0) set)
+        (else (cons-n x (cons x set) (- n 1)))))
+
+(define (intersection-set set1 set2)
+  (define (iter set1 set2 result)
+    (display result)
+    (cond ((or (null? set1) (null? set2)) result)
+          ((&gt; (element-of-set? (car set1) result) 0)
+           (iter (cdr set1) set2 result))
+           (else (iter (cdr set1) set2
+                 (cons-n
+                  (car set1)
+                  result
+                  (min (element-of-set? (car set1) set1)
+                       (element-of-set? (car set1) set2)))))))
+  (iter set1 set2 ()))
+</pre>
+</div>
+<p>
+并集
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (union set1 set2)
+  (define (iter set1 set2 result)
+    (cond ((null? set1) result)
+          ((null? set2) set1)
+          ((&gt; (element-of-set? (car set1) result)
+              (element-of-set? (car set1) set1))
+           (iter (cdr set1) set2 result))
+          (else (iter (cdr set1) set2
+                      (cons-n
+                       (car set1)
+                       result
+                       (- (element-of-set? (car set1) set1)
+                            (element-of-set? (car set1) result)))))))
+  (iter set1 set2 set2))
+</pre>
+</div>
+<p>
+测试union:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(union '(a a b d d) '(a c d e f))
+;Value 555: (d b a a c d e f)
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-16</pubDate>
+      <pubDate>2016-05-17</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -2377,7 +2463,7 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -2672,7 +2758,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -4362,14 +4448,14 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -4650,7 +4736,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -5194,7 +5280,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -5453,7 +5539,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -5939,7 +6025,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
     <item>
@@ -6052,7 +6138,7 @@ int x {2.7} // error: double -&gt; int may narrow.
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-14</pubDate>
+      <pubDate>2016-05-16</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/08/princples-and-practice-using-c++-ch3-reading-note/</guid>
     </item>
   </channel>
