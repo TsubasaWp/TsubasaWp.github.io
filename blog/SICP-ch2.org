@@ -1376,3 +1376,66 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 (union s1 s2); (1 2 3 4)
 #+END_SRC
 
+*** 习题2.60
+定义可重复集合的基本操作.
+首先定义最简单的adjoin,既然集合元素可重复,那么就不必判断element-of-set?了
+#+BEGIN_SRC scheme
+(define (adjoin-set x set) (cons x set))
+#+END_SRC
+
+element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个数
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (define (iter x set count)
+    (cond ((null? set) count)
+          ((equal? x (car set))
+                   (iter x (cdr set) (+ count 1)))
+          (else (iter x (cdr set) count))))
+  (iter x set 0))
+
+
+#+END_SRC
+
+交集有点麻烦,在cons时需要借助cons-n过程,计入某个x在set1和set2中的最小个数
+#+BEGIN_SRC scheme
+(define (cons-n x set n)
+  (cond ((= n 0) set)
+        (else (cons-n x (cons x set) (- n 1)))))
+
+(define (intersection-set set1 set2)
+  (define (iter set1 set2 result)
+    (display result)
+    (cond ((or (null? set1) (null? set2)) result)
+          ((> (element-of-set? (car set1) result) 0)
+           (iter (cdr set1) set2 result))
+           (else (iter (cdr set1) set2
+                 (cons-n
+                  (car set1)
+                  result
+                  (min (element-of-set? (car set1) set1)
+                       (element-of-set? (car set1) set2)))))))
+  (iter set1 set2 ()))
+
+#+END_SRC
+并集
+#+BEGIN_SRC scheme
+(define (union set1 set2)
+  (define (iter set1 set2 result)
+    (cond ((null? set1) result)
+          ((null? set2) set1)
+          ((> (element-of-set? (car set1) result)
+              (element-of-set? (car set1) set1))
+           (iter (cdr set1) set2 result))
+          (else (iter (cdr set1) set2
+                      (cons-n
+                       (car set1)
+                       result
+                       (- (element-of-set? (car set1) set1)
+                            (element-of-set? (car set1) result)))))))
+  (iter set1 set2 set2))
+#+END_SRC
+测试union:
+#+BEGIN_SRC scheme
+(union '(a a b d d) '(a c d e f))
+;Value 555: (d b a a c d e f)
+#+END_SRC
