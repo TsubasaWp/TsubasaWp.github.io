@@ -1328,3 +1328,51 @@ a).支持乘法和加法的中缀运算.
 b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号优先级的功能.
 
 ** 实例:集合的表示
+一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
+- element-of-set? (谓词)
+- adjoin-set
+- union-set
+- intersection-set
+
+*** 集合作为未排序的表
+定义element-of-set?
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((equal? x (car set)) true)
+        (else (element-of-set? x (cdr set)))))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (adjoin-set x set)
+  (if (element-of-set? x set)
+      set
+      (cons x set)))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (intersection-set set1 set2)
+  (cond ((or (null? set1) (null? set2)) ())
+        ((element-of-set? (car set1) set2)
+         (cons (car set1)
+               (intersection-set (cdr set1) set2)))
+        (else (intersection-set (cdr set1) set2))))
+#+END_SRC
+
+*** 习题2.59
+定义union
+#+BEGIN_SRC scheme
+(define (union set1 set2)
+  (cond ((null? set1) set2)
+        ((null? set2) set1)
+        ((element-of-set? (car set1) set2)
+         (union (cdr set1) set2))
+        (else (cons (car set1) (union (cdr set1) set2)))))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(define s1 (list 1 2 3))
+(define s2 (list 2 3 4))
+(union s1 s2); (1 2 3 4)
+#+END_SRC
+
