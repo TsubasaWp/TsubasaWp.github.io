@@ -1,0 +1,22 @@
+#+TITLE:       Game Programming Patterns Reading Note
+#+AUTHOR:      Tsubasa
+#+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
+#+DATE:        2016-05-17 Tue
+#+URI:         /blog/%y/%m/%d/game-programming-patterns-reading-note
+#+KEYWORDS:    reading note
+#+TAGS:        reading note
+#+LANGUAGE:    en
+#+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
+#+DESCRIPTION: reading note
+
+* Architecture, Performance, and Games
+这一节不多说了,老生常谈, 在速度和优雅间权衡. 最后有句话说的不错:
+- When we think of elegant solutions, what we often have in mind is a general one: a small bit of logic that still correctly covers a large space of use cases.
+作为仔细阅读Intro的回报,作者给出几个'忠告':
+- 如果不是确定非常需要,不轻易进行模块化和解耦.
+- 随时考虑代码结构的性能,而尽量把底层优化推后.
+- 尽量快的探索游戏设计的可能性,但依旧要时时注意代码结构,积累太多垃圾代码就不好玩了.
+- 重构不必过于追求完美
+- 如果你觉得干这些没意思就别干了吧...
+
+
