@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline84">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline86">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -135,12 +135,14 @@
 <li><a href="#orgheadline77">2.6.5. 习题2.58</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline83">2.7. 实例:集合的表示</a>
+<li><a href="#orgheadline85">2.7. 实例:集合的表示</a>
 <ul>
 <li><a href="#orgheadline79">2.7.1. 集合作为未排序的表</a></li>
 <li><a href="#orgheadline80">2.7.2. 习题2.59</a></li>
 <li><a href="#orgheadline81">2.7.3. 习题2.60</a></li>
 <li><a href="#orgheadline82">2.7.4. 集合作为排序的表</a></li>
+<li><a href="#orgheadline83">2.7.5. 习题2.61</a></li>
+<li><a href="#orgheadline84">2.7.6. 习题2.62</a></li>
 </ul>
 </li>
 </ul>
@@ -714,8 +716,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline84" class="outline-2">
-<h2 id="orgheadline84"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline86" class="outline-2">
+<h2 id="orgheadline86"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -2287,8 +2289,8 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 </div>
 </div>
 
-<div id="outline-container-orgheadline83" class="outline-3">
-<h3 id="orgheadline83"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
+<div id="outline-container-orgheadline85" class="outline-3">
+<h3 id="orgheadline85"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
@@ -2476,7 +2478,70 @@ element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个
 </pre>
 </div>
 <p>
-平均而言,这个方法需要检查的步数是\(\frac2{n}\).
+平均而言,这个方法需要检查的步数是\(\frac{n}{2}\).
+而计算交集只需要O(n)的复杂度
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (intersection-set set1 set2)
+  (if (or (null? set1) (null? set2))
+      ()
+      (let ((x1 (car set1)) (x2 (car set2)))
+        (cond ((= x1 x2)
+               (cons x1
+                     (intersection-set (cdr set1)
+                                       (cdr set2))))
+              ((&lt; x1 x2)
+               (intersection-set (cdr set1) set2))
+              ((&lt; x2 x1)
+               (intersection-set set1 (cdr set2)))))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline83" class="outline-4">
+<h4 id="orgheadline83"><span class="section-number-4">2.7.5</span> 习题2.61</h4>
+<div class="outline-text-4" id="text-2-7-5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (adjoin-set x set)
+  (define (iter x set1 set2)
+    (cond ((= x (car set2)) (append set1 set2))
+          ((&lt; x (car set2)) (append set1 (append (list x (car set2)) (cdr set2))))
+          (else (iter x (append set1 (list (car set2))) (cdr set2)))))
+  (iter x () set))
+</pre>
+</div>
+<p>
+复杂度与二分一样,\(\frac{n}{2}\).
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline84" class="outline-4">
+<h4 id="orgheadline84"><span class="section-number-4">2.7.6</span> 习题2.62</h4>
+<div class="outline-text-4" id="text-2-7-6">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (union-set set1 set2)
+  (define (iter set1 set2 rst)
+    (cond ((null? set1) (append rst set1))
+          ((null? set2) (append rst set2))
+          (else (let ((x1 (car set1)) (x2 (car set2)))
+                  (cond
+                   ((= x1 x2)
+                    (iter (cdr set1) (cdr set2) (append rst (list x1 x2))))
+                   ((&lt; x1 x2) 
+                    (iter (cdr set1) set2 (append rst (list x1))))
+                   ((&lt; x2 x1)
+                    (iter set1 (cdr set2) (append rst (list x2)))))))))
+  (iter set1 set2 ()))
+
+(union-set '(1 2 2 4) '(2 2 3 4));Value 572: (1 2 2 2 2 3 4 4)
+</pre>
+</div>
+<p>
+最容易想到的方法当然是利用2.61的adjoin-set啦,但那样的话复杂度又编程$n<sup>2</sup>$了..
+所以这里还是利用集合有序的特性,从小到大平行遍历两个集合,这样的复杂度只有n.
 </p>
 </div>
 </div>
