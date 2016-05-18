@@ -1439,3 +1439,21 @@ element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个
 (union '(a a b d d) '(a c d e f))
 ;Value 555: (d b a a c d e f)
 #+END_SRC
+性能比不重复表差,$2*n^2$
+*** 集合作为排序的表
+加速集合操作的一种方式是给集合 =排序=. 这样我们就需要某种方式来比较两个元素.
+采用有序表以后,element-of-set?就不必扫描整个表了.
+
+(下面这个过程似乎只能判断值是数值类型的集合
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((= x (car set)) true)
+        ((< x (car set)) false)
+        (else (element-of-set? x (cdr set)))))
+(element-of-set 3 (list  2 3 4)) ;; Value: #t
+#+END_SRC
+平均而言,这个方法需要检查的步数是$\frac2{n}$.
+
+
+
