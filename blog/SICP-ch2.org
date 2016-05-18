@@ -1453,7 +1453,51 @@ element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个
         (else (element-of-set? x (cdr set)))))
 (element-of-set 3 (list  2 3 4)) ;; Value: #t
 #+END_SRC
-平均而言,这个方法需要检查的步数是$\frac2{n}$.
+平均而言,这个方法需要检查的步数是$\frac{n}{2}$.
+而计算交集只需要O(n)的复杂度
+#+BEGIN_SRC scheme
+(define (intersection-set set1 set2)
+  (if (or (null? set1) (null? set2))
+      ()
+      (let ((x1 (car set1)) (x2 (car set2)))
+        (cond ((= x1 x2)
+               (cons x1
+                     (intersection-set (cdr set1)
+                                       (cdr set2))))
+              ((< x1 x2)
+               (intersection-set (cdr set1) set2))
+              ((< x2 x1)
+               (intersection-set set1 (cdr set2)))))))
+#+END_SRC
+*** 习题2.61
+#+BEGIN_SRC scheme
+(define (adjoin-set x set)
+  (define (iter x set1 set2)
+    (cond ((= x (car set2)) (append set1 set2))
+          ((< x (car set2)) (append set1 (append (list x (car set2)) (cdr set2))))
+          (else (iter x (append set1 (list (car set2))) (cdr set2)))))
+  (iter x () set))
+#+END_SRC
+复杂度与二分一样,$\frac{n}{2}$.
+*** 习题2.62
+#+BEGIN_SRC scheme
+(define (union-set set1 set2)
+  (define (iter set1 set2 rst)
+    (cond ((null? set1) (append rst set1))
+          ((null? set2) (append rst set2))
+          (else (let ((x1 (car set1)) (x2 (car set2)))
+                  (cond
+                   ((= x1 x2)
+                    (iter (cdr set1) (cdr set2) (append rst (list x1 x2))))
+                   ((< x1 x2) 
+                    (iter (cdr set1) set2 (append rst (list x1))))
+                   ((< x2 x1)
+                    (iter set1 (cdr set2) (append rst (list x2)))))))))
+  (iter set1 set2 ()))
 
+(union-set '(1 2 2 4) '(2 2 3 4));Value 572: (1 2 2 2 2 3 4 4)
 
+#+END_SRC
+最容易想到的方法当然是利用2.61的adjoin-set啦,但那样的话复杂度又编程$n^2$了..
+所以这里还是利用集合有序的特性,从小到大平行遍历两个集合,这样的复杂度只有n.
 
