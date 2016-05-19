@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline86">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline87">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -135,7 +135,7 @@
 <li><a href="#orgheadline77">2.6.5. 习题2.58</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline85">2.7. 实例:集合的表示</a>
+<li><a href="#orgheadline86">2.7. 实例:集合的表示</a>
 <ul>
 <li><a href="#orgheadline79">2.7.1. 集合作为未排序的表</a></li>
 <li><a href="#orgheadline80">2.7.2. 习题2.59</a></li>
@@ -143,6 +143,7 @@
 <li><a href="#orgheadline82">2.7.4. 集合作为排序的表</a></li>
 <li><a href="#orgheadline83">2.7.5. 习题2.61</a></li>
 <li><a href="#orgheadline84">2.7.6. 习题2.62</a></li>
+<li><a href="#orgheadline85">2.7.7. 集合作为二叉树</a></li>
 </ul>
 </li>
 </ul>
@@ -716,8 +717,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline86" class="outline-2">
-<h2 id="orgheadline86"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline87" class="outline-2">
+<h2 id="orgheadline87"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -2289,8 +2290,8 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 </div>
 </div>
 
-<div id="outline-container-orgheadline85" class="outline-3">
-<h3 id="orgheadline85"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
+<div id="outline-container-orgheadline86" class="outline-3">
+<h3 id="orgheadline86"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
@@ -2540,9 +2541,56 @@ element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个
 </pre>
 </div>
 <p>
-最容易想到的方法当然是利用2.61的adjoin-set啦,但那样的话复杂度又编程$n<sup>2</sup>$了..
+最容易想到的方法当然是利用2.61的adjoin-set啦,但那样的话复杂度又变成 \(n^2\) 了..
 所以这里还是利用集合有序的特性,从小到大平行遍历两个集合,这样的复杂度只有n.
 </p>
+</div>
+</div>
+<div id="outline-container-orgheadline85" class="outline-4">
+<h4 id="orgheadline85"><span class="section-number-4">2.7.7</span> 集合作为二叉树</h4>
+<div class="outline-text-4" id="text-2-7-7">
+<p>
+如果将集合安排成一棵树的形式,我们还可以得到比排序表更好的结果.
+其中每个节点保存一个集合元素,称为该节点的"数据项".
+</p>
+
+<p>
+将节点表示为三个元素的表:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-tree entry left right) (list enrty left right))
+(define (entry tree) (car tree))
+(define (left-branch tree) (cadr tree))
+(define (right-branch tree) (caddr tree))
+</pre>
+</div>
+<p>
+element-of-set?和adjoin-set
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((= x (entry set)) true)
+        ((&lt; x (entry set))
+         (element-of-set? x (left-branch set)))
+        ((&gt; x (entry set))
+         (element-of-set? x (right-branch set)))))
+
+(define (adjoin-set x set)
+  (cond ((null? set) (make-tree x () ()))
+        ((= x (entry set)) set)
+        ((&lt; x (entry set))
+         (make-tree (entry set)
+                    (adjoin-set x (left-branch set))
+                    (right-branch set)))
+        ((&gt; x (entry set))
+         (make-tree (entry set)
+                    (left-branch set)
+                    (adjoin-set x (right-branch set))))))
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -2553,7 +2601,7 @@ element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-18</span>
+        <span title="last modification date" class="post-info">2016-05-20</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
