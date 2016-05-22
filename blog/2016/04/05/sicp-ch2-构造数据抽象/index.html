@@ -58,7 +58,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline87">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline90">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -135,7 +135,7 @@
 <li><a href="#orgheadline77">2.6.5. 习题2.58</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline86">2.7. 实例:集合的表示</a>
+<li><a href="#orgheadline89">2.7. 实例:集合的表示</a>
 <ul>
 <li><a href="#orgheadline79">2.7.1. 集合作为未排序的表</a></li>
 <li><a href="#orgheadline80">2.7.2. 习题2.59</a></li>
@@ -144,6 +144,9 @@
 <li><a href="#orgheadline83">2.7.5. 习题2.61</a></li>
 <li><a href="#orgheadline84">2.7.6. 习题2.62</a></li>
 <li><a href="#orgheadline85">2.7.7. 集合作为二叉树</a></li>
+<li><a href="#orgheadline86">2.7.8. 习题2.63</a></li>
+<li><a href="#orgheadline87">2.7.9. 习题2.64</a></li>
+<li><a href="#orgheadline88">2.7.10. 习题2.65</a></li>
 </ul>
 </li>
 </ul>
@@ -717,8 +720,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline87" class="outline-2">
-<h2 id="orgheadline87"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline90" class="outline-2">
+<h2 id="orgheadline90"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -2290,8 +2293,8 @@ b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号
 </div>
 </div>
 
-<div id="outline-container-orgheadline86" class="outline-3">
-<h3 id="orgheadline86"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
+<div id="outline-container-orgheadline89" class="outline-3">
+<h3 id="orgheadline89"><span class="section-number-3">2.7</span> 实例:集合的表示</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
@@ -2593,6 +2596,54 @@ element-of-set?和adjoin-set
 </div>
 </div>
 </div>
+<div id="outline-container-orgheadline86" class="outline-4">
+<h4 id="orgheadline86"><span class="section-number-4">2.7.8</span> 习题2.63</h4>
+<div class="outline-text-4" id="text-2-7-8">
+<ul class="org-ul">
+<li>a) 两个过程对所有的树生成结果都一样, 都是左子树优先遍历.</li>
+<li>b) 这两个方法的展开数相同,但第一个方法中每次展开都使用了复杂度为 \(n^2\) 的append操作,</li>
+</ul>
+<p>
+所以方法一的复杂度比方法2高的多.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline87" class="outline-4">
+<h4 id="orgheadline87"><span class="section-number-4">2.7.9</span> 习题2.64</h4>
+<div class="outline-text-4" id="text-2-7-9">
+<p>
+首先测试结果
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list-&gt;tree '(1 3 5 7 9 11))
+;Value 578: (5 (1 () (3 () ())) (9 (7 () ()) (11 () ())))
+;画出来长这样:
+       5
+   1       9
+     3   7   11
+</pre>
+</div>
+<p>
+这个算法利用二分法,递归的从叶子节点开始产生平衡树.上面这个树的计算过程是:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(1 3 5 7 9 11) 
+;left-length: 2
+(1 3) 5 (7 9 11) 
+;left-of-left-tree: 0, left-of-right-tree: 1
+(() 1 (3)) 5 ((7) 9 (11))
+</pre>
+</div>
+<p>
+复杂度:对于每个节点,上述算法只是进行make-tree,也没有额外的遍历, 所以复杂度是 $O(n)
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline88" class="outline-4">
+<h4 id="orgheadline88"><span class="section-number-4">2.7.10</span> 习题2.65</h4>
+</div>
 </div>
 </div>
 
@@ -2601,7 +2652,7 @@ element-of-set?和adjoin-set
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-20</span>
+        <span title="last modification date" class="post-info">2016-05-22</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
