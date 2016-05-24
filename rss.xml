@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 22 May 2016 22:24:59 CST</pubDate>
-    <lastBuildDate>Sun, 22 May 2016 22:24:59 CST</lastBuildDate>
+    <pubDate>Tue, 24 May 2016 23:51:35 CST</pubDate>
+    <lastBuildDate>Tue, 24 May 2016 23:51:35 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -2585,11 +2585,8 @@ element-of-set?和adjoin-set
 <div class="outline-text-4" id="text-2-7-8">
 <ul class="org-ul">
 <li>a) 两个过程对所有的树生成结果都一样, 都是左子树优先遍历.</li>
-<li>b) 这两个方法的展开数相同,但第一个方法中每次展开都使用了复杂度为 \(n^2\) 的append操作,</li>
+<li>b) 这两个方法的展开数相同,但第一个方法中每次展开都使用了复杂度为 \(n^2\) 的append操作,所以方法一的复杂度比方法2高的多.</li>
 </ul>
-<p>
-所以方法一的复杂度比方法2高的多.
-</p>
 </div>
 </div>
 <div id="outline-container-orgheadline87" class="outline-4">
@@ -2621,19 +2618,57 @@ element-of-set?和adjoin-set
 </pre>
 </div>
 <p>
-复杂度:对于每个节点,上述算法只是进行make-tree,也没有额外的遍历, 所以复杂度是 $O(n)
+复杂度:对于每个节点,上述算法只是进行make-tree,也没有额外的遍历, 所以复杂度是 \(O(n)\)
 </p>
 </div>
 </div>
 <div id="outline-container-orgheadline88" class="outline-4">
 <h4 id="orgheadline88"><span class="section-number-4">2.7.10</span> 习题2.65</h4>
+<div class="outline-text-4" id="text-2-7-10">
+<p>
+并集比较简单,直接利用tree-&gt;list转化成list以后append,再利用list-&gt;tree转化回来即可
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (union-set-tree tree1 tree2)
+  (list-&gt;tree (append (tree-&gt;list tree1) (tree-&gt;list tree2))))
+</pre>
+</div>
+<p>
+交集先利用tree-&gt;list把一个tree转化成list, 然后利用前面的adjoin-set方法把元素逐个插入第二个tree中.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (intersection-set-tree tree1 tree2)
+  (let ((list1 (tree-&gt;list tree1)))
+    (define (adjoin-list-to-tree list tree)
+      (cond ((null? list) tree)
+            (else
+             (adjoin-list-to-tree (cdr list)
+                                  (adjoin-set (car list) tree)))))
+    (list-&gt;tree (adjoin-list-to-tree list1 tree2))))
+</pre>
+</div>
+<p>
+测试
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(union-set-tree (list-&gt;tree '(1 3 5)) (list-&gt;tree '(2)))
+;Value 606: (3 (1 () ()) (5 () (2 () ())))
+
+(intersection-set-tree (list-&gt;tree '(1 3 5)) (list-&gt;tree '(1 3 5 9 7 11)))
+;Value 605: ((1 () (3 () ())) (5 () ()) ((7 (9 () ()) (11 () ())) () ()))
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-22</pubDate>
+      <pubDate>2016-05-24</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -2657,7 +2692,7 @@ element-of-set?和adjoin-set
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -2952,7 +2987,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -4642,21 +4677,21 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -4937,7 +4972,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -5481,7 +5516,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -5740,7 +5775,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -6226,7 +6261,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-20</pubDate>
+      <pubDate>2016-05-22</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
