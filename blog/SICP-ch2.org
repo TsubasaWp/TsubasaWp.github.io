@@ -1615,6 +1615,8 @@ element-of-set?和adjoin-set
 (loopup 1 test-tree) ;Value: "aa"
 #+END_SRC
 
+** 实例:Huffman编码树
+
 
 
 
