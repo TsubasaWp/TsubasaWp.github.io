@@ -55,12 +55,39 @@
 </div>
 </div>
 
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Sequencing Patterns</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+乍一看标题还以为是Sequence Queue之类的东西,我真是too young..
+</p>
+
+<p>
+需要one by one处理一坨东西的结构都可以称为sequencing patterns. 这里介绍三种.
+</p>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Double buffer</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+双缓冲. 一个常用的场景就是rendering的输出阶段:
+</p>
+
+<p>
+渲染好的像素会被输出到frame buffer.buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
+双缓冲顾名思义, 使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
+</p>
+</div>
+</div>
+</div>
+
 </div>
 </div>
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-05-22</span>
+        <span title="last modification date" class="post-info">2016-05-25</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
