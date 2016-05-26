@@ -25,7 +25,26 @@
 需要one by one处理一坨东西的结构都可以称为sequencing patterns. 这里介绍三种.
 
 ** Double buffer
-双缓冲. 一个常用的场景就是rendering的输出阶段:
 
-渲染好的像素会被输出到frame buffer.buffer中的内容会被直接输出到显示设备, 如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
+*** Intent
+使得一系列有序操作得以迅速且平滑的进行.
+
+*** Intro
+双缓冲应用比较广的场景是在Rendering阶段:
+
+渲染好的像素被输出到frame buffer, 然后buffer中的内容会被直接输出到显示设备.
+如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
 双缓冲顾名思义, 使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
+
+
+*** When to use
+- 需要频繁的改变一些状态
+- 需要在改变时访问状态
+- 状态改变在进行时禁止被代码访问
+- 而代码不希望等到改变结束才能访问
+
+*** Caveats
+- 交换操作必须是原子的
+- 增加了内存占用
+
+
