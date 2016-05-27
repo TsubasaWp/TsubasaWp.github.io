@@ -1616,9 +1616,41 @@ element-of-set?和adjoin-set
 #+END_SRC
 
 ** 实例:Huffman编码树
+Huffman编码书树简单来说是用于实现 *无重复前缀变长编码* 的树形结构.
 
+*** 习题2.67
+要把本节代码全敲一遍才能算出来的题目....累死宝宝了. 代码太长不贴了, 最终答案是:
+: (a d a b b c a)
 
+*** 习题2.68
+实现加密算法. 步骤大概是从树根开始查找,如果元素在节点左字树的symbols中,则向结果中添加0,
+然后继续在左子树中查找, 右子树同理. 如果遇到叶子节点则说明该字符已经加密完成, 
+而后取下一个字符从根节点开始重新查找. 要实现一个判断节点是否在symbols的过程,并注意处理节点是叶子的情况.
+#+BEGIN_SRC scheme
+(define (symbol-in-tree? symbol tree)
+  (cond ((leaf? tree) (eq? symbol (symbol-leaf tree)))
+        (else (memq symbol (symbols tree)))))
 
+(define (encode-symbol message tree)
+  (define (encode-iter message subtree result)
+    (cond ((null? message) result)
+          ((leaf? subtree) (encode-iter (cdr message) tree result))
+          (else (let ((left (left-branch subtree))
+                 (right (right-branch subtree)))
+             (cond ((symbol-in-tree? (car message) left)
+                    (encode-iter  message left (cons '0 result)))
+                   ((symbol-in-tree? (car message) right)
+                    (encode-iter  message right (cons '1 result)))
+                   (else (error "sambol not in the tree"))
+                   )))))
+  (encode-iter message tree ()))
+#+END_SRC
+用上一题的加密结果来测试, 答案正确.
+#+BEGIN_SRC scheme
+(define sample-message '(a d a b b c a))
+(encode-symbol sample-message sample-tree)
+;Value 643: (0 1 1 1 0 1 0 1 0 0 1 1 0)
+#+END_SRC
 
 
 
