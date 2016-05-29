@@ -162,7 +162,12 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline99">3. 抽象数据的多重表示</a></li>
+<li><a href="#orgheadline101">3. 抽象数据的多重表示</a>
+<ul>
+<li><a href="#orgheadline99">3.1. 复数的表示</a></li>
+<li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -2859,7 +2864,7 @@ Huffman编码书树简单来说是用于实现 <b>无重复前缀变长编码</b
 <h4 id="orgheadline95"><span class="section-number-4">2.8.5</span> 习题2.71</h4>
 <div class="outline-text-4" id="text-2-8-5">
 <p>
-n=5时,频度分别是1,2,4,8,16,数长这样:
+n=5时,频度分别是1,2,4,8,16,树长这样:
 </p>
 <div class="org-src-container">
 
@@ -2888,8 +2893,121 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline99" class="outline-2">
-<h2 id="orgheadline99"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline101" class="outline-2">
+<h2 id="orgheadline101"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
+</p>
+
+<p>
+这一节我们将学习如何处理数据,使它们可能在一个程序的不同部分中采用不同的表示方式.
+更甚者,我们需要建立抽象屏障去隔离这些不同的设计选择.
+</p>
+
+<p>
+实现这种设计的关键是使用 <code>带有类型标识的数据对象</code>, 也就是让数据对象包含着它们应该如何处理的明确的信息.
+</p>
+</div>
+
+<div id="outline-container-orgheadline99" class="outline-3">
+<h3 id="orgheadline99"><span class="section-number-3">3.1</span> 复数的表示</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+沿用在2.1.1节设计有理数包时所采用的同样的数据抽象策略,假定复数运算的实现都包括以下4个选择函数:
+</p>
+<ul class="org-ul">
+<li>real-part</li>
+<li>imag-part</li>
+<li>magnitude</li>
+<li>angle</li>
+</ul>
+
+<p>
+以及两个构造过程
+</p>
+<ul class="org-ul">
+<li>make-from-real-imag</li>
+<li>make-from-mag-ang</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline100" class="outline-3">
+<h3 id="orgheadline100"><span class="section-number-3">3.2</span> 带标志的数据</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+由选择函数和构造函数形成的抽象屏障,使我们可以把为自己所用的数据对象选择具体表示形式的事情尽量向后推,而且可以保持系统的灵活性.
+</p>
+
+<p>
+为了能对带标志的数据进行各种操作,我们将假定有过程 <code>type-tag</code> 和 <code>contents</code> ,它们分别从数据对象中提取出标志和实际内容.
+还要有一个过程 <code>attach-tag</code> ,用来生成带标志的数据对象.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (attach-tag type-tag contents)
+  (cons type-tag contents))
+
+(define (type-tag datum)
+  (if (pair? datum)
+      (car datum)
+      (error "bad tagged datum -- TYPE-TAG" datum)))
+
+(define (contents datum)
+  (if (pair? datum)
+      (cdr datum)
+      (error "bad tagged datum -- CONTENTS" datum)))
+
+(define (rectangular? z)
+  (eq? (type-tag z) 'rectangular))
+
+(define (polar? z)
+  (eq? (type-tag z) 'polar))
+</pre>
+</div>
+<p>
+然后使用不同后缀标志不同过程的名字
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (real-part-polar z)
+  (* (magnitude-polar z) (cos (angle-polar z))))
+
+(define (real-part-rectangular z) (car z))
+</pre>
+</div>
+<p>
+然后用switch-case来实现通用过程real-part.. (为什么感觉switch-case搓搓的..
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (real-part z)
+  (cond ((rectangular? z)
+         (real-part-rectangular (contents z)))
+        ((polar? z)
+         (real-part-polar (contents z)))
+        (else (error "Unkown type -- REAL_PART" z))))
+</pre>
+</div>
+<p>
+这样,实现复数运算时,我们依然可以采用如下形式,因为选择函数是通用的.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (add-complex z1 z2)
+  (make-from-real-imag (+ (real-part z1) (real-part z2))
+                       (+ (imag-part z1) (imag-part z2))))
+</pre>
+</div>
+
+<p>
+当通用类型选择polar类型的复数时,它会剥去标志, 只将内容传递给后面的代码. 
+而当构建一个复数时, 又会加上标志.
+这种 <code>剥去和加上标志</code> 的规范方式可以成为一种重要的组织策略.
+</p>
+</div>
+</div>
 </div>
 
 </div>
