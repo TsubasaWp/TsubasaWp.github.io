@@ -1652,5 +1652,54 @@ Huffman编码书树简单来说是用于实现 *无重复前缀变长编码* 的
 ;Value 643: (0 1 1 1 0 1 0 1 0 0 1 1 0)
 #+END_SRC
 
-
+*** 习题2.69
+这道题目颇费了一些时间....
+关键的技巧是利用有序性, 反复归并前两个元素, 并利用adjoin-set将归并后的节点插入回节点序列.
+#+BEGIN_SRC scheme
+(define (successive-merge pairs)
+  (cond ((= 1 (length pairs)) pairs)
+        (else
+         (successive-merge
+          (adjoin-set
+           (make-code-tree (car pairs) (cadr pairs))
+           (cddr pairs))))))
+;; test
+(successive-merge (make-leaf-set (list '(A 4) '(B 2) '(C 1) '(D 1))))
+;Value 649: (((leaf a 4) ((leaf b 2) ((leaf d 1) (leaf c 1) (d c) 2) (b d c) 4) (a b d c) 8))
+#+END_SRC
+*** 习题2.70
+#+BEGIN_SRC scheme
+(define sing-pairs (list '(a 2) '(na 16) '(boom 1) '(sha 3) '(get 2) '(yip 9) '(job 2) '(wah 1)))
+(define sing-tree (car (successive-merge (make-leaf-set sing-pairs))))
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Wah yip yip yip yip yip yip yip yip yip) sing-tree)
+; (0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1)
+(encode-symbol '(Sha boom) sing-tree)
+; (1 1 0 1 1 0 1 1 1)
+#+END_SRC
+共需要84个二进制位. 如果用定长编码,为8个单词的编码,每个单词需要3个二进制位, 
+总共需要36*3=108个二进制位.
+*** 习题2.71
+n=5时,频度分别是1,2,4,8,16,数长这样:
+#+BEGIN_SRC scheme
+                    (a,b,c,d,e) 31
+               (a,b,c,d)15     e 16
+         (a,b,c) 7      d 8
+   (a,b)3        c 4
+a 1      b 2
+#+END_SRC
+频度最高的符号是e,它是根节点的右子树,编码需要1个二进制位.最不频繁的符号是a,位于树的第(n-1)层,需要4个二进制位.
+推广到一般的树,最频繁的符号需要1位,最不频繁的符号需要(n-1)位.
+*** 习题2.72
+对编码最频繁的符号来说,只需进行2次symbol-in-tree(因为首先计算左子数)即可命中,复杂度是n.
+对编码最不频繁的符号来说,需要进行n-1次symbol-in-tree才能命中,
+由于查找表逐层递减,总共需要查找 $1+2+..(n-1)=/fracn^2/2$次,复杂度是O(n^2).
+* 抽象数据的多重表示
 
