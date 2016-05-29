@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Fri, 27 May 2016 08:21:08 CST</pubDate>
-    <lastBuildDate>Fri, 27 May 2016 08:21:08 CST</lastBuildDate>
+    <pubDate>Sun, 29 May 2016 21:23:45 CST</pubDate>
+    <lastBuildDate>Sun, 29 May 2016 21:23:45 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -42,7 +42,7 @@
 <li><a href="#orgheadline20">1.20. 习题2.16</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline94">2. 层次性数据和闭包性质</a>
+<li><a href="#orgheadline98">2. 层次性数据和闭包性质</a>
 <ul>
 <li><a href="#orgheadline31">2.1. 序列的表示</a>
 <ul>
@@ -134,14 +134,19 @@
 <li><a href="#orgheadline89">2.7.11. 习题2.66</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline93">2.8. 实例:Huffman编码树</a>
+<li><a href="#orgheadline97">2.8. 实例:Huffman编码树</a>
 <ul>
 <li><a href="#orgheadline91">2.8.1. 习题2.67</a></li>
 <li><a href="#orgheadline92">2.8.2. 习题2.68</a></li>
+<li><a href="#orgheadline93">2.8.3. 习题2.69</a></li>
+<li><a href="#orgheadline94">2.8.4. 习题2.70</a></li>
+<li><a href="#orgheadline95">2.8.5. 习题2.71</a></li>
+<li><a href="#orgheadline96">2.8.6. 习题2.72</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a href="#orgheadline99">3. 抽象数据的多重表示</a></li>
 </ul>
 </div>
 </div>
@@ -711,8 +716,8 @@ eva说的对. part2中的运算都没有造成精度区间扩大,所以是更好
 </div>
 </div>
 
-<div id="outline-container-orgheadline94" class="outline-2">
-<h2 id="orgheadline94"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
+<div id="outline-container-orgheadline98" class="outline-2">
+<h2 id="orgheadline98"><span class="section-number-2">2</span> 层次性数据和闭包性质</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 <code>操作的闭包性质</code> 通过某种操作组合起来的数据对象得到的结果本身还可以通过同样的操作再进行组合.
@@ -2722,8 +2727,8 @@ element-of-set?和adjoin-set
 </div>
 </div>
 
-<div id="outline-container-orgheadline93" class="outline-3">
-<h3 id="orgheadline93"><span class="section-number-3">2.8</span> 实例:Huffman编码树</h3>
+<div id="outline-container-orgheadline97" class="outline-3">
+<h3 id="orgheadline97"><span class="section-number-3">2.8</span> 实例:Huffman编码树</h3>
 <div class="outline-text-3" id="text-2-8">
 <p>
 Huffman编码书树简单来说是用于实现 <b>无重复前缀变长编码</b> 的树形结构.
@@ -2783,13 +2788,105 @@ Huffman编码书树简单来说是用于实现 <b>无重复前缀变长编码</b
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline93" class="outline-4">
+<h4 id="orgheadline93"><span class="section-number-4">2.8.3</span> 习题2.69</h4>
+<div class="outline-text-4" id="text-2-8-3">
+<p>
+这道题目颇费了一些时间&#x2026;.
+关键的技巧是利用有序性, 反复归并前两个元素, 并利用adjoin-set将归并后的节点插入回节点序列.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (successive-merge pairs)
+  (cond ((= 1 (length pairs)) pairs)
+        (else
+         (successive-merge
+          (adjoin-set
+           (make-code-tree (car pairs) (cadr pairs))
+           (cddr pairs))))))
+;; test
+(successive-merge (make-leaf-set (list '(A 4) '(B 2) '(C 1) '(D 1))))
+;Value 649: (((leaf a 4) ((leaf b 2) ((leaf d 1) (leaf c 1) (d c) 2) (b d c) 4) (a b d c) 8))
+</pre>
 </div>
+</div>
+</div>
+<div id="outline-container-orgheadline94" class="outline-4">
+<h4 id="orgheadline94"><span class="section-number-4">2.8.4</span> 习题2.70</h4>
+<div class="outline-text-4" id="text-2-8-4">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define sing-pairs (list '(a 2) '(na 16) '(boom 1) '(sha 3) '(get 2) '(yip 9) '(job 2) '(wah 1)))
+(define sing-tree (car (successive-merge (make-leaf-set sing-pairs))))
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Wah yip yip yip yip yip yip yip yip yip) sing-tree)
+; (0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1)
+(encode-symbol '(Sha boom) sing-tree)
+; (1 1 0 1 1 0 1 1 1)
+</pre>
+</div>
+<p>
+共需要84个二进制位. 如果用定长编码,为8个单词的编码,每个单词需要3个二进制位, 
+总共需要36*3=108个二进制位.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline95" class="outline-4">
+<h4 id="orgheadline95"><span class="section-number-4">2.8.5</span> 习题2.71</h4>
+<div class="outline-text-4" id="text-2-8-5">
+<p>
+n=5时,频度分别是1,2,4,8,16,数长这样:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">                    (a,b,c,d,e) 31
+               (a,b,c,d)15     e 16
+         (a,b,c) 7      d 8
+   (a,b)3        c 4
+a 1      b 2
+</pre>
+</div>
+<p>
+频度最高的符号是e,它是根节点的右子树,编码需要1个二进制位.最不频繁的符号是a,位于树的第(n-1)层,需要4个二进制位.
+推广到一般的树,最频繁的符号需要1位,最不频繁的符号需要(n-1)位.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline96" class="outline-4">
+<h4 id="orgheadline96"><span class="section-number-4">2.8.6</span> 习题2.72</h4>
+<div class="outline-text-4" id="text-2-8-6">
+<p>
+对编码最频繁的符号来说,只需进行2次symbol-in-tree(因为首先计算左子数)即可命中,复杂度是n.
+对编码最不频繁的符号来说,需要进行n-1次symbol-in-tree才能命中,
+由于查找表逐层递减,总共需要查找 $1+2+..(n-1)=/fracn<sup>2</sup>/2$次,复杂度是O(n<sup>2</sup>).
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline99" class="outline-2">
+<h2 id="orgheadline99"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-27</pubDate>
+      <pubDate>2016-05-29</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
+    </item>
+    <item>
+      <title>Game Programming Patterns Reading Note</title>
+      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
+      <description><![CDATA[reading note]]></description>
+      <pubDate>2016-05-29</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>Hello World</title>
@@ -2812,7 +2909,7 @@ Huffman编码书树简单来说是用于实现 <b>无重复前缀变长编码</b
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -3107,7 +3204,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -4797,21 +4894,14 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
-    </item>
-    <item>
-      <title>Game Programming Patterns Reading Note</title>
-      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
-      <description><![CDATA[reading note]]></description>
-      <pubDate>2016-05-26</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5092,7 +5182,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -5636,7 +5726,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -5895,7 +5985,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -6381,7 +6471,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-26</pubDate>
+      <pubDate>2016-05-27</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
