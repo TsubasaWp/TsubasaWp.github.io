@@ -162,10 +162,11 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline101">3. 抽象数据的多重表示</a>
+<li><a href="#orgheadline102">3. 抽象数据的多重表示</a>
 <ul>
 <li><a href="#orgheadline99">3.1. 复数的表示</a></li>
 <li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
+<li><a href="#orgheadline101">3.3. 数据导向的程序设计和可加性</a></li>
 </ul>
 </li>
 </ul>
@@ -2893,8 +2894,8 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline101" class="outline-2">
-<h2 id="orgheadline101"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline102" class="outline-2">
+<h2 id="orgheadline102"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
@@ -3008,6 +3009,21 @@ a 1      b 2
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline101" class="outline-3">
+<h3 id="orgheadline101"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
+另外,还要保证系统中处理数据的过程不重名.
+基于这两点原因,我们说上面的实现不具备 <code>可加性</code>
+</p>
+
+<p>
+这一节要进一步将系统设计模块化, 我们叫它 <code>数据导向的程序设计</code>
+</p>
+</div>
+</div>
 </div>
 
 </div>
@@ -3015,7 +3031,7 @@ a 1      b 2
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-29</span>
+        <span title="last modification date" class="post-info">2016-05-30</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
