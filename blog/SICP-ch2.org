@@ -1779,4 +1779,27 @@ a 1      b 2
 
 这一节要进一步将系统设计模块化, 我们叫它 =数据导向的程序设计=
 
+下面节选一些代码简要说明一下...注意put和get是超前的内容,在3.3.3节中会讲到.
+#+BEGIN_SRC scheme
+(define (install-rectangular-package)
+  ;;internal procedures
+  (define (real-part z) (car z))
+  ;;interface rest of the system
+  (define (tag x) (attach-tag 'rectangular z))
+  (put 'real-part '(rectangular) real-part))
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (error
+           "No mathod for these type -- APPLY-GENERIC"
+           (list op type-tags))))))
+
+(define (real-part z) (apply-generic 'real-part z))
+#+END_SRC
+大意就是把数据相关的过程打包存放在一张表里, 以数据类型为key. 用的时候一顿找, 取出相应的过程应用到数据类型.
+
+*** 习题2.73
 
