@@ -162,11 +162,15 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline102">3. 抽象数据的多重表示</a>
+<li><a href="#orgheadline103">3. 抽象数据的多重表示</a>
 <ul>
 <li><a href="#orgheadline99">3.1. 复数的表示</a></li>
 <li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
-<li><a href="#orgheadline101">3.3. 数据导向的程序设计和可加性</a></li>
+<li><a href="#orgheadline102">3.3. 数据导向的程序设计和可加性</a>
+<ul>
+<li><a href="#orgheadline101">3.3.1. 习题2.73</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -2894,8 +2898,8 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline102" class="outline-2">
-<h2 id="orgheadline102"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline103" class="outline-2">
+<h2 id="orgheadline103"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
@@ -3010,8 +3014,8 @@ a 1      b 2
 </div>
 </div>
 
-<div id="outline-container-orgheadline101" class="outline-3">
-<h3 id="orgheadline101"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
+<div id="outline-container-orgheadline102" class="outline-3">
+<h3 id="orgheadline102"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
@@ -3022,6 +3026,38 @@ a 1      b 2
 <p>
 这一节要进一步将系统设计模块化, 我们叫它 <code>数据导向的程序设计</code>
 </p>
+
+<p>
+下面节选一些代码简要说明一下&#x2026;注意put和get是超前的内容,在3.3.3节中会讲到.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (install-rectangular-package)
+  ;;internal procedures
+  (define (real-part z) (car z))
+  ;;interface rest of the system
+  (define (tag x) (attach-tag 'rectangular z))
+  (put 'real-part '(rectangular) real-part))
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (error
+           "No mathod for these type -- APPLY-GENERIC"
+           (list op type-tags))))))
+
+(define (real-part z) (apply-generic 'real-part z))
+</pre>
+</div>
+<p>
+大意就是把数据相关的过程打包存放在一张表里, 以数据类型为key. 用的时候一顿找, 取出相应的过程应用到数据类型.
+</p>
+</div>
+
+<div id="outline-container-orgheadline101" class="outline-4">
+<h4 id="orgheadline101"><span class="section-number-4">3.3.1</span> 习题2.73</h4>
 </div>
 </div>
 </div>
@@ -3031,7 +3067,7 @@ a 1      b 2
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-05-30</span>
+        <span title="last modification date" class="post-info">2016-05-31</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
