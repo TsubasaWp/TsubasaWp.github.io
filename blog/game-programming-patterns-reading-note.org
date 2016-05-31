@@ -60,5 +60,6 @@
 
 ** Update Method
 
-*** 
+ Each time you add two floating point numbers, 
+the answer you get back can be a bit off
 
