@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 31 May 2016 23:43:02 CST</pubDate>
-    <lastBuildDate>Tue, 31 May 2016 23:43:02 CST</lastBuildDate>
+    <pubDate>Thu, 02 Jun 2016 08:26:01 CST</pubDate>
+    <lastBuildDate>Thu, 02 Jun 2016 08:26:01 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -3038,25 +3038,78 @@ a 1      b 2
 <p>
 大意就是把数据相关的过程打包存放在一张表里, 以数据类型为key. 用的时候一顿找, 取出相应的过程应用到数据类型.
 </p>
+
+<p>
+补充:不实现get和put方法的话后面的习题都无法继续了..所以在这里贴一下代码,测试可用
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define local-table (list '*table*))
+(define (assoc key records)
+  (cond ((null? records)
+         #f)
+        ((equal? key (caar records))
+         (car records))
+        (else
+         (assoc key (cdr records)))))
+(define (get key-1 key-2)
+  (let ((subtable (assoc key-1 (cdr local-table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (cdr record)
+              #f))
+        #f)))
+(define (put key-1 key-2 value)
+  (let ((subtable (assoc key-1 (cdr local-table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (set-cdr! record value)
+              (set-cdr! subtable
+                        (cons (cons key-2 value)
+                              (cdr subtable)))))
+        (set-cdr! local-table
+                  (cons (list key-1
+                              (cons key-2 value))
+                        (cdr local-table)))))
+  'ok)
+</pre>
+</div>
 </div>
 
 <div id="outline-container-orgheadline101" class="outline-4">
 <h4 id="orgheadline101"><span class="section-number-4">3.3.1</span> 习题2.73</h4>
+<div class="outline-text-4" id="text-3-3-1">
+<ul class="org-ul">
+<li>a) 因为number?和same-value这两种逻辑无法用运算符来描述,也就无法放在索引表中.</li>
+<li>b) 写出针对和式与积式的求导过程</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (install-deriv-package)
+  (define (sum? x)
+    (and (pair? x) (eq? (car x) '+)))
+  (define (product? x)
+    (and (pair? x) (eq? (car x) '*)))
+  (put '+ '(deriv) sum?)
+  (put '* '(deriv) product?))
+
+; Test
+(install-deriv-package)
+(define test-exp '(+ x 3))
+(apply-generic (operator test-exp) (attach-tag 'deriv test-exp))
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-31</pubDate>
+      <pubDate>2016-06-02</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
-    </item>
-    <item>
-      <title>Game Programming Patterns Reading Note</title>
-      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
-      <description><![CDATA[reading note]]></description>
-      <pubDate>2016-05-31</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>Hello World</title>
@@ -3079,7 +3132,7 @@ a 1      b 2
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -3374,7 +3427,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -5064,14 +5117,21 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
+    </item>
+    <item>
+      <title>Game Programming Patterns Reading Note</title>
+      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
+      <description><![CDATA[reading note]]></description>
+      <pubDate>2016-05-31</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5352,7 +5412,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -5896,7 +5956,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -6155,7 +6215,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -6641,7 +6701,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-05-30</pubDate>
+      <pubDate>2016-05-31</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
