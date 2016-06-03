@@ -3103,20 +3103,75 @@ a 1      b 2
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define (install-deriv-package)
-  (define (sum? x)
-    (and (pair? x) (eq? (car x) '+)))
-  (define (product? x)
-    (and (pair? x) (eq? (car x) '*)))
-  (put '+ '(deriv) sum?)
-  (put '* '(deriv) product?))
-
-; Test
+<pre class="src src-scheme">(define (operator exp) (car exp))
+(define (operands exp) (cdr exp))
+;; 求导过程
+(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        (else
+         ((get 'deriv (operator exp)) (operands exp) var))))
+;; 安装内部过程
+(define (install-deriv-package)
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product))
 (install-deriv-package)
-(define test-exp '(+ x 3))
-(apply-generic (operator test-exp) (attach-tag 'deriv test-exp))
+;; 测试
+(deriv '(+ x 3) 'x)
+(deriv '(* x y) 'x)
 </pre>
 </div>
+<ul class="org-ul">
+<li><p>
+c) 把乘幂添加到上述系统中
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (install-deriv-package)
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (define (exponentiation exp var)
+    (make-product (cadr exp)
+                  (make-exponentiation
+                   (car exp)
+                   (make-sum (cadr exp) -1))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product)
+  (put 'deriv '** exponentiation))
+(install-deriv-package)
+;; test
+(deriv '(** x 3) 'x)
+; Value: (* 3 (** x 2))
+</pre>
+</div></li>
+<li>d) 把</li>
+</ul>
+<pre class="example">
+(put 'deriv 'operator operation)
+</pre>
+<p>
+改成
+</p>
+<pre class="example">
+(put 'operator 'deriv  operation)
+</pre>
 </div>
 </div>
 </div>
@@ -3127,7 +3182,7 @@ a 1      b 2
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-06-02</span>
+        <span title="last modification date" class="post-info">2016-06-03</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
