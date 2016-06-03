@@ -1839,16 +1839,59 @@ a 1      b 2
 - a) 因为number?和same-value这两种逻辑无法用运算符来描述,也就无法放在索引表中.
 - b) 写出针对和式与积式的求导过程
 #+BEGIN_SRC scheme
+(define (operator exp) (car exp))
+(define (operands exp) (cdr exp))
+;; 求导过程
+(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        (else
+         ((get 'deriv (operator exp)) (operands exp) var))))
+;; 安装内部过程
 (define (install-deriv-package)
-  (define (sum? x)
-    (and (pair? x) (eq? (car x) '+)))
-  (define (product? x)
-    (and (pair? x) (eq? (car x) '*)))
-  (put '+ '(deriv) sum?)
-  (put '* '(deriv) product?))
-
-; Test
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product))
 (install-deriv-package)
-(define test-exp '(+ x 3))
-(apply-generic (operator test-exp) (attach-tag 'deriv test-exp))
+;; 测试
+(deriv '(+ x 3) 'x)
+(deriv '(* x y) 'x)
 #+END_SRC
+- c) 把乘幂添加到上述系统中
+  #+BEGIN_SRC scheme
+(define (install-deriv-package)
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (define (exponentiation exp var)
+    (make-product (cadr exp)
+                  (make-exponentiation
+                   (car exp)
+                   (make-sum (cadr exp) -1))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product)
+  (put 'deriv '** exponentiation))
+(install-deriv-package)
+;; test
+(deriv '(** x 3) 'x)
+; Value: (* 3 (** x 2))
+#+END_SRC
+- d) 把
+:  (put 'deriv 'operator operation)
+改成
+:  (put 'operator 'deriv  operation)
