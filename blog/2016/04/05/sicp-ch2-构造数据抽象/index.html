@@ -162,13 +162,15 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline103">3. 抽象数据的多重表示</a>
+<li><a href="#orgheadline105">3. 抽象数据的多重表示</a>
 <ul>
 <li><a href="#orgheadline99">3.1. 复数的表示</a></li>
 <li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
-<li><a href="#orgheadline102">3.3. 数据导向的程序设计和可加性</a>
+<li><a href="#orgheadline104">3.3. 数据导向的程序设计和可加性</a>
 <ul>
 <li><a href="#orgheadline101">3.3.1. 习题2.73</a></li>
+<li><a href="#orgheadline102">3.3.2. 习题2.74</a></li>
+<li><a href="#orgheadline103">3.3.3. 消息传递</a></li>
 </ul>
 </li>
 </ul>
@@ -2898,8 +2900,8 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline103" class="outline-2">
-<h2 id="orgheadline103"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline105" class="outline-2">
+<h2 id="orgheadline105"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
@@ -3014,8 +3016,8 @@ a 1      b 2
 </div>
 </div>
 
-<div id="outline-container-orgheadline102" class="outline-3">
-<h3 id="orgheadline102"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
+<div id="outline-container-orgheadline104" class="outline-3">
+<h3 id="orgheadline104"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
@@ -3174,6 +3176,111 @@ c) 把乘幂添加到上述系统中
 </pre>
 </div>
 </div>
+
+<div id="outline-container-orgheadline102" class="outline-4">
+<h4 id="orgheadline102"><span class="section-number-4">3.3.2</span> 习题2.74</h4>
+<div class="outline-text-4" id="text-3-3-2">
+<p>
+首先需要定义两个方法作为工具,比起前面的put和get,它们多了一个table参数
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (get-tb table key-1 key-2 )
+  (let ((subtable (assoc key-1 (cdr table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (cdr record)
+              #f))
+        #f)))
+(define (put-tb table key-1 key-2 value)
+  (let ((subtable (assoc key-1 (cdr table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (set-cdr! record value)
+              (set-cdr! subtable
+                        (cons (cons key-2 value)
+                              (cdr subtable)))))
+        (set-cdr! table
+                  (cons (list key-1
+                              (cons key-2 value))
+                        (cdr table)))))
+  'ok)
+</pre>
+</div>
+<ul class="org-ul">
+<li>a)</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (employee name)
+  (define rst (list '*table*))
+  (put-tb rst name 'address 'my-address)
+  (put-tb rst name 'salary '999)
+  rst)
+
+(define (load-offices)
+  (define office-table (list '*table))
+  (put-tb office-table 'office-1 'name1 (employee 'name1))
+  (put-tb office-table 'office-2 'name2 (employee 'name2))
+  (put-tb office-table 'office-2 'name3 (employee 'name3))
+  (put-tb office-table 'office-3 'name2 (employee 'name2))
+  office-table)
+
+(define offices-record (load-offices))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>b) 普通的查询</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (get-record office name)
+  (get-tb offices-record office name))
+
+(define (get-salary office name)
+  (define employee (get-tb offices-record office name))
+  (if (not employee)
+      (error "CANNOT FIND THE EMPLOYEE!")
+      (get-tb employee name 'salary)))
+
+(get-record 'office-2 'name2)
+(get-salary 'office-1 'name2)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>c) 稍微复杂的查询</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (find-employee-record name)
+  (define (iter table name result)
+    (if (null? table)
+        result
+        (let ((subtable (car table)))
+          (if (null? subtable)
+              result
+              (let ((record (assoc name (cddr (cadr subtable)))))
+                (if record
+                    (iter (cdr table) name (cons result record)
+                    (iter (cdr table) name result)))))))
+    (iter (cdr offices-record) name '()))
+
+  (find-employee-record 'name3)
+</pre>
+</div>
+<ul class="org-ul">
+<li>d) 在前面load-office方法中添加新条目即可</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline103" class="outline-4">
+<h4 id="orgheadline103"><span class="section-number-4">3.3.3</span> 消息传递</h4>
+</div>
 </div>
 </div>
 
@@ -3182,7 +3289,7 @@ c) 把乘幂添加到上述系统中
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-06-03</span>
+        <span title="last modification date" class="post-info">2016-06-07</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
