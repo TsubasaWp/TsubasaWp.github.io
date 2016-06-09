@@ -1980,6 +1980,16 @@ a 1      b 2
 - d) 在前面load-office方法中添加新条目即可
 
 *** 消息传递
+另一种实现智能数据对象的策略是将每一个数据对象表示为一个过程,它以操作的名字作为输入,能够去执行特定的操作.
 
+按照这种思路实现复数(我简化过了..意思传达到即可..
+#+BEGIN_SRC scheme
+(define (make-from-real-imag x y)
+  (define (dispatch op)
+    (cond ((eq? op 'real-part) x)
+          ((eq? op 'imag-part) y))))
+
+(define (apply-generic op arg) (arg op))
+#+END_SRC
 
 
