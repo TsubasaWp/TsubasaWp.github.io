@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 07 Jun 2016 08:25:53 CST</pubDate>
-    <lastBuildDate>Tue, 07 Jun 2016 08:25:53 CST</lastBuildDate>
+    <pubDate>Thu, 09 Jun 2016 08:26:24 CST</pubDate>
+    <lastBuildDate>Thu, 09 Jun 2016 08:26:24 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -3264,13 +3264,32 @@ c) 把乘幂添加到上述系统中
 
 <div id="outline-container-orgheadline103" class="outline-4">
 <h4 id="orgheadline103"><span class="section-number-4">3.3.3</span> 消息传递</h4>
+<div class="outline-text-4" id="text-3-3-3">
+<p>
+另一种实现智能数据对象的策略是将每一个数据对象表示为一个过程,它以操作的名字作为输入,能够去执行特定的操作.
+</p>
+
+<p>
+按照这种思路实现复数(我简化过了..意思传达到即可..
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-from-real-imag x y)
+  (define (dispatch op)
+    (cond ((eq? op 'real-part) x)
+          ((eq? op 'imag-part) y))))
+
+(define (apply-generic op arg) (arg op))
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -3294,7 +3313,7 @@ c) 把乘幂添加到上述系统中
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -3589,7 +3608,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -5279,21 +5298,21 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5574,7 +5593,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -6118,7 +6137,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -6377,7 +6396,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -6863,7 +6882,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-03</pubDate>
+      <pubDate>2016-06-07</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
