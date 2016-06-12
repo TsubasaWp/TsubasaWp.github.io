@@ -1982,6 +1982,8 @@ a 1      b 2
 *** 消息传递
 另一种实现智能数据对象的策略是将每一个数据对象表示为一个过程,它以操作的名字作为输入,能够去执行特定的操作.
 
+我们叫它 =基于操作名的分派=
+
 按照这种思路实现复数(我简化过了..意思传达到即可..
 #+BEGIN_SRC scheme
 (define (make-from-real-imag x y)
@@ -1992,4 +1994,20 @@ a 1      b 2
 (define (apply-generic op arg) (arg op))
 #+END_SRC
 
+*** 习题2.75
+#+BEGIN_SRC scheme
+(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'magnitude) x)
+          ((eq? op 'angle) y)
+          ((eq? op 'real-part) (* x (sin y)))
+          ((eq? op 'imag-part) (* x (cons y)))
+          (else
+           (error "Unknown op -- MAKE FROM MAG ANG" op))))
+  dispatch)
+#+END_SRC
 
+*** 习题2.76
+基于类型的分派适合需要经常加入新类型的系统,当有变化时向系统中添加一个package即可.
+
+而基于操作名的分派适合经常加入新操作的系统.
