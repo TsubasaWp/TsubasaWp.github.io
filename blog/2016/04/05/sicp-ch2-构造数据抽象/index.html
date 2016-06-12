@@ -162,15 +162,17 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline105">3. 抽象数据的多重表示</a>
+<li><a href="#orgheadline107">3. 抽象数据的多重表示</a>
 <ul>
 <li><a href="#orgheadline99">3.1. 复数的表示</a></li>
 <li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
-<li><a href="#orgheadline104">3.3. 数据导向的程序设计和可加性</a>
+<li><a href="#orgheadline106">3.3. 数据导向的程序设计和可加性</a>
 <ul>
 <li><a href="#orgheadline101">3.3.1. 习题2.73</a></li>
 <li><a href="#orgheadline102">3.3.2. 习题2.74</a></li>
 <li><a href="#orgheadline103">3.3.3. 消息传递</a></li>
+<li><a href="#orgheadline104">3.3.4. 习题2.75</a></li>
+<li><a href="#orgheadline105">3.3.5. 习题2.76</a></li>
 </ul>
 </li>
 </ul>
@@ -2900,8 +2902,8 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline105" class="outline-2">
-<h2 id="orgheadline105"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline107" class="outline-2">
+<h2 id="orgheadline107"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
@@ -3016,8 +3018,8 @@ a 1      b 2
 </div>
 </div>
 
-<div id="outline-container-orgheadline104" class="outline-3">
-<h3 id="orgheadline104"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
+<div id="outline-container-orgheadline106" class="outline-3">
+<h3 id="orgheadline106"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
@@ -3286,6 +3288,10 @@ c) 把乘幂添加到上述系统中
 </p>
 
 <p>
+我们叫它 <code>基于操作名的分派</code>
+</p>
+
+<p>
 按照这种思路实现复数(我简化过了..意思传达到即可..
 </p>
 <div class="org-src-container">
@@ -3300,6 +3306,38 @@ c) 把乘幂添加到上述系统中
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline104" class="outline-4">
+<h4 id="orgheadline104"><span class="section-number-4">3.3.4</span> 习题2.75</h4>
+<div class="outline-text-4" id="text-3-3-4">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'magnitude) x)
+          ((eq? op 'angle) y)
+          ((eq? op 'real-part) (* x (sin y)))
+          ((eq? op 'imag-part) (* x (cons y)))
+          (else
+           (error "Unknown op -- MAKE FROM MAG ANG" op))))
+  dispatch)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline105" class="outline-4">
+<h4 id="orgheadline105"><span class="section-number-4">3.3.5</span> 习题2.76</h4>
+<div class="outline-text-4" id="text-3-3-5">
+<p>
+基于类型的分派适合需要经常加入新类型的系统,当有变化时向系统中添加一个package即可.
+</p>
+
+<p>
+而基于操作名的分派适合经常加入新操作的系统.
+</p>
+</div>
+</div>
 </div>
 </div>
 
@@ -3308,7 +3346,7 @@ c) 把乘幂添加到上述系统中
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-04-05</span>
-        <span title="last modification date" class="post-info">2016-06-09</span>
+        <span title="last modification date" class="post-info">2016-06-12</span>
         <span title="tags" class="post-info">N/A</span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>

@@ -4,8 +4,8 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Thu, 09 Jun 2016 08:26:24 CST</pubDate>
-    <lastBuildDate>Thu, 09 Jun 2016 08:26:24 CST</lastBuildDate>
+    <pubDate>Sun, 12 Jun 2016 08:23:43 CST</pubDate>
+    <lastBuildDate>Sun, 12 Jun 2016 08:23:43 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
@@ -146,15 +146,17 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline105">3. 抽象数据的多重表示</a>
+<li><a href="#orgheadline107">3. 抽象数据的多重表示</a>
 <ul>
 <li><a href="#orgheadline99">3.1. 复数的表示</a></li>
 <li><a href="#orgheadline100">3.2. 带标志的数据</a></li>
-<li><a href="#orgheadline104">3.3. 数据导向的程序设计和可加性</a>
+<li><a href="#orgheadline106">3.3. 数据导向的程序设计和可加性</a>
 <ul>
 <li><a href="#orgheadline101">3.3.1. 习题2.73</a></li>
 <li><a href="#orgheadline102">3.3.2. 习题2.74</a></li>
 <li><a href="#orgheadline103">3.3.3. 消息传递</a></li>
+<li><a href="#orgheadline104">3.3.4. 习题2.75</a></li>
+<li><a href="#orgheadline105">3.3.5. 习题2.76</a></li>
 </ul>
 </li>
 </ul>
@@ -2884,8 +2886,8 @@ a 1      b 2
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline105" class="outline-2">
-<h2 id="orgheadline105"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
+<div id="outline-container-orgheadline107" class="outline-2">
+<h2 id="orgheadline107"><span class="section-number-2">3</span> 抽象数据的多重表示</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
@@ -3000,8 +3002,8 @@ a 1      b 2
 </div>
 </div>
 
-<div id="outline-container-orgheadline104" class="outline-3">
-<h3 id="orgheadline104"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
+<div id="outline-container-orgheadline106" class="outline-3">
+<h3 id="orgheadline106"><span class="section-number-3">3.3</span> 数据导向的程序设计和可加性</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
@@ -3270,6 +3272,10 @@ c) 把乘幂添加到上述系统中
 </p>
 
 <p>
+我们叫它 <code>基于操作名的分派</code>
+</p>
+
+<p>
 按照这种思路实现复数(我简化过了..意思传达到即可..
 </p>
 <div class="org-src-container">
@@ -3284,12 +3290,44 @@ c) 把乘幂添加到上述系统中
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline104" class="outline-4">
+<h4 id="orgheadline104"><span class="section-number-4">3.3.4</span> 习题2.75</h4>
+<div class="outline-text-4" id="text-3-3-4">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'magnitude) x)
+          ((eq? op 'angle) y)
+          ((eq? op 'real-part) (* x (sin y)))
+          ((eq? op 'imag-part) (* x (cons y)))
+          (else
+           (error "Unknown op -- MAKE FROM MAG ANG" op))))
+  dispatch)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline105" class="outline-4">
+<h4 id="orgheadline105"><span class="section-number-4">3.3.5</span> 习题2.76</h4>
+<div class="outline-text-4" id="text-3-3-5">
+<p>
+基于类型的分派适合需要经常加入新类型的系统,当有变化时向系统中添加一个package即可.
+</p>
+
+<p>
+而基于操作名的分派适合经常加入新操作的系统.
+</p>
+</div>
+</div>
 </div>
 </div>
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-09</pubDate>
+      <pubDate>2016-06-12</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
@@ -3313,7 +3351,7 @@ c) 把乘幂添加到上述系统中
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -3608,7 +3646,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -5298,21 +5336,21 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5593,7 +5631,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -6137,7 +6175,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -6396,7 +6434,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
     <item>
@@ -6882,7 +6920,7 @@ binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-07</pubDate>
+      <pubDate>2016-06-09</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
