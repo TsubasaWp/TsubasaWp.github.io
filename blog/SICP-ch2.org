@@ -2033,3 +2033,5 @@ a 1      b 2
       (lambda (x y) (tag (+ x y))))
    'done)
 #+END_SRC
+
+可以看到,通用型的算术运算是利用内部过程+两层tag来实现的
