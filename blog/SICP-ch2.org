@@ -2035,3 +2035,25 @@ a 1      b 2
 #+END_SRC
 
 可以看到,通用型的算术运算是利用内部过程+两层tag来实现的
+
+*** 习题2.77
+'complex包中并不存在'magnitude操作,所以返回错误
+
+apply-generic被调用了3次. 过程如下
+#+BEGIN_SRC scheme
+(magnitude z)
+(apply-generic 'magnitude z)
+;-> (complex)
+(get 'magnitude (complex))
+(apply magnitude z)
+(apply magnitude (map contents (list z)))
+(magnitude '(rectangular 3 4))
+(apply-generic 'magnitude '(rectangular 3 . 4))
+(map type-tag (list '(rectangular 3 . 4)))                      ; => '(rectangular)
+(get 'magnitude '(rectangular))                                 ; => magnitude  ; 这个 magnitude 是定义于 rectangular 包中的 magnitude
+(apply magnitude (map contents (list '(rectangular 3 . 4))))    ; => (apply magnitude '((3 . 4)))
+(magnitude '(3 . 4))
+(sqrt (+ (square (real-part '(3 . 4)))
+         (square (imag-part '(3 . 4)))))
+#+END_SRC
+
