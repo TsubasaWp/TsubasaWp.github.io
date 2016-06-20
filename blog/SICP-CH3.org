@@ -1,4 +1,4 @@
-#+TITLE:       SICP-CH3
+#+TITLE:       SICP-CH3 模块化,对象和状态
 #+AUTHOR:      Tsubasa
 #+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
 #+DATE:        2016-06-20 Mon
