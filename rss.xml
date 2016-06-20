@@ -4,10 +4,2026 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 14 Jun 2016 08:29:27 CST</pubDate>
-    <lastBuildDate>Tue, 14 Jun 2016 08:29:27 CST</lastBuildDate>
+    <pubDate>Mon, 20 Jun 2016 08:26:06 CST</pubDate>
+    <lastBuildDate>Mon, 20 Jun 2016 08:26:06 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
+    <item>
+      <title>SICP-CH3</title>
+      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
+      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
+      <pubDate>2016-06-20</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
+    </item>
+    <item>
+      <title>Hello World</title>
+      <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>Hello World</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. First Blog From Org-Page</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> First Blog From Org-Page</h2>
+</div>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-06-14</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
+    </item>
+    <item>
+      <title>PPPUC++ Reading Note</title>
+      <link>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>PPPUC++ Reading Note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline6">1. CH. 17  Memory, Address</a>
+<ul>
+<li><a href="#orgheadline1">1.1. 初始化:</a></li>
+<li><a href="#orgheadline2">1.2. 空指针:</a></li>
+<li><a href="#orgheadline3">1.3. Free-Store:</a></li>
+<li><a href="#orgheadline4">1.4. 析构函数:</a></li>
+<li><a href="#orgheadline5">1.5. 指针和引用:</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">2. CH. 18 Vector and Array</a>
+<ul>
+<li><a href="#orgheadline7">2.1. Copying</a></li>
+<li><a href="#orgheadline8">2.2. Moving</a></li>
+<li><a href="#orgheadline9">2.3. explicit</a></li>
+<li><a href="#orgheadline10">2.4. Get &amp; Set</a></li>
+<li><a href="#orgheadline11">2.5. Array</a></li>
+<li><a href="#orgheadline12">2.6. Excrise</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">1</span> CH. 17  Memory, Address</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-c++">int main()
+{
+  char a = 'a';
+  char b = 'b';
+  void *pv = &amp;a;
+  int *pa = (int*)pv;
+  std:: cout &lt;&lt;*pa&lt;&lt;std::endl;
+  *pa = 65535;
+  std:: cout &lt;&lt;(char*)&amp;a&lt;&lt;" "&lt;&lt;(char*)&amp;b&lt;&lt;std::endl;
+  std:: cout &lt;&lt;a&lt;&lt;" "&lt;&lt;b&lt;&lt;std::endl;
+  return 0;
+}
+
+�� b��
+� b
+</pre>
+</div>
+
+<p>
+实测堆上分配的内存并没有溢出
+</p>
+
+<p>
+int* 和 char* 不能直接互相赋值的原因: 索引数组时地址跨越长度
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 初始化:</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+为了避免误用未初始化的变量, 尽量保证变量在被声明的同时初始化.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 空指针:</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+c++11 引入了nullptr, 旨在于解决null的二义性问题
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Free-Store:</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Free-Store由Store Manager管理
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.4</span> 析构函数:</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+占用Free-Store的类都需要析构函数
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">1.5</span> 指针和引用:</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+传值和传指针: 指针允许nullptr, 可能需要额外写防御代码.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13"><span class="section-number-2">2</span> CH. 18 Vector and Array</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>initializer<sub>list</sub></li>
+<li>copy constructor</li>
+<li>copy assignment</li>
+</ul>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">2.1</span> Copying</h3>
+</div>
+
+
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">2.2</span> Moving</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+&amp;&amp; ?
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9"><span class="section-number-3">2.3</span> explicit</h3>
+</div>
+
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">2.4</span> Get &amp; Set</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+索引靠重载[]运算符实现, 并返回reference. 
+</p>
+<ul class="org-ul">
+<li>若返回值则只能get无法set(可用作const版本), 返回指针则书写起来比较别扭.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">2.5</span> Array</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+array的问题: 编译器难以做到边界检查
+pointer arithmetic
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">2.6</span> Excrise</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+<i>/
+/</i>  main.cpp
+<i>/  PPPUC
+/</i>
+<i>/  Created by Tsubasa on 1/30/16.
+/</i>  Copyright (c) 2016 tsu. All rights reserved.
+//
+</p>
+
+<p>
+#include &lt;iostream&gt;
+using namespace std;
+</p>
+
+<p>
+class Vector
+{
+  int sz;
+  double * elem;
+public:
+  Vector(int s): sz{s}, elem{new double[s]}
+  {
+    for(int i = 0; i &lt; sz; i++) elem[i] = 0;
+  }
+</p>
+
+<p>
+Vector(initializer<sub>list</sub>&lt;double&gt; lst): sz{(int)lst.size()},elem{new double[lst.size()]}
+{
+  copy(lst.begin(),lst.end(),elem);
+}
+</p>
+
+<p>
+Vector(const Vector&amp;);
+</p>
+
+<p>
+Vector&amp; operator=(const Vector&amp;);
+</p>
+
+<p>
+  ~Vector(){delete[] elem;}
+  void Set(int, double);
+  void Print();
+};
+</p>
+
+<p>
+void Vector::Set(int index, double value)
+{
+  if (index &gt;= sz) return;
+  elem[index] = value;
+}
+</p>
+
+<p>
+void Vector::Print()
+{
+  for (int i = 0; i &lt; sz; i++)
+    {
+      cout&lt;&lt;(elem[i])&lt;&lt;endl;
+    }
+}
+</p>
+
+<p>
+Vector::Vector(const Vector&amp; arg)
+  :sz(arg.sz),elem(new double[arg.sz])
+{
+  copy(arg.elem,arg.elem+arg.sz,elem);
+}
+</p>
+
+<p>
+Vector&amp; Vector::operator=(const Vector&amp; arg)
+{
+  double *d = new double[arg.sz];
+  copy(arg.elem,arg.elem+arg.sz,d);
+  delete[] elem;
+  elem = d;
+  sz = arg.sz;
+  return *this;
+}
+</p>
+
+<p>
+// exc 1
+char <b>strup(const char</b> a)
+{
+  int sz = 0;
+  while ( a[sz] != 0 )  sz++;
+</p>
+
+<p>
+char * res = new char[sz+1];
+for(int i = 0; i &lt;= sz; i++) res[i] = *a+i;
+</p>
+
+<p>
+  return res;
+}
+</p>
+
+<p>
+// exc 2
+</p>
+
+
+<p>
+int main(int argc, const char * argv[]) {
+</p>
+
+<p>
+  return 0;
+}
+</p>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-06-14</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
+    </item>
+    <item>
+      <title>SICP-CH1-构造过程抽象</title>
+      <link>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>SICP-CH1-构造过程抽象</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline79">1. 构造过程抽象</a>
+<ul>
+<li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
+<ul>
+<li><a href="#orgheadline1">1.1.1. 表达式</a></li>
+<li><a href="#orgheadline2">1.1.2. 命名和环境</a></li>
+<li><a href="#orgheadline3">1.1.3. 组合式求值</a></li>
+<li><a href="#orgheadline4">1.1.4. 复合过程</a></li>
+<li><a href="#orgheadline5">1.1.5. 过程应用的代换模型</a></li>
+<li><a href="#orgheadline6">1.1.6. 条件表达式和谓词</a></li>
+<li><a href="#orgheadline7">1.1.7. [习题]</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">1.2. 实例:采用牛顿法求平方根</a>
+<ul>
+<li><a href="#orgheadline9">1.2.1. [习题]</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">1.3. 过程作为黑箱抽象</a>
+<ul>
+<li><a href="#orgheadline11">1.3.1. 局部名</a></li>
+<li><a href="#orgheadline12">1.3.2. 内部定义和块结构</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline47">1.4. 过程与它们所产生的计算</a>
+<ul>
+<li><a href="#orgheadline14">1.4.1. 线性的递归和迭代</a></li>
+<li><a href="#orgheadline17">1.4.2. [习题]</a></li>
+<li><a href="#orgheadline18">1.4.3. 树形递归</a></li>
+<li><a href="#orgheadline22">1.4.4. [习题]</a></li>
+<li><a href="#orgheadline23">1.4.5. 增长的阶</a></li>
+<li><a href="#orgheadline26">1.4.6. [习题]</a></li>
+<li><a href="#orgheadline27">1.4.7. 求幂</a></li>
+<li><a href="#orgheadline32">1.4.8. [习题]</a></li>
+<li><a href="#orgheadline33">1.4.9. 最大公约数</a></li>
+<li><a href="#orgheadline35">1.4.10. [习题]</a></li>
+<li><a href="#orgheadline36">1.4.11. 素数检测</a></li>
+<li><a href="#orgheadline37">1.4.12. 概率方法</a></li>
+<li><a href="#orgheadline46">1.4.13. [习题]</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline78">1.5. 用高阶函数做抽象</a>
+<ul>
+<li><a href="#orgheadline48">1.5.1. 过程作为参数</a></li>
+<li><a href="#orgheadline53">1.5.2. [练习]</a></li>
+<li><a href="#orgheadline54">1.5.3. 用lambda构造过程</a></li>
+<li><a href="#orgheadline55">1.5.4. 用let创建局部变量</a></li>
+<li><a href="#orgheadline57">1.5.5. [习题]</a></li>
+<li><a href="#orgheadline60">1.5.6. 过程作为一般性的方法</a></li>
+<li><a href="#orgheadline66">1.5.7. [习题]</a></li>
+<li><a href="#orgheadline69">1.5.8. 过程作为返回值</a></li>
+<li><a href="#orgheadline77">1.5.9. [习题]</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+sicp窝终于回来了&#x2026;
+</p>
+
+<p>
+[前言]
+首先总结一下前言吧. 这本书的目标是教授一种通用的方法学思想, 不仅限于计算机程序设计.
+采用scheme(lisp的一种方言)教授这门课,是因为它集powerful与beautiful于一身.
+</p>
+
+<p>
+ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
+</p>
+
+<div id="outline-container-orgheadline79" class="outline-2">
+<h2 id="orgheadline79"><span class="section-number-2">1</span> 构造过程抽象</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
+</p>
+
+<p>
+计算过程的lisp描述本身可以作为lisp的数据来表示和操作. 这种灵活性使lisp称为探索语言特征的最方便的语言之一.
+</p>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">1.1</span> 程序设计的基本元素</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+一个powerful的语言, 除了能够执行任务, 更应该能帮助程序猿组织自己的思想.
+</p>
+
+<ul class="org-ul">
+<li>基本表达形式</li>
+<li>组合的方法</li>
+<li>抽象的方法</li>
+</ul>
+
+<p>
+在程序设计中,我们需要处理两类要素:过程和数据. 本章把重点放在过程上.
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-4">
+<h4 id="orgheadline1"><span class="section-number-4">1.1.1</span> 表达式</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+最简单的表达式: 42, 表示基本过程的表达式: ( + 42 42 ). '+'称为 <code>运算符</code>, 数字是 <code>运算对象</code>, 求值过程就是将运算符所刻画的运算过程应用于运算对象.
+</p>
+
+<p>
+lisp把运算符放在左边, 称为 <code>前缀表示</code>. 前缀表示的优点是:
+</p>
+<ul class="org-ul">
+<li>可以带有任意个实参而没有歧义</li>
+<li>可以直接扩充, 允许出现组合式嵌套, 如(+ ( * 3 5 ) ( - 10 6))</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-4">
+<h4 id="orgheadline2"><span class="section-number-4">1.1.2</span> 命名和环境</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+程序设计语言需要提供一种[通过名字去使用计算对象]的方式.
+</p>
+
+<p>
+在scheme中, 命名通过define来进行.
+</p>
+<pre class="example">
+(define size 2)
+</pre>
+<p>
+我们可以把值2与符号size关联, 又能够提取出这个值, 这说明解释器有存储能力,以维护名字-值对偶的轨迹, 这种存储称为 <code>环境</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3"><span class="section-number-4">1.1.3</span> 组合式求值</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+求值一个组合式的步骤是:
+</p>
+<ul class="org-ul">
+<li>1) 求值该组合式的各个子表达式</li>
+<li>2) 将作为最左子表达式的值的过程应用于相应的实际参数.</li>
+</ul>
+
+<p>
+没错就是递归. 递归是一种处理层次结构的强有力的技术. 这种计算过程称为 <code>树形积累</code>.
+</p>
+
+<p>
+在求值过程中, <code>环境</code> 用于确定表达式中各个符号的意义, 它为求值过程提供了一种上下文.
+</p>
+
+<p>
+例外: 对表达式 (define x 1) 求值不是把define运用于两个参数, 因为define的作用是关联x和1, 也就是说(define x 1)不是一个组合式. 这种例外称为 <code>特殊形式</code> .
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4"><span class="section-number-4">1.1.4</span> 复合过程</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+上述的某些元素也会出现在其它语言中:
+</p>
+<ul class="org-ul">
+<li>数和算术运算是基本的数据和过程</li>
+<li>组合式的嵌套提供了一种组织起多个操作的方法</li>
+<li>定义是一种受限的抽象手段, 它为名字关联响应的值.</li>
+</ul>
+
+<p>
+下面来讲威力更强大的 <code>过程定义</code>
+</p>
+<pre class="example">
+(define (square x) (* x x ))
+</pre>
+<p>
+上面定义了一个复合过程square, 定义好之后可以这样使用
+</p>
+<pre class="example">
+(square 21)
+</pre>
+<p>
+有点像定义函数. 接下来我们可以把square作为基本构建去定义其它过程
+</p>
+<pre class="example">
+(define (sum-of-squares x y) ( + (square x) (square Y)))
+</pre>
+
+<p>
+复合过程的使用方式与基本过程完全一致.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">1.1.5</span> 过程应用的代换模型</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+对带有复合过程的组合式求值, 解释器会先"展开"复合过程, 把问题规约为对另一个组合式求值. 
+</p>
+<pre class="example">
+(square 21) -&gt; (* 21 21)
+</pre>
+<p>
+这种计算过程称为过程应用的 <code>代换模型</code>
+</p>
+
+<p>
+<code>应用序</code>: 先求值参数而后应用的求值模型
+</p>
+
+<p>
+<code>正则序</code>: 完全展开而后规约的求值模型
+</p>
+
+<p>
+lisp采用应用序求值, 部分原因在于这样可以避免对于表达式的重复求值, 重点是在超出可以采用替换方式模拟的过程范围之后, 正则序的处理将变得复杂的多.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">1.1.6</span> 条件表达式和谓词</h4>
+<div class="outline-text-4" id="text-1-1-6">
+<p>
+    条件表达式
+依据不同情况采取不同动作的结构叫做 <code>分情况分析</code>
+<code>cond</code>
+</p>
+<pre class="example">
+(cond ((&gt; x 0 )x) ((= x 0) 0) ((&lt; x 0) (-x)))
+(cond ((&lt; x 0) (-x) (else x)))
+</pre>
+<p>
+else是一个特殊符号,可以用在cond最后一个位置,如果cond所有分支都被跳过,就会返回else的值
+<code>if</code>
+</p>
+<pre class="example">
+(if (&lt; x 0) (-x) x)
+</pre>
+<p>
+if是cond的一种受限形式, 适用于只有两种情况的分析.
+谓词: <code>&lt; &gt; and or not</code> &#x2026;
+注意and和or都是特殊形式,它们的子表达式不一定求值. not则是一个普通过程.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7"><span class="section-number-4">1.1.7</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-1-7">
+<ul class="org-ul">
+<li>1.1 .求值(选做一部分)</li>
+</ul>
+<p>
+(define a 3) -&gt; a
+(define b ( + a 1)) -&gt; b
+(= a b) -&gt; #f
+</p>
+
+<ul class="org-ul">
+<li>1.2 将下面表达式变换为前缀形式:</li>
+</ul>
+<p>
+(5+4+(2-(3-(6+5/4))))/(3*(6-2)(2-7))
+</p>
+
+<pre class="example">
+(/ (+ 5 4 (- 2 (- 3 ( + 6 (/ 5 4))))) (* 3 (- 6 2) ( - 2 7)))
+</pre>
+
+<ul class="org-ul">
+<li>1.3 定义一个过程, 它以三个数为参数, 返回其中较大的两个数之和</li>
+</ul>
+<pre class="example">
+(define (min x y z) 
+      (cond (((&lt; x y) and (&lt; x z))  x)
+  (((&lt; y x) and (&lt; y z))  y)
+  (else z)))
+(define (sum2 x y z) (- (+ x y z) (min x y z )))
+</pre>
+
+<ul class="org-ul">
+<li>1.4 仔细考察上面给出的允许运算符为复合表达式的组合式的求值模型, 根据对这一模型的认知描述下面过程的行为:</li>
+</ul>
+<pre class="example">
+(define (a-plus-abs-b a b) ((if (&gt; b 0)  + -) a b))
+</pre>
+<ul class="org-ul">
+<li>对子表达式(&gt; b 0)求值, 得结果r1</li>
+<li>对子表达式(if (r1) + -)求值, 得到结果r2, r2是运算过程.</li>
+<li>对(r2 a b)求值</li>
+
+<li>1.5 Ben发明了一种检测方法,能够确定解释器以正则序求值, 还是以应用序求值. 他定义了下面两个过程:</li>
+</ul>
+<pre class="example">
+(define (p) (p))
+(define (test x y) (if ( = x 0) 0 y))
+(test 0 (p))
+</pre>
+<p>
+用应用序和正则序解释器运行它们, 最终会发生什么?
+</p>
+<ul class="org-ul">
+<li>应用序: 0</li>
+<li>正则序: 无限循环. 因为无论(= x 0)的结果如何, y都会被求值.</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">1.2</span> 实例:采用牛顿法求平方根</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+上面介绍的过程都很像常规数学函数, 然而数学和计算机过程有一些区别:
+</p>
+<ul class="org-ul">
+<li>数学关心说明性的描述(是什么)</li>
+<li>计算机关心行动性的描述(怎么做)</li>
+</ul>
+
+<p>
+一个求平方根的数学描述是: squrt(x) = y, y&gt;=0 &amp;&amp; y<sup>2</sup>=x. 我们无法把它直译成计算机函数.
+计算机求平方根的常用方法是:
+<code>牛顿逐步逼近法</code> : 先猜测一个值a, 并计算b = x/a, 比较a和b是否足够相似, 如果不满足条件则执行一些操作得到更好的猜测a2, 循环往复直到求出平方根.
+</p>
+
+<p>
+基本策略:
+</p>
+<pre class="example">
+(define (sqrt-iter guess x)
+  (if (good-enough guess x)
+      guess
+      (sqrt-iter (improve guess x) x)))
+</pre>
+
+<p>
+填充细节:
+</p>
+<pre class="example">
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (average x y) (/ (+ x y) 2))
+
+(define (good-enough guess x)
+        (&lt; (abs (- (square guess) x)) 0.001))
+</pre>
+
+<p>
+启动:
+</p>
+<pre class="example">
+(define (squrt x) (sqrt-iter 1.0 x))    
+</pre>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">1.2.1</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>1.6 可否通过cond定义一个常规过程来代替if呢? Eva尝试写了以下程序,</li>
+</ul>
+<p>
+问: 如果用这个new-if来实现求平方根程序sqrt-iter,会有什么问题
+</p>
+<pre class="example">
+(define (new-if predicate then-clause else-clause)
+        (cond (predicate then-clause)
+              (else else-clause)))
+</pre>
+<p>
+答: 问题在于cond的所有分支都会被求值. 
+sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止递归调用.
+而new-if由于所有分支都会无条件求值, 所以它应用于递归函数时根本停不下来.
+</p>
+
+<ul class="org-ul">
+<li>1.7 上面good-enough的实现对于很小或很大的数来说不太好, 请给出证明.</li>
+</ul>
+<p>
+如果使用监测猜测值改变比率的方式, 对于大数或小数来说可以工作吗?
+</p>
+<ul class="org-ul">
+<li>对于小于0.001(good-enough的临界值)的小数,good-enough无法进行正确的判断.</li>
+</ul>
+<p>
+对于大数来说, 由于精度不足以表示guess和x之间的差(good-enough几乎永远为false), 程序陷入死循环.
+</p>
+<ul class="org-ul">
+<li>改变比率的算法对大数和小数都可以工作.</li>
+</ul>
+<pre class="example">
+(define (good-enough old-guess new-guess)
+        (&lt; (/ (abs (- old-guess new-guess)) old-guess) 0.01))
+</pre>
+
+<ul class="org-ul">
+<li>1.8 用牛顿法求立方根</li>
+</ul>
+<p>
+如果y是x立方根的一个近似值,那么下面公式可以给出一个更好的近似值: (x/y<sup>2</sup> +2*y)/3
+</p>
+<pre class="example">
+(define (cube-iter guess x)
+  (if (good-enough-cube guess x)
+      guess
+      (cube-iter (improve-cube guess x) x)))
+
+(define (good-enough-cube guess x)
+        (&lt; (abs (- (* guess guess  guess) x)) 0.001))
+
+(define (improve-cube y x)
+    (/ (+ (/ x (* y y)) (* 2 y)) 3))
+
+(define (cube x) (cube-iter 1 x))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">1.3</span> 过程作为黑箱抽象</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+<code>过程抽象</code> 一个过程的定义应当能隐藏起一些细节,使得过程的使用者可以直接复用而不必关心实现细节.
+</p>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">1.3.1</span> 局部名</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+过程的意义应该不依赖于其作者为形式参数所选定的名字.
+</p>
+
+<p>
+一个过程的定义 <code>约束</code> 了它所有形式参数,形参的具体名字完全没有关系, 这样的名字称为 <code>约束变量</code> .
+相反如果一个变量不是被约束的, 它就是 <code>自由的</code>. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12"><span class="section-number-4">1.3.2</span> 内部定义和块结构</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+平方根程序有个问题, 它由许多分离的过程组成, 而实际用户只关心sqrt这一个过程, 其它过程不必暴露给用户.
+(要运行这个程序也很蛋疼啊&#x2026;)
+</p>
+
+<p>
+所以,我们需要把这些麻烦的子过程局部化, 把它们隐藏到sqrt里面.
+</p>
+
+<pre class="example">
+(define (sqrt x)
+   (define (good-enough ...))
+   (define (improve-guess ...))
+   (if (good-enough ...) ...)) ;;懒得敲了,自行脑补吧...
+</pre>
+
+<p>
+这种嵌套的定义称为 <code>块结构</code>. 它是最简单的名字包装问题的一种正确解决方式. (讲道理这话真的是绕&#x2026;
+</p>
+
+<p>
+另外, 采用这种结构除了可以把辅助过程隐藏之外, 还可以利用 <code>词法作用域</code> 来简化辅助过程的形参.
+对这个例子来说,可以省略掉许多x.
+</p>
+
+<p>
+[小历史] 块结构的思想来自程序设计语言Algol 60.
+</p>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline47" class="outline-3">
+<h3 id="orgheadline47"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+能够看清所考虑的动作的后果的能力, 是非常重要的. 只有在此之后, 人们才能 <code>反向推理</code>
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14"><span class="section-number-4">1.4.1</span> 线性的递归和迭代</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+两种计算过程:
+<code>线性递归过程</code> 在这种计算过程里,代换模型展示出一种先展开后收缩的形状,最大长度正比于n.
+解释器为递归过程维护一部分状态信息.递归过程所消耗的内存与n成正比.
+注意[递归计算过程]与[递归过程]是两个概念.
+<code>迭代计算过程</code> 可以用固定数目的状态描述的计算过程. 与递归不同的是, 迭代计算过程中不会出现增长或收缩.
+迭代过程的所有状态信息都保存在程序遍历昂立.迭代过程所消耗的内存是固定的.
+</p>
+
+<p>
+某些语言(Pascal,C..)对递归过程的解释,消耗的内存总是与n成正比, 即使所描述的计算过程是迭代的.
+要描述迭代过程, 必须借助于"循环结构".而scheme则没有这个缺陷.
+<code>尾递归</code> 总是能在常量的空间中执行迭代型计算过程.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17"><span class="section-number-4">1.4.2</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-2">
+</div><ol class="org-ol"><li><a id="orgheadline15"></a>1.9 用代换模型展示下面两个过程在求值(+ 4 5)时所产生的计算过程. 它们是递归或者迭代吗?<br  /><div class="outline-text-5" id="text-1-4-2-1">
+<pre class="example">
+(define (+ a b) (if (= a 0) b (inc (+ (dec a) b))))
+</pre>
+<p>
+计算过程(纯手打):
+</p>
+<pre class="example">
+(+ 4 5)
+(inc (+ 3 5))
+(inc (inc (+ 2 5)))
+(inc (inc (inc (+ 1 5))))
+(inc (inc (inc (inc (+ 0 5)))))
+(inc (inc (inc (inc 5))))
+(inc (inc (inc 6)))
+(inc (inc 7))
+(inc 8)
+9
+</pre>
+<p>
+它是递归计算过程
+</p>
+
+<pre class="example">
+(define (+ a b) (if (= a 0) b (+ (dec a) (inc b))))
+</pre>
+<p>
+计算过程:
+</p>
+<pre class="example">
+(+ 4 5)
+(+ 3 7)
+(+ 2 7)
+(+ 1 8)
+(+ 0 9)
+9
+</pre>
+<p>
+它是迭代计算过程
+</p>
+</div></li>
+
+<li><a id="orgheadline16"></a>下面是一个称为ackermann函数的数学函数<br  /><div class="outline-text-5" id="text-1-4-2-2">
+<p>
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+  ((= y 1) 2)
+  (else (A (- x 1) (A x (- y 1))))))
+</p>
+
+<p>
+下面各表达式的值是什么(人肉算啊!)
+</p>
+<ul class="org-ul">
+<li>(A 1 10) 1024</li>
+<li>(A 2 4) 65536</li>
+</ul>
+<p>
+(a 1 (a 2 3)).. (a 1 (a 1 (a 1 (a 2 1)))),(a 1 (a 1 (a 1 2))),
+(a 1 (a 1 (a 0 (a 1 1)))),(a 1(a 1 (* 2 2))),(a 1(a 1 4)),(a 1 16),2<sup>16</sup>
+</p>
+<ul class="org-ul">
+<li>(A 3 3) 65536</li>
+</ul>
+<p>
+(a 2 (a 3 2)),(a 2(a 2(a 3 1))),(a 2 (a 2 2)),(a 2 4),65536
+</p>
+
+
+<p>
+下面过程的数学定义是?
+</p>
+<ul class="org-ul">
+<li>(define (f n) (A 0 n)) : f = 2*n</li>
+<li>(define (g n) (A 1 n)) : g = 2<sup>n</sup></li>
+<li>(define (h n) (A 2 n)) : h = 2^(2<sup>(2&#x2026;)</sup></li>
+</ul>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">1.4.3</span> 树形递归</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+另一种常见的例子🌰,比如菲波那切数列.
+</p>
+
+<p>
+朴素的树形递归:
+</p>
+<pre class="example">
+(define (fib n)
+ (cond ((= n 0) 0)
+  ((= n 1) 1)
+  (else (+ (fib (- n 1)) (fib ( - n 2))))))
+</pre>
+<p>
+优化的迭代版本:
+</p>
+<pre class="example">
+(define (fib-it a b count)
+(cond ((= count 0) b)
+  (else (fib-it (+ a b) a (- count 1)))))
+(define (fib2 n) (fib-it 1 0 n))
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">1.4.4</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-4">
+</div><ol class="org-ol"><li><a id="orgheadline19"></a>函数f由如下规则定义: 如果n&lt;3, 那么f(n)=n, 如果n&gt;=3, 那么f(n)=f(n-1)+2f(n-1)+3f(n-3).分别实现递归和迭代版本.<br  /><div class="outline-text-5" id="text-1-4-4-1">
+<pre class="example">
+;;递归
+(define (f11 n)
+  (cond ((&lt; n 3) n)
+  (else (+ (f11 (- n 1))
+     (* 2 (f11 (- n 2)))
+     (* 3 (f11 (- n 3)))))))
+;; 迭代
+(define (f11-it a b c n)
+  (cond ((&lt; n 3) a)
+  (else (f11-it (+ a (* 2 b) (* 3 c)) a b (- n 1)))))
+(define (f112 n) (f11-it 2 1 0 n))
+</pre>
+</div></li>
+
+<li><a id="orgheadline20"></a>写一个过程,采用递归计算出帕斯卡三角形<br  /><div class="outline-text-5" id="text-1-4-4-2">
+<pre class="example">
+(define (psc n k)
+  (cond ((&gt; k n) 0)
+      ((= n 0) 1)
+  ((= k 0) 1)
+  (else (+ (psc (- n 1) (- k 1))  (psc (- n 1) k)))))
+</pre>
+</div></li>
+
+<li><a id="orgheadline21"></a>1.13<br  /><div class="outline-text-5" id="text-1-4-4-3">
+<p>
+排版渣表示这道题好不想敲啊&#x2026;按照题目提示用数学归纳法证明等式比较容易,证明接近整数稍微需要一点想象力&#x2026;
+</p>
+
+<p>
+习题解如下, 各路学霸出没:
+<a href="http://sicp.readthedocs.org/en/latest/chp1/13.html">http://sicp.readthedocs.org/en/latest/chp1/13.html</a>
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23"><span class="section-number-4">1.4.5</span> 增长的阶</h4>
+<div class="outline-text-4" id="text-1-4-5">
+<p>
+<code>增长的阶</code> 用以描述计算过程消耗计算资源的速率.
+</p>
+<ul class="org-ul">
+<li>O(n): 规模增加一倍, 资源增加一倍</li>
+<li>O(n<sup>2</sup>): 规模增加1, 资源增加常数倍. 比如树形递归占用空间是(ϕ<sup>n</sup>)</li>
+<li>O(lg n):规模增加一倍, 资源增加一个常数.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26"><span class="section-number-4">1.4.6</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-6">
+</div><ol class="org-ol"><li><a id="orgheadline24"></a>1.14 画出1.2.2节过程(count-change 11)的计算过程. 当现金量增加时,这一过程空间和步数增长的阶各是什么?<br  /><div class="outline-text-5" id="text-1-4-6-1">
+<p>
+计算过程在纸上画了一遍&#x2026;懒得搬上来了, 直接参考习题解里的图吧
+后面两个估算没有找到标准答案,先把自己的思路写在这里.
+</p>
+
+<p>
+设现金量为n,币种数为m,则
+</p>
+<ul class="org-ul">
+<li>步数增长的阶:</li>
+</ul>
+<p>
+这个计算过程受到币种限制, 所以不能简单的用二叉树复杂度来估算.
+根据计算过程cc, 当n比较小时(比如小于50), 复杂度为O(n).
+当n比较大的时候, 复杂度正比于n能够被最大币种(这里是50)整除的次数.
+o(f(n))=(1+2+3+&#x2026;n/50)*n = ((1+n/50)*(n/50)/2)*n = o(n<sup>2</sup>).
+</p>
+
+<ul class="org-ul">
+<li>空间增长的阶: O(n+m).树的最大深度由n决定, 最深子树总是全部由1元钱凑成n的情况.</li>
+</ul>
+</div></li>
+
+<li><a id="orgheadline25"></a>1.15 题目略.<br  /><div class="outline-text-5" id="text-1-4-6-2">
+<p>
+[吐槽:原来可以这样实现sin,长姿势了]
+</p>
+
+<p>
+如果解释器的代换模型是是 <code>应用序</code> ,则这个问题是线性迭代:
+</p>
+<ul class="org-ul">
+<li>p将被使用多少次?  5次.</li>
+<li>空间增长的阶: n/(3<sup>k</sup>) = 0.1, k=log<sub>3</sub> (10*n), 所以是O(lg n)</li>
+<li>步数增长的阶: O(lg n)</li>
+</ul>
+<p>
+如果解释器是 <code>正则序</code> ,则这个问题是树形迭代:
+</p>
+<ul class="org-ul">
+<li>p将被使用多少次?  1 + 4 + 4<sup>2</sup> + 4<sup>3</sup> + 4<sup>4</sup></li>
+<li>增长的阶: O(4<sup>n</sup>)</li>
+</ul>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27"><span class="section-number-4">1.4.7</span> 求幂</h4>
+<div class="outline-text-4" id="text-1-4-7">
+<p>
+快速求幂法fast-expt:
+</p>
+<pre class="example">
+b^n = (b^(n/2))^2 ;;若n是偶数
+b^n = b * b^(n-1) ;;若n是奇数
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32"><span class="section-number-4">1.4.8</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-8">
+</div><ol class="org-ol"><li><a id="orgheadline28"></a>1.16 用fast-expt的思路定义一个过程, 它按照迭代的方式产生出求幂的计算过程.<br  /><div class="outline-text-5" id="text-1-4-8-1">
+<pre class="example">
+(define (expt-iter b n a)
+  (cond ((= n 0) a)
+  ((even? n) (expt-iter  (* b b)  (/ n 2)  a))
+  (else (expt-iter  b (- n 1) (* b a)))))
+</pre>
+</div></li>
+
+<li><a id="orgheadline29"></a>1.17 用fast-expt的思路实现一个反复使用加法计算乘积的过程.<br  /><div class="outline-text-5" id="text-1-4-8-2">
+<pre class="example">
+(define (fast-mul a n)
+  (cond ((= n 0) 0)
+  ((= n 1) a)
+  ((even? n) (fast-mul (+ a a) (/ n 2)))
+  (else (+ a (fast-mul a (- n 1))))))
+</pre>
+</div></li>
+
+<li><a id="orgheadline30"></a>1.18 求两个整数的乘积<br  /><div class="outline-text-5" id="text-1-4-8-3">
+<pre class="example">
+(define (mul-iter b n a)
+  (cond ((= n 0) a)
+  ((even? n) (mul-iter (+ b b) (/ n 2) a))
+  (else (mul-iter b (- n 1) (+ a b)))))
+</pre>
+</div></li>
+
+
+<li><a id="orgheadline31"></a>1.19 用对数步数计算菲波那切数列<br  /><div class="outline-text-5" id="text-1-4-8-4">
+<p>
+这道题目是前面求幂过程的推广. 
+</p>
+
+<pre class="example">
+(define (fib n)
+  (fib-iter 1 0 0 1 n))
+
+(define (fib-iter a b p q count)
+  (cond ((= count 0) b)
+  ((even? count)
+   (fib-iter a
+       b
+       (+ (* p p) (* q q))
+       (+ (* 2 p q) (* q q))
+       (/ count 2)))
+   (else (fib-iter (+ (* b q) (* a q) (* a p))
+       (+ (* b p) (* a q))
+       p
+       q
+       (- count 1)))))
+</pre>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33"><span class="section-number-4">1.4.9</span> 最大公约数</h4>
+<div class="outline-text-4" id="text-1-4-9">
+<p>
+GCD(a,b)=GCD(b,r), r是a除以b的余数.
+</p>
+<pre class="example">
+(define (gcd a b)
+  (cond ((= b 0) a)
+  (else (gcd b (remainder a b)))))
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35"><span class="section-number-4">1.4.10</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-10">
+</div><ol class="org-ol"><li><a id="orgheadline34"></a>1.20 解释器是应用序和正则序时,上述算法求(206 40)的计算过程分别是怎样的,remander分别调用多少次<br  /><div class="outline-text-5" id="text-1-4-10-1">
+<ul class="org-ul">
+<li>应用序</li>
+</ul>
+<pre class="example">
+(gcd 206 40)
+(gcd 40 6)
+(gcd 6 4)
+(gcd 4 2)
+(gcd 2 0)
+2
+</pre>
+<p>
+一共4次remander
+</p>
+
+<ul class="org-ul">
+<li>正则序</li>
+</ul>
+<pre class="example">
+(gcd 206 40)
+cond ...
+(gcd 40 (re 206 40)) ;;b=6
+cond ...  ;; +1
+(gcd (re 206 40) (re 40 (re 206 40))) ;;b=4
+cond ...  ;; +2
+(gcd (re 40 (re 206 40)) (re (re 206 40) (re 40 (re 206 40)))) ;;b=2
+cond ...  ;; +4
+(gcd .......) ;; b=0
+cond ...  ;; + 7
+a = (re (re 206 40) (re 40 (re 206 40) = (re 6 4) = 2 ;; +4
+</pre>
+<p>
+一共18次remander
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36"><span class="section-number-4">1.4.11</span> 素数检测</h4>
+<div class="outline-text-4" id="text-1-4-11">
+<p>
+(终于学会打公式了○|￣|_)
+</p>
+
+<p>
+本节描述两种检查整数n是否为素数的方法,第一个具有O(\(\sqrt{n}\))的增长阶,
+第二个具有O(log n)的增长阶.
+</p>
+
+<ul class="org-ul">
+<li>寻找因子:用从2开始的连续整数开始依次检查它们是否能整除n.如果n不是素数,必然有小于或等于 \(\sqrt{n}\) 的因子,由此可知这个算法拥有O(\(\sqrt{n}\))的增长阶.</li>
+<li>费马检查:O(log n)的检查基于数论中著名的费马小定理(数论全忘光了&#x2026;桑不起)</li>
+</ul>
+
+<p>
+<code>费马小定理</code>: 如果n是一个素数,a是小于n的任意正整数,那么a的n次方与a模n同余.
+而如果= 不是素数 =,则大部分a&lt;n都将满足上面的关系,这就引出了检查素数的算法: 如果发现不满足关系的a那么n肯定不是素数.
+</p>
+
+<p>
+<code>费马检查</code>: 采用许多随机的a来检查,通过的检查越多则n是素数的概率越大.
+</p>
+
+<p>
+首先定义一个O(log n)的迭代过程计算 \(a^n\) 对m取模的结果(a&lt;n,a&lt;m)
+</p>
+<pre class="example">
+(define (expmod bas exp m)
+  (cond ((= exp 0 ) 1)
+  ((even? exp)
+   (remainder (square (expmod bas (/ exp 2) m)) m))
+  (else
+   ;;  $(a*a^{n/2}*a^{n/2})%n = (a%n)*(a^{n/2}%n)^2 = a*(a^{n/2}%n)^2
+   (remainder (* bas (expmod bas (- exp 1) m)) m))))
+</pre>
+
+<p>
+其中关于连续求平方的推导如下:
+</p>
+
+<p>
+\(\gcd((a^{n/2}a^{n/2}),n)=\gcd(a^{n/2},n)\gcd(a^{n/2},n)=\gcd(a^{n/2},n)^2\)
+</p>
+
+<p>
+\(\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)\)
+</p>
+
+<p>
+然后随机1和n-1之间的整数进行测试:
+</p>
+<pre class="example">
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= times 0) true)
+  ((fermat-test n) (fast-prime? n (- times 1)))
+  (else false)))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37"><span class="section-number-4">1.4.12</span> 概率方法</h4>
+<div class="outline-text-4" id="text-1-4-12">
+<p>
+费马检查的结果只有概率上的正确性..但能够证明存在使出错概率任意小的算法.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46"><span class="section-number-4">1.4.13</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-4-13">
+</div><ol class="org-ol"><li><a id="orgheadline38"></a>使用smallest-divisor过程找出下面各数的最小因子:199,1999,19999<br  /><div class="outline-text-5" id="text-1-4-13-1">
+<p>
+首先设计了一个(有点挫)的算法,从2到n遍历,寻找第一个能够整除n的素数.(能够想到的优化版算法只有素数表了orz.
+</p>
+<pre class="example">
+(define (divisor-test a n)
+  (cond ((= n 1) 1)
+  ((= n 0) 0)
+  ((and (fast-prime? a 10) (= (remainder n a) 0)) a)
+  (else (divisor-test (+ a 1) n))))
+
+(define (smallest-divisor n) (divisor-test 2 n))计算结果是199:199,1999:1999,19999:7.
+</pre>
+</div></li>
+
+<li><a id="orgheadline39"></a>观察查找素数的时间.题目略&#x2026;<br  /><div class="outline-text-5" id="text-1-4-13-2">
+<pre class="example">
+(define (search-for-prime n)
+  (cond ((prime? n) 
+  (display n))
+  (else (cond ((even? n)
+         (search-for-prime (+ n 1)))
+        (else 
+         (search-for-prime (+ n 2)))))))
+
+(define (start-search-prime n start-time)
+  (search-for-prime n)
+  (newline)
+  (display (- (real-time-clock) start-time)))
+
+(define (time-for-search-prime n)
+  (start-search-prime n (real-time-clock)))
+</pre>
+<p>
+一开始使用题目给的(runtime)计算时钟周期,结果无论后面加多少个零,结果几乎都在1e-2左右.
+后来得知现在的MIT-scheme的runtime按秒计时,换成以tick计时的real-time-clock就对了.
+</p>
+
+<p>
+测试结果是:
+</p>
+<ul class="org-ul">
+<li>1000:1 (结果是1009,6次测试,平均0.17ms每次)</li>
+<li>10000:1 (5,0.25)</li>
+<li>100000:1 (3,0.33)</li>
+<li>1000000:2 (3,0.67)</li>
+<li>10000000:8 (10,0.8)</li>
+<li>100000000:15 (5,3)</li>
+<li>1000000000:37 (5,7.4)</li>
+<li>10000000000:169 (10,16.9)</li>
+</ul>
+<p>
+1000000以下的测试结果差别很小, 1000000以上差异是2.x倍, 可见测试结果与预期的$/sqrt{n}$不符.
+</p>
+</div></li>
+
+<li><a id="orgheadline40"></a>修改本节开始的smallest-divisor过程,使其步数减半,并检验结果是否符合预期<br  /><div class="outline-text-5" id="text-1-4-13-3">
+<pre class="example">
+(define (smallest-divisor-fast n)
+  (let  ((t (real-time-clock)))
+    (display (find-divisor-fast n 2))
+    (- (real-time-clock) t)))
+
+(define (find-divisor-fast n test)
+  (cond ((&gt; (square test) n) n)
+  ((divides? n test) test)
+  (else (find-divisor-fast n (next test)))))
+
+(define (next n)
+  (cond ((even? n) (+ n 1))
+  (else (+ n 2))))
+</pre>
+
+<p>
+为了使差别比较显著,挑选2个相差10倍左右的素数进行测试:1009,10009
+</p>
+<ul class="org-ul">
+<li>(smallest-divisor-fast (* 1009 10009))  ==&gt; 1</li>
+<li>(smallest-divisor (* 1009 10009))       ==&gt; 2</li>
+<li>(smallest-divisor-fast (* 10009 10009)) ==&gt; 9</li>
+<li>(smallest-divisor (* 10009 10009))      ==&gt; 14</li>
+<li>(smallest-divisor-fast (* 20029 20029)) ==&gt; 16</li>
+<li>(smallest-divisor-sqre (* 20029 20029)) ==&gt; 26</li>
+</ul>
+<p>
+可见fast版本速度比原有版本快,但两个算法速度比值比2小.
+</p>
+
+<p>
+初步推测,当算法复杂度低且参数比较小时,这个算法本身的耗时在一个过程的执行过程中占比非常低.
+而执行过程所需的大量递归调用,变量绑定等操作消耗掉绝大部分CPU资源,导致我们得到的结果不准确.
+而当参数增大时,算法本身占用的资源比例变大,使得结果与我们的预测越来越接近.
+</p>
+
+<p>
+所以估算算法复杂度并不能完全预测过程的实际执行时间.
+</p>
+</div></li>
+
+<li><a id="orgheadline41"></a>使用fast-prime?代替prime?实现第二题.并检验结果是否符合预期.<br  /><div class="outline-text-5" id="text-1-4-13-4">
+<p>
+把上上道题目代码中的prime?换成fast-prime就可以了.
+</p>
+<pre class="example">
+(define (search-for-prime n)
+  (cond ((fast-prime? n 50) 
+  (display n))
+  (else 
+   (cond ((even? n)
+    (search-for-prime (+ n 1)))
+         (else 
+    (search-for-prime (+ n 2)))))))
+</pre>
+<p>
+测试结果:
+</p>
+<ul class="org-ul">
+<li>1000:2</li>
+<li>10000:2</li>
+<li>100000:3</li>
+<li>10000000:4</li>
+<li>1000000000000:8</li>
+</ul>
+<p>
+差距比预期小的多,但参数越大差别越明显.解释见上一题.
+</p>
+
+<p>
+[Mark] 学习完后面的内容可能会在解释器层面上对这个问题有新的见解,到时候再补充吧.
+</p>
+</div></li>
+
+<li><a id="orgheadline42"></a>分析Alyssa的方法是否实用<br  /><div class="outline-text-5" id="text-1-4-13-5">
+<p>
+Alyssa的方法理论上比本节的算法步数只有1步,但容易溢出.
+本节的方法虽然步数多了一些, 但它不会真正进行巨大的乘幂运算, 所以本节的方法更加实用.
+</p>
+</div></li>
+
+<li><a id="orgheadline43"></a>分析fast-prime?中的expmod使用显示乘法为何会把O(log n)的算法变成O(n)的.<br  /><div class="outline-text-5" id="text-1-4-13-6">
+<p>
+下面把(expmod base (/ exp 2) m)简写为 <code>ep(n)</code>
+</p>
+
+<p>
+使用乘法:
+</p>
+<pre class="example">
+ep(n)
+(* ep(n/2) ep(n/2))
+(* (* ep(n/4) ep(n/4)) (* ep(n/4) ep(n/4)))
+(* (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))) (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))))
+...
+</pre>
+<p>
+展开后可得进行expmod运算的次数是 \(2^{log_2{n}}=n\) 次
+</p>
+
+<p>
+使用square:
+</p>
+<pre class="example">
+ep(n)
+(square ep(n/2))
+(square (square ep(n/4)))
+...
+</pre>
+<p>
+\(log_2{n}\) 次
+</p>
+</div></li>
+
+<li><a id="orgheadline44"></a>证明注脚47中列出的Carmichael数确实能骗过费马检查.<br  /><div class="outline-text-5" id="text-1-4-13-7">
+<p>
+首先写一个过程,检验 <b>所有</b> 小于n的a,看 \(a^{n}\) 是否与a模n同余.
+</p>
+<pre class="example">
+(check-prime? 561) =&gt; #t
+(check-prime? 1105) =&gt; #t
+(check-prime? 1729) =&gt; #t
+(check-prime? 2465) =&gt; #t
+(check-prime? 2821) =&gt; #t
+(check-prime? 6601) =&gt; #t
+</pre>
+</div></li>
+
+<li><a id="orgheadline45"></a>Miller-Rabin检查<br  /><div class="outline-text-5" id="text-1-4-13-8">
+<p>
+把前面fast-prime过程中的fermat-test替换为miller-test
+</p>
+<pre class="example">
+(define (miller-test n)
+  (define (try-it a)
+    (= (expmod a (- n 1) n) 1))
+  (try-it (+ 1 (random (- n 1)))))
+
+(define (fast-prime? n times)
+  (cond ((= n 1) true)
+  ((= times 0) true)
+  ((miller-test n) (fast-prime? n (- times 1)))
+  (else false)))
+</pre>
+<p>
+使用前面的carmichael数测试,结果都为#f
+</p>
+</div></li></ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline78" class="outline-3">
+<h3 id="orgheadline78"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+在作用上,过程也是一类抽象,它们描述了一些对于数的复合操作,但不依赖特定的数,甚至不只用数作为参数.
+</p>
+
+<p>
+<code>高阶过程</code> 是能操作过程的过程, 它能以过程作为参数,或者以过程作为返回值.
+</p>
+
+<p>
+这也是lisp的一个厉害之处.
+</p>
+</div>
+
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">1.5.1</span> 过程作为参数</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+教材🌰:
+</p>
+<pre class="example">
+(define (sum term a next b)
+  (if (&gt; a b)
+      0
+      (+ (term a) (sum term (next a) next b))))
+
+(define (cub n) (* n n n))
+(define (add n) (+ n 1))
+(define (sum-cube a b) (sum cub a add b))
+</pre>
+<p>
+使用其它高级语言实现这种过程作为参数的过程时,绝对不会这么简洁.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline53" class="outline-4">
+<h4 id="orgheadline53"><span class="section-number-4">1.5.2</span> [练习]</h4>
+<div class="outline-text-4" id="text-1-5-2">
+</div><ol class="org-ol"><li><a id="orgheadline49"></a>上面的sum过程产生一个线性递归, 使用迭代方式重写该过程.<br  /><div class="outline-text-5" id="text-1-5-2-1">
+<pre class="example">
+(define (sum term a next b)
+  (define (iter n result)
+    (if (&gt; n b) 
+  result
+  (iter (next n) (+ result (term n)))))
+  (iter a 0))
+</pre>
+</div></li>
+
+<li><a id="orgheadline50"></a>写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.<br  /><div class="outline-text-5" id="text-1-5-2-2">
+<pre class="example">
+;; 递归
+(define (product a b term)
+ (if (&gt; a b)
+       1
+       (* (term a) (product (+ a 1) b term))))
+
+;; 迭代
+(define (product-iter a b next)
+  (define (iter n result)
+    (if (&gt; n b) 
+  result
+  (iter (+ n 1) (* result (term n)))))
+  (iter a 0))
+
+;; 分子
+(define (term-numer a)
+  (cond ((odd? a) (+ a 1))
+  (else (+ a 2))))
+;; 分母
+(define (term-deno a)
+  (cond ((even? a) (+ a 1))
+  (else (+ a 2))))
+
+;; pi/4
+(define (quarter-pi n)
+  (/ (product 1 n term-numer) (product 1 n term-deno)))
+</pre>
+</div></li>
+
+<li><a id="orgheadline51"></a>请说明sum和product都是称为accumulate的更一般概念的特殊情况.使用accumulate定义出sum和product.<br  /><div class="outline-text-5" id="text-1-5-2-3">
+<pre class="example">
+(define (accumulate combinder null-value term a next b)
+  (if (&gt; a b) null-value
+      (combinder (term a) (accumulate combinder null-value term (next a) next b))))
+
+(define (sum a b) (accumulate + 0 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
+(define (product a b) (accumulate * 1 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
+</pre>
+</div></li>
+
+<li><a id="orgheadline52"></a>实现filtered-accumulate<br  /><div class="outline-text-5" id="text-1-5-2-4">
+<pre class="example">
+(define (filtered-accumulate filter combinder null-value term a next b)
+  (cond ((&gt; a b) null-value)
+  ((filter a) 
+   (combinder (term a) 
+        (filtered-accumulate filter combinder null-value term (next a) next b)))
+  (else 
+   (combinder null-value
+   (filtered-accumulate filter combinder null-value term (next a) next b)))))
+</pre>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline54" class="outline-4">
+<h4 id="orgheadline54"><span class="section-number-4">1.5.3</span> 用lambda构造过程</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+为了省去单独定义一些简单函数的麻烦,引入lambda特殊形式来完成这类描述,而不必给每个过程绑定名字.
+</p>
+<pre class="example">
+(lambda (x) (+ x 4))
+</pre>
+<p>
+实际上, (define (&lt;name&gt; &lt;param &#x2026;&gt;) ()) 是lambda的一种语法糖.
+</p>
+<pre class="example">
+(define (plus4 n) (+ n 4))
+</pre>
+<p>
+等价于:
+</p>
+<pre class="example">
+(define plus4 (lambda (n) (+ n 4)))
+</pre>
+<p>
+lambda表达式可以用做 <b>组合式的运算符</b>:
+</p>
+<pre class="example">
+((lambda (x) (+ x 4)) 1)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline55" class="outline-4">
+<h4 id="orgheadline55"><span class="section-number-4">1.5.4</span> 用let创建局部变量</h4>
+<div class="outline-text-4" id="text-1-5-4">
+<p>
+lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 <code>let</code>
+</p>
+<pre class="example">
+(define (f x y)
+ ((lambda (a b)
+  (+ (* x (square a))
+    (* y b)
+    (* a b)))
+  (+ 1 (x y))
+  (- 1 y)))
+</pre>
+<p>
+用let形式可以简化为
+</p>
+<pre class="example">
+(define (f x y)
+ (let ((a (+ 1 (x y)))
+       (b (- 1 y)))
+   (+ (* x (square a))
+      (* y b)
+      (* a b))))
+</pre>
+<p>
+注意使用let约束的局部变量必须在let的body中.
+</p>
+<ul class="org-ul">
+<li>let使人能在尽可能接近其使用的地方建立局部变量约束.</li>
+<li>变量的值是在let之外计算的. 如下面过程</li>
+</ul>
+<pre class="example">
+....
+(let (x 3)
+     (y x))
+</pre>
+<p>
+如果x在let之前的值是2,在let内x=3, 而y=2.
+</p>
+
+<p>
+有时在过程内部define也有与let一样的效果:
+</p>
+<pre class="example">
+(define (f x y)
+  (define a (...))
+  (define b (...))
+  (+ a b))
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57"><span class="section-number-4">1.5.5</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-5-5">
+</div><ol class="org-ol"><li><a id="orgheadline56"></a>执行(f f)会发生什么<br  /><div class="outline-text-5" id="text-1-5-5-1">
+<p>
+(f f)-&gt;(f 2)-&gt;(2 2). 而2不是一个可以应用的过程, 会报错.
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline60" class="outline-4">
+<h4 id="orgheadline60"><span class="section-number-4">1.5.6</span> 过程作为一般性的方法</h4>
+<div class="outline-text-4" id="text-1-5-6">
+</div><ol class="org-ol"><li><a id="orgheadline58"></a>通过区间折半法寻找方程的根<br  /><div class="outline-text-5" id="text-1-5-6-1">
+<p>
+代码略&#x2026;
+</p>
+</div></li>
+
+<li><a id="orgheadline59"></a>找出函数的不动点<br  /><div class="outline-text-5" id="text-1-5-6-2">
+<p>
+数x称为函数f的不动点,如果x满足方程 \(f(x)=x\) . 
+</p>
+<pre class="example">
+(define tolerance 0.00001)
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (&lt; (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+    next
+    (try next)))) ;; 这里需要保证收敛
+  (try first-guess))
+</pre>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><span class="section-number-4">1.5.7</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-5-7">
+</div><ol class="org-ol"><li><a id="orgheadline61"></a>使用fixed-point找出黄金分割 \(phi\) 的值: x-&gt;1+1/x.<br  /><div class="outline-text-5" id="text-1-5-7-1">
+<pre class="example">
+(fixed-point (lambda (x) (+ 1 (/ 1 x)))  1.0)
+</pre>
+<p>
+x=1.6180327868852458
+</p>
+</div></li>
+
+<li><a id="orgheadline62"></a>修改fixed-point,使他打印出计算过程.确定x<sup>x</sup>=1000的一个根,并比较采用平均阻尼和不用平均阻尼的计算步骤.<br  /><div class="outline-text-5" id="text-1-5-7-2">
+<p>
+不用平均阻尼
+</p>
+<pre class="example">
+(fixed-point-log  (lambda (x)  (/ (log 1000) (log x))) 2)
+</pre>
+<p>
+33步
+</p>
+
+<p>
+使用平均阻尼:
+</p>
+<pre class="example">
+(define (average n) (/ n 2))
+(fixed-point-log  (lambda (x) (average (+ x (/ (log 1000) (log x))))) 2)
+</pre>
+<p>
+8步
+</p>
+</div></li>
+
+<li><a id="orgheadline63"></a>一个无穷连分式是一个如下形式的表达式:<br  /><div class="outline-text-5" id="text-1-5-7-3">
+<p>
+\(\Large x=\frac{N_1}{D1 + \frac{N_2}{D2 + \frac{N_3}{D_3+...}}}\)
+证明当Di和Ni都等于1时,这一连分式产生出\(1/\phi\)
+</p>
+<pre class="example">
+;; 递归
+(define (cont-frac n d k it)
+  (cond ((= it k) 0)
+  (else (/ (n it) (+ (d it) (cont-frac n d k (+ it 1)))))))
+
+(define (gold k)
+    (+ 1 (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) k 0)))
+
+(gold 11)
+
+;; 迭代
+(define (cont-frac-it n d k result)
+  (cond ((= k -1) result)
+  (else (cont-frac-it n d (- k 1) (/ (n k) (+ (d k) result))))))
+
+(define (gold k)
+    (+ 1 (cont-frac-it (lambda (i) 1.0) (lambda (i) 1.0) k 0)))
+
+(gold 11)
+</pre>
+<p>
+k取6时结果具有4位精度, 但不够准确.k越大时,结果越逼近 \(1/\phi\), k取12时,小数点后4位的结果是准确的.
+</p>
+</div></li>
+
+<li><a id="orgheadline64"></a>使用上一题的cont-frac过程基于欧拉展开式求e的近似值.<br  /><div class="outline-text-5" id="text-1-5-7-4">
+<pre class="example">
+(define (ora i)
+    (cond ((= 0 (remainder (- i 1) 3))
+     (* 2 (/ (+ i 2) 3)))
+    (else 1.0)))
+
+(define (de-frac k)
+  (cont-frac-it
+  (lambda (i) 1.0)
+  ora
+  k
+  0))
+
+(define (e k)
+  (+ 2 (de-frac k)))
+</pre>
+</div></li>
+
+<li><a id="orgheadline65"></a>定义过程(tan-cf x k),基于Lambert公式计算正切函数的近似值.<br  /><div class="outline-text-5" id="text-1-5-7-5">
+<pre class="example">
+(define (tan-cf x k)
+  (define (N-tan i) 
+    (if (= i 1)
+  x
+  (- (square x))))
+  (define (D-tan i) (- (* 2 i) 1))
+  (cont-frac N-tan D-tan k 1))
+
+(tan-cf 1.0 10)
+(tan 1)
+</pre>
+</div></li></ol>
+</div>
+
+
+
+
+
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69"><span class="section-number-4">1.5.8</span> 过程作为返回值</h4>
+<div class="outline-text-4" id="text-1-5-8">
+<p>
+把前面所说的平均阻尼概念再抽象一下..
+</p>
+<pre class="example">
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+((average-damp square) 10)
+</pre>
+<p>
+这样前面求平方根的过程可改写成:
+</p>
+<pre class="example">
+(define (squrt x)
+  (fixed-point (average-damp (lambda (a) (/ x a))) 1.0))
+</pre>
+<p>
+所以现在上面这两行代码中结合了三种思想: 不动点搜寻,平均阻尼,和函数y-&gt;x/y.
+</p>
+</div>
+<ol class="org-ol"><li><a id="orgheadline67"></a>牛顿法<br  /><div class="outline-text-5" id="text-1-5-8-1">
+<p>
+首先需要有一个方法描述导数
+</p>
+
+<p>
+\(Dg(x)=\frac{g(x+dx)-g(x)}{dx}\)
+这时就能看到将过程作为返回值的威力了:生成导数函数.
+</p>
+<pre class="example">
+(define dx 0.00001) ;; 首先定义一个delta
+(define (drive g)
+  (lambda (x) (/ (- (g (+ x dx)) (g x)) dx)))
+;; test: $D(x^3)=3*x^2$
+((drive (lambda (x) (* x x x))) 2)
+</pre>
+
+<p>
+然后把牛顿法描述为一个求不动点的过程:
+</p>
+<pre class="example">
+(define (newton-transform g)
+  (lambda (x)
+    (- x (/ (g x) ((driv g) x)))))
+(define (newtons-method g guess)
+  (fixed-point (newton-transform g ) guess))
+(define (squr x)
+  (newtons-method (lambda (y) (- (square y) x)) 1.0))
+</pre>
+</div></li>
+<li><a id="orgheadline68"></a>抽象和第一级过程<br  /><div class="outline-text-5" id="text-1-5-8-2">
+<p>
+计算机程序总会对计算元素的可能使用方式加上某些限制.带有最少限制的元素被称为 <code>第一级状态</code>
+第一级元素的某些"特权"包括:
+</p>
+<ul class="org-ul">
+<li>可以使用变量名</li>
+<li>可以提供给过程作为参数</li>
+<li>可以由过程作为结果返回</li>
+<li>可以包含在数据结构中</li>
+</ul>
+<p>
+List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是难以实现).
+我日常用的几种语言没有谁能做到这些orz
+</p>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline77" class="outline-4">
+<h4 id="orgheadline77"><span class="section-number-4">1.5.9</span> [习题]</h4>
+<div class="outline-text-4" id="text-1-5-9">
+</div><ol class="org-ol"><li><a id="orgheadline70"></a>请定义一个过程cubic,它和newtons-method一起使用在下面的表达式里,逼近三次方程x<sup>3</sup>+aX<sup>2</sup>+c的零点<br  /><div class="outline-text-5" id="text-1-5-9-1">
+<p>
+(newtons-method (cubic a b c) 1)
+</p>
+<pre class="example">
+(define (cubic a b c)
+  (lambda (x) (+ (* x x x) (* a x x) (* b x) c)))
+;; test
+(newtons-method (cubic 3 1 1) 1)
+</pre>
+</div></li>
+
+<li><a id="orgheadline71"></a>请定义一个过程double,它以一个有一个参数的过程作为参数,double返回一个参数.这一过程将原来那个参数过程应用两次.<br  /><div class="outline-text-5" id="text-1-5-9-2">
+<pre class="example">
+(define (double f)
+  (lambda (x) (f (f x))))
+;; test
+((double (lambda (x) (square x))) 2)
+</pre>
+<p>
+表达式(((double (double double)) inc ) 5)返回21:
+</p>
+<pre class="example">
+(((double (double double) inc) -&gt; (double (double (double (double inc)))) = 2^4 = 16
+</pre>
+</div></li>
+
+<li><a id="orgheadline72"></a>定义compose实现复合函数<br  /><div class="outline-text-5" id="text-1-5-9-3">
+<pre class="example">
+(define (compose f g)
+  (lambda (x) (f (g x))))
+((compose square inc) 6)
+</pre>
+</div></li>
+
+<li><a id="orgheadline73"></a>构造f的n次重复应用过程<br  /><div class="outline-text-5" id="text-1-5-9-4">
+<pre class="example">
+(define (repeated f k)
+  (define (it g k n)
+    (if (= n (- k 1)) 
+  (lambda (x) (g x))
+  (it (lambda (x) (f (g x))) k (+ n 1))))
+  (it f k 0))
+
+((repeated square 2) 5)
+; Value: 625
+</pre>
+</div></li>
+
+<li><a id="orgheadline74"></a>实现平滑函数<br  /><div class="outline-text-5" id="text-1-5-9-5">
+<pre class="example">
+(define (smooth f)
+  (lambda (x) 
+    (/ (+ (f x) (f (- x dx)) (f (+ x dx))) 3)))
+
+(define (smooth-k f k)
+  ((repeated smooth k) f))
+</pre>
+</div></li>
+
+<li><a id="orgheadline75"></a>试验求$x/y<sup>n-1</sup>$需要多少次平均阻尼<br  /><div class="outline-text-5" id="text-1-5-9-6">
+<pre class="example">
+;;前面定义的求幂过程expt-iter
+(define (expt-iter b n a)
+  (cond ((= n 0) a)
+  ((even? n) (expt-iter  (* b b)  (/ n 2)  a))
+  (else (expt-iter  b (- n 1) (* b a)))))
+;;定义过程x-&gt;x/y^n
+(define (root n x)
+  (lambda (y) (/ x (expt-iter y n 1))))
+;;应用k次阻尼
+(define (repeated-damp f k)
+  ((repeated average-damp k) f))
+
+(define (squrt-n n x damp-cnt)
+  (fixed-point-log (repeated-damp (root n x) damp-cnt) 1))
+</pre>
+
+<p>
+试验下来大约至少需要$log{n}$次平均阻尼.
+</p>
+</div></li>
+
+<li><a id="orgheadline76"></a>写一个过程interative-improve, 它以两个过程为参数. 其中之一用于判定结果是否足够好,另外一个用于猜测更好的结果.<br  /><div class="outline-text-5" id="text-1-5-9-7">
+<pre class="example">
+(define (iterative-improve good-enough? f)
+  (lambda (x)
+    (define (try guess)
+      (let ((next (f guess)))
+  (if (good-enough? guess next)
+      next
+      (try next))))
+    (try x)))
+;;定义good-enough?
+(define (close-enough? v1 v2)
+  (&lt; (abs (- v1 v2)) tolerance))
+
+(define (fixed-point f guess)
+  ((iterative-improve close-enough? f) guess))
+
+(define (sqrt n guess)
+    ((iterative-improve 
+      close-enough? (lambda (x) (/ (+ x (/ n x)) 2))) guess))
+</pre>
+
+
+<p>
+以上.
+</p>
+
+<p>
+(几乎一个月过去了/(ㄒoㄒ)/~~)
+</p>
+</div></li></ol>
+</div>
+</div>
+</div>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-06-14</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
+    </item>
     <item>
       <title>SICP-CH2-构造数据抽象</title>
       <link>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</link>
@@ -3413,2026 +5429,17 @@ apply-generic被调用了3次. 过程如下
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
-      <title>Hello World</title>
-      <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
-      <description><![CDATA[<div>
-<div class="post">
-<h1>Hello World</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline1">1. First Blog From Org-Page</a></li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="section-number-2">1</span> First Blog From Org-Page</h2>
-</div>
-
-</div>
-</div>]]></description>
-      <pubDate>2016-06-13</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
-    </item>
-    <item>
-      <title>PPPUC++ Reading Note</title>
-      <link>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</link>
-      <description><![CDATA[<div>
-<div class="post">
-<h1>PPPUC++ Reading Note</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline6">1. CH. 17  Memory, Address</a>
-<ul>
-<li><a href="#orgheadline1">1.1. 初始化:</a></li>
-<li><a href="#orgheadline2">1.2. 空指针:</a></li>
-<li><a href="#orgheadline3">1.3. Free-Store:</a></li>
-<li><a href="#orgheadline4">1.4. 析构函数:</a></li>
-<li><a href="#orgheadline5">1.5. 指针和引用:</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">2. CH. 18 Vector and Array</a>
-<ul>
-<li><a href="#orgheadline7">2.1. Copying</a></li>
-<li><a href="#orgheadline8">2.2. Moving</a></li>
-<li><a href="#orgheadline9">2.3. explicit</a></li>
-<li><a href="#orgheadline10">2.4. Get &amp; Set</a></li>
-<li><a href="#orgheadline11">2.5. Array</a></li>
-<li><a href="#orgheadline12">2.6. Excrise</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><span class="section-number-2">1</span> CH. 17  Memory, Address</h2>
-<div class="outline-text-2" id="text-1">
-<div class="org-src-container">
-
-<pre class="src src-c++">int main()
-{
-  char a = 'a';
-  char b = 'b';
-  void *pv = &amp;a;
-  int *pa = (int*)pv;
-  std:: cout &lt;&lt;*pa&lt;&lt;std::endl;
-  *pa = 65535;
-  std:: cout &lt;&lt;(char*)&amp;a&lt;&lt;" "&lt;&lt;(char*)&amp;b&lt;&lt;std::endl;
-  std:: cout &lt;&lt;a&lt;&lt;" "&lt;&lt;b&lt;&lt;std::endl;
-  return 0;
-}
-
-�� b��
-� b
-</pre>
-</div>
-
-<p>
-实测堆上分配的内存并没有溢出
-</p>
-
-<p>
-int* 和 char* 不能直接互相赋值的原因: 索引数组时地址跨越长度
-</p>
-</div>
-
-<div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1"><span class="section-number-3">1.1</span> 初始化:</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-为了避免误用未初始化的变量, 尽量保证变量在被声明的同时初始化.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2"><span class="section-number-3">1.2</span> 空指针:</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-c++11 引入了nullptr, 旨在于解决null的二义性问题
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Free-Store:</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-Free-Store由Store Manager管理
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">1.4</span> 析构函数:</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-占用Free-Store的类都需要析构函数
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5"><span class="section-number-3">1.5</span> 指针和引用:</h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-传值和传指针: 指针允许nullptr, 可能需要额外写防御代码.
-</p>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgheadline13" class="outline-2">
-<h2 id="orgheadline13"><span class="section-number-2">2</span> CH. 18 Vector and Array</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>initializer<sub>list</sub></li>
-<li>copy constructor</li>
-<li>copy assignment</li>
-</ul>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7"><span class="section-number-3">2.1</span> Copying</h3>
-</div>
-
-
-
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">2.2</span> Moving</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-&amp;&amp; ?
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9"><span class="section-number-3">2.3</span> explicit</h3>
-</div>
-
-
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10"><span class="section-number-3">2.4</span> Get &amp; Set</h3>
-<div class="outline-text-3" id="text-2-4">
-<p>
-索引靠重载[]运算符实现, 并返回reference. 
-</p>
-<ul class="org-ul">
-<li>若返回值则只能get无法set(可用作const版本), 返回指针则书写起来比较别扭.</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11"><span class="section-number-3">2.5</span> Array</h3>
-<div class="outline-text-3" id="text-2-5">
-<p>
-array的问题: 编译器难以做到边界检查
-pointer arithmetic
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12"><span class="section-number-3">2.6</span> Excrise</h3>
-<div class="outline-text-3" id="text-2-6">
-<p>
-<i>/
-/</i>  main.cpp
-<i>/  PPPUC
-/</i>
-<i>/  Created by Tsubasa on 1/30/16.
-/</i>  Copyright (c) 2016 tsu. All rights reserved.
-//
-</p>
-
-<p>
-#include &lt;iostream&gt;
-using namespace std;
-</p>
-
-<p>
-class Vector
-{
-  int sz;
-  double * elem;
-public:
-  Vector(int s): sz{s}, elem{new double[s]}
-  {
-    for(int i = 0; i &lt; sz; i++) elem[i] = 0;
-  }
-</p>
-
-<p>
-Vector(initializer<sub>list</sub>&lt;double&gt; lst): sz{(int)lst.size()},elem{new double[lst.size()]}
-{
-  copy(lst.begin(),lst.end(),elem);
-}
-</p>
-
-<p>
-Vector(const Vector&amp;);
-</p>
-
-<p>
-Vector&amp; operator=(const Vector&amp;);
-</p>
-
-<p>
-  ~Vector(){delete[] elem;}
-  void Set(int, double);
-  void Print();
-};
-</p>
-
-<p>
-void Vector::Set(int index, double value)
-{
-  if (index &gt;= sz) return;
-  elem[index] = value;
-}
-</p>
-
-<p>
-void Vector::Print()
-{
-  for (int i = 0; i &lt; sz; i++)
-    {
-      cout&lt;&lt;(elem[i])&lt;&lt;endl;
-    }
-}
-</p>
-
-<p>
-Vector::Vector(const Vector&amp; arg)
-  :sz(arg.sz),elem(new double[arg.sz])
-{
-  copy(arg.elem,arg.elem+arg.sz,elem);
-}
-</p>
-
-<p>
-Vector&amp; Vector::operator=(const Vector&amp; arg)
-{
-  double *d = new double[arg.sz];
-  copy(arg.elem,arg.elem+arg.sz,d);
-  delete[] elem;
-  elem = d;
-  sz = arg.sz;
-  return *this;
-}
-</p>
-
-<p>
-// exc 1
-char <b>strup(const char</b> a)
-{
-  int sz = 0;
-  while ( a[sz] != 0 )  sz++;
-</p>
-
-<p>
-char * res = new char[sz+1];
-for(int i = 0; i &lt;= sz; i++) res[i] = *a+i;
-</p>
-
-<p>
-  return res;
-}
-</p>
-
-<p>
-// exc 2
-</p>
-
-
-<p>
-int main(int argc, const char * argv[]) {
-</p>
-
-<p>
-  return 0;
-}
-</p>
-</div>
-</div>
-</div>
-
-</div>
-</div>]]></description>
-      <pubDate>2016-06-13</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
-    </item>
-    <item>
-      <title>SICP-CH1-构造过程抽象</title>
-      <link>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</link>
-      <description><![CDATA[<div>
-<div class="post">
-<h1>SICP-CH1-构造过程抽象</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline79">1. 构造过程抽象</a>
-<ul>
-<li><a href="#orgheadline8">1.1. 程序设计的基本元素</a>
-<ul>
-<li><a href="#orgheadline1">1.1.1. 表达式</a></li>
-<li><a href="#orgheadline2">1.1.2. 命名和环境</a></li>
-<li><a href="#orgheadline3">1.1.3. 组合式求值</a></li>
-<li><a href="#orgheadline4">1.1.4. 复合过程</a></li>
-<li><a href="#orgheadline5">1.1.5. 过程应用的代换模型</a></li>
-<li><a href="#orgheadline6">1.1.6. 条件表达式和谓词</a></li>
-<li><a href="#orgheadline7">1.1.7. [习题]</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline10">1.2. 实例:采用牛顿法求平方根</a>
-<ul>
-<li><a href="#orgheadline9">1.2.1. [习题]</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">1.3. 过程作为黑箱抽象</a>
-<ul>
-<li><a href="#orgheadline11">1.3.1. 局部名</a></li>
-<li><a href="#orgheadline12">1.3.2. 内部定义和块结构</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline47">1.4. 过程与它们所产生的计算</a>
-<ul>
-<li><a href="#orgheadline14">1.4.1. 线性的递归和迭代</a></li>
-<li><a href="#orgheadline17">1.4.2. [习题]</a></li>
-<li><a href="#orgheadline18">1.4.3. 树形递归</a></li>
-<li><a href="#orgheadline22">1.4.4. [习题]</a></li>
-<li><a href="#orgheadline23">1.4.5. 增长的阶</a></li>
-<li><a href="#orgheadline26">1.4.6. [习题]</a></li>
-<li><a href="#orgheadline27">1.4.7. 求幂</a></li>
-<li><a href="#orgheadline32">1.4.8. [习题]</a></li>
-<li><a href="#orgheadline33">1.4.9. 最大公约数</a></li>
-<li><a href="#orgheadline35">1.4.10. [习题]</a></li>
-<li><a href="#orgheadline36">1.4.11. 素数检测</a></li>
-<li><a href="#orgheadline37">1.4.12. 概率方法</a></li>
-<li><a href="#orgheadline46">1.4.13. [习题]</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline78">1.5. 用高阶函数做抽象</a>
-<ul>
-<li><a href="#orgheadline48">1.5.1. 过程作为参数</a></li>
-<li><a href="#orgheadline53">1.5.2. [练习]</a></li>
-<li><a href="#orgheadline54">1.5.3. 用lambda构造过程</a></li>
-<li><a href="#orgheadline55">1.5.4. 用let创建局部变量</a></li>
-<li><a href="#orgheadline57">1.5.5. [习题]</a></li>
-<li><a href="#orgheadline60">1.5.6. 过程作为一般性的方法</a></li>
-<li><a href="#orgheadline66">1.5.7. [习题]</a></li>
-<li><a href="#orgheadline69">1.5.8. 过程作为返回值</a></li>
-<li><a href="#orgheadline77">1.5.9. [习题]</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<p>
-sicp窝终于回来了&#x2026;
-</p>
-
-<p>
-[前言]
-首先总结一下前言吧. 这本书的目标是教授一种通用的方法学思想, 不仅限于计算机程序设计.
-采用scheme(lisp的一种方言)教授这门课,是因为它集powerful与beautiful于一身.
-</p>
-
-<p>
-ps:第一句话说这本书是MIT计算机科学的入门教材&#x2026;看到这个我就跪下了. 
-</p>
-
-<div id="outline-container-orgheadline79" class="outline-2">
-<h2 id="orgheadline79"><span class="section-number-2">1</span> 构造过程抽象</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-计算过程: 存在于计算机里的一类抽象事物,这些过程会去操作一些称为 <code>数据</code> 的抽象事物. 人们创建出一些称为 <code>程序</code> 的规则模式, 以指导这类过程的进行.
-</p>
-
-<p>
-计算过程的lisp描述本身可以作为lisp的数据来表示和操作. 这种灵活性使lisp称为探索语言特征的最方便的语言之一.
-</p>
-</div>
-
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">1.1</span> 程序设计的基本元素</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-一个powerful的语言, 除了能够执行任务, 更应该能帮助程序猿组织自己的思想.
-</p>
-
-<ul class="org-ul">
-<li>基本表达形式</li>
-<li>组合的方法</li>
-<li>抽象的方法</li>
-</ul>
-
-<p>
-在程序设计中,我们需要处理两类要素:过程和数据. 本章把重点放在过程上.
-</p>
-</div>
-
-<div id="outline-container-orgheadline1" class="outline-4">
-<h4 id="orgheadline1"><span class="section-number-4">1.1.1</span> 表达式</h4>
-<div class="outline-text-4" id="text-1-1-1">
-<p>
-最简单的表达式: 42, 表示基本过程的表达式: ( + 42 42 ). '+'称为 <code>运算符</code>, 数字是 <code>运算对象</code>, 求值过程就是将运算符所刻画的运算过程应用于运算对象.
-</p>
-
-<p>
-lisp把运算符放在左边, 称为 <code>前缀表示</code>. 前缀表示的优点是:
-</p>
-<ul class="org-ul">
-<li>可以带有任意个实参而没有歧义</li>
-<li>可以直接扩充, 允许出现组合式嵌套, 如(+ ( * 3 5 ) ( - 10 6))</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline2" class="outline-4">
-<h4 id="orgheadline2"><span class="section-number-4">1.1.2</span> 命名和环境</h4>
-<div class="outline-text-4" id="text-1-1-2">
-<p>
-程序设计语言需要提供一种[通过名字去使用计算对象]的方式.
-</p>
-
-<p>
-在scheme中, 命名通过define来进行.
-</p>
-<pre class="example">
-(define size 2)
-</pre>
-<p>
-我们可以把值2与符号size关联, 又能够提取出这个值, 这说明解释器有存储能力,以维护名字-值对偶的轨迹, 这种存储称为 <code>环境</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3"><span class="section-number-4">1.1.3</span> 组合式求值</h4>
-<div class="outline-text-4" id="text-1-1-3">
-<p>
-求值一个组合式的步骤是:
-</p>
-<ul class="org-ul">
-<li>1) 求值该组合式的各个子表达式</li>
-<li>2) 将作为最左子表达式的值的过程应用于相应的实际参数.</li>
-</ul>
-
-<p>
-没错就是递归. 递归是一种处理层次结构的强有力的技术. 这种计算过程称为 <code>树形积累</code>.
-</p>
-
-<p>
-在求值过程中, <code>环境</code> 用于确定表达式中各个符号的意义, 它为求值过程提供了一种上下文.
-</p>
-
-<p>
-例外: 对表达式 (define x 1) 求值不是把define运用于两个参数, 因为define的作用是关联x和1, 也就是说(define x 1)不是一个组合式. 这种例外称为 <code>特殊形式</code> .
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4"><span class="section-number-4">1.1.4</span> 复合过程</h4>
-<div class="outline-text-4" id="text-1-1-4">
-<p>
-上述的某些元素也会出现在其它语言中:
-</p>
-<ul class="org-ul">
-<li>数和算术运算是基本的数据和过程</li>
-<li>组合式的嵌套提供了一种组织起多个操作的方法</li>
-<li>定义是一种受限的抽象手段, 它为名字关联响应的值.</li>
-</ul>
-
-<p>
-下面来讲威力更强大的 <code>过程定义</code>
-</p>
-<pre class="example">
-(define (square x) (* x x ))
-</pre>
-<p>
-上面定义了一个复合过程square, 定义好之后可以这样使用
-</p>
-<pre class="example">
-(square 21)
-</pre>
-<p>
-有点像定义函数. 接下来我们可以把square作为基本构建去定义其它过程
-</p>
-<pre class="example">
-(define (sum-of-squares x y) ( + (square x) (square Y)))
-</pre>
-
-<p>
-复合过程的使用方式与基本过程完全一致.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5"><span class="section-number-4">1.1.5</span> 过程应用的代换模型</h4>
-<div class="outline-text-4" id="text-1-1-5">
-<p>
-对带有复合过程的组合式求值, 解释器会先"展开"复合过程, 把问题规约为对另一个组合式求值. 
-</p>
-<pre class="example">
-(square 21) -&gt; (* 21 21)
-</pre>
-<p>
-这种计算过程称为过程应用的 <code>代换模型</code>
-</p>
-
-<p>
-<code>应用序</code>: 先求值参数而后应用的求值模型
-</p>
-
-<p>
-<code>正则序</code>: 完全展开而后规约的求值模型
-</p>
-
-<p>
-lisp采用应用序求值, 部分原因在于这样可以避免对于表达式的重复求值, 重点是在超出可以采用替换方式模拟的过程范围之后, 正则序的处理将变得复杂的多.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6"><span class="section-number-4">1.1.6</span> 条件表达式和谓词</h4>
-<div class="outline-text-4" id="text-1-1-6">
-<p>
-    条件表达式
-依据不同情况采取不同动作的结构叫做 <code>分情况分析</code>
-<code>cond</code>
-</p>
-<pre class="example">
-(cond ((&gt; x 0 )x) ((= x 0) 0) ((&lt; x 0) (-x)))
-(cond ((&lt; x 0) (-x) (else x)))
-</pre>
-<p>
-else是一个特殊符号,可以用在cond最后一个位置,如果cond所有分支都被跳过,就会返回else的值
-<code>if</code>
-</p>
-<pre class="example">
-(if (&lt; x 0) (-x) x)
-</pre>
-<p>
-if是cond的一种受限形式, 适用于只有两种情况的分析.
-谓词: <code>&lt; &gt; and or not</code> &#x2026;
-注意and和or都是特殊形式,它们的子表达式不一定求值. not则是一个普通过程.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7"><span class="section-number-4">1.1.7</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-1-7">
-<ul class="org-ul">
-<li>1.1 .求值(选做一部分)</li>
-</ul>
-<p>
-(define a 3) -&gt; a
-(define b ( + a 1)) -&gt; b
-(= a b) -&gt; #f
-</p>
-
-<ul class="org-ul">
-<li>1.2 将下面表达式变换为前缀形式:</li>
-</ul>
-<p>
-(5+4+(2-(3-(6+5/4))))/(3*(6-2)(2-7))
-</p>
-
-<pre class="example">
-(/ (+ 5 4 (- 2 (- 3 ( + 6 (/ 5 4))))) (* 3 (- 6 2) ( - 2 7)))
-</pre>
-
-<ul class="org-ul">
-<li>1.3 定义一个过程, 它以三个数为参数, 返回其中较大的两个数之和</li>
-</ul>
-<pre class="example">
-(define (min x y z) 
-      (cond (((&lt; x y) and (&lt; x z))  x)
-  (((&lt; y x) and (&lt; y z))  y)
-  (else z)))
-(define (sum2 x y z) (- (+ x y z) (min x y z )))
-</pre>
-
-<ul class="org-ul">
-<li>1.4 仔细考察上面给出的允许运算符为复合表达式的组合式的求值模型, 根据对这一模型的认知描述下面过程的行为:</li>
-</ul>
-<pre class="example">
-(define (a-plus-abs-b a b) ((if (&gt; b 0)  + -) a b))
-</pre>
-<ul class="org-ul">
-<li>对子表达式(&gt; b 0)求值, 得结果r1</li>
-<li>对子表达式(if (r1) + -)求值, 得到结果r2, r2是运算过程.</li>
-<li>对(r2 a b)求值</li>
-
-<li>1.5 Ben发明了一种检测方法,能够确定解释器以正则序求值, 还是以应用序求值. 他定义了下面两个过程:</li>
-</ul>
-<pre class="example">
-(define (p) (p))
-(define (test x y) (if ( = x 0) 0 y))
-(test 0 (p))
-</pre>
-<p>
-用应用序和正则序解释器运行它们, 最终会发生什么?
-</p>
-<ul class="org-ul">
-<li>应用序: 0</li>
-<li>正则序: 无限循环. 因为无论(= x 0)的结果如何, y都会被求值.</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10"><span class="section-number-3">1.2</span> 实例:采用牛顿法求平方根</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-上面介绍的过程都很像常规数学函数, 然而数学和计算机过程有一些区别:
-</p>
-<ul class="org-ul">
-<li>数学关心说明性的描述(是什么)</li>
-<li>计算机关心行动性的描述(怎么做)</li>
-</ul>
-
-<p>
-一个求平方根的数学描述是: squrt(x) = y, y&gt;=0 &amp;&amp; y<sup>2</sup>=x. 我们无法把它直译成计算机函数.
-计算机求平方根的常用方法是:
-<code>牛顿逐步逼近法</code> : 先猜测一个值a, 并计算b = x/a, 比较a和b是否足够相似, 如果不满足条件则执行一些操作得到更好的猜测a2, 循环往复直到求出平方根.
-</p>
-
-<p>
-基本策略:
-</p>
-<pre class="example">
-(define (sqrt-iter guess x)
-  (if (good-enough guess x)
-      guess
-      (sqrt-iter (improve guess x) x)))
-</pre>
-
-<p>
-填充细节:
-</p>
-<pre class="example">
-(define (improve guess x)
-  (average guess (/ x guess)))
-
-(define (average x y) (/ (+ x y) 2))
-
-(define (good-enough guess x)
-        (&lt; (abs (- (square guess) x)) 0.001))
-</pre>
-
-<p>
-启动:
-</p>
-<pre class="example">
-(define (squrt x) (sqrt-iter 1.0 x))    
-</pre>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9"><span class="section-number-4">1.2.1</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-2-1">
-<ul class="org-ul">
-<li>1.6 可否通过cond定义一个常规过程来代替if呢? Eva尝试写了以下程序,</li>
-</ul>
-<p>
-问: 如果用这个new-if来实现求平方根程序sqrt-iter,会有什么问题
-</p>
-<pre class="example">
-(define (new-if predicate then-clause else-clause)
-        (cond (predicate then-clause)
-              (else else-clause)))
-</pre>
-<p>
-答: 问题在于cond的所有分支都会被求值. 
-sqrt-iter是递归,if满足条件时不对else-clause求值, 从而可以停止递归调用.
-而new-if由于所有分支都会无条件求值, 所以它应用于递归函数时根本停不下来.
-</p>
-
-<ul class="org-ul">
-<li>1.7 上面good-enough的实现对于很小或很大的数来说不太好, 请给出证明.</li>
-</ul>
-<p>
-如果使用监测猜测值改变比率的方式, 对于大数或小数来说可以工作吗?
-</p>
-<ul class="org-ul">
-<li>对于小于0.001(good-enough的临界值)的小数,good-enough无法进行正确的判断.</li>
-</ul>
-<p>
-对于大数来说, 由于精度不足以表示guess和x之间的差(good-enough几乎永远为false), 程序陷入死循环.
-</p>
-<ul class="org-ul">
-<li>改变比率的算法对大数和小数都可以工作.</li>
-</ul>
-<pre class="example">
-(define (good-enough old-guess new-guess)
-        (&lt; (/ (abs (- old-guess new-guess)) old-guess) 0.01))
-</pre>
-
-<ul class="org-ul">
-<li>1.8 用牛顿法求立方根</li>
-</ul>
-<p>
-如果y是x立方根的一个近似值,那么下面公式可以给出一个更好的近似值: (x/y<sup>2</sup> +2*y)/3
-</p>
-<pre class="example">
-(define (cube-iter guess x)
-  (if (good-enough-cube guess x)
-      guess
-      (cube-iter (improve-cube guess x) x)))
-
-(define (good-enough-cube guess x)
-        (&lt; (abs (- (* guess guess  guess) x)) 0.001))
-
-(define (improve-cube y x)
-    (/ (+ (/ x (* y y)) (* 2 y)) 3))
-
-(define (cube x) (cube-iter 1 x))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13"><span class="section-number-3">1.3</span> 过程作为黑箱抽象</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-<code>过程抽象</code> 一个过程的定义应当能隐藏起一些细节,使得过程的使用者可以直接复用而不必关心实现细节.
-</p>
-</div>
-
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11"><span class="section-number-4">1.3.1</span> 局部名</h4>
-<div class="outline-text-4" id="text-1-3-1">
-<p>
-过程的意义应该不依赖于其作者为形式参数所选定的名字.
-</p>
-
-<p>
-一个过程的定义 <code>约束</code> 了它所有形式参数,形参的具体名字完全没有关系, 这样的名字称为 <code>约束变量</code> .
-相反如果一个变量不是被约束的, 它就是 <code>自由的</code>. 
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12"><span class="section-number-4">1.3.2</span> 内部定义和块结构</h4>
-<div class="outline-text-4" id="text-1-3-2">
-<p>
-平方根程序有个问题, 它由许多分离的过程组成, 而实际用户只关心sqrt这一个过程, 其它过程不必暴露给用户.
-(要运行这个程序也很蛋疼啊&#x2026;)
-</p>
-
-<p>
-所以,我们需要把这些麻烦的子过程局部化, 把它们隐藏到sqrt里面.
-</p>
-
-<pre class="example">
-(define (sqrt x)
-   (define (good-enough ...))
-   (define (improve-guess ...))
-   (if (good-enough ...) ...)) ;;懒得敲了,自行脑补吧...
-</pre>
-
-<p>
-这种嵌套的定义称为 <code>块结构</code>. 它是最简单的名字包装问题的一种正确解决方式. (讲道理这话真的是绕&#x2026;
-</p>
-
-<p>
-另外, 采用这种结构除了可以把辅助过程隐藏之外, 还可以利用 <code>词法作用域</code> 来简化辅助过程的形参.
-对这个例子来说,可以省略掉许多x.
-</p>
-
-<p>
-[小历史] 块结构的思想来自程序设计语言Algol 60.
-</p>
-</div>
-</div>
-</div>
-
-
-
-<div id="outline-container-orgheadline47" class="outline-3">
-<h3 id="orgheadline47"><span class="section-number-3">1.4</span> 过程与它们所产生的计算</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-能够看清所考虑的动作的后果的能力, 是非常重要的. 只有在此之后, 人们才能 <code>反向推理</code>
-</p>
-</div>
-
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><span class="section-number-4">1.4.1</span> 线性的递归和迭代</h4>
-<div class="outline-text-4" id="text-1-4-1">
-<p>
-两种计算过程:
-<code>线性递归过程</code> 在这种计算过程里,代换模型展示出一种先展开后收缩的形状,最大长度正比于n.
-解释器为递归过程维护一部分状态信息.递归过程所消耗的内存与n成正比.
-注意[递归计算过程]与[递归过程]是两个概念.
-<code>迭代计算过程</code> 可以用固定数目的状态描述的计算过程. 与递归不同的是, 迭代计算过程中不会出现增长或收缩.
-迭代过程的所有状态信息都保存在程序遍历昂立.迭代过程所消耗的内存是固定的.
-</p>
-
-<p>
-某些语言(Pascal,C..)对递归过程的解释,消耗的内存总是与n成正比, 即使所描述的计算过程是迭代的.
-要描述迭代过程, 必须借助于"循环结构".而scheme则没有这个缺陷.
-<code>尾递归</code> 总是能在常量的空间中执行迭代型计算过程.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17"><span class="section-number-4">1.4.2</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-2">
-</div><ol class="org-ol"><li><a id="orgheadline15"></a>1.9 用代换模型展示下面两个过程在求值(+ 4 5)时所产生的计算过程. 它们是递归或者迭代吗?<br  /><div class="outline-text-5" id="text-1-4-2-1">
-<pre class="example">
-(define (+ a b) (if (= a 0) b (inc (+ (dec a) b))))
-</pre>
-<p>
-计算过程(纯手打):
-</p>
-<pre class="example">
-(+ 4 5)
-(inc (+ 3 5))
-(inc (inc (+ 2 5)))
-(inc (inc (inc (+ 1 5))))
-(inc (inc (inc (inc (+ 0 5)))))
-(inc (inc (inc (inc 5))))
-(inc (inc (inc 6)))
-(inc (inc 7))
-(inc 8)
-9
-</pre>
-<p>
-它是递归计算过程
-</p>
-
-<pre class="example">
-(define (+ a b) (if (= a 0) b (+ (dec a) (inc b))))
-</pre>
-<p>
-计算过程:
-</p>
-<pre class="example">
-(+ 4 5)
-(+ 3 7)
-(+ 2 7)
-(+ 1 8)
-(+ 0 9)
-9
-</pre>
-<p>
-它是迭代计算过程
-</p>
-</div></li>
-
-<li><a id="orgheadline16"></a>下面是一个称为ackermann函数的数学函数<br  /><div class="outline-text-5" id="text-1-4-2-2">
-<p>
-(define (A x y)
-  (cond ((= y 0) 0)
-        ((= x 0) (* 2 y))
-  ((= y 1) 2)
-  (else (A (- x 1) (A x (- y 1))))))
-</p>
-
-<p>
-下面各表达式的值是什么(人肉算啊!)
-</p>
-<ul class="org-ul">
-<li>(A 1 10) 1024</li>
-<li>(A 2 4) 65536</li>
-</ul>
-<p>
-(a 1 (a 2 3)).. (a 1 (a 1 (a 1 (a 2 1)))),(a 1 (a 1 (a 1 2))),
-(a 1 (a 1 (a 0 (a 1 1)))),(a 1(a 1 (* 2 2))),(a 1(a 1 4)),(a 1 16),2<sup>16</sup>
-</p>
-<ul class="org-ul">
-<li>(A 3 3) 65536</li>
-</ul>
-<p>
-(a 2 (a 3 2)),(a 2(a 2(a 3 1))),(a 2 (a 2 2)),(a 2 4),65536
-</p>
-
-
-<p>
-下面过程的数学定义是?
-</p>
-<ul class="org-ul">
-<li>(define (f n) (A 0 n)) : f = 2*n</li>
-<li>(define (g n) (A 1 n)) : g = 2<sup>n</sup></li>
-<li>(define (h n) (A 2 n)) : h = 2^(2<sup>(2&#x2026;)</sup></li>
-</ul>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18"><span class="section-number-4">1.4.3</span> 树形递归</h4>
-<div class="outline-text-4" id="text-1-4-3">
-<p>
-另一种常见的例子🌰,比如菲波那切数列.
-</p>
-
-<p>
-朴素的树形递归:
-</p>
-<pre class="example">
-(define (fib n)
- (cond ((= n 0) 0)
-  ((= n 1) 1)
-  (else (+ (fib (- n 1)) (fib ( - n 2))))))
-</pre>
-<p>
-优化的迭代版本:
-</p>
-<pre class="example">
-(define (fib-it a b count)
-(cond ((= count 0) b)
-  (else (fib-it (+ a b) a (- count 1)))))
-(define (fib2 n) (fib-it 1 0 n))
-</pre>
-</div>
-</div>
-
-
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22"><span class="section-number-4">1.4.4</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-4">
-</div><ol class="org-ol"><li><a id="orgheadline19"></a>函数f由如下规则定义: 如果n&lt;3, 那么f(n)=n, 如果n&gt;=3, 那么f(n)=f(n-1)+2f(n-1)+3f(n-3).分别实现递归和迭代版本.<br  /><div class="outline-text-5" id="text-1-4-4-1">
-<pre class="example">
-;;递归
-(define (f11 n)
-  (cond ((&lt; n 3) n)
-  (else (+ (f11 (- n 1))
-     (* 2 (f11 (- n 2)))
-     (* 3 (f11 (- n 3)))))))
-;; 迭代
-(define (f11-it a b c n)
-  (cond ((&lt; n 3) a)
-  (else (f11-it (+ a (* 2 b) (* 3 c)) a b (- n 1)))))
-(define (f112 n) (f11-it 2 1 0 n))
-</pre>
-</div></li>
-
-<li><a id="orgheadline20"></a>写一个过程,采用递归计算出帕斯卡三角形<br  /><div class="outline-text-5" id="text-1-4-4-2">
-<pre class="example">
-(define (psc n k)
-  (cond ((&gt; k n) 0)
-      ((= n 0) 1)
-  ((= k 0) 1)
-  (else (+ (psc (- n 1) (- k 1))  (psc (- n 1) k)))))
-</pre>
-</div></li>
-
-<li><a id="orgheadline21"></a>1.13<br  /><div class="outline-text-5" id="text-1-4-4-3">
-<p>
-排版渣表示这道题好不想敲啊&#x2026;按照题目提示用数学归纳法证明等式比较容易,证明接近整数稍微需要一点想象力&#x2026;
-</p>
-
-<p>
-习题解如下, 各路学霸出没:
-<a href="http://sicp.readthedocs.org/en/latest/chp1/13.html">http://sicp.readthedocs.org/en/latest/chp1/13.html</a>
-</p>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline23" class="outline-4">
-<h4 id="orgheadline23"><span class="section-number-4">1.4.5</span> 增长的阶</h4>
-<div class="outline-text-4" id="text-1-4-5">
-<p>
-<code>增长的阶</code> 用以描述计算过程消耗计算资源的速率.
-</p>
-<ul class="org-ul">
-<li>O(n): 规模增加一倍, 资源增加一倍</li>
-<li>O(n<sup>2</sup>): 规模增加1, 资源增加常数倍. 比如树形递归占用空间是(ϕ<sup>n</sup>)</li>
-<li>O(lg n):规模增加一倍, 资源增加一个常数.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26"><span class="section-number-4">1.4.6</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-6">
-</div><ol class="org-ol"><li><a id="orgheadline24"></a>1.14 画出1.2.2节过程(count-change 11)的计算过程. 当现金量增加时,这一过程空间和步数增长的阶各是什么?<br  /><div class="outline-text-5" id="text-1-4-6-1">
-<p>
-计算过程在纸上画了一遍&#x2026;懒得搬上来了, 直接参考习题解里的图吧
-后面两个估算没有找到标准答案,先把自己的思路写在这里.
-</p>
-
-<p>
-设现金量为n,币种数为m,则
-</p>
-<ul class="org-ul">
-<li>步数增长的阶:</li>
-</ul>
-<p>
-这个计算过程受到币种限制, 所以不能简单的用二叉树复杂度来估算.
-根据计算过程cc, 当n比较小时(比如小于50), 复杂度为O(n).
-当n比较大的时候, 复杂度正比于n能够被最大币种(这里是50)整除的次数.
-o(f(n))=(1+2+3+&#x2026;n/50)*n = ((1+n/50)*(n/50)/2)*n = o(n<sup>2</sup>).
-</p>
-
-<ul class="org-ul">
-<li>空间增长的阶: O(n+m).树的最大深度由n决定, 最深子树总是全部由1元钱凑成n的情况.</li>
-</ul>
-</div></li>
-
-<li><a id="orgheadline25"></a>1.15 题目略.<br  /><div class="outline-text-5" id="text-1-4-6-2">
-<p>
-[吐槽:原来可以这样实现sin,长姿势了]
-</p>
-
-<p>
-如果解释器的代换模型是是 <code>应用序</code> ,则这个问题是线性迭代:
-</p>
-<ul class="org-ul">
-<li>p将被使用多少次?  5次.</li>
-<li>空间增长的阶: n/(3<sup>k</sup>) = 0.1, k=log<sub>3</sub> (10*n), 所以是O(lg n)</li>
-<li>步数增长的阶: O(lg n)</li>
-</ul>
-<p>
-如果解释器是 <code>正则序</code> ,则这个问题是树形迭代:
-</p>
-<ul class="org-ul">
-<li>p将被使用多少次?  1 + 4 + 4<sup>2</sup> + 4<sup>3</sup> + 4<sup>4</sup></li>
-<li>增长的阶: O(4<sup>n</sup>)</li>
-</ul>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27"><span class="section-number-4">1.4.7</span> 求幂</h4>
-<div class="outline-text-4" id="text-1-4-7">
-<p>
-快速求幂法fast-expt:
-</p>
-<pre class="example">
-b^n = (b^(n/2))^2 ;;若n是偶数
-b^n = b * b^(n-1) ;;若n是奇数
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32"><span class="section-number-4">1.4.8</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-8">
-</div><ol class="org-ol"><li><a id="orgheadline28"></a>1.16 用fast-expt的思路定义一个过程, 它按照迭代的方式产生出求幂的计算过程.<br  /><div class="outline-text-5" id="text-1-4-8-1">
-<pre class="example">
-(define (expt-iter b n a)
-  (cond ((= n 0) a)
-  ((even? n) (expt-iter  (* b b)  (/ n 2)  a))
-  (else (expt-iter  b (- n 1) (* b a)))))
-</pre>
-</div></li>
-
-<li><a id="orgheadline29"></a>1.17 用fast-expt的思路实现一个反复使用加法计算乘积的过程.<br  /><div class="outline-text-5" id="text-1-4-8-2">
-<pre class="example">
-(define (fast-mul a n)
-  (cond ((= n 0) 0)
-  ((= n 1) a)
-  ((even? n) (fast-mul (+ a a) (/ n 2)))
-  (else (+ a (fast-mul a (- n 1))))))
-</pre>
-</div></li>
-
-<li><a id="orgheadline30"></a>1.18 求两个整数的乘积<br  /><div class="outline-text-5" id="text-1-4-8-3">
-<pre class="example">
-(define (mul-iter b n a)
-  (cond ((= n 0) a)
-  ((even? n) (mul-iter (+ b b) (/ n 2) a))
-  (else (mul-iter b (- n 1) (+ a b)))))
-</pre>
-</div></li>
-
-
-<li><a id="orgheadline31"></a>1.19 用对数步数计算菲波那切数列<br  /><div class="outline-text-5" id="text-1-4-8-4">
-<p>
-这道题目是前面求幂过程的推广. 
-</p>
-
-<pre class="example">
-(define (fib n)
-  (fib-iter 1 0 0 1 n))
-
-(define (fib-iter a b p q count)
-  (cond ((= count 0) b)
-  ((even? count)
-   (fib-iter a
-       b
-       (+ (* p p) (* q q))
-       (+ (* 2 p q) (* q q))
-       (/ count 2)))
-   (else (fib-iter (+ (* b q) (* a q) (* a p))
-       (+ (* b p) (* a q))
-       p
-       q
-       (- count 1)))))
-</pre>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline33" class="outline-4">
-<h4 id="orgheadline33"><span class="section-number-4">1.4.9</span> 最大公约数</h4>
-<div class="outline-text-4" id="text-1-4-9">
-<p>
-GCD(a,b)=GCD(b,r), r是a除以b的余数.
-</p>
-<pre class="example">
-(define (gcd a b)
-  (cond ((= b 0) a)
-  (else (gcd b (remainder a b)))))
-</pre>
-</div>
-</div>
-<div id="outline-container-orgheadline35" class="outline-4">
-<h4 id="orgheadline35"><span class="section-number-4">1.4.10</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-10">
-</div><ol class="org-ol"><li><a id="orgheadline34"></a>1.20 解释器是应用序和正则序时,上述算法求(206 40)的计算过程分别是怎样的,remander分别调用多少次<br  /><div class="outline-text-5" id="text-1-4-10-1">
-<ul class="org-ul">
-<li>应用序</li>
-</ul>
-<pre class="example">
-(gcd 206 40)
-(gcd 40 6)
-(gcd 6 4)
-(gcd 4 2)
-(gcd 2 0)
-2
-</pre>
-<p>
-一共4次remander
-</p>
-
-<ul class="org-ul">
-<li>正则序</li>
-</ul>
-<pre class="example">
-(gcd 206 40)
-cond ...
-(gcd 40 (re 206 40)) ;;b=6
-cond ...  ;; +1
-(gcd (re 206 40) (re 40 (re 206 40))) ;;b=4
-cond ...  ;; +2
-(gcd (re 40 (re 206 40)) (re (re 206 40) (re 40 (re 206 40)))) ;;b=2
-cond ...  ;; +4
-(gcd .......) ;; b=0
-cond ...  ;; + 7
-a = (re (re 206 40) (re 40 (re 206 40) = (re 6 4) = 2 ;; +4
-</pre>
-<p>
-一共18次remander
-</p>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline36" class="outline-4">
-<h4 id="orgheadline36"><span class="section-number-4">1.4.11</span> 素数检测</h4>
-<div class="outline-text-4" id="text-1-4-11">
-<p>
-(终于学会打公式了○|￣|_)
-</p>
-
-<p>
-本节描述两种检查整数n是否为素数的方法,第一个具有O(\(\sqrt{n}\))的增长阶,
-第二个具有O(log n)的增长阶.
-</p>
-
-<ul class="org-ul">
-<li>寻找因子:用从2开始的连续整数开始依次检查它们是否能整除n.如果n不是素数,必然有小于或等于 \(\sqrt{n}\) 的因子,由此可知这个算法拥有O(\(\sqrt{n}\))的增长阶.</li>
-<li>费马检查:O(log n)的检查基于数论中著名的费马小定理(数论全忘光了&#x2026;桑不起)</li>
-</ul>
-
-<p>
-<code>费马小定理</code>: 如果n是一个素数,a是小于n的任意正整数,那么a的n次方与a模n同余.
-而如果= 不是素数 =,则大部分a&lt;n都将满足上面的关系,这就引出了检查素数的算法: 如果发现不满足关系的a那么n肯定不是素数.
-</p>
-
-<p>
-<code>费马检查</code>: 采用许多随机的a来检查,通过的检查越多则n是素数的概率越大.
-</p>
-
-<p>
-首先定义一个O(log n)的迭代过程计算 \(a^n\) 对m取模的结果(a&lt;n,a&lt;m)
-</p>
-<pre class="example">
-(define (expmod bas exp m)
-  (cond ((= exp 0 ) 1)
-  ((even? exp)
-   (remainder (square (expmod bas (/ exp 2) m)) m))
-  (else
-   ;;  $(a*a^{n/2}*a^{n/2})%n = (a%n)*(a^{n/2}%n)^2 = a*(a^{n/2}%n)^2
-   (remainder (* bas (expmod bas (- exp 1) m)) m))))
-</pre>
-
-<p>
-其中关于连续求平方的推导如下:
-</p>
-
-<p>
-\(\gcd((a^{n/2}a^{n/2}),n)=\gcd(a^{n/2},n)\gcd(a^{n/2},n)=\gcd(a^{n/2},n)^2\)
-</p>
-
-<p>
-\(\gcd((a*a^{n/2}a^{n/2}),n)=\gcd(a,n)\gcd(a^{n/2},n)^2=a*\gcd(a^{n/2},n)\)
-</p>
-
-<p>
-然后随机1和n-1之间的整数进行测试:
-</p>
-<pre class="example">
-(define (fermat-test n)
-  (define (try-it a)
-    (= (expmod a n n) a))
-  (try-it (+ 1 (random (- n 1)))))
-
-(define (fast-prime? n times)
-  (cond ((= times 0) true)
-  ((fermat-test n) (fast-prime? n (- times 1)))
-  (else false)))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline37" class="outline-4">
-<h4 id="orgheadline37"><span class="section-number-4">1.4.12</span> 概率方法</h4>
-<div class="outline-text-4" id="text-1-4-12">
-<p>
-费马检查的结果只有概率上的正确性..但能够证明存在使出错概率任意小的算法.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline46" class="outline-4">
-<h4 id="orgheadline46"><span class="section-number-4">1.4.13</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-4-13">
-</div><ol class="org-ol"><li><a id="orgheadline38"></a>使用smallest-divisor过程找出下面各数的最小因子:199,1999,19999<br  /><div class="outline-text-5" id="text-1-4-13-1">
-<p>
-首先设计了一个(有点挫)的算法,从2到n遍历,寻找第一个能够整除n的素数.(能够想到的优化版算法只有素数表了orz.
-</p>
-<pre class="example">
-(define (divisor-test a n)
-  (cond ((= n 1) 1)
-  ((= n 0) 0)
-  ((and (fast-prime? a 10) (= (remainder n a) 0)) a)
-  (else (divisor-test (+ a 1) n))))
-
-(define (smallest-divisor n) (divisor-test 2 n))计算结果是199:199,1999:1999,19999:7.
-</pre>
-</div></li>
-
-<li><a id="orgheadline39"></a>观察查找素数的时间.题目略&#x2026;<br  /><div class="outline-text-5" id="text-1-4-13-2">
-<pre class="example">
-(define (search-for-prime n)
-  (cond ((prime? n) 
-  (display n))
-  (else (cond ((even? n)
-         (search-for-prime (+ n 1)))
-        (else 
-         (search-for-prime (+ n 2)))))))
-
-(define (start-search-prime n start-time)
-  (search-for-prime n)
-  (newline)
-  (display (- (real-time-clock) start-time)))
-
-(define (time-for-search-prime n)
-  (start-search-prime n (real-time-clock)))
-</pre>
-<p>
-一开始使用题目给的(runtime)计算时钟周期,结果无论后面加多少个零,结果几乎都在1e-2左右.
-后来得知现在的MIT-scheme的runtime按秒计时,换成以tick计时的real-time-clock就对了.
-</p>
-
-<p>
-测试结果是:
-</p>
-<ul class="org-ul">
-<li>1000:1 (结果是1009,6次测试,平均0.17ms每次)</li>
-<li>10000:1 (5,0.25)</li>
-<li>100000:1 (3,0.33)</li>
-<li>1000000:2 (3,0.67)</li>
-<li>10000000:8 (10,0.8)</li>
-<li>100000000:15 (5,3)</li>
-<li>1000000000:37 (5,7.4)</li>
-<li>10000000000:169 (10,16.9)</li>
-</ul>
-<p>
-1000000以下的测试结果差别很小, 1000000以上差异是2.x倍, 可见测试结果与预期的$/sqrt{n}$不符.
-</p>
-</div></li>
-
-<li><a id="orgheadline40"></a>修改本节开始的smallest-divisor过程,使其步数减半,并检验结果是否符合预期<br  /><div class="outline-text-5" id="text-1-4-13-3">
-<pre class="example">
-(define (smallest-divisor-fast n)
-  (let  ((t (real-time-clock)))
-    (display (find-divisor-fast n 2))
-    (- (real-time-clock) t)))
-
-(define (find-divisor-fast n test)
-  (cond ((&gt; (square test) n) n)
-  ((divides? n test) test)
-  (else (find-divisor-fast n (next test)))))
-
-(define (next n)
-  (cond ((even? n) (+ n 1))
-  (else (+ n 2))))
-</pre>
-
-<p>
-为了使差别比较显著,挑选2个相差10倍左右的素数进行测试:1009,10009
-</p>
-<ul class="org-ul">
-<li>(smallest-divisor-fast (* 1009 10009))  ==&gt; 1</li>
-<li>(smallest-divisor (* 1009 10009))       ==&gt; 2</li>
-<li>(smallest-divisor-fast (* 10009 10009)) ==&gt; 9</li>
-<li>(smallest-divisor (* 10009 10009))      ==&gt; 14</li>
-<li>(smallest-divisor-fast (* 20029 20029)) ==&gt; 16</li>
-<li>(smallest-divisor-sqre (* 20029 20029)) ==&gt; 26</li>
-</ul>
-<p>
-可见fast版本速度比原有版本快,但两个算法速度比值比2小.
-</p>
-
-<p>
-初步推测,当算法复杂度低且参数比较小时,这个算法本身的耗时在一个过程的执行过程中占比非常低.
-而执行过程所需的大量递归调用,变量绑定等操作消耗掉绝大部分CPU资源,导致我们得到的结果不准确.
-而当参数增大时,算法本身占用的资源比例变大,使得结果与我们的预测越来越接近.
-</p>
-
-<p>
-所以估算算法复杂度并不能完全预测过程的实际执行时间.
-</p>
-</div></li>
-
-<li><a id="orgheadline41"></a>使用fast-prime?代替prime?实现第二题.并检验结果是否符合预期.<br  /><div class="outline-text-5" id="text-1-4-13-4">
-<p>
-把上上道题目代码中的prime?换成fast-prime就可以了.
-</p>
-<pre class="example">
-(define (search-for-prime n)
-  (cond ((fast-prime? n 50) 
-  (display n))
-  (else 
-   (cond ((even? n)
-    (search-for-prime (+ n 1)))
-         (else 
-    (search-for-prime (+ n 2)))))))
-</pre>
-<p>
-测试结果:
-</p>
-<ul class="org-ul">
-<li>1000:2</li>
-<li>10000:2</li>
-<li>100000:3</li>
-<li>10000000:4</li>
-<li>1000000000000:8</li>
-</ul>
-<p>
-差距比预期小的多,但参数越大差别越明显.解释见上一题.
-</p>
-
-<p>
-[Mark] 学习完后面的内容可能会在解释器层面上对这个问题有新的见解,到时候再补充吧.
-</p>
-</div></li>
-
-<li><a id="orgheadline42"></a>分析Alyssa的方法是否实用<br  /><div class="outline-text-5" id="text-1-4-13-5">
-<p>
-Alyssa的方法理论上比本节的算法步数只有1步,但容易溢出.
-本节的方法虽然步数多了一些, 但它不会真正进行巨大的乘幂运算, 所以本节的方法更加实用.
-</p>
-</div></li>
-
-<li><a id="orgheadline43"></a>分析fast-prime?中的expmod使用显示乘法为何会把O(log n)的算法变成O(n)的.<br  /><div class="outline-text-5" id="text-1-4-13-6">
-<p>
-下面把(expmod base (/ exp 2) m)简写为 <code>ep(n)</code>
-</p>
-
-<p>
-使用乘法:
-</p>
-<pre class="example">
-ep(n)
-(* ep(n/2) ep(n/2))
-(* (* ep(n/4) ep(n/4)) (* ep(n/4) ep(n/4)))
-(* (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))) (* (* ep(n/8) ep(n/8)) (* ep(n/8) ep(n/8))))
-...
-</pre>
-<p>
-展开后可得进行expmod运算的次数是 \(2^{log_2{n}}=n\) 次
-</p>
-
-<p>
-使用square:
-</p>
-<pre class="example">
-ep(n)
-(square ep(n/2))
-(square (square ep(n/4)))
-...
-</pre>
-<p>
-\(log_2{n}\) 次
-</p>
-</div></li>
-
-<li><a id="orgheadline44"></a>证明注脚47中列出的Carmichael数确实能骗过费马检查.<br  /><div class="outline-text-5" id="text-1-4-13-7">
-<p>
-首先写一个过程,检验 <b>所有</b> 小于n的a,看 \(a^{n}\) 是否与a模n同余.
-</p>
-<pre class="example">
-(check-prime? 561) =&gt; #t
-(check-prime? 1105) =&gt; #t
-(check-prime? 1729) =&gt; #t
-(check-prime? 2465) =&gt; #t
-(check-prime? 2821) =&gt; #t
-(check-prime? 6601) =&gt; #t
-</pre>
-</div></li>
-
-<li><a id="orgheadline45"></a>Miller-Rabin检查<br  /><div class="outline-text-5" id="text-1-4-13-8">
-<p>
-把前面fast-prime过程中的fermat-test替换为miller-test
-</p>
-<pre class="example">
-(define (miller-test n)
-  (define (try-it a)
-    (= (expmod a (- n 1) n) 1))
-  (try-it (+ 1 (random (- n 1)))))
-
-(define (fast-prime? n times)
-  (cond ((= n 1) true)
-  ((= times 0) true)
-  ((miller-test n) (fast-prime? n (- times 1)))
-  (else false)))
-</pre>
-<p>
-使用前面的carmichael数测试,结果都为#f
-</p>
-</div></li></ol>
-</div>
-</div>
-
-<div id="outline-container-orgheadline78" class="outline-3">
-<h3 id="orgheadline78"><span class="section-number-3">1.5</span> 用高阶函数做抽象</h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-在作用上,过程也是一类抽象,它们描述了一些对于数的复合操作,但不依赖特定的数,甚至不只用数作为参数.
-</p>
-
-<p>
-<code>高阶过程</code> 是能操作过程的过程, 它能以过程作为参数,或者以过程作为返回值.
-</p>
-
-<p>
-这也是lisp的一个厉害之处.
-</p>
-</div>
-
-<div id="outline-container-orgheadline48" class="outline-4">
-<h4 id="orgheadline48"><span class="section-number-4">1.5.1</span> 过程作为参数</h4>
-<div class="outline-text-4" id="text-1-5-1">
-<p>
-教材🌰:
-</p>
-<pre class="example">
-(define (sum term a next b)
-  (if (&gt; a b)
-      0
-      (+ (term a) (sum term (next a) next b))))
-
-(define (cub n) (* n n n))
-(define (add n) (+ n 1))
-(define (sum-cube a b) (sum cub a add b))
-</pre>
-<p>
-使用其它高级语言实现这种过程作为参数的过程时,绝对不会这么简洁.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline53" class="outline-4">
-<h4 id="orgheadline53"><span class="section-number-4">1.5.2</span> [练习]</h4>
-<div class="outline-text-4" id="text-1-5-2">
-</div><ol class="org-ol"><li><a id="orgheadline49"></a>上面的sum过程产生一个线性递归, 使用迭代方式重写该过程.<br  /><div class="outline-text-5" id="text-1-5-2-1">
-<pre class="example">
-(define (sum term a next b)
-  (define (iter n result)
-    (if (&gt; n b) 
-  result
-  (iter (next n) (+ result (term n)))))
-  (iter a 0))
-</pre>
-</div></li>
-
-<li><a id="orgheadline50"></a>写一个product过程,返回在给定范围中各点的某个函数值得乘积.请说明如何用product定义faactorial.<br  /><div class="outline-text-5" id="text-1-5-2-2">
-<pre class="example">
-;; 递归
-(define (product a b term)
- (if (&gt; a b)
-       1
-       (* (term a) (product (+ a 1) b term))))
-
-;; 迭代
-(define (product-iter a b next)
-  (define (iter n result)
-    (if (&gt; n b) 
-  result
-  (iter (+ n 1) (* result (term n)))))
-  (iter a 0))
-
-;; 分子
-(define (term-numer a)
-  (cond ((odd? a) (+ a 1))
-  (else (+ a 2))))
-;; 分母
-(define (term-deno a)
-  (cond ((even? a) (+ a 1))
-  (else (+ a 2))))
-
-;; pi/4
-(define (quarter-pi n)
-  (/ (product 1 n term-numer) (product 1 n term-deno)))
-</pre>
-</div></li>
-
-<li><a id="orgheadline51"></a>请说明sum和product都是称为accumulate的更一般概念的特殊情况.使用accumulate定义出sum和product.<br  /><div class="outline-text-5" id="text-1-5-2-3">
-<pre class="example">
-(define (accumulate combinder null-value term a next b)
-  (if (&gt; a b) null-value
-      (combinder (term a) (accumulate combinder null-value term (next a) next b))))
-
-(define (sum a b) (accumulate + 0 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
-(define (product a b) (accumulate * 1 (lambda (a) a) 1 (lambda (a) (+ a 1)) 10))
-</pre>
-</div></li>
-
-<li><a id="orgheadline52"></a>实现filtered-accumulate<br  /><div class="outline-text-5" id="text-1-5-2-4">
-<pre class="example">
-(define (filtered-accumulate filter combinder null-value term a next b)
-  (cond ((&gt; a b) null-value)
-  ((filter a) 
-   (combinder (term a) 
-        (filtered-accumulate filter combinder null-value term (next a) next b)))
-  (else 
-   (combinder null-value
-   (filtered-accumulate filter combinder null-value term (next a) next b)))))
-</pre>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline54" class="outline-4">
-<h4 id="orgheadline54"><span class="section-number-4">1.5.3</span> 用lambda构造过程</h4>
-<div class="outline-text-4" id="text-1-5-3">
-<p>
-为了省去单独定义一些简单函数的麻烦,引入lambda特殊形式来完成这类描述,而不必给每个过程绑定名字.
-</p>
-<pre class="example">
-(lambda (x) (+ x 4))
-</pre>
-<p>
-实际上, (define (&lt;name&gt; &lt;param &#x2026;&gt;) ()) 是lambda的一种语法糖.
-</p>
-<pre class="example">
-(define (plus4 n) (+ n 4))
-</pre>
-<p>
-等价于:
-</p>
-<pre class="example">
-(define plus4 (lambda (n) (+ n 4)))
-</pre>
-<p>
-lambda表达式可以用做 <b>组合式的运算符</b>:
-</p>
-<pre class="example">
-((lambda (x) (+ x 4)) 1)
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline55" class="outline-4">
-<h4 id="orgheadline55"><span class="section-number-4">1.5.4</span> 用let创建局部变量</h4>
-<div class="outline-text-4" id="text-1-5-4">
-<p>
-lambda的另一个作用是创建局部变量,为此语言里有一个语法糖 <code>let</code>
-</p>
-<pre class="example">
-(define (f x y)
- ((lambda (a b)
-  (+ (* x (square a))
-    (* y b)
-    (* a b)))
-  (+ 1 (x y))
-  (- 1 y)))
-</pre>
-<p>
-用let形式可以简化为
-</p>
-<pre class="example">
-(define (f x y)
- (let ((a (+ 1 (x y)))
-       (b (- 1 y)))
-   (+ (* x (square a))
-      (* y b)
-      (* a b))))
-</pre>
-<p>
-注意使用let约束的局部变量必须在let的body中.
-</p>
-<ul class="org-ul">
-<li>let使人能在尽可能接近其使用的地方建立局部变量约束.</li>
-<li>变量的值是在let之外计算的. 如下面过程</li>
-</ul>
-<pre class="example">
-....
-(let (x 3)
-     (y x))
-</pre>
-<p>
-如果x在let之前的值是2,在let内x=3, 而y=2.
-</p>
-
-<p>
-有时在过程内部define也有与let一样的效果:
-</p>
-<pre class="example">
-(define (f x y)
-  (define a (...))
-  (define b (...))
-  (+ a b))
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline57" class="outline-4">
-<h4 id="orgheadline57"><span class="section-number-4">1.5.5</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-5-5">
-</div><ol class="org-ol"><li><a id="orgheadline56"></a>执行(f f)会发生什么<br  /><div class="outline-text-5" id="text-1-5-5-1">
-<p>
-(f f)-&gt;(f 2)-&gt;(2 2). 而2不是一个可以应用的过程, 会报错.
-</p>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline60" class="outline-4">
-<h4 id="orgheadline60"><span class="section-number-4">1.5.6</span> 过程作为一般性的方法</h4>
-<div class="outline-text-4" id="text-1-5-6">
-</div><ol class="org-ol"><li><a id="orgheadline58"></a>通过区间折半法寻找方程的根<br  /><div class="outline-text-5" id="text-1-5-6-1">
-<p>
-代码略&#x2026;
-</p>
-</div></li>
-
-<li><a id="orgheadline59"></a>找出函数的不动点<br  /><div class="outline-text-5" id="text-1-5-6-2">
-<p>
-数x称为函数f的不动点,如果x满足方程 \(f(x)=x\) . 
-</p>
-<pre class="example">
-(define tolerance 0.00001)
-(define (fixed-point f first-guess)
-  (define (close-enough? v1 v2)
-    (&lt; (abs (- v1 v2)) tolerance))
-  (define (try guess)
-    (let ((next (f guess)))
-      (if (close-enough? guess next)
-    next
-    (try next)))) ;; 这里需要保证收敛
-  (try first-guess))
-</pre>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline66" class="outline-4">
-<h4 id="orgheadline66"><span class="section-number-4">1.5.7</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-5-7">
-</div><ol class="org-ol"><li><a id="orgheadline61"></a>使用fixed-point找出黄金分割 \(phi\) 的值: x-&gt;1+1/x.<br  /><div class="outline-text-5" id="text-1-5-7-1">
-<pre class="example">
-(fixed-point (lambda (x) (+ 1 (/ 1 x)))  1.0)
-</pre>
-<p>
-x=1.6180327868852458
-</p>
-</div></li>
-
-<li><a id="orgheadline62"></a>修改fixed-point,使他打印出计算过程.确定x<sup>x</sup>=1000的一个根,并比较采用平均阻尼和不用平均阻尼的计算步骤.<br  /><div class="outline-text-5" id="text-1-5-7-2">
-<p>
-不用平均阻尼
-</p>
-<pre class="example">
-(fixed-point-log  (lambda (x)  (/ (log 1000) (log x))) 2)
-</pre>
-<p>
-33步
-</p>
-
-<p>
-使用平均阻尼:
-</p>
-<pre class="example">
-(define (average n) (/ n 2))
-(fixed-point-log  (lambda (x) (average (+ x (/ (log 1000) (log x))))) 2)
-</pre>
-<p>
-8步
-</p>
-</div></li>
-
-<li><a id="orgheadline63"></a>一个无穷连分式是一个如下形式的表达式:<br  /><div class="outline-text-5" id="text-1-5-7-3">
-<p>
-\(\Large x=\frac{N_1}{D1 + \frac{N_2}{D2 + \frac{N_3}{D_3+...}}}\)
-证明当Di和Ni都等于1时,这一连分式产生出\(1/\phi\)
-</p>
-<pre class="example">
-;; 递归
-(define (cont-frac n d k it)
-  (cond ((= it k) 0)
-  (else (/ (n it) (+ (d it) (cont-frac n d k (+ it 1)))))))
-
-(define (gold k)
-    (+ 1 (cont-frac (lambda (i) 1.0) (lambda (i) 1.0) k 0)))
-
-(gold 11)
-
-;; 迭代
-(define (cont-frac-it n d k result)
-  (cond ((= k -1) result)
-  (else (cont-frac-it n d (- k 1) (/ (n k) (+ (d k) result))))))
-
-(define (gold k)
-    (+ 1 (cont-frac-it (lambda (i) 1.0) (lambda (i) 1.0) k 0)))
-
-(gold 11)
-</pre>
-<p>
-k取6时结果具有4位精度, 但不够准确.k越大时,结果越逼近 \(1/\phi\), k取12时,小数点后4位的结果是准确的.
-</p>
-</div></li>
-
-<li><a id="orgheadline64"></a>使用上一题的cont-frac过程基于欧拉展开式求e的近似值.<br  /><div class="outline-text-5" id="text-1-5-7-4">
-<pre class="example">
-(define (ora i)
-    (cond ((= 0 (remainder (- i 1) 3))
-     (* 2 (/ (+ i 2) 3)))
-    (else 1.0)))
-
-(define (de-frac k)
-  (cont-frac-it
-  (lambda (i) 1.0)
-  ora
-  k
-  0))
-
-(define (e k)
-  (+ 2 (de-frac k)))
-</pre>
-</div></li>
-
-<li><a id="orgheadline65"></a>定义过程(tan-cf x k),基于Lambert公式计算正切函数的近似值.<br  /><div class="outline-text-5" id="text-1-5-7-5">
-<pre class="example">
-(define (tan-cf x k)
-  (define (N-tan i) 
-    (if (= i 1)
-  x
-  (- (square x))))
-  (define (D-tan i) (- (* 2 i) 1))
-  (cont-frac N-tan D-tan k 1))
-
-(tan-cf 1.0 10)
-(tan 1)
-</pre>
-</div></li></ol>
-</div>
-
-
-
-
-
-<div id="outline-container-orgheadline69" class="outline-4">
-<h4 id="orgheadline69"><span class="section-number-4">1.5.8</span> 过程作为返回值</h4>
-<div class="outline-text-4" id="text-1-5-8">
-<p>
-把前面所说的平均阻尼概念再抽象一下..
-</p>
-<pre class="example">
-(define (average-damp f)
-  (lambda (x) (average x (f x))))
-
-((average-damp square) 10)
-</pre>
-<p>
-这样前面求平方根的过程可改写成:
-</p>
-<pre class="example">
-(define (squrt x)
-  (fixed-point (average-damp (lambda (a) (/ x a))) 1.0))
-</pre>
-<p>
-所以现在上面这两行代码中结合了三种思想: 不动点搜寻,平均阻尼,和函数y-&gt;x/y.
-</p>
-</div>
-<ol class="org-ol"><li><a id="orgheadline67"></a>牛顿法<br  /><div class="outline-text-5" id="text-1-5-8-1">
-<p>
-首先需要有一个方法描述导数
-</p>
-
-<p>
-\(Dg(x)=\frac{g(x+dx)-g(x)}{dx}\)
-这时就能看到将过程作为返回值的威力了:生成导数函数.
-</p>
-<pre class="example">
-(define dx 0.00001) ;; 首先定义一个delta
-(define (drive g)
-  (lambda (x) (/ (- (g (+ x dx)) (g x)) dx)))
-;; test: $D(x^3)=3*x^2$
-((drive (lambda (x) (* x x x))) 2)
-</pre>
-
-<p>
-然后把牛顿法描述为一个求不动点的过程:
-</p>
-<pre class="example">
-(define (newton-transform g)
-  (lambda (x)
-    (- x (/ (g x) ((driv g) x)))))
-(define (newtons-method g guess)
-  (fixed-point (newton-transform g ) guess))
-(define (squr x)
-  (newtons-method (lambda (y) (- (square y) x)) 1.0))
-</pre>
-</div></li>
-<li><a id="orgheadline68"></a>抽象和第一级过程<br  /><div class="outline-text-5" id="text-1-5-8-2">
-<p>
-计算机程序总会对计算元素的可能使用方式加上某些限制.带有最少限制的元素被称为 <code>第一级状态</code>
-第一级元素的某些"特权"包括:
-</p>
-<ul class="org-ul">
-<li>可以使用变量名</li>
-<li>可以提供给过程作为参数</li>
-<li>可以由过程作为结果返回</li>
-<li>可以包含在数据结构中</li>
-</ul>
-<p>
-List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是难以实现).
-我日常用的几种语言没有谁能做到这些orz
-</p>
-</div></li></ol>
-</div>
-
-<div id="outline-container-orgheadline77" class="outline-4">
-<h4 id="orgheadline77"><span class="section-number-4">1.5.9</span> [习题]</h4>
-<div class="outline-text-4" id="text-1-5-9">
-</div><ol class="org-ol"><li><a id="orgheadline70"></a>请定义一个过程cubic,它和newtons-method一起使用在下面的表达式里,逼近三次方程x<sup>3</sup>+aX<sup>2</sup>+c的零点<br  /><div class="outline-text-5" id="text-1-5-9-1">
-<p>
-(newtons-method (cubic a b c) 1)
-</p>
-<pre class="example">
-(define (cubic a b c)
-  (lambda (x) (+ (* x x x) (* a x x) (* b x) c)))
-;; test
-(newtons-method (cubic 3 1 1) 1)
-</pre>
-</div></li>
-
-<li><a id="orgheadline71"></a>请定义一个过程double,它以一个有一个参数的过程作为参数,double返回一个参数.这一过程将原来那个参数过程应用两次.<br  /><div class="outline-text-5" id="text-1-5-9-2">
-<pre class="example">
-(define (double f)
-  (lambda (x) (f (f x))))
-;; test
-((double (lambda (x) (square x))) 2)
-</pre>
-<p>
-表达式(((double (double double)) inc ) 5)返回21:
-</p>
-<pre class="example">
-(((double (double double) inc) -&gt; (double (double (double (double inc)))) = 2^4 = 16
-</pre>
-</div></li>
-
-<li><a id="orgheadline72"></a>定义compose实现复合函数<br  /><div class="outline-text-5" id="text-1-5-9-3">
-<pre class="example">
-(define (compose f g)
-  (lambda (x) (f (g x))))
-((compose square inc) 6)
-</pre>
-</div></li>
-
-<li><a id="orgheadline73"></a>构造f的n次重复应用过程<br  /><div class="outline-text-5" id="text-1-5-9-4">
-<pre class="example">
-(define (repeated f k)
-  (define (it g k n)
-    (if (= n (- k 1)) 
-  (lambda (x) (g x))
-  (it (lambda (x) (f (g x))) k (+ n 1))))
-  (it f k 0))
-
-((repeated square 2) 5)
-; Value: 625
-</pre>
-</div></li>
-
-<li><a id="orgheadline74"></a>实现平滑函数<br  /><div class="outline-text-5" id="text-1-5-9-5">
-<pre class="example">
-(define (smooth f)
-  (lambda (x) 
-    (/ (+ (f x) (f (- x dx)) (f (+ x dx))) 3)))
-
-(define (smooth-k f k)
-  ((repeated smooth k) f))
-</pre>
-</div></li>
-
-<li><a id="orgheadline75"></a>试验求$x/y<sup>n-1</sup>$需要多少次平均阻尼<br  /><div class="outline-text-5" id="text-1-5-9-6">
-<pre class="example">
-;;前面定义的求幂过程expt-iter
-(define (expt-iter b n a)
-  (cond ((= n 0) a)
-  ((even? n) (expt-iter  (* b b)  (/ n 2)  a))
-  (else (expt-iter  b (- n 1) (* b a)))))
-;;定义过程x-&gt;x/y^n
-(define (root n x)
-  (lambda (y) (/ x (expt-iter y n 1))))
-;;应用k次阻尼
-(define (repeated-damp f k)
-  ((repeated average-damp k) f))
-
-(define (squrt-n n x damp-cnt)
-  (fixed-point-log (repeated-damp (root n x) damp-cnt) 1))
-</pre>
-
-<p>
-试验下来大约至少需要$log{n}$次平均阻尼.
-</p>
-</div></li>
-
-<li><a id="orgheadline76"></a>写一个过程interative-improve, 它以两个过程为参数. 其中之一用于判定结果是否足够好,另外一个用于猜测更好的结果.<br  /><div class="outline-text-5" id="text-1-5-9-7">
-<pre class="example">
-(define (iterative-improve good-enough? f)
-  (lambda (x)
-    (define (try guess)
-      (let ((next (f guess)))
-  (if (good-enough? guess next)
-      next
-      (try next))))
-    (try x)))
-;;定义good-enough?
-(define (close-enough? v1 v2)
-  (&lt; (abs (- v1 v2)) tolerance))
-
-(define (fixed-point f guess)
-  ((iterative-improve close-enough? f) guess))
-
-(define (sqrt n guess)
-    ((iterative-improve 
-      close-enough? (lambda (x) (/ (+ x (/ n x)) 2))) guess))
-</pre>
-
-
-<p>
-以上.
-</p>
-
-<p>
-(几乎一个月过去了/(ㄒoㄒ)/~~)
-</p>
-</div></li></ol>
-</div>
-</div>
-</div>
-
-</div>
-</div>]]></description>
-      <pubDate>2016-06-13</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
-    </item>
-    <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-06-13</pubDate>
+      <pubDate>2016-06-14</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-06-13</pubDate>
+      <pubDate>2016-06-14</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5713,7 +5720,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-13</pubDate>
+      <pubDate>2016-06-14</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -6257,7 +6264,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-13</pubDate>
+      <pubDate>2016-06-14</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -6516,494 +6523,8 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-06-13</pubDate>
+      <pubDate>2016-06-14</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
-    </item>
-    <item>
-      <title>princples and practice using c++ ch21 reading note</title>
-      <link>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</link>
-      <description><![CDATA[<div>
-<div class="post">
-<h1>princples and practice using c++ ch21 reading note</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orgheadline26">1. Algorithms and Maps</a>
-<ul>
-<li><a href="#orgheadline1">1.1. C++ 11 features</a></li>
-<li><a href="#orgheadline2">1.2. Standard Library algorithms</a></li>
-<li><a href="#orgheadline3">1.3. The simplest algorithm: find()</a></li>
-<li><a href="#orgheadline4">1.4. The general search:find<sub>if</sub>()</a></li>
-<li><a href="#orgheadline8">1.5. Function objects</a>
-<ul>
-<li><a href="#orgheadline5">1.5.1. An abstract view of function objects</a></li>
-<li><a href="#orgheadline6">1.5.2. Predicates on class members</a></li>
-<li><a href="#orgheadline7">1.5.3. Lambda expressions</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline13">1.6. Numerical algorithms</a>
-<ul>
-<li><a href="#orgheadline9">1.6.1. Accumulate</a></li>
-<li><a href="#orgheadline10">1.6.2. Generalizing accumulate()</a></li>
-<li><a href="#orgheadline11">1.6.3. Inner product</a></li>
-<li><a href="#orgheadline12">1.6.4. Generalizing inner<sub>product</sub>()</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline16">1.7. Associative containers</a>
-<ul>
-<li><a href="#orgheadline14">1.7.1. map overview</a></li>
-<li><a href="#orgheadline15">1.7.2. unordered<sub>map</sub></a></li>
-</ul>
-</li>
-<li><a href="#orgheadline17">1.8. Set</a></li>
-<li><a href="#orgheadline23">1.9. Copying</a>
-<ul>
-<li><a href="#orgheadline18">1.9.1. basic copy</a></li>
-<li><a href="#orgheadline19">1.9.2. Stream iterator</a></li>
-<li><a href="#orgheadline20">1.9.3. Unique<sub>copy</sub></a></li>
-<li><a href="#orgheadline21">1.9.4. Using a set to keep order</a></li>
-<li><a href="#orgheadline22">1.9.5. copy<sub>if</sub></a></li>
-</ul>
-</li>
-<li><a href="#orgheadline24">1.10. Sorting and seraching</a></li>
-<li><a href="#orgheadline25">1.11. Container algorithms</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline26" class="outline-2">
-<h2 id="orgheadline26"><span class="section-number-2">1</span> Algorithms and Maps</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1"><span class="section-number-3">1.1</span> C++ 11 features</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>lambda 表达式 (){}</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Standard Library algorithms</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-介绍了一些通用算法: find, sort, accumulate, inner<sub>produdt等</sub>.
-介绍了函数对象.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">1.3</span> The simplest algorithm: find()</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-最简单常用的算法莫过于find():
-</p>
-<pre class="example">
-template&lt;typename In, typename T&gt;
-In find(In first, In end, const T&amp; val)
-{
-    while(first!=end &amp;&amp; *first!=val) ++first;
-    return first;
-}
-</pre>
-
-<p>
-它支持任意STL风格的容器, 任意类型.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">1.4</span> The general search:find<sub>if</sub>()</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-find<sub>if可以传入一个断言</sub>(下一节解释这玩意), find<sub>if查找满足这个断言的第一个值</sub>.
-</p>
-<pre class="example">
-template&lt;typename In, typename T&gt;
-In find_if(In first, In end, Pred pred)
-{
-    while(first!=end &amp;&amp; *!pred(*first)) ++first;
-    return first;
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><span class="section-number-3">1.5</span> Function objects</h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-上面说的pred是一个函数对象:一个跟函数的行为类似的对象. 对象可以储存数据, 比如储存被比较的值.
-</p>
-<pre class="example">
-class Larger_than()
-{
-    int v;
-public:
-    Larger_than(int vv):v(vv){}
-    bool operator()(int x) const {return x&gt;v;}
-}
-</pre>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5"><span class="section-number-4">1.5.1</span> An abstract view of function objects</h4>
-<div class="outline-text-4" id="text-1-5-1">
-<p>
-把楼上Larger<sub>than函数的对象名换成一个模棱两可的名字</sub>(比如F), 把int换成模板, 就是一个比较抽象的函数对象了.
-因为携带了数据, 函数对象是"有状态"的.
-</p>
-
-<p>
-函数对象是STL参数化的重要手段.
-</p>
-
-<p>
-性能方面, 使用函数对象当做参数优于使用函数. 为了获取最佳性能, 函数对象要以引用的方式专递, 而且operator()最好实现在class内部. 这样可以为编译器提供足够多的信息进行优化.
-</p>
-
-<p>
-比如: 上面的Larger<sub>than可以被编译器优化成一个机器指令</sub>, 而不是进行函数调用. 进行一次函数调用的开销大概是运行比较指令的10-50倍. 另外为函数调用生成的代码也会比较多.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6"><span class="section-number-4">1.5.2</span> Predicates on class members</h4>
-<div class="outline-text-4" id="text-1-5-2">
-<p>
-如果要使用函数对象来比较class member, 那么现有的武器就不太顺手了..我们可能要写许多类似以下的代码:
-</p>
-<pre class="example">
-struct cmp_by_name {
-   bool operator()(const Record&amp; a, const Record&amp; b) { return a.name &lt; b.name; }
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7"><span class="section-number-4">1.5.3</span> Lambda expressions</h4>
-<div class="outline-text-4" id="text-1-5-3">
-<p>
-C++11 提供对了 lambda表达式. 
-</p>
-<pre class="example">
-auto p = find_if(v.begin(), v.end(), (double a){ return a &gt; 31;});
-</pre>
-
-<p>
-可以理解为(double a){return a &gt; 31;}定义函数对象的语法糖.
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13"><span class="section-number-3">1.6</span> Numerical algorithms</h3>
-<div class="outline-text-3" id="text-1-6">
-<p>
-数值运算算法在&lt;numeric&gt;中. (如果以后有机会写引擎的话大概会用到吧&#x2026;
-</p>
-</div>
-
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9"><span class="section-number-4">1.6.1</span> Accumulate</h4>
-<div class="outline-text-4" id="text-1-6-1">
-<p>
-x = accumulate(b,e,i), 计算[b,e)所有元素与i的和. 返回值x的类型会被用于初始化accumulate, 所以必须明确的把计算结果赋值给一个变量. ( 还真不知道这个..
-</p>
-<pre class="example">
-double s1 = 0;
-s1 = accumulate(v.begin(),v.end(),s1); // ok
-s2 = accumulate(v.begin(),v.end(),s2); // oops
-float3 = 0;
-accumulate(v.begin(),v.end(),s3);      // oops
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10"><span class="section-number-4">1.6.2</span> Generalizing accumulate()</h4>
-<div class="outline-text-4" id="text-1-6-2">
-<p>
-运算不限于加法. STL提供了一个4参数版本的accumulate, 可以自定义运算:
-</p>
-<pre class="example">
-template&lt;typename In, typename T, typename BinOp&gt;
-// requires Input_iterator&lt;In&gt;() &amp;&amp; Number&lt;T&gt;() &amp;&amp; Binary_operator&lt;BinOp, Value_type&lt;In&gt;, T&gt;()
-T accumulate(In first, In last, T init, BinOp op)
-{
-    while (first != last) {
-        init = op(init, *first);
-  ++first;
-    }
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11"><span class="section-number-4">1.6.3</span> Inner product</h4>
-<div class="outline-text-4" id="text-1-6-3">
-<p>
-内积&#x2026;计算两个序列中每一对元素的和, 最后相加.
-</p>
-<pre class="example">
-int sum = inner_product( v1.begin(), v1.end(), v2.begin, 0); // v2 maybe have more elements than v1, it's ok.
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12"><span class="section-number-4">1.6.4</span> Generalizing inner<sub>product</sub>()</h4>
-<div class="outline-text-4" id="text-1-6-4">
-<p>
-一个比上上节更加冗长的声明:
-</p>
-<pre class="example">
-T inner_product(In first, In last, In2 first2, T init, BinOp op, BinOp2 op2)
-</pre>
-<p>
-(累爱&#x2026;
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16"><span class="section-number-3">1.7</span> Associative containers</h3>
-<div class="outline-text-3" id="text-1-7">
-<p>
-最常用的关容器非map莫属. 与map类似的结构体还有:associative array, hash table, red-black trees &#x2026; unordered<sub>map是为字符串key优化过的map</sub>.
-</p>
-
-<p>
-这些容器在&lt;map&gt;,&lt;set&gt;,&lt;unordered<sub>map</sub>&gt;,&lt;unordered<sub>set</sub>&gt;中.
-</p>
-</div>
-
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><span class="section-number-4">1.7.1</span> map overview</h4>
-<div class="outline-text-4" id="text-1-7-1">
-<p>
-STL采用了红黑树实现map &#x2013; 左子树的key小于父节点, 右子树大于父节点.
-</p>
-
-<p>
-map的interface:
-</p>
-<pre class="example">
-class map {
-    using value_type = pair&lt;Key, Value&gt;;
-
-    using iterator = sometype1; // 可以理解为一个指向 tree node 的指针
-    using const_iterator = sometype2;
-
-    iterator begin();
-    iterator end();
-    Value&amp; operator[](const Key&amp; k);
-    iterator find(const Key&amp; k);
-    void erase(iterator p);
-    pair&lt;iterator, bool&gt; insert(const value_type&amp;); // 插入一个键值对
-}
-</pre>
-<p>
-map的iterator是一个类似于[指向树节点的指针]的东西.
-</p>
-
-<p>
-insert方法的返回值要特别注意一下, 它是一个&lt;迭代器, bool&gt;键值对.如果插入成功了, bool是true, 并返回指向新元素的iterator. 如果插入失败bool是false. 这个返回值经常会被忽略.
-</p>
-
-<p>
-map支持按照特定方法排序:
-</p>
-<pre class="example">
-map&lt;string, double, No_case&gt; m;
-</pre>
-<p>
-No<sub>case的默认值是less</sub>&lt;Key&gt;.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15"><span class="section-number-4">1.7.2</span> unordered<sub>map</sub></h4>
-<div class="outline-text-4" id="text-1-7-2">
-<p>
-在vector中查找的复杂度是O(N), 在map中查找的复杂度是O(log<sub>2</sub>(N)), 在unordered<sub>map中是O</sub>(1).
-</p>
-
-<p>
-STL的unordered<sub>map是用哈希表实现的</sub>: 把key哈希到一个不太长的vector中,用下标索引, 查找复杂度可以降低到接近O(1).
-</p>
-
-<p>
-关于vector, map和unordered<sub>map的使用提示</sub>:
-</p>
-<ul class="org-ul">
-<li>vector: 没什么事的话就用它吧</li>
-<li>map: 需要根据key查询, 且key支持比较高效的&lt;运算.</li>
-<li>unordered<sub>map</sub>: 需要频繁的查找, 且不需要有序的遍历.</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><span class="section-number-3">1.8</span> Set</h3>
-<div class="outline-text-3" id="text-1-8">
-<p>
-set可以认为是一个只有key的map, 它也是棵红黑树.
-</p>
-<ul class="org-ul">
-<li>set没有value, 它不支持operator[].</li>
-<li>set不需要pair, 使用起来不需要写it-&gt;second这种代码, 比map简洁一些.</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-orgheadline23" class="outline-3">
-<h3 id="orgheadline23"><span class="section-number-3">1.9</span> Copying</h3>
-<div class="outline-text-3" id="text-1-9">
-<p>
-STL提供了3种copy操作: copy, unique<sub>copy</sub>, copy<sub>if</sub>
-</p>
-</div>
-
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18"><span class="section-number-4">1.9.1</span> basic copy</h4>
-<div class="outline-text-4" id="text-1-9-1">
-<pre class="example">
-template&lt;typename In, typename Out&gt;
-Out copy(In first, In last, Out res)
-{ 
-    while ( first != last ) {
-        *res = *first;
-  ++res;
-  ++first;
-    }
-    return res;
-}
-</pre>
-
-<p>
-注意, res的size需要程序猿自己检查, STL为了性能, 一般不提供边界检查.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19"><span class="section-number-4">1.9.2</span> Stream iterator</h4>
-<div class="outline-text-4" id="text-1-9-2">
-<p>
-可以利用copy把input stream的内容转移到output stream中.
-</p>
-
-<pre class="example">
-string from, to;
-cin &gt;&gt; from &gt;&gt; to; // source and target file name
-ifstream is {from};
-ofstream os {to};
-
-istream_iterator&lt;string&gt; ii {is};
-istream_iterator&lt;string&gt; eof;
-ostream_iterator&lt;string&gt; oo {os, "\n"};
-
-vector&lt;string&gt; b{ii, eos};
-sort(b.begin(), b .end());
-copy(b.begin(), b.end(), oo);
-</pre>
-
-<p>
-传入一对iterator给vector作为初始化参数的意思是"读取[a:b)". 上面vector b会读取输入文件的内容, 直到碰到eof为止.
-据说如果试验一下这个case(回头再说吧..), 会发现input buffer比想象中的小, 很容易利用这个搞一些overflow什么的.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20"><span class="section-number-4">1.9.3</span> Unique<sub>copy</sub></h4>
-<div class="outline-text-4" id="text-1-9-3">
-<p>
-unique<sub>copy不会拷贝重复的元素</sub>
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21"><span class="section-number-4">1.9.4</span> Using a set to keep order</h4>
-<div class="outline-text-4" id="text-1-9-4">
-<p>
-修改一下上面copy例子的最后三行
-</p>
-<pre class="example">
-set&lt;string&gt; b {istream_iterator&lt;string&gt;{is}, istream_iterator&lt;string&gt;{}};
-copy(b.begin(), b.end(), ostream_iterator&lt;string&gt;{os, ""}};
-</pre>
-
-<p>
-这时利用了set的特性:自动去重, 自动排序.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22"><span class="section-number-4">1.9.5</span> copy<sub>if</sub></h4>
-<div class="outline-text-4" id="text-1-9-5">
-<p>
-跟前面的algorithms方法类似, STL也提供了可以使用函数对象的版本.
-</p>
-<pre class="example">
-Out copy_if(In first, In last, Out res, Pred p);
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24"><span class="section-number-3">1.10</span> Sorting and seraching</h3>
-<div class="outline-text-3" id="text-1-10">
-<p>
-如果需要保持数据有序, 我们可以使用有序的容器map和set, 也可以使用sort方法. sort()默认使用&lt;作为排序规则, 也可以自己定义排序函数.
-</p>
-
-<p>
-当数据有序以后, find就高效多了, 可以用二分查找, binary<sub>search</sub>() 和 equal<sub>range</sub>().
-</p>
-<pre class="example">
-bool binary_search(Ran first, Ran last, const T&amp;val);
-</pre>
-<p>
-binary<sub>search仅能告诉我们要查找的数据是否存在</sub>. 如果需要知道元素的位置, 可以用 lower<sub>bound</sub>(), upper<sub>bound</sub>() 或者 equal<sub>range</sub>().
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25"><span class="section-number-3">1.11</span> Container algorithms</h3>
-<div class="outline-text-3" id="text-1-11">
-<p>
-综上所述, 容器的算法大抵是接受一对iterator做参数, 然后返回一个iterator. 这个设定很好的保证了算法的通用性.
-</p>
-
-<p>
-以上.
-</p>
-</div>
-</div>
-</div>
-
-</div>
-</div>]]></description>
-      <pubDate>2016-06-13</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/03/06/princples-and-practice-using-c++-ch21-reading-note/</guid>
     </item>
   </channel>
 </rss>
