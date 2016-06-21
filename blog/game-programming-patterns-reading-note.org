@@ -9,7 +9,7 @@
 #+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
 #+DESCRIPTION: reading note
 
-其实这是篇读书笔记啦(捂脸...
+其实这是篇读书笔记(捂脸...
 
 对这个话题感兴趣又愿意花时间了解的同学直接移步这里吧
 http://gameprogrammingpatterns.com/contents.html
@@ -23,8 +23,8 @@ http://gameprogrammingpatterns.com/contents.html
 
 顾名思义,这篇文章将要介绍一些在游戏设计中常用的模式.
 在展开之前先给大家几个tip:
-- 如果不是确定非常需要,不轻易进行模块化和解耦 (毕竟都是有代价的嘛..
-- 尽快响应策划大神们的需求,但依旧要时时注意代码结构,积累太多垃圾代码就不好玩了.
+- 如果不是确定非常需要,不轻易进行模块化和解耦,毕竟都是有代价的嘛..
+- 可以糙快猛的响应策划需求,但需时常注意代码结构,积累太多垃圾代码就不好玩了.
 - 随时考虑代码结构的性能,而尽量把底层优化推后.
 - 重构不必过于追求完美 (处女座退散
 
@@ -32,53 +32,72 @@ http://gameprogrammingpatterns.com/contents.html
 下面这几个模式大家都比较熟,也并不仅被应用于游戏开发中,在这里就不展开介绍了.
 - 命令模式(Command)
 - 享元模式(Flyweight) 
-  容我吐个槽,享元模式这翻译真是太不幽默了
 - 观察者模式(Observer)
 - 原型(Prototype)
 - 单例(Singleton)
 - 状态(State)
 
-* 有序的模式 (Sequencing Patterns)
-好难翻译
-乍一看标题还以为是Sequence Queue之类的东西,我真是too young..
-需要one by one处理一坨东西的结构都可以称为sequencing patterns. 这里介绍三种.
+* 用于时序的模式 (Sequencing Patterns)
+(乍一看标题可能不太好理解, 撸主当初还以为是Sequence Queue之类的东西, 真是too young..)
 
-** 双缓存 Double buffer
+简而言之, 所有需要one by one处理一坨事务的行为模式都可以称为sequencing patterns. 这里介绍三种.
+** 双缓冲 Double buffer
+*** 目的
+使得一系列有序操作得以迅速且 *平滑* 的进行.
 
-*** Intent
-使得一系列有序操作得以迅速且平滑的进行.
+*** 介绍
+了解引擎的同学应该对这个概念比较熟悉. 双缓冲应用比较广的一个场景是在Rendering阶段:
 
-*** Intro
-双缓冲应用比较广的场景是在Rendering阶段:
+渲染好的像素首先输出到frame buffer, 然后buffer中的内容会被输出到显示设备.
+如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题:
+使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
 
-渲染好的像素被输出到frame buffer, 然后buffer中的内容会被直接输出到显示设备.
-如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
-双缓冲顾名思义, 使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
-
-
-*** When to use
+*** 何时用
 - 需要频繁的改变一些状态
 - 需要在改变时访问状态
 - 状态改变在进行时禁止被代码访问
 - 而代码不希望等到改变结束才能访问
 
-*** Caveats
+*** 安全食用指南
 - 交换操作必须是原子的
-- 增加了内存占用
-
+- 它会增加内存占用
+  
 ** 游戏循环 Game loop
-
-*** Intent
+*** 目的
 将游戏速度与用户输入及处理器速度解耦.
 
-*** The pattern
+*** 介绍
+(这货对很多人来说太熟悉了,就是常用的Update方法嘛
 
-*** When to use
-游戏引擎自带 :)
+游戏循环在游戏运行过程中以一定速率(比如60fps)持续运行. 在每一次循环中, 程序需要响应用户输入, 更新游戏状态, 以及进行图形渲染.
+它可以控制游戏的进行速度.
 
+*** 何时用
+一般不需要自己造轮子, 它是如此重要, 以至于游戏引擎都把它视为不可分割的一部分.
 
-** Update 方法
+*** 安全食用指南
+- 
+
+** Update
 
  Each time you add two floating point numbers, 
 the answer you get back can be a bit off
+
+
+* 用于实现行为的模式
+
+** 
+
+* 用于解耦的模式
+
+* 用于优化性能的模式
+
+
+
+
+写到最后感到简直是把原书的目录给翻译了一遍, 忧桑... 
+
+虽然如此, 还是希望这篇文章能够在15分钟内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构, 如有同学发现错误求尽快指正
+
+最后说句自己的感受...设计模式打嘴炮容易应用难,需要时刻以强大的意志力保证在应付繁杂的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你...
 
