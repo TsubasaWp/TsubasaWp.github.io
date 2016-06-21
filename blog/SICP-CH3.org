@@ -1,4 +1,4 @@
-#+TITLE:       SICP-CH3 模块化,对象和状态
+#+TITLE:       SICP-CH3b 模块化,对象和状态
 #+AUTHOR:      Tsubasa
 #+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
 #+DATE:        2016-06-20 Mon
@@ -9,6 +9,6 @@
 #+OPTIONS:     H:3 num:nil toc:nil \n:nil ::t |:t ^:nil -:nil f:t *:t <:t
 #+DESCRIPTION: sicp第三章,模块化,对象和状态
 
-#+BEGIN_SRC text
+[碎碎念]
 上一章还有几个实例的习题没有完成, 然而时间太有限了, 所以决定先挖新一章的坑把这本书大略学习完, 之后再来填那些实例, /跪
-#+END_SRC
+
