@@ -4,10 +4,24 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Mon, 20 Jun 2016 08:34:06 CST</pubDate>
-    <lastBuildDate>Mon, 20 Jun 2016 08:34:06 CST</lastBuildDate>
+    <pubDate>Tue, 21 Jun 2016 22:04:53 CST</pubDate>
+    <lastBuildDate>Tue, 21 Jun 2016 22:04:53 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
+    <item>
+      <title>SICP-CH3b 模块化,对象和状态</title>
+      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
+      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
+      <pubDate>2016-06-21</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
+    </item>
+    <item>
+      <title>Game Programming Patterns Reading Note</title>
+      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
+      <description><![CDATA[reading note]]></description>
+      <pubDate>2016-06-21</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
+    </item>
     <item>
       <title>Hello World</title>
       <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
@@ -326,13 +340,6 @@ int main(int argc, const char * argv[]) {
 </div>]]></description>
       <pubDate>2016-06-20</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
-    </item>
-    <item>
-      <title>SICP-CH3 模块化,对象和状态</title>
-      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
-      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
-      <pubDate>2016-06-20</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
     </item>
     <item>
       <title>SICP-CH1-构造过程抽象</title>
@@ -5427,13 +5434,6 @@ apply-generic被调用了3次. 过程如下
 </div>]]></description>
       <pubDate>2016-06-20</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
-    </item>
-    <item>
-      <title>Game Programming Patterns Reading Note</title>
-      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
-      <description><![CDATA[reading note]]></description>
-      <pubDate>2016-06-20</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>

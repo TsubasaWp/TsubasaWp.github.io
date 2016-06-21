@@ -32,56 +32,83 @@
 <div>
 <div class="post">
 <h1>Game Programming Patterns Reading Note</h1>
+<p>
+其实这是篇读书笔记啦(捂脸...
+</p>
+
+<p>
+对这个话题感兴趣又愿意花时间了解的同学直接移步这里吧
+<a href="http://gameprogrammingpatterns.com/contents.html">http://gameprogrammingpatterns.com/contents.html</a>
+</p>
+
+<p>
+作者文笔风骚,干货满满,绝对五星好评.
+</p>
+
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Architecture, Performance, and Games</h2>
+<h2 id="orgheadline1">概览: 结构,性能以及游戏.</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <p>
-这一节不多说了,老生常谈, 在速度和优雅间权衡. 最后有句话说的不错:
+"每当提到所谓 <b>优雅</b> 的方案,我们想要的往往是用尽量少的代码驱动尽量多的用例."
 </p>
-<ul class="org-ul">
-<li>When we think of elegant solutions, what we often have in mind is a general one: a small bit of logic that still correctly covers a large space of use cases.</li>
-</ul>
+
 <p>
-作为仔细阅读Intro的回报,作者给出几个'忠告':
+顾名思义,这篇文章将要介绍一些在游戏设计中常用的模式.
+在展开之前先给大家几个tip:
 </p>
 <ul class="org-ul">
-<li>如果不是确定非常需要,不轻易进行模块化和解耦.</li>
+<li>如果不是确定非常需要,不轻易进行模块化和解耦 (毕竟都是有代价的嘛..</li>
+<li>尽快响应策划大神们的需求,但依旧要时时注意代码结构,积累太多垃圾代码就不好玩了.</li>
 <li>随时考虑代码结构的性能,而尽量把底层优化推后.</li>
-<li>尽量快的探索游戏设计的可能性,但依旧要时时注意代码结构,积累太多垃圾代码就不好玩了.</li>
-<li>重构不必过于追求完美</li>
-<li>如果你觉得干这些没意思就别干了吧...</li>
+<li>重构不必过于追求完美 (处女座退散</li>
 </ul>
 </div>
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Sequencing Patterns</h2>
+<h2 id="orgheadline2">一些通用设计模式</h2>
 <div class="outline-text-2" id="text-orgheadline2">
 <p>
-乍一看标题还以为是Sequence Queue之类的东西,我真是too young..
+下面这几个模式大家都比较熟,也并不仅被应用于游戏开发中,在这里就不展开介绍了.
 </p>
+<ul class="org-ul">
+<li>命令模式(Command)</li>
+<li>享元模式(Flyweight) 
+容我吐个槽,享元模式这翻译真是太不幽默了</li>
+<li>观察者模式(Observer)</li>
+<li>原型(Prototype)</li>
+<li>单例(Singleton)</li>
+<li>状态(State)</li>
+</ul>
+</div>
+</div>
 
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">有序的模式 (Sequencing Patterns)</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
+好难翻译
+乍一看标题还以为是Sequence Queue之类的东西,我真是too young..
 需要one by one处理一坨东西的结构都可以称为sequencing patterns. 这里介绍三种.
 </p>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">Double buffer</h3>
-<div class="outline-text-3" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3">Intent</h4>
-<div class="outline-text-4" id="text-orgheadline3">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">双缓存 Double buffer</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+</div><div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Intent</h4>
+<div class="outline-text-4" id="text-orgheadline4">
 <p>
 使得一系列有序操作得以迅速且平滑的进行.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">Intro</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">Intro</h4>
+<div class="outline-text-4" id="text-orgheadline5">
 <p>
 双缓冲应用比较广的场景是在Rendering阶段:
 </p>
@@ -95,9 +122,9 @@
 </div>
 
 
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">When to use</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">When to use</h4>
+<div class="outline-text-4" id="text-orgheadline6">
 <ul class="org-ul">
 <li>需要频繁的改变一些状态</li>
 <li>需要在改变时访问状态</li>
@@ -107,9 +134,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">Caveats</h4>
-<div class="outline-text-4" id="text-orgheadline6">
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">Caveats</h4>
+<div class="outline-text-4" id="text-orgheadline7">
 <ul class="org-ul">
 <li>交换操作必须是原子的</li>
 <li>增加了内存占用</li>
@@ -118,25 +145,25 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">Game loop</h3>
-<div class="outline-text-3" id="text-orgheadline11">
-</div><div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">Intent</h4>
-<div class="outline-text-4" id="text-orgheadline8">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">游戏循环 Game loop</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">Intent</h4>
+<div class="outline-text-4" id="text-orgheadline9">
 <p>
 将游戏速度与用户输入及处理器速度解耦.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">The pattern</h4>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">The pattern</h4>
 </div>
 
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">When to use</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">When to use</h4>
+<div class="outline-text-4" id="text-orgheadline11">
 <p>
 游戏引擎自带 :)
 </p>
@@ -145,9 +172,9 @@
 </div>
 
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">Update Method</h3>
-<div class="outline-text-3" id="text-orgheadline12">
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">Update 方法</h3>
+<div class="outline-text-3" id="text-orgheadline13">
 <p>
  Each time you add two floating point numbers, 
 the answer you get back can be a bit off
@@ -161,7 +188,7 @@ the answer you get back can be a bit off
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-06-20</span>
+        <span title="last modification date" class="post-info">2016-06-21</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
