@@ -33,7 +33,7 @@
 <div class="post">
 <h1>Game Programming Patterns Reading Note</h1>
 <p>
-其实这是篇读书笔记啦(捂脸...
+其实这是篇读书笔记(捂脸...
 </p>
 
 <p>
@@ -58,8 +58,8 @@
 在展开之前先给大家几个tip:
 </p>
 <ul class="org-ul">
-<li>如果不是确定非常需要,不轻易进行模块化和解耦 (毕竟都是有代价的嘛..</li>
-<li>尽快响应策划大神们的需求,但依旧要时时注意代码结构,积累太多垃圾代码就不好玩了.</li>
+<li>如果不是确定非常需要,不轻易进行模块化和解耦,毕竟都是有代价的嘛..</li>
+<li>可以糙快猛的响应策划需求,但需时常注意代码结构,积累太多垃圾代码就不好玩了.</li>
 <li>随时考虑代码结构的性能,而尽量把底层优化推后.</li>
 <li>重构不必过于追求完美 (处女座退散</li>
 </ul>
@@ -74,8 +74,7 @@
 </p>
 <ul class="org-ul">
 <li>命令模式(Command)</li>
-<li>享元模式(Flyweight) 
-容我吐个槽,享元模式这翻译真是太不幽默了</li>
+<li>享元模式(Flyweight)</li>
 <li>观察者模式(Observer)</li>
 <li>原型(Prototype)</li>
 <li>单例(Singleton)</li>
@@ -85,45 +84,45 @@
 </div>
 
 <div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">有序的模式 (Sequencing Patterns)</h2>
+<h2 id="orgheadline3">用于时序的模式 (Sequencing Patterns)</h2>
 <div class="outline-text-2" id="text-orgheadline3">
 <p>
-好难翻译
-乍一看标题还以为是Sequence Queue之类的东西,我真是too young..
-需要one by one处理一坨东西的结构都可以称为sequencing patterns. 这里介绍三种.
+(乍一看标题可能不太好理解, 撸主当初还以为是Sequence Queue之类的东西, 真是too young..)
+</p>
+
+<p>
+简而言之, 所有需要one by one处理一坨事务的行为模式都可以称为sequencing patterns. 这里介绍三种.
 </p>
 </div>
-
 <div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">双缓存 Double buffer</h3>
+<h3 id="orgheadline8">双缓冲 Double buffer</h3>
 <div class="outline-text-3" id="text-orgheadline8">
 </div><div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">Intent</h4>
+<h4 id="orgheadline4">目的</h4>
 <div class="outline-text-4" id="text-orgheadline4">
 <p>
-使得一系列有序操作得以迅速且平滑的进行.
+使得一系列有序操作得以迅速且 <b>平滑</b> 的进行.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">Intro</h4>
+<h4 id="orgheadline5">模式简介</h4>
 <div class="outline-text-4" id="text-orgheadline5">
 <p>
-双缓冲应用比较广的场景是在Rendering阶段:
+了解引擎的同学应该对这个概念比较熟悉. 双缓冲应用比较广的一个场景是在Rendering阶段:
 </p>
 
 <p>
-渲染好的像素被输出到frame buffer, 然后buffer中的内容会被直接输出到显示设备.
-如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题.
-双缓冲顾名思义, 使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
+渲染好的像素首先输出到frame buffer, 然后buffer中的内容会被输出到显示设备.
+如果只有一个buffer, 会出现边更新边输出的状况, 显示设备上画面可能会出现撕裂. 双缓冲和三缓冲等技术是为了避免这个问题:
+使用两个buffer来储存渲染画面. 分别为 back buffer 和 front buffer. 当front buffer被输出时, 下一帧的数据被放在back buffer中. front输出完毕后交换两个buffer.
 </p>
 </div>
 </div>
 
-
 <div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">When to use</h4>
+<h4 id="orgheadline6">何时用</h4>
 <div class="outline-text-4" id="text-orgheadline6">
 <ul class="org-ul">
 <li>需要频繁的改变一些状态</li>
@@ -135,50 +134,285 @@
 </div>
 
 <div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">Caveats</h4>
+<h4 id="orgheadline7">安全食用指南</h4>
 <div class="outline-text-4" id="text-orgheadline7">
 <ul class="org-ul">
 <li>交换操作必须是原子的</li>
-<li>增加了内存占用</li>
+<li>它会增加内存占用</li>
 </ul>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">游戏循环 Game loop</h3>
-<div class="outline-text-3" id="text-orgheadline12">
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">游戏循环 Game loop</h3>
+<div class="outline-text-3" id="text-orgheadline13">
 </div><div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">Intent</h4>
+<h4 id="orgheadline9">目的</h4>
 <div class="outline-text-4" id="text-orgheadline9">
 <p>
-将游戏速度与用户输入及处理器速度解耦.
+将游戏速度与用户输入及处理器速度解耦,并且使我们能够操控游戏速度.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">The pattern</h4>
+<h4 id="orgheadline10">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<p>
+这货对很多人来说太熟悉了,就是常用的Update方法嘛. 
+</p>
+
+<p>
+游戏循环在游戏运行过程中以一定速率(比如60fps)持续运行. 在每一次循环中, 程序需要响应用户输入, 更新游戏状态, 以及进行图形渲染
+(为了同时保证游戏的流畅性和时效性, 这些的操作一般不会互相阻塞, 而且运行频率也不同). 通过游戏循环, 我们可以方便的控制游戏的进行速度.
+</p>
+
+<p>
+奉上unity的game loop作为参考,内有漂亮的图: <a href="http://docs.unity3d.com/Manual/ExecutionOrder.html">http://docs.unity3d.com/Manual/ExecutionOrder.html</a>
+</p>
+</div>
 </div>
 
 <div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">When to use</h4>
+<h4 id="orgheadline11">何时用</h4>
 <div class="outline-text-4" id="text-orgheadline11">
 <p>
-游戏引擎自带 :)
+一般不需要自己造轮子, 它是如此重要, 以至于游戏引擎都把它视为不可分割的一部分.
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<ul class="org-ul">
+<li>性能至关重要. 如果说一个程序花费90%的时间在10%的代码上,那Game Loop无疑就是这10%部分,所以需要额外关注它的性能.</li>
+<li>在有些平台上, GameLoop可能需要与平台内嵌的UI/Event Loop和谐相处,这听起来就很蛋疼. 好在最近流行的平台上不容易碰到这个问题,或者已经被引擎处理好了.</li>
+</ul>
+</div>
+</div>
 </div>
 
-
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">Update 方法</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">更新 Update</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+</div><div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">目的</h4>
+<div class="outline-text-4" id="text-orgheadline14">
 <p>
- Each time you add two floating point numbers, 
-the answer you get back can be a bit off
+每帧逐一通知自己所管理的物件前进一帧, 以此驱动这些物件的行为.
 </p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+维护一个对象集合.每个对象实现一个更新的方法,模拟一帧对象的行为,每帧游戏逐一调用每一个对象的更新方法.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">何时用</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<ul class="org-ul">
+<li>有GameLoop的地方就可以用, 尤其当需要同步的物件特别多时.</li>
+<li>每个物件的行为模式相对独立.</li>
+<li>物件的行为依赖于时间.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<ul class="org-ul">
+<li>把逻辑分散到众多对象中后, 代码结构会变得更离散,更复杂.</li>
+<li>处理游戏暂停变的更难了, 返回游戏时需要恢复update之前的运行状态, 比如继续之前未完的遍历.</li>
+<li>写下茫茫多的update调用之后, 往往会发现这些语句之间有时序依赖, 需要格外当心.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline34" class="outline-2">
+<h2 id="orgheadline34">用于实现行为的模式</h2>
+<div class="outline-text-2" id="text-orgheadline34">
+</div><div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23">Bytecode</h3>
+<div class="outline-text-3" id="text-orgheadline23">
+</div><div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">目的</h4>
+</div>
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">何时用</h4>
+</div>
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28">Subclass Sandbox</h3>
+<div class="outline-text-3" id="text-orgheadline28">
+</div><div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">目的</h4>
+</div>
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26">何时用</h4>
+</div>
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33">Type Object</h3>
+<div class="outline-text-3" id="text-orgheadline33">
+</div><div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29">目的</h4>
+</div>
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31">何时用</h4>
+</div>
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32">安全食用指南</h4>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35">用于解耦的模式</h2>
+<div class="outline-text-2" id="text-orgheadline35">
+<p>
+码代码容易, 应付日新月异的需求难, 解耦可以让生活轻松一点点.
+</p>
+</div>
+
+<div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40">Component</h3>
+<div class="outline-text-3" id="text-orgheadline40">
+</div><div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36">目的</h4>
+<div class="outline-text-4" id="text-orgheadline36">
+<p>
+允许一个实体应用在多种互相无耦合的域中.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline37">
+<p>
+熟悉Unity的同学有木有亲切..没错,Unity框架的核心GameObject就是根据这个思路设计的, 可以说此Component即彼Component.
+</p>
+
+<p>
+这个模式即: 一个Component可以被应用在多个实体中。为了使实体保持无耦合, 逻辑代码分散到各自的Component中, 实体蜕化为一个存放Component的集合.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline38" class="outline-4">
+<h4 id="orgheadline38">何时用</h4>
+</div>
+
+<div id="outline-container-orgheadline39" class="outline-4">
+<h4 id="orgheadline39">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline45" class="outline-3">
+<h3 id="orgheadline45">Event Queue</h3>
+<div class="outline-text-3" id="text-orgheadline45">
+</div><div id="outline-container-orgheadline41" class="outline-4">
+<h4 id="orgheadline41">目的</h4>
+</div>
+<div id="outline-container-orgheadline42" class="outline-4">
+<h4 id="orgheadline42">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline43" class="outline-4">
+<h4 id="orgheadline43">何时用</h4>
+</div>
+<div id="outline-container-orgheadline44" class="outline-4">
+<h4 id="orgheadline44">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-3">
+<h3 id="orgheadline50">Service Locator</h3>
+<div class="outline-text-3" id="text-orgheadline50">
+</div><div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46">目的</h4>
+</div>
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48">何时用</h4>
+</div>
+<div id="outline-container-orgheadline49" class="outline-4">
+<h4 id="orgheadline49">安全食用指南</h4>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline59" class="outline-2">
+<h2 id="orgheadline59">用于优化性能的模式</h2>
+<div class="outline-text-2" id="text-orgheadline59">
+</div><div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51">Data Locality</h3>
+</div>
+<div id="outline-container-orgheadline52" class="outline-3">
+<h3 id="orgheadline52">Dirty Flag</h3>
+</div>
+<div id="outline-container-orgheadline53" class="outline-3">
+<h3 id="orgheadline53">Object Pool</h3>
+</div>
+<div id="outline-container-orgheadline58" class="outline-3">
+<h3 id="orgheadline58">Spatial Partition</h3>
+<div class="outline-text-3" id="text-orgheadline58">
+</div><div id="outline-container-orgheadline54" class="outline-4">
+<h4 id="orgheadline54">目的</h4>
+</div>
+<div id="outline-container-orgheadline55" class="outline-4">
+<h4 id="orgheadline55">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline56" class="outline-4">
+<h4 id="orgheadline56">何时用</h4>
+</div>
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline57">
+<p>
+写到最后感到简直是把原书的目录给翻译了一遍, 忧桑... 
+</p>
+
+<p>
+虽然如此, 还是希望这篇文章能够在15分钟内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构, 如有同学发现错误求尽快指正
+</p>
+
+<p>
+最后说句自己的感受...设计模式打嘴炮容易应用难,需要时刻以强大的意志力保证在应付繁杂的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你...
+</p>
+</div>
 </div>
 </div>
 </div>
@@ -188,7 +422,7 @@ the answer you get back can be a bit off
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-06-21</span>
+        <span title="last modification date" class="post-info">2016-06-22</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
