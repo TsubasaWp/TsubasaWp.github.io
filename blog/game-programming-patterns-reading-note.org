@@ -134,6 +134,7 @@ http://gameprogrammingpatterns.com/contents.html
 这个模式即: 一个Component可以被应用在多个实体中。为了使实体保持无耦合, 逻辑代码分散到各自的Component中, 实体蜕化为一个存放Component的集合.
 
 *** 何时用
+
 *** 安全食用指南
 
 ** Event Queue
