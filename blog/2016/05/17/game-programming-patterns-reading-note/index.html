@@ -381,7 +381,7 @@
 <h4 id="orgheadline43">何时用</h4>
 <div class="outline-text-4" id="text-orgheadline43">
 <p>
-如果仅仅是为了解耦消息发送者和接收者, 观察者模式和命令模式都可以满足需求, 而且代价更小.
+如果仅仅是为了解耦消息发送者和接收者, 观察者模式和命令模式都可以满足需求, 而且代价更小. 但上述两种模式都是实时的, 消息队列则允许使用者挑选一个方便的时间处理事务.
 </p>
 </div>
 </div>
@@ -389,27 +389,119 @@
 <div id="outline-container-orgheadline44" class="outline-4">
 <h4 id="orgheadline44">安全食用指南</h4>
 <div class="outline-text-4" id="text-orgheadline44">
-<p>
-一旦在使用了这个模式,它的影响面会非常大, 游戏中到处都是消息. 所以设计时要三思.
-</p>
+<ul class="org-ul">
+<li>一旦在使用了这个模式,它的影响面会非常大, 游戏中消息满天飞. 设计时要格外谨慎.</li>
+<li>event queue通常是 <b>全局</b> 的</li>
+<li>当心无限循环. 比如:出现消息A, 函数B响应了它, 做了一些事情之后函数B又抛出了一个消息A...</li>
+</ul>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline50" class="outline-3">
-<h3 id="orgheadline50">Service Locator</h3>
+<h3 id="orgheadline50">服务定位 Service Locator</h3>
 <div class="outline-text-3" id="text-orgheadline50">
 </div><div id="outline-container-orgheadline46" class="outline-4">
 <h4 id="orgheadline46">目的</h4>
+<div class="outline-text-4" id="text-orgheadline46">
+<p>
+提供无耦合的全局的服务.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline47" class="outline-4">
 <h4 id="orgheadline47">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline47">
+<p>
+游戏引擎中有些基础功能需要随时随地被访问, 比如音频播放, 动效播放, 配置读取, 等等.
+我们一般程序猿常用的手段是用单例来实现某个"Center","Manager"或者"System", 然后在游戏里随意的使用.这存在一些问题:
+</p>
+<ul class="org-ul">
+<li>没有很好的解耦.</li>
+<li>这些Center,Manager,System难以被整体的替换.</li>
+</ul>
+
+<p>
+Service Locator模式提供了一个灵活一些的思路:
+一个服务类定义了一个抽象接口的一组操作。一个具体的服务提供者实现这个接口。服务定位器(Service Locator)根据调用者需要的类型来提供对服务的访问.
+</p>
+
+<p>
+此处需要祭出一些代码:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">class ConsoleAudio : public Audio
+{
+public:
+  virtual void playSound(int soundID)
+  {
+    // Play sound using console audio api...
+  }
+  virtual void stopSound(int soundID)
+  {
+    // Stop sound using console audio api...
+  }
+};
+
+class Locator
+{
+public:
+  static Audio* getAudio() { return service_; }
+
+  static void provide(Audio* service)
+  {
+    service_ = service;
+  }
+
+private:
+  static Audio* service_;
+};
+</pre>
 </div>
+
+<p>
+在给整个游戏使用之前, 首先需要通过外界来'注册'一个服务, 这个服务可以随时更换, 只需实现接口即可 (所以完全可以实现一个什么也不干的null service
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">ConsoleAudio *audio = new ConsoleAudio();
+Locator::provide(audio);
+
+// 使用者只需知道协议的接口
+Audio *audio = Locator::getAudio();
+audio-&gt;playSound(VERY_LOUD_BANG);
+</pre>
+</div>
+
+<p>
+另外一个更加喜闻乐见的例子:
+Unity的GetComponent&lt;&gt;()方法
+</p>
+</div>
+</div>
+
 <div id="outline-container-orgheadline48" class="outline-4">
 <h4 id="orgheadline48">何时用</h4>
+<div class="outline-text-4" id="text-orgheadline48">
+<p>
+慎用.
+许多子系统几乎不需要"灵活的替换", 那么一个单例就足够了, 无须把它们隐藏在层层叠叠的代码之后.
+反之, 当一个系统需要频繁替换或拆卸时, 不妨试试这个模式...比如打Log.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline49" class="outline-4">
 <h4 id="orgheadline49">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline49">
+<ul class="org-ul">
+<li>灵活性和复杂度之间的权衡是永恒的话题, 有时单例足够满足需求.</li>
+<li>需要确保服务在合适的地方被初始化和配置.</li>
+<li>服务必须足够健壮, 要有在任何环境下, 被任何人调用的觉悟.</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -463,7 +555,7 @@
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-06-23</span>
+        <span title="last modification date" class="post-info">2016-06-24</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
