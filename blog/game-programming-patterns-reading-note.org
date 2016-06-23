@@ -153,16 +153,78 @@ http://gameprogrammingpatterns.com/contents.html
 它有许多别名,诸如“message queue”,“event loop”, “message pump”, 不陌生吧.
 
 *** 何时用
-如果仅仅是为了解耦消息发送者和接收者, 观察者模式和命令模式都可以满足需求, 而且代价更小.
+如果仅仅是为了解耦消息发送者和接收者, 观察者模式和命令模式都可以满足需求, 而且代价更小. 但上述两种模式都是实时的, 消息队列则允许使用者挑选一个方便的时间处理事务.
 
 *** 安全食用指南
-一旦在使用了这个模式,它的影响面会非常大, 游戏中到处都是消息. 所以设计时要三思.
+- 一旦在使用了这个模式,它的影响面会非常大, 游戏中消息满天飞. 设计时要格外谨慎.
+- event queue通常是 *全局* 的
+- 当心无限循环. 比如:出现消息A, 函数B响应了它, 做了一些事情之后函数B又抛出了一个消息A...
 
-** Service Locator
+** 服务定位 Service Locator
 *** 目的
+提供无耦合的全局的服务.
+
 *** 模式简介
+游戏引擎中有些基础功能需要随时随地被访问, 比如音频播放, 动效播放, 配置读取, 等等.
+我们一般程序猿常用的手段是用单例来实现某个"Center","Manager"或者"System", 然后在游戏里随意的使用.这存在一些问题:
+- 没有很好的解耦.
+- 这些Center,Manager,System难以被整体的替换.
+
+Service Locator模式提供了一个灵活一些的思路:
+一个服务类定义了一个抽象接口的一组操作。一个具体的服务提供者实现这个接口。服务定位器(Service Locator)根据调用者需要的类型来提供对服务的访问.
+
+此处需要祭出一些代码:
+#+BEGIN_SRC c++
+class ConsoleAudio : public Audio
+{
+public:
+  virtual void playSound(int soundID)
+  {
+    // Play sound using console audio api...
+  }
+  virtual void stopSound(int soundID)
+  {
+    // Stop sound using console audio api...
+  }
+};
+
+class Locator
+{
+public:
+  static Audio* getAudio() { return service_; }
+
+  static void provide(Audio* service)
+  {
+    service_ = service;
+  }
+
+private:
+  static Audio* service_;
+};
+#+END_SRC
+
+在给整个游戏使用之前, 首先需要通过外界来'注册'一个服务, 这个服务可以随时更换, 只需实现接口即可 (所以完全可以实现一个什么也不干的null service
+#+BEGIN_SRC c++
+ConsoleAudio *audio = new ConsoleAudio();
+Locator::provide(audio);
+
+// 使用者只需知道协议的接口
+Audio *audio = Locator::getAudio();
+audio->playSound(VERY_LOUD_BANG);
+#+END_SRC
+
+另外一个更加喜闻乐见的例子:
+Unity的GetComponent<>()方法
+
 *** 何时用
+慎用.
+许多子系统几乎不需要"灵活的替换", 那么一个单例就足够了, 无须把它们隐藏在层层叠叠的代码之后.
+反之, 当一个系统需要频繁替换或拆卸时, 不妨试试这个模式...比如打Log.
+
 *** 安全食用指南
+- 灵活性和复杂度之间的权衡是永恒的话题, 有时单例足够满足需求.
+- 需要确保服务在合适的地方被初始化和配置.
+- 服务必须足够健壮, 要有在任何环境下, 被任何人调用的觉悟.
 
 
 * 用于优化性能的模式
