@@ -240,57 +240,92 @@
 </div>
 
 
-<div id="outline-container-orgheadline34" class="outline-2">
-<h2 id="orgheadline34">用于实现行为的模式</h2>
-<div class="outline-text-2" id="text-orgheadline34">
-</div><div id="outline-container-orgheadline23" class="outline-3">
-<h3 id="orgheadline23">Bytecode</h3>
-<div class="outline-text-3" id="text-orgheadline23">
-</div><div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">目的</h4>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19">用于实现行为的模式</h2>
+<div class="outline-text-2" id="text-orgheadline19">
+<p>
+游戏中总是有许多特定的'行为', 比如怪物的AI, 技能, 对话等等. <br  />
+上学的时候时曾经为此写过一个几百行的switch-case, 用某个小伙伴的话讲就是"你会发现滚动条越来越小最后接近一个像素", 这显然不是正确的姿势_(:з」∠)_ <br  />
+下面三种模式可以帮助你从switch-case中解脱出来.
+</p>
 </div>
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">模式简介</h4>
-</div>
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">何时用</h4>
-</div>
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">安全食用指南</h4>
+
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">数据驱动 Bytecode</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+</div><div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">目的</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<p>
+使用运行在'虚拟机'上,依靠解释执行的指令实现行为, 以提供最大的灵活性.
+</p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline28" class="outline-3">
-<h3 id="orgheadline28">Subclass Sandbox</h3>
-<div class="outline-text-3" id="text-orgheadline28">
-</div><div id="outline-container-orgheadline24" class="outline-4">
-<h4 id="orgheadline24">目的</h4>
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline21">
+<p>
+上面那句话有些formal, 在实践中应该每个项目多少都用到这个模式, 比如用脚本(一般是lua)来写一部分游戏逻辑, 甚至可以用脚本写所有的游戏逻辑(撸主有幸做过这样一个项目..
+它给我们带来的最直接的好处有二:
+</p>
+<ul class="org-ul">
+<li>热更新</li>
+<li>将行为逻辑设计与需要编译的代码解耦.</li>
+</ul>
+
+<p>
+Bytecode当然不仅限于脚本语言.只要定义一套命令并在游戏中实现解析逻辑,能够在运行时加载执行,就可以成为Bytecode.
+</p>
 </div>
-<div id="outline-container-orgheadline25" class="outline-4">
-<h4 id="orgheadline25">模式简介</h4>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">何时用</h4>
+</div>
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline23">
+<ul class="org-ul">
+<li>效率会打折扣.比如在unity中使用lua会带来一些性能损失,虽然这点损失远远比不上它带来的好处.</li>
+<li>难以调试. 撸主在写了一段时间lua后练就了不依赖debugger的习惯.</li>
+<li>难以信任. 脚本有可能没有好好测试就被随意的丢在版本里了...咳咳</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29">子类沙盒 Subclass Sandbox</h3>
+<div class="outline-text-3" id="text-orgheadline29">
+</div><div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25">目的</h4>
 </div>
 <div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26">何时用</h4>
+<h4 id="orgheadline26">模式简介</h4>
 </div>
 <div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27">安全食用指南</h4>
+<h4 id="orgheadline27">何时用</h4>
+</div>
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28">安全食用指南</h4>
 </div>
 </div>
 
-<div id="outline-container-orgheadline33" class="outline-3">
-<h3 id="orgheadline33">Type Object</h3>
-<div class="outline-text-3" id="text-orgheadline33">
-</div><div id="outline-container-orgheadline29" class="outline-4">
-<h4 id="orgheadline29">目的</h4>
-</div>
-<div id="outline-container-orgheadline30" class="outline-4">
-<h4 id="orgheadline30">模式简介</h4>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">类型对象 Type Object</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+</div><div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30">目的</h4>
 </div>
 <div id="outline-container-orgheadline31" class="outline-4">
-<h4 id="orgheadline31">何时用</h4>
+<h4 id="orgheadline31">模式简介</h4>
 </div>
 <div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32">安全食用指南</h4>
+<h4 id="orgheadline32">何时用</h4>
+</div>
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33">安全食用指南</h4>
 </div>
 </div>
 </div>
@@ -507,33 +542,80 @@ Unity的GetComponent&lt;&gt;()方法
 </div>
 
 
-<div id="outline-container-orgheadline59" class="outline-2">
-<h2 id="orgheadline59">用于优化性能的模式</h2>
-<div class="outline-text-2" id="text-orgheadline59">
-</div><div id="outline-container-orgheadline51" class="outline-3">
-<h3 id="orgheadline51">Data Locality</h3>
+<div id="outline-container-orgheadline51" class="outline-2">
+<h2 id="orgheadline51">用于优化性能的模式</h2>
+<div class="outline-text-2" id="text-orgheadline51">
+<p>
+性能'优化'是个永恒的课题, 下面介绍四个以空间换时间的模式.
+</p>
 </div>
-<div id="outline-container-orgheadline52" class="outline-3">
-<h3 id="orgheadline52">Dirty Flag</h3>
+
+<div id="outline-container-orgheadline56" class="outline-3">
+<h3 id="orgheadline56">Data Locality</h3>
+<div class="outline-text-3" id="text-orgheadline56">
+</div><div id="outline-container-orgheadline52" class="outline-4">
+<h4 id="orgheadline52">目的</h4>
 </div>
-<div id="outline-container-orgheadline53" class="outline-3">
-<h3 id="orgheadline53">Object Pool</h3>
+<div id="outline-container-orgheadline53" class="outline-4">
+<h4 id="orgheadline53">模式简介</h4>
 </div>
-<div id="outline-container-orgheadline58" class="outline-3">
-<h3 id="orgheadline58">Spatial Partition</h3>
-<div class="outline-text-3" id="text-orgheadline58">
-</div><div id="outline-container-orgheadline54" class="outline-4">
-<h4 id="orgheadline54">目的</h4>
+<div id="outline-container-orgheadline54" class="outline-4">
+<h4 id="orgheadline54">何时用</h4>
 </div>
 <div id="outline-container-orgheadline55" class="outline-4">
-<h4 id="orgheadline55">模式简介</h4>
+<h4 id="orgheadline55">安全食用指南</h4>
 </div>
-<div id="outline-container-orgheadline56" class="outline-4">
-<h4 id="orgheadline56">何时用</h4>
 </div>
-<div id="outline-container-orgheadline57" class="outline-4">
-<h4 id="orgheadline57">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline57">
+
+<div id="outline-container-orgheadline61" class="outline-3">
+<h3 id="orgheadline61">Dirty Flag</h3>
+<div class="outline-text-3" id="text-orgheadline61">
+</div><div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57">目的</h4>
+</div>
+<div id="outline-container-orgheadline58" class="outline-4">
+<h4 id="orgheadline58">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline59" class="outline-4">
+<h4 id="orgheadline59">何时用</h4>
+</div>
+<div id="outline-container-orgheadline60" class="outline-4">
+<h4 id="orgheadline60">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline66" class="outline-3">
+<h3 id="orgheadline66">Object Pool</h3>
+<div class="outline-text-3" id="text-orgheadline66">
+</div><div id="outline-container-orgheadline62" class="outline-4">
+<h4 id="orgheadline62">目的</h4>
+</div>
+<div id="outline-container-orgheadline63" class="outline-4">
+<h4 id="orgheadline63">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline64" class="outline-4">
+<h4 id="orgheadline64">何时用</h4>
+</div>
+<div id="outline-container-orgheadline65" class="outline-4">
+<h4 id="orgheadline65">安全食用指南</h4>
+</div>
+</div>
+
+<div id="outline-container-orgheadline71" class="outline-3">
+<h3 id="orgheadline71">Spatial Partition</h3>
+<div class="outline-text-3" id="text-orgheadline71">
+</div><div id="outline-container-orgheadline67" class="outline-4">
+<h4 id="orgheadline67">目的</h4>
+</div>
+<div id="outline-container-orgheadline68" class="outline-4">
+<h4 id="orgheadline68">模式简介</h4>
+</div>
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69">何时用</h4>
+</div>
+<div id="outline-container-orgheadline70" class="outline-4">
+<h4 id="orgheadline70">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline70">
 <p>
 写到最后感到简直是把原书的目录给翻译了一遍, 忧桑... 
 </p>
