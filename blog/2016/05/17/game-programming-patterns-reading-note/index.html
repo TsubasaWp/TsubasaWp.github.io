@@ -244,8 +244,8 @@
 <h2 id="orgheadline19">用于实现行为的模式</h2>
 <div class="outline-text-2" id="text-orgheadline19">
 <p>
-游戏中总是有许多特定的'行为', 比如怪物的AI, 技能, 对话等等. <br  />
-上学的时候时曾经为此写过一个几百行的switch-case, 用某个小伙伴的话讲就是"你会发现滚动条越来越小最后接近一个像素", 这显然不是正确的姿势_(:з」∠)_ <br  />
+游戏中总是有许多特定的'行为', 比如怪物的AI, 技能, 对话等等. 
+读书的时候时曾经为此写过一个几百行的switch-case, 用某个小伙伴的话讲就是"你会发现滚动条越来越小最后接近一个像素", 这显然不是正确的姿势_(:з」∠)_ <br  />
 下面三种模式可以帮助你从switch-case中解脱出来.
 </p>
 </div>
@@ -266,49 +266,88 @@
 <h4 id="orgheadline21">模式简介</h4>
 <div class="outline-text-4" id="text-orgheadline21">
 <p>
-上面那句话有些formal, 在实践中应该每个项目多少都用到这个模式, 比如用脚本(一般是lua)来写一部分游戏逻辑, 甚至可以用脚本写所有的游戏逻辑(撸主有幸做过这样一个项目..
-它给我们带来的最直接的好处有二:
+上面那句话有些formal, 在实践中应该每个项目多少都用到这个模式, 比如用lua写一部分游戏逻辑(甚至所有逻辑.. <br  />
+Lua是使用最广泛的register-based bytecode VM. 它除了能帮助我们将行为逻辑设计与需要编译的代码解耦, 还可以用于进行手机平台的热更新(苹果爸爸暂且认为lua属于"resource"), 所以lua几乎是现在手游的标配了.
 </p>
-<ul class="org-ul">
-<li>热更新</li>
-<li>将行为逻辑设计与需要编译的代码解耦.</li>
-</ul>
 
 <p>
-Bytecode当然不仅限于脚本语言.只要定义一套命令并在游戏中实现解析逻辑,能够在运行时加载执行,就可以成为Bytecode.
+Bytecode当然不仅限于脚本语言.推广一些,只要定义一套命令并在游戏中实现解析逻辑,能够在运行时解释执行就可以.
+比如用xml定义一些简单的配置,用于制作新手引导,剧情对白等需要策划大量介入的环节.
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline22" class="outline-4">
 <h4 id="orgheadline22">何时用</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+这个模式比较重度, 一个语言解释器自身的体积,和它对运行效率的影响都难以忽略. 所以仅当你有许多'行为'需要定义和维护的时候再考虑使用它.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline23" class="outline-4">
 <h4 id="orgheadline23">安全食用指南</h4>
 <div class="outline-text-4" id="text-orgheadline23">
 <ul class="org-ul">
-<li>效率会打折扣.比如在unity中使用lua会带来一些性能损失,虽然这点损失远远比不上它带来的好处.</li>
-<li>难以调试. 撸主在写了一段时间lua后练就了不依赖debugger的习惯.</li>
-<li>难以信任. 脚本有可能没有好好测试就被随意的丢在版本里了...咳咳</li>
+<li>现在是个好时代,就别自己去造轮子实现新的语言了,这可能对接盘侠们造成成吨的伤害.</li>
+<li>解释执行使得运行效率打折扣.比如众所周知在unity中使用lua会带来一些性能损失,虽然这点损失远远比不上它带来的好处.</li>
+<li>难以调试. 撸主曾经在写了一段时间lua后练就了不依赖debugger的习惯.</li>
+<li>难以信任. 保证脚本质量和追踪脚本错误都比平时麻烦一些.</li>
 </ul>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline29" class="outline-3">
-<h3 id="orgheadline29">子类沙盒 Subclass Sandbox</h3>
+<h3 id="orgheadline29">子类沙箱 Subclass Sandbox</h3>
 <div class="outline-text-3" id="text-orgheadline29">
 </div><div id="outline-container-orgheadline25" class="outline-4">
 <h4 id="orgheadline25">目的</h4>
+<div class="outline-text-4" id="text-orgheadline25">
+<p>
+使基类成为沙箱, 在子类中仅使用基类提供的方法定义行为.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline26" class="outline-4">
 <h4 id="orgheadline26">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline26">
+<p>
+当有许多同类行为(例如许多技能)需要实现时,首先被想到的方法可能是定义一大堆类. <br  />
+随之而来的问题则是大量重复冗余的代码,大量对外界api(音频,动画)的调用,难以定义统一的行为.
+</p>
+
+<p>
+Subclass Sandbox模式解决这个问题的思路是:<br  />
+使基类成为一个沙箱,封装一些通用的操作以及对子系统外部的调用在其中, 子类仅使用基类提供的接口来实现一系列相似的行为.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline27" class="outline-4">
 <h4 id="orgheadline27">何时用</h4>
+<div class="outline-text-4" id="text-orgheadline27">
+<p>
+这是一个非常轻量的模式,想用就用,尤其当遇到以下情景时:
+</p>
+<ul class="org-ul">
+<li>当你发现需要定义一大坨子类,并且基类可以提供子类所需的所有操作,且子类之间需要共享一些操作.</li>
+<li>希望把子系统与外界隔离时.(尼玛引擎升级以后XX函数被deprecated了啊! 有几百个地方要改呢要死了!</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-orgheadline28" class="outline-4">
 <h4 id="orgheadline28">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline28">
+<ul class="org-ul">
+<li>首先,这个基类沙盒看起来就很长,它很好的诠释了解耦和代码量的关系...</li>
+<li>难以改动基类, 详情见此<a href="https://en.wikipedia.org/wiki/Fragile_base_class">Fragile base class</a></li>
+<li>如果基类实在是太庞大,可以考虑使用Component模式,把一些相对独立的操作抽离.</li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -317,15 +356,94 @@ Bytecode当然不仅限于脚本语言.只要定义一套命令并在游戏中�
 <div class="outline-text-3" id="text-orgheadline34">
 </div><div id="outline-container-orgheadline30" class="outline-4">
 <h4 id="orgheadline30">目的</h4>
+<div class="outline-text-4" id="text-orgheadline30">
+<p>
+定义一个类,这个类的每个实例可以代表一种不同类型的物体.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline31" class="outline-4">
 <h4 id="orgheadline31">模式简介</h4>
+<div class="outline-text-4" id="text-orgheadline31">
+<p>
+有天策划想要实现一只怪, 程序猿马上实现了Monster. <br  />
+第二天策划说"一种怪太单调了,来七八种吧", 程序猿咬咬牙, 从Monster继承了8个XXXMonster. <br  />
+第三天策划又想出了80种怪, 第四天策划要把所有怪的数值调一遍... <br  />
+</p>
+
+<p>
+如果程序猿还坚持用标准的oop解法肯定是要死人的, Type Object模式就应运而生了: <br  />
+定义一个'容器'类, 再定义一个'类型'类. '容器'类中实现操作, '类型'类包含描述和数据. 使'容器'类拥有一个'类型'类的引用, 在需要向'类型'类查询数据. is-a变成has-a.<br  />
+再进一步,'类型'类可以优化成数据驱动的, 策划就可以随心所欲的折腾了.
+</p>
+
+<p>
+以上面的场景举栗, 把Monster作为'容器'类:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">class Monster
+{
+public:
+  Monster(Breed&amp; breed)
+  : health_(breed.getHealth()),
+    breed_(breed)
+  {}
+  const char* getAttack()
+  {
+    return breed_.getAttack();
+  }
+private:
+  int    health_;
+  Breed&amp; breed_;
+};
+</pre>
 </div>
+<p>
+另外定义'Breed'作为'类型'类:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">class Breed
+{
+public:
+  Breed(int health, const char* attack)
+  : health_(health),
+    attack_(attack)
+  {}
+  int getHealth() { return health_; }
+  const char* getAttack() { return attack_; }
+private:
+  int health_;
+  const char* attack_;
+};
+</pre>
+</div>
+</div>
+</div>
+
 <div id="outline-container-orgheadline32" class="outline-4">
 <h4 id="orgheadline32">何时用</h4>
+<div class="outline-text-4" id="text-orgheadline32">
+<p>
+这个模式略显厚重,毕竟多了一层'类'. 出现以下状况时可以考虑使用它:
+</p>
+<ul class="org-ul">
+<li>不知道策划在梦里还会开什么脑洞.</li>
+<li>希望不重新编译代码就能进行改动.</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-orgheadline33" class="outline-4">
 <h4 id="orgheadline33">安全食用指南</h4>
+<div class="outline-text-4" id="text-orgheadline33">
+<p>
+使用这个模式后往往会把一些内容放在配置中,虽然增加了灵活度,但会失去一些操控性. <br  />
+"哎呀这个怪的冒字动画能不能稍微特别一点, 要不再给那个怪额外加两个音效", "(╯‵□′)╯︵┻━┻"
+</p>
+</div>
 </div>
 </div>
 </div>
@@ -637,7 +755,7 @@ Unity的GetComponent&lt;&gt;()方法
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-06-24</span>
+        <span title="last modification date" class="post-info">2016-06-25</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
