@@ -122,9 +122,9 @@
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline70">6. 用于优化性能的模式</a>
+<li><a href="#orgheadline71">6. 用于优化性能的模式</a>
 <ul>
-<li><a href="#orgheadline55">6.1. Data Locality</a>
+<li><a href="#orgheadline55">6.1. 局部数据 Data Locality</a>
 <ul>
 <li><a href="#orgheadline51">6.1.1. 目的</a></li>
 <li><a href="#orgheadline52">6.1.2. 模式简介</a></li>
@@ -140,19 +140,20 @@
 <li><a href="#orgheadline59">6.2.4. 安全食用指南</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline64">6.3. Object Pool</a>
+<li><a href="#orgheadline65">6.3. Object Pool</a>
 <ul>
 <li><a href="#orgheadline61">6.3.1. 目的</a></li>
 <li><a href="#orgheadline62">6.3.2. 模式简介</a></li>
-<li><a href="#orgheadline63">6.3.3. 安全食用指南</a></li>
+<li><a href="#orgheadline63">6.3.3. 何时用</a></li>
+<li><a href="#orgheadline64">6.3.4. 安全食用指南</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline69">6.4. Spatial Partition</a>
+<li><a href="#orgheadline70">6.4. Spatial Partition</a>
 <ul>
-<li><a href="#orgheadline65">6.4.1. 目的</a></li>
-<li><a href="#orgheadline66">6.4.2. 模式简介</a></li>
-<li><a href="#orgheadline67">6.4.3. 何时用</a></li>
-<li><a href="#orgheadline68">6.4.4. 安全食用指南</a></li>
+<li><a href="#orgheadline66">6.4.1. 目的</a></li>
+<li><a href="#orgheadline67">6.4.2. 模式简介</a></li>
+<li><a href="#orgheadline68">6.4.3. 何时用</a></li>
+<li><a href="#orgheadline69">6.4.4. 安全食用指南</a></li>
 </ul>
 </li>
 </ul>
@@ -496,8 +497,8 @@ Subclass Sandbox模式解决这个问题的思路是:<br  />
 
 <p>
 如果程序猿还坚持用标准的oop解法肯定是要死人的, Type Object模式就应运而生了: <br  />
-定义一个'容器'类, 再定义一个'类型'类. '容器'类中实现操作, '类型'类包含描述和数据. 使'容器'类拥有一个'类型'类的引用, 在需要向'类型'类查询数据. is-a变成has-a.<br  />
-再进一步,'类型'类可以优化成数据驱动的, 策划就可以随心所欲的折腾了.
+定义一个[容器]类, 再定义一个[类型]类. [容器]类中实现操作, [类型]类包含描述和数据. 使[容器]类拥有一个[类型]类的引用, 在需要向[类型]类查询数据. is-a变成has-a.<br  />
+再进一步,[类型]类可以优化成数据驱动的, 策划就可以随心所欲的折腾了.
 </p>
 
 <p>
@@ -786,30 +787,57 @@ Unity的GetComponent&lt;&gt;()方法
 </div>
 
 
-<div id="outline-container-orgheadline70" class="outline-2">
-<h2 id="orgheadline70"><span class="section-number-2">6</span> 用于优化性能的模式</h2>
+<div id="outline-container-orgheadline71" class="outline-2">
+<h2 id="orgheadline71"><span class="section-number-2">6</span> 用于优化性能的模式</h2>
 <div class="outline-text-2" id="text-6">
 <p>
-性能'优化'是个永恒的课题, 下面介绍四个以空间换时间的模式.
+性能'优化'是个永恒的课题,我们最终的目的是让玩家的体验更加流畅,下面介绍四个以空间换时间的方法.
 </p>
 </div>
 
 <div id="outline-container-orgheadline55" class="outline-3">
-<h3 id="orgheadline55"><span class="section-number-3">6.1</span> Data Locality</h3>
+<h3 id="orgheadline55"><span class="section-number-3">6.1</span> 局部数据 Data Locality</h3>
 <div class="outline-text-3" id="text-6-1">
 </div><div id="outline-container-orgheadline51" class="outline-4">
 <h4 id="orgheadline51"><span class="section-number-4">6.1.1</span> 目的</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<p>
+利用CPU缓存的特性重组数据, 以达到加快内存访问的目的.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline52" class="outline-4">
 <h4 id="orgheadline52"><span class="section-number-4">6.1.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<p>
+现在的CPU都带有缓存,CPU缓存一次性把内存中临近的一整块数据读取进来.如果我们利用这个特性,在连续的内存中存放待处理的数据,将有助于提升处理速度.
+</p>
 </div>
+</div>
+
 <div id="outline-container-orgheadline53" class="outline-4">
 <h4 id="orgheadline53"><span class="section-number-4">6.1.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-6-1-3">
+<ul class="org-ul">
+<li>当你真正遇到性能瓶颈的时候再考虑使用优化手段,尤其慎用在一些调用频率不高的代码身上.毕竟对项目整体来说,做这样的优化可能性价比非常低.</li>
+<li>先确定病因,先确定病因,先确定病因. 使用Data Locality之前务必确定导致你性能瓶颈的原因是缓存命中率低,否则就是在瞎折腾.</li>
+<li>我们在整个编码过程中都应当考量缓存友好性,等到问题累积到一定程度而爆发出来后就比较难办了.</li>
+</ul>
 </div>
+</div>
+
 <div id="outline-container-orgheadline54" class="outline-4">
 <h4 id="orgheadline54"><span class="section-number-4">6.1.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-6-1-4">
+<p>
+每当我们传递一个指针的时候就意味着跨越内存, 也就意味着cache miss&#x2026;..(想掀桌吗 <br  />
+缓存友好和我们平时惯用的一些方便的语言特性是杠杆的两端,没有捷径,只有挑战. 所以这个模式性价比真的难说&#x2026;
+</p>
 </div>
 </div>
+</div>
+
 
 <div id="outline-container-orgheadline60" class="outline-3">
 <h3 id="orgheadline60"><span class="section-number-3">6.2</span> Dirty Flag</h3>
@@ -828,50 +856,52 @@ Unity的GetComponent&lt;&gt;()方法
 </div>
 </div>
 
-<div id="outline-container-orgheadline64" class="outline-3">
-<h3 id="orgheadline64"><span class="section-number-3">6.3</span> Object Pool</h3>
+<div id="outline-container-orgheadline65" class="outline-3">
+<h3 id="orgheadline65"><span class="section-number-3">6.3</span> Object Pool</h3>
 <div class="outline-text-3" id="text-6-3">
 </div><div id="outline-container-orgheadline61" class="outline-4">
 <h4 id="orgheadline61"><span class="section-number-4">6.3.1</span> 目的</h4>
 </div>
 <div id="outline-container-orgheadline62" class="outline-4">
 <h4 id="orgheadline62"><span class="section-number-4">6.3.2</span> 模式简介</h4>
-<div class="outline-text-4" id="text-6-3-2">
-<p>
-gi*** 何时用
-</p>
-</div>
 </div>
 <div id="outline-container-orgheadline63" class="outline-4">
-<h4 id="orgheadline63"><span class="section-number-4">6.3.3</span> 安全食用指南</h4>
+<h4 id="orgheadline63"><span class="section-number-4">6.3.3</span> 何时用</h4>
+</div>
+<div id="outline-container-orgheadline64" class="outline-4">
+<h4 id="orgheadline64"><span class="section-number-4">6.3.4</span> 安全食用指南</h4>
 </div>
 </div>
 
-<div id="outline-container-orgheadline69" class="outline-3">
-<h3 id="orgheadline69"><span class="section-number-3">6.4</span> Spatial Partition</h3>
+<div id="outline-container-orgheadline70" class="outline-3">
+<h3 id="orgheadline70"><span class="section-number-3">6.4</span> Spatial Partition</h3>
 <div class="outline-text-3" id="text-6-4">
-</div><div id="outline-container-orgheadline65" class="outline-4">
-<h4 id="orgheadline65"><span class="section-number-4">6.4.1</span> 目的</h4>
-</div>
-<div id="outline-container-orgheadline66" class="outline-4">
-<h4 id="orgheadline66"><span class="section-number-4">6.4.2</span> 模式简介</h4>
+</div><div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><span class="section-number-4">6.4.1</span> 目的</h4>
 </div>
 <div id="outline-container-orgheadline67" class="outline-4">
-<h4 id="orgheadline67"><span class="section-number-4">6.4.3</span> 何时用</h4>
+<h4 id="orgheadline67"><span class="section-number-4">6.4.2</span> 模式简介</h4>
 </div>
 <div id="outline-container-orgheadline68" class="outline-4">
-<h4 id="orgheadline68"><span class="section-number-4">6.4.4</span> 安全食用指南</h4>
+<h4 id="orgheadline68"><span class="section-number-4">6.4.3</span> 何时用</h4>
+</div>
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69"><span class="section-number-4">6.4.4</span> 安全食用指南</h4>
 <div class="outline-text-4" id="text-6-4-4">
 <p>
-写到最后感到简直是把原书的目录给翻译了一遍, 忧桑&#x2026; 
+写到最后感到我简直是把原书的目录给翻译了一遍, 忧桑&#x2026;  
 </p>
 
 <p>
-虽然如此, 还是希望这篇文章能够在半小时内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构, 如有同学发现错误求尽快指正
+撸主修为尚浅, 写这个话题真是鸭梨山大, 如有同学发现问题恳请尽快指正(ง •̀_•́)ง
 </p>
 
 <p>
-最后说句自己的感受&#x2026;设计模式打嘴炮容易应用难,需要时刻以强大的意志力保证在应付繁杂的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你&#x2026;
+虽然如此, 还是希望这篇文章能够在半小时内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构.
+</p>
+
+<p>
+最后说句自己的感受&#x2026;设计模式嘴炮容易应用难,需要以强大的意志力保证在应付无常的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你&#x2026;
 </p>
 </div>
 </div>
@@ -883,7 +913,7 @@ gi*** 何时用
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-05-17</span>
-        <span title="last modification date" class="post-info">2016-06-25</span>
+        <span title="last modification date" class="post-info">2016-06-26</span>
         <span title="tags" class="post-info"><a href="/tags/reading-note/">reading note</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>

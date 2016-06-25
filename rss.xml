@@ -4,10 +4,17 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sat, 25 Jun 2016 22:06:53 CST</pubDate>
-    <lastBuildDate>Sat, 25 Jun 2016 22:06:53 CST</lastBuildDate>
+    <pubDate>Sun, 26 Jun 2016 00:08:47 CST</pubDate>
+    <lastBuildDate>Sun, 26 Jun 2016 00:08:47 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
+    <item>
+      <title>Game Programming Patterns Reading Note</title>
+      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
+      <description><![CDATA[reading note]]></description>
+      <pubDate>2016-06-26</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
+    </item>
     <item>
       <title>Hello World</title>
       <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
@@ -5427,13 +5434,6 @@ apply-generic被调用了3次. 过程如下
 </div>]]></description>
       <pubDate>2016-06-25</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
-    </item>
-    <item>
-      <title>Game Programming Patterns Reading Note</title>
-      <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
-      <description><![CDATA[reading note]]></description>
-      <pubDate>2016-06-25</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
