@@ -32,8 +32,136 @@
 <div>
 <div class="post">
 <h1>Game Programming Patterns Reading Note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. 概览: 结构,性能以及游戏.</a></li>
+<li><a href="#orgheadline2">2. 一些通用设计模式</a></li>
+<li><a href="#orgheadline18">3. 用于时序的模式 (Sequencing Patterns)</a>
+<ul>
+<li><a href="#orgheadline7">3.1. 双缓冲 Double buffer</a>
+<ul>
+<li><a href="#orgheadline3">3.1.1. 目的</a></li>
+<li><a href="#orgheadline4">3.1.2. 模式简介</a></li>
+<li><a href="#orgheadline5">3.1.3. 何时用</a></li>
+<li><a href="#orgheadline6">3.1.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">3.2. 游戏循环 Game loop</a>
+<ul>
+<li><a href="#orgheadline8">3.2.1. 目的</a></li>
+<li><a href="#orgheadline9">3.2.2. 模式简介</a></li>
+<li><a href="#orgheadline10">3.2.3. 何时用</a></li>
+<li><a href="#orgheadline11">3.2.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline17">3.3. 更新 Update</a>
+<ul>
+<li><a href="#orgheadline13">3.3.1. 目的</a></li>
+<li><a href="#orgheadline14">3.3.2. 模式简介</a></li>
+<li><a href="#orgheadline15">3.3.3. 何时用</a></li>
+<li><a href="#orgheadline16">3.3.4. 安全食用指南</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline34">4. 用于实现行为的模式</a>
+<ul>
+<li><a href="#orgheadline23">4.1. 数据驱动 Bytecode</a>
+<ul>
+<li><a href="#orgheadline19">4.1.1. 目的</a></li>
+<li><a href="#orgheadline20">4.1.2. 模式简介</a></li>
+<li><a href="#orgheadline21">4.1.3. 何时用</a></li>
+<li><a href="#orgheadline22">4.1.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline28">4.2. 子类沙箱 Subclass Sandbox</a>
+<ul>
+<li><a href="#orgheadline24">4.2.1. 目的</a></li>
+<li><a href="#orgheadline25">4.2.2. 模式简介</a></li>
+<li><a href="#orgheadline26">4.2.3. 何时用</a></li>
+<li><a href="#orgheadline27">4.2.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline33">4.3. 类型对象 Type Object</a>
+<ul>
+<li><a href="#orgheadline29">4.3.1. 目的</a></li>
+<li><a href="#orgheadline30">4.3.2. 模式简介</a></li>
+<li><a href="#orgheadline31">4.3.3. 何时用</a></li>
+<li><a href="#orgheadline32">4.3.4. 安全食用指南</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline50">5. 用于解耦的模式</a>
+<ul>
+<li><a href="#orgheadline39">5.1. 组件 Component</a>
+<ul>
+<li><a href="#orgheadline35">5.1.1. 目的</a></li>
+<li><a href="#orgheadline36">5.1.2. 模式简介</a></li>
+<li><a href="#orgheadline37">5.1.3. 何时用</a></li>
+<li><a href="#orgheadline38">5.1.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline44">5.2. 消息队列 Event Queue</a>
+<ul>
+<li><a href="#orgheadline40">5.2.1. 目的</a></li>
+<li><a href="#orgheadline41">5.2.2. 模式简介</a></li>
+<li><a href="#orgheadline42">5.2.3. 何时用</a></li>
+<li><a href="#orgheadline43">5.2.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline49">5.3. 服务定位 Service Locator</a>
+<ul>
+<li><a href="#orgheadline45">5.3.1. 目的</a></li>
+<li><a href="#orgheadline46">5.3.2. 模式简介</a></li>
+<li><a href="#orgheadline47">5.3.3. 何时用</a></li>
+<li><a href="#orgheadline48">5.3.4. 安全食用指南</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline70">6. 用于优化性能的模式</a>
+<ul>
+<li><a href="#orgheadline55">6.1. Data Locality</a>
+<ul>
+<li><a href="#orgheadline51">6.1.1. 目的</a></li>
+<li><a href="#orgheadline52">6.1.2. 模式简介</a></li>
+<li><a href="#orgheadline53">6.1.3. 何时用</a></li>
+<li><a href="#orgheadline54">6.1.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline60">6.2. Dirty Flag</a>
+<ul>
+<li><a href="#orgheadline56">6.2.1. 目的g</a></li>
+<li><a href="#orgheadline57">6.2.2. 模式简介</a></li>
+<li><a href="#orgheadline58">6.2.3. 何时用</a></li>
+<li><a href="#orgheadline59">6.2.4. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline64">6.3. Object Pool</a>
+<ul>
+<li><a href="#orgheadline61">6.3.1. 目的</a></li>
+<li><a href="#orgheadline62">6.3.2. 模式简介</a></li>
+<li><a href="#orgheadline63">6.3.3. 安全食用指南</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline69">6.4. Spatial Partition</a>
+<ul>
+<li><a href="#orgheadline65">6.4.1. 目的</a></li>
+<li><a href="#orgheadline66">6.4.2. 模式简介</a></li>
+<li><a href="#orgheadline67">6.4.3. 何时用</a></li>
+<li><a href="#orgheadline68">6.4.4. 安全食用指南</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <p>
-其实这是篇读书笔记(捂脸...
+其实这是篇读书笔记(捂脸&#x2026;
 </p>
 
 <p>
@@ -47,14 +175,11 @@
 
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">概览: 结构,性能以及游戏.</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> 概览: 结构,性能以及游戏.</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-"每当提到所谓 <b>优雅</b> 的方案,我们想要的往往是用尽量少的代码驱动尽量多的用例."
-</p>
-
-<p>
-顾名思义,这篇文章将要介绍一些在游戏设计中常用的模式.
+"每当提到所谓 <b>优雅</b> 的方案,我们想要的往往是用尽量少的代码驱动尽量多的用例."<br  />
+顾名思义,这篇文章将要介绍一些在游戏设计中常用的模式.<br  />
 在展开之前先给大家几个tip:
 </p>
 <ul class="org-ul">
@@ -67,8 +192,8 @@
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">一些通用设计模式</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> 一些通用设计模式</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 下面这几个模式大家都比较熟,也并不仅被应用于游戏开发中,在这里就不展开介绍了.
 </p>
@@ -83,32 +208,29 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">用于时序的模式 (Sequencing Patterns)</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">3</span> 用于时序的模式 (Sequencing Patterns)</h2>
+<div class="outline-text-2" id="text-3">
 <p>
-(乍一看标题可能不太好理解, 撸主当初还以为是Sequence Queue之类的东西, 真是too young..)
-</p>
-
-<p>
+(乍一看标题可能不太好理解, 撸主当初还以为是Sequence Queue之类的东西, 真是too young..)<br  />
 简而言之, 所有需要one by one处理一坨事务的行为模式都可以称为sequencing patterns. 这里介绍三种.
 </p>
 </div>
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">双缓冲 Double buffer</h3>
-<div class="outline-text-3" id="text-orgheadline8">
-</div><div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">目的</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">3.1</span> 双缓冲 Double buffer</h3>
+<div class="outline-text-3" id="text-3-1">
+</div><div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3"><span class="section-number-4">3.1.1</span> 目的</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <p>
 使得一系列有序操作得以迅速且 <b>平滑</b> 的进行.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4"><span class="section-number-4">3.1.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-3-1-2">
 <p>
 了解引擎的同学应该对这个概念比较熟悉. 双缓冲应用比较广的一个场景是在Rendering阶段:
 </p>
@@ -121,9 +243,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline6">
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">3.1.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-3-1-3">
 <ul class="org-ul">
 <li>需要频繁的改变一些状态</li>
 <li>需要在改变时访问状态</li>
@@ -133,9 +255,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline7">
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">3.1.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-3-1-4">
 <ul class="org-ul">
 <li>交换操作必须是原子的</li>
 <li>它会增加内存占用</li>
@@ -144,21 +266,21 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">游戏循环 Game loop</h3>
-<div class="outline-text-3" id="text-orgheadline13">
-</div><div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">目的</h4>
-<div class="outline-text-4" id="text-orgheadline9">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">3.2</span> 游戏循环 Game loop</h3>
+<div class="outline-text-3" id="text-3-2">
+</div><div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8"><span class="section-number-4">3.2.1</span> 目的</h4>
+<div class="outline-text-4" id="text-3-2-1">
 <p>
 将游戏速度与用户输入及处理器速度解耦,并且使我们能够操控游戏速度.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">3.2.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-3-2-2">
 <p>
 这货对很多人来说太熟悉了,就是常用的Update方法嘛. 
 </p>
@@ -174,18 +296,18 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline11">
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">3.2.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-3-2-3">
 <p>
 一般不需要自己造轮子, 它是如此重要, 以至于游戏引擎都把它视为不可分割的一部分.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline12">
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">3.2.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-3-2-4">
 <ul class="org-ul">
 <li>性能至关重要. 如果说一个程序花费90%的时间在10%的代码上,那Game Loop无疑就是这10%部分,所以需要额外关注它的性能.</li>
 <li>在有些平台上, GameLoop可能需要与平台内嵌的UI/Event Loop和谐相处,这听起来就很蛋疼. 好在最近流行的平台上不容易碰到这个问题,或者已经被引擎处理好了.</li>
@@ -194,30 +316,30 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-3">
-<h3 id="orgheadline18">更新 Update</h3>
-<div class="outline-text-3" id="text-orgheadline18">
-</div><div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">目的</h4>
-<div class="outline-text-4" id="text-orgheadline14">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">3.3</span> 更新 Update</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13"><span class="section-number-4">3.3.1</span> 目的</h4>
+<div class="outline-text-4" id="text-3-3-1">
 <p>
 每帧逐一通知自己所管理的物件前进一帧, 以此驱动这些物件的行为.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline15">
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14"><span class="section-number-4">3.3.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-3-3-2">
 <p>
 维护一个对象集合.每个对象实现一个更新的方法,模拟一帧对象的行为,每帧游戏逐一调用每一个对象的更新方法.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15"><span class="section-number-4">3.3.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-3-3-3">
 <ul class="org-ul">
 <li>有GameLoop的地方就可以用, 尤其当需要同步的物件特别多时.</li>
 <li>每个物件的行为模式相对独立.</li>
@@ -226,9 +348,9 @@
 </div>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline17">
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16"><span class="section-number-4">3.3.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-3-3-4">
 <ul class="org-ul">
 <li>把逻辑分散到众多对象中后, 代码结构会变得更离散,更复杂.</li>
 <li>处理游戏暂停变的更难了, 返回游戏时需要恢复update之前的运行状态, 比如继续之前未完的遍历.</li>
@@ -240,31 +362,31 @@
 </div>
 
 
-<div id="outline-container-orgheadline19" class="outline-2">
-<h2 id="orgheadline19">用于实现行为的模式</h2>
-<div class="outline-text-2" id="text-orgheadline19">
+<div id="outline-container-orgheadline34" class="outline-2">
+<h2 id="orgheadline34"><span class="section-number-2">4</span> 用于实现行为的模式</h2>
+<div class="outline-text-2" id="text-4">
 <p>
-游戏中总是有许多特定的'行为', 比如怪物的AI, 技能, 对话等等. 
-读书的时候时曾经为此写过一个几百行的switch-case, 用某个小伙伴的话讲就是"你会发现滚动条越来越小最后接近一个像素", 这显然不是正确的姿势_(:з」∠)_ <br  />
+游戏中总是有许多特定的'行为', 比如怪物的AI, 技能, 对话等等. <br  />
+读书的时候时曾经为此写过一个几百行的switch-case, 用某个小伙伴的话讲就是"你会发现滚动条越来越小最后接近一个像素", 这显然不是正确的姿势<sub>(:з」∠)</sub>_ <br  />
 下面三种模式可以帮助你从switch-case中解脱出来.
 </p>
 </div>
 
-<div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24">数据驱动 Bytecode</h3>
-<div class="outline-text-3" id="text-orgheadline24">
-</div><div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">目的</h4>
-<div class="outline-text-4" id="text-orgheadline20">
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23"><span class="section-number-3">4.1</span> 数据驱动 Bytecode</h3>
+<div class="outline-text-3" id="text-4-1">
+</div><div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19"><span class="section-number-4">4.1.1</span> 目的</h4>
+<div class="outline-text-4" id="text-4-1-1">
 <p>
 使用运行在'虚拟机'上,依靠解释执行的指令实现行为, 以提供最大的灵活性.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline21">
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">4.1.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-4-1-2">
 <p>
 上面那句话有些formal, 在实践中应该每个项目多少都用到这个模式, 比如用lua写一部分游戏逻辑(甚至所有逻辑.. <br  />
 Lua是使用最广泛的register-based bytecode VM. 它除了能帮助我们将行为逻辑设计与需要编译的代码解耦, 还可以用于进行手机平台的热更新(苹果爸爸暂且认为lua属于"resource"), 所以lua几乎是现在手游的标配了.
@@ -277,18 +399,18 @@ Bytecode当然不仅限于脚本语言.推广一些,只要定义一套命令并�
 </div>
 </div>
 
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline22">
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21"><span class="section-number-4">4.1.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-4-1-3">
 <p>
 这个模式比较重度, 一个语言解释器自身的体积,和它对运行效率的影响都难以忽略. 所以仅当你有许多'行为'需要定义和维护的时候再考虑使用它.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline23" class="outline-4">
-<h4 id="orgheadline23">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline23">
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22"><span class="section-number-4">4.1.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-4-1-4">
 <ul class="org-ul">
 <li>现在是个好时代,就别自己去造轮子实现新的语言了,这可能对接盘侠们造成成吨的伤害.</li>
 <li>解释执行使得运行效率打折扣.比如众所周知在unity中使用lua会带来一些性能损失,虽然这点损失远远比不上它带来的好处.</li>
@@ -299,21 +421,21 @@ Bytecode当然不仅限于脚本语言.推广一些,只要定义一套命令并�
 </div>
 </div>
 
-<div id="outline-container-orgheadline29" class="outline-3">
-<h3 id="orgheadline29">子类沙箱 Subclass Sandbox</h3>
-<div class="outline-text-3" id="text-orgheadline29">
-</div><div id="outline-container-orgheadline25" class="outline-4">
-<h4 id="orgheadline25">目的</h4>
-<div class="outline-text-4" id="text-orgheadline25">
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28"><span class="section-number-3">4.2</span> 子类沙箱 Subclass Sandbox</h3>
+<div class="outline-text-3" id="text-4-2">
+</div><div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24"><span class="section-number-4">4.2.1</span> 目的</h4>
+<div class="outline-text-4" id="text-4-2-1">
 <p>
 使基类成为沙箱, 在子类中仅使用基类提供的方法定义行为.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline26">
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25"><span class="section-number-4">4.2.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-4-2-2">
 <p>
 当有许多同类行为(例如许多技能)需要实现时,首先被想到的方法可能是定义一大堆类. <br  />
 随之而来的问题则是大量重复冗余的代码,大量对外界api(音频,动画)的调用,难以定义统一的行为.
@@ -326,9 +448,9 @@ Subclass Sandbox模式解决这个问题的思路是:<br  />
 </div>
 </div>
 
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline27">
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26"><span class="section-number-4">4.2.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-4-2-3">
 <p>
 这是一个非常轻量的模式,想用就用,尤其当遇到以下情景时:
 </p>
@@ -339,11 +461,11 @@ Subclass Sandbox模式解决这个问题的思路是:<br  />
 </div>
 </div>
 
-<div id="outline-container-orgheadline28" class="outline-4">
-<h4 id="orgheadline28">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline28">
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27"><span class="section-number-4">4.2.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-4-2-4">
 <ul class="org-ul">
-<li>首先,这个基类沙盒看起来就很长,它很好的诠释了解耦和代码量的关系...</li>
+<li>首先,这个基类沙盒看起来就很长,它很好的诠释了解耦和代码量的关系&#x2026;</li>
 <li>难以改动基类, 详情见此<a href="https://en.wikipedia.org/wiki/Fragile_base_class">Fragile base class</a></li>
 <li>如果基类实在是太庞大,可以考虑使用Component模式,把一些相对独立的操作抽离.</li>
 </ul>
@@ -351,25 +473,25 @@ Subclass Sandbox模式解决这个问题的思路是:<br  />
 </div>
 </div>
 
-<div id="outline-container-orgheadline34" class="outline-3">
-<h3 id="orgheadline34">类型对象 Type Object</h3>
-<div class="outline-text-3" id="text-orgheadline34">
-</div><div id="outline-container-orgheadline30" class="outline-4">
-<h4 id="orgheadline30">目的</h4>
-<div class="outline-text-4" id="text-orgheadline30">
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33"><span class="section-number-3">4.3</span> 类型对象 Type Object</h3>
+<div class="outline-text-3" id="text-4-3">
+</div><div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29"><span class="section-number-4">4.3.1</span> 目的</h4>
+<div class="outline-text-4" id="text-4-3-1">
 <p>
 定义一个类,这个类的每个实例可以代表一种不同类型的物体.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline31" class="outline-4">
-<h4 id="orgheadline31">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline31">
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30"><span class="section-number-4">4.3.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-4-3-2">
 <p>
 有天策划想要实现一只怪, 程序猿马上实现了Monster. <br  />
 第二天策划说"一种怪太单调了,来七八种吧", 程序猿咬咬牙, 从Monster继承了8个XXXMonster. <br  />
-第三天策划又想出了80种怪, 第四天策划要把所有怪的数值调一遍... <br  />
+第三天策划又想出了80种怪, 第四天策划要把所有怪的数值调一遍&#x2026; <br  />
 </p>
 
 <p>
@@ -423,9 +545,9 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline32">
+<div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31"><span class="section-number-4">4.3.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-4-3-3">
 <p>
 这个模式略显厚重,毕竟多了一层'类'. 出现以下状况时可以考虑使用它:
 </p>
@@ -436,12 +558,16 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline33" class="outline-4">
-<h4 id="orgheadline33">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline33">
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32"><span class="section-number-4">4.3.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-4-3-4">
 <p>
 使用这个模式后往往会把一些内容放在配置中,虽然增加了灵活度,但会失去一些操控性. <br  />
-"哎呀这个怪的冒字动画能不能稍微特别一点, 要不再给那个怪额外加两个音效", "(╯‵□′)╯︵┻━┻"
+</p>
+
+<p>
+"哎呀这个怪的冒字动画能不能稍微特别一点, 要不再给那个怪额外加两个音效" <br  />
+"(╯‵□′)╯︵┻━┻"
 </p>
 </div>
 </div>
@@ -449,29 +575,29 @@ private:
 </div>
 
 
-<div id="outline-container-orgheadline35" class="outline-2">
-<h2 id="orgheadline35">用于解耦的模式</h2>
-<div class="outline-text-2" id="text-orgheadline35">
+<div id="outline-container-orgheadline50" class="outline-2">
+<h2 id="orgheadline50"><span class="section-number-2">5</span> 用于解耦的模式</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 码代码容易, 应付日新月异的需求难, 解耦可以让生活轻松一点点.
 </p>
 </div>
 
-<div id="outline-container-orgheadline40" class="outline-3">
-<h3 id="orgheadline40">组件 Component</h3>
-<div class="outline-text-3" id="text-orgheadline40">
-</div><div id="outline-container-orgheadline36" class="outline-4">
-<h4 id="orgheadline36">目的</h4>
-<div class="outline-text-4" id="text-orgheadline36">
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39"><span class="section-number-3">5.1</span> 组件 Component</h3>
+<div class="outline-text-3" id="text-5-1">
+</div><div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35"><span class="section-number-4">5.1.1</span> 目的</h4>
+<div class="outline-text-4" id="text-5-1-1">
 <p>
 允许一个实体应用在多种互相无耦合的域中.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline37" class="outline-4">
-<h4 id="orgheadline37">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline37">
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36"><span class="section-number-4">5.1.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-5-1-2">
 <p>
 熟悉Unity的同学有木有亲切..没错,Unity框架的核心GameObject就是根据这个思路设计的, 可以说此Component即彼Component.
 </p>
@@ -482,9 +608,9 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline38" class="outline-4">
-<h4 id="orgheadline38">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline38">
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37"><span class="section-number-4">5.1.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-5-1-3">
 <ul class="org-ul">
 <li>当你希望你的类包含许多不同种类且互相独立的功能时.</li>
 <li>如果你的类开始变得非常庞大繁杂,这个模式可能能够帮到忙.</li>
@@ -493,9 +619,9 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline39" class="outline-4">
-<h4 id="orgheadline39">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline39">
+<div id="outline-container-orgheadline38" class="outline-4">
+<h4 id="orgheadline38"><span class="section-number-4">5.1.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-5-1-4">
 <ul class="org-ul">
 <li>复杂, 还是复杂. 使用这个模式不仅仅意味着添加许多Component类, 更要关心它们怎样聚合在一起. 现实总是残酷地, 这些Component往往不可能做到完全的独立, 总是藕断丝连的共享一些状态.
 有时需要把状态放在容器中, 有时需要Component互相了解对方的细节, 需要自行权衡.</li>
@@ -505,21 +631,21 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline45" class="outline-3">
-<h3 id="orgheadline45">消息队列 Event Queue</h3>
-<div class="outline-text-3" id="text-orgheadline45">
-</div><div id="outline-container-orgheadline41" class="outline-4">
-<h4 id="orgheadline41">目的</h4>
-<div class="outline-text-4" id="text-orgheadline41">
+<div id="outline-container-orgheadline44" class="outline-3">
+<h3 id="orgheadline44"><span class="section-number-3">5.2</span> 消息队列 Event Queue</h3>
+<div class="outline-text-3" id="text-5-2">
+</div><div id="outline-container-orgheadline40" class="outline-4">
+<h4 id="orgheadline40"><span class="section-number-4">5.2.1</span> 目的</h4>
+<div class="outline-text-4" id="text-5-2-1">
 <p>
 将消息/事件的发送者和接收者解耦
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline42" class="outline-4">
-<h4 id="orgheadline42">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline42">
+<div id="outline-container-orgheadline41" class="outline-4">
+<h4 id="orgheadline41"><span class="section-number-4">5.2.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-5-2-2">
 <p>
 队列按照先进先出顺序存储一系列消息,并发送通知,处理者收到通知后在队列中取出感兴趣的消息,并把它路由到特定的地方.这样可以将消息的发送者和接收者解耦.
 </p>
@@ -530,42 +656,42 @@ private:
 </div>
 </div>
 
-<div id="outline-container-orgheadline43" class="outline-4">
-<h4 id="orgheadline43">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline43">
+<div id="outline-container-orgheadline42" class="outline-4">
+<h4 id="orgheadline42"><span class="section-number-4">5.2.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-5-2-3">
 <p>
 如果仅仅是为了解耦消息发送者和接收者, 观察者模式和命令模式都可以满足需求, 而且代价更小. 但上述两种模式都是实时的, 消息队列则允许使用者挑选一个方便的时间处理事务.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline44" class="outline-4">
-<h4 id="orgheadline44">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline44">
+<div id="outline-container-orgheadline43" class="outline-4">
+<h4 id="orgheadline43"><span class="section-number-4">5.2.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-5-2-4">
 <ul class="org-ul">
 <li>一旦在使用了这个模式,它的影响面会非常大, 游戏中消息满天飞. 设计时要格外谨慎.</li>
 <li>event queue通常是 <b>全局</b> 的</li>
-<li>当心无限循环. 比如:出现消息A, 函数B响应了它, 做了一些事情之后函数B又抛出了一个消息A...</li>
+<li>当心无限循环. 比如:出现消息A, 函数B响应了它, 做了一些事情之后函数B又抛出了一个消息A&#x2026;</li>
 </ul>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline50" class="outline-3">
-<h3 id="orgheadline50">服务定位 Service Locator</h3>
-<div class="outline-text-3" id="text-orgheadline50">
-</div><div id="outline-container-orgheadline46" class="outline-4">
-<h4 id="orgheadline46">目的</h4>
-<div class="outline-text-4" id="text-orgheadline46">
+<div id="outline-container-orgheadline49" class="outline-3">
+<h3 id="orgheadline49"><span class="section-number-3">5.3</span> 服务定位 Service Locator</h3>
+<div class="outline-text-3" id="text-5-3">
+</div><div id="outline-container-orgheadline45" class="outline-4">
+<h4 id="orgheadline45"><span class="section-number-4">5.3.1</span> 目的</h4>
+<div class="outline-text-4" id="text-5-3-1">
 <p>
 提供无耦合的全局的服务.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline47" class="outline-4">
-<h4 id="orgheadline47">模式简介</h4>
-<div class="outline-text-4" id="text-orgheadline47">
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46"><span class="section-number-4">5.3.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-5-3-2">
 <p>
 游戏引擎中有些基础功能需要随时随地被访问, 比如音频播放, 动效播放, 配置读取, 等等.
 我们一般程序猿常用的手段是用单例来实现某个"Center","Manager"或者"System", 然后在游戏里随意的使用.这存在一些问题:
@@ -635,20 +761,20 @@ Unity的GetComponent&lt;&gt;()方法
 </div>
 </div>
 
-<div id="outline-container-orgheadline48" class="outline-4">
-<h4 id="orgheadline48">何时用</h4>
-<div class="outline-text-4" id="text-orgheadline48">
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47"><span class="section-number-4">5.3.3</span> 何时用</h4>
+<div class="outline-text-4" id="text-5-3-3">
 <p>
 慎用.
 许多子系统几乎不需要"灵活的替换", 那么一个单例就足够了, 无须把它们隐藏在层层叠叠的代码之后.
-反之, 当一个系统需要频繁替换或拆卸时, 不妨试试这个模式...比如打Log.
+反之, 当一个系统需要频繁替换或拆卸时, 不妨试试这个模式&#x2026;比如打Log.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline49" class="outline-4">
-<h4 id="orgheadline49">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline49">
+<div id="outline-container-orgheadline48" class="outline-4">
+<h4 id="orgheadline48"><span class="section-number-4">5.3.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-5-3-4">
 <ul class="org-ul">
 <li>灵活性和复杂度之间的权衡是永恒的话题, 有时单例足够满足需求.</li>
 <li>需要确保服务在合适的地方被初始化和配置.</li>
@@ -660,90 +786,92 @@ Unity的GetComponent&lt;&gt;()方法
 </div>
 
 
-<div id="outline-container-orgheadline51" class="outline-2">
-<h2 id="orgheadline51">用于优化性能的模式</h2>
-<div class="outline-text-2" id="text-orgheadline51">
+<div id="outline-container-orgheadline70" class="outline-2">
+<h2 id="orgheadline70"><span class="section-number-2">6</span> 用于优化性能的模式</h2>
+<div class="outline-text-2" id="text-6">
 <p>
 性能'优化'是个永恒的课题, 下面介绍四个以空间换时间的模式.
 </p>
 </div>
 
-<div id="outline-container-orgheadline56" class="outline-3">
-<h3 id="orgheadline56">Data Locality</h3>
-<div class="outline-text-3" id="text-orgheadline56">
-</div><div id="outline-container-orgheadline52" class="outline-4">
-<h4 id="orgheadline52">目的</h4>
+<div id="outline-container-orgheadline55" class="outline-3">
+<h3 id="orgheadline55"><span class="section-number-3">6.1</span> Data Locality</h3>
+<div class="outline-text-3" id="text-6-1">
+</div><div id="outline-container-orgheadline51" class="outline-4">
+<h4 id="orgheadline51"><span class="section-number-4">6.1.1</span> 目的</h4>
+</div>
+<div id="outline-container-orgheadline52" class="outline-4">
+<h4 id="orgheadline52"><span class="section-number-4">6.1.2</span> 模式简介</h4>
 </div>
 <div id="outline-container-orgheadline53" class="outline-4">
-<h4 id="orgheadline53">模式简介</h4>
+<h4 id="orgheadline53"><span class="section-number-4">6.1.3</span> 何时用</h4>
 </div>
 <div id="outline-container-orgheadline54" class="outline-4">
-<h4 id="orgheadline54">何时用</h4>
-</div>
-<div id="outline-container-orgheadline55" class="outline-4">
-<h4 id="orgheadline55">安全食用指南</h4>
+<h4 id="orgheadline54"><span class="section-number-4">6.1.4</span> 安全食用指南</h4>
 </div>
 </div>
 
-<div id="outline-container-orgheadline61" class="outline-3">
-<h3 id="orgheadline61">Dirty Flag</h3>
-<div class="outline-text-3" id="text-orgheadline61">
-</div><div id="outline-container-orgheadline57" class="outline-4">
-<h4 id="orgheadline57">目的</h4>
+<div id="outline-container-orgheadline60" class="outline-3">
+<h3 id="orgheadline60"><span class="section-number-3">6.2</span> Dirty Flag</h3>
+<div class="outline-text-3" id="text-6-2">
+</div><div id="outline-container-orgheadline56" class="outline-4">
+<h4 id="orgheadline56"><span class="section-number-4">6.2.1</span> 目的g</h4>
+</div>
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57"><span class="section-number-4">6.2.2</span> 模式简介</h4>
 </div>
 <div id="outline-container-orgheadline58" class="outline-4">
-<h4 id="orgheadline58">模式简介</h4>
+<h4 id="orgheadline58"><span class="section-number-4">6.2.3</span> 何时用</h4>
 </div>
 <div id="outline-container-orgheadline59" class="outline-4">
-<h4 id="orgheadline59">何时用</h4>
-</div>
-<div id="outline-container-orgheadline60" class="outline-4">
-<h4 id="orgheadline60">安全食用指南</h4>
+<h4 id="orgheadline59"><span class="section-number-4">6.2.4</span> 安全食用指南</h4>
 </div>
 </div>
 
-<div id="outline-container-orgheadline66" class="outline-3">
-<h3 id="orgheadline66">Object Pool</h3>
-<div class="outline-text-3" id="text-orgheadline66">
-</div><div id="outline-container-orgheadline62" class="outline-4">
-<h4 id="orgheadline62">目的</h4>
+<div id="outline-container-orgheadline64" class="outline-3">
+<h3 id="orgheadline64"><span class="section-number-3">6.3</span> Object Pool</h3>
+<div class="outline-text-3" id="text-6-3">
+</div><div id="outline-container-orgheadline61" class="outline-4">
+<h4 id="orgheadline61"><span class="section-number-4">6.3.1</span> 目的</h4>
+</div>
+<div id="outline-container-orgheadline62" class="outline-4">
+<h4 id="orgheadline62"><span class="section-number-4">6.3.2</span> 模式简介</h4>
+<div class="outline-text-4" id="text-6-3-2">
+<p>
+gi*** 何时用
+</p>
+</div>
 </div>
 <div id="outline-container-orgheadline63" class="outline-4">
-<h4 id="orgheadline63">模式简介</h4>
-</div>
-<div id="outline-container-orgheadline64" class="outline-4">
-<h4 id="orgheadline64">何时用</h4>
-</div>
-<div id="outline-container-orgheadline65" class="outline-4">
-<h4 id="orgheadline65">安全食用指南</h4>
+<h4 id="orgheadline63"><span class="section-number-4">6.3.3</span> 安全食用指南</h4>
 </div>
 </div>
 
-<div id="outline-container-orgheadline71" class="outline-3">
-<h3 id="orgheadline71">Spatial Partition</h3>
-<div class="outline-text-3" id="text-orgheadline71">
-</div><div id="outline-container-orgheadline67" class="outline-4">
-<h4 id="orgheadline67">目的</h4>
+<div id="outline-container-orgheadline69" class="outline-3">
+<h3 id="orgheadline69"><span class="section-number-3">6.4</span> Spatial Partition</h3>
+<div class="outline-text-3" id="text-6-4">
+</div><div id="outline-container-orgheadline65" class="outline-4">
+<h4 id="orgheadline65"><span class="section-number-4">6.4.1</span> 目的</h4>
+</div>
+<div id="outline-container-orgheadline66" class="outline-4">
+<h4 id="orgheadline66"><span class="section-number-4">6.4.2</span> 模式简介</h4>
+</div>
+<div id="outline-container-orgheadline67" class="outline-4">
+<h4 id="orgheadline67"><span class="section-number-4">6.4.3</span> 何时用</h4>
 </div>
 <div id="outline-container-orgheadline68" class="outline-4">
-<h4 id="orgheadline68">模式简介</h4>
-</div>
-<div id="outline-container-orgheadline69" class="outline-4">
-<h4 id="orgheadline69">何时用</h4>
-</div>
-<div id="outline-container-orgheadline70" class="outline-4">
-<h4 id="orgheadline70">安全食用指南</h4>
-<div class="outline-text-4" id="text-orgheadline70">
+<h4 id="orgheadline68"><span class="section-number-4">6.4.4</span> 安全食用指南</h4>
+<div class="outline-text-4" id="text-6-4-4">
 <p>
-写到最后感到简直是把原书的目录给翻译了一遍, 忧桑... 
+写到最后感到简直是把原书的目录给翻译了一遍, 忧桑&#x2026; 
 </p>
 
 <p>
-虽然如此, 还是希望这篇文章能够在15分钟内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构, 如有同学发现错误求尽快指正
+虽然如此, 还是希望这篇文章能够在半小时内给低年级同学一个关于游戏模式的大概印象, 或者帮助中高年级同学整理一下知识结构, 如有同学发现错误求尽快指正
 </p>
 
 <p>
-最后说句自己的感受...设计模式打嘴炮容易应用难,需要时刻以强大的意志力保证在应付繁杂的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你...
+最后说句自己的感受&#x2026;设计模式打嘴炮容易应用难,需要时刻以强大的意志力保证在应付繁杂的需求的同时保持敏感,克服惯性,克服懒,愿圣光护佑着你&#x2026;
 </p>
 </div>
 </div>
