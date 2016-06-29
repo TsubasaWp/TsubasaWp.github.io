@@ -32,17 +32,55 @@
 <div>
 <div class="post">
 <h1>SICP-CH3b 模块化,对象和状态</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">赋值和局部状态</a>
+<ul>
+<li><a href="#orgheadline2">3.1.1局部状态变量</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 <p>
 [碎碎念]
 上一章还有几个实例的习题没有完成, 然而时间太有限了, 所以决定先挖新一章的坑把这本书大略学习完, 之后再来填那些实例, /跪
 </p>
+
+<p>
+前两章介绍了如何把 <b>基本过程</b> 和 <b>基本数据</b> 组合起来. 但有效的程序综合还需要一些 <b>组织原则</b>.<br  />
+本章将研究两种特点鲜明的组织策略:
+</p>
+<ul class="org-ul">
+<li><code>对象途径</code>: 需要关注计算对象可以怎样变化同时保持其标识.</li>
+<li><code>流方式</code>  : 可以松懈我们对时间的模拟与计算机求值过程中的各种事件的发生顺序.</li>
+</ul>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">赋值和局部状态</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+所谓一个对象 <code>有状态</code> ,就是说它的行为受到它的历史的影响.<br  />
+所谓 <code>交互</code>, 就是建立起一个对象的状态变量与其它对象的状态变量之间的联系. <br  />
+所谓 <code>独立对象</code>,就是把一个系统中的状态变量'分组',形成一些内部聚合的子系统,每个子系统与其它子系统之间只存在松散的联系. <br  />
+每个对象需要有一些 <code>局部状态变量</code>,用于描述实际的对象状态. <br  />
+语言中需要提供 <code>赋值运算符</code>, 使我们能够通过人类可读的符号去模拟状态变量.
+</p>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">3.1.1局部状态变量</h3>
+</div>
+</div>
 
 </div>
 </div>
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-06-26</span>
+        <span title="last modification date" class="post-info">2016-06-29</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>

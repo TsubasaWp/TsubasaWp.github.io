@@ -4,10 +4,17 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Sun, 26 Jun 2016 20:44:20 CST</pubDate>
-    <lastBuildDate>Sun, 26 Jun 2016 20:44:20 CST</lastBuildDate>
+    <pubDate>Wed, 29 Jun 2016 08:23:53 CST</pubDate>
+    <lastBuildDate>Wed, 29 Jun 2016 08:23:53 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
+    <item>
+      <title>SICP-CH3b 模块化,对象和状态</title>
+      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
+      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
+      <pubDate>2016-06-29</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
+    </item>
     <item>
       <title>Hello World</title>
       <link>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</link>
@@ -326,13 +333,6 @@ int main(int argc, const char * argv[]) {
 </div>]]></description>
       <pubDate>2016-06-26</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
-    </item>
-    <item>
-      <title>SICP-CH3b 模块化,对象和状态</title>
-      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
-      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
-      <pubDate>2016-06-26</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
     </item>
     <item>
       <title>SICP-CH1-构造过程抽象</title>
