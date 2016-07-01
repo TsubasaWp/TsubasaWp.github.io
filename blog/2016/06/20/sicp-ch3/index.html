@@ -45,8 +45,11 @@
 <li><a href="#orgheadline5">利用闭包</a></li>
 <li><a href="#orgheadline6">习题3.1</a></li>
 <li><a href="#orgheadline7">习题3.2</a></li>
+<li><a href="#orgheadline8">习题3.3</a></li>
+<li><a href="#orgheadline9">习题3.4</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline10">3.1.2引进赋值带来的利益</a></li>
 </ul>
 </li>
 </ul>
@@ -189,6 +192,85 @@
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">习题3.3</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<p>
+为make-account添加密码. 没啥难度,添加一个参数和一个if就可以了.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-account balance password)
+  (define (withdraw amount)
+    (if (&gt;= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (error "Invalid password" pw)))
+  dispatch)
+;; TEST
+(define acc (make-account 100 'pw))
+((acc 'foo 'withdraw ) 50) ;Invalid password p
+((acc 'pw 'withdraw ) 50)  ; 50
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">习题3.4</h4>
+<div class="outline-text-4" id="text-orgheadline9">
+<p>
+继续修改make-account..如果被错误的连续调用了7次,它将call-the-cops
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-account balance password)
+  (define error-pw-cnt 0)
+  (define (call-the-cops)
+       (display "Calling cops......."))
+  (define (withdraw amount)
+    (if (&gt;= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (begin
+          (set! error-pw-cnt (+ 1 error-pw-cnt))
+          (if (&gt;  error-pw-cnt 7)
+              (call-the-cops)
+              (error "Invalid password" pw)))))
+  dispatch)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">3.1.2引进赋值带来的利益</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+将赋值引进所用的程序设计语言,将会使我们陷入许多困难的概念问题丛林之中.
+将系统看做一集带有局部状态的对象,也是一种维护模块化设计的强有力的技术.
+</p>
+</div>
 </div>
 </div>
 
@@ -197,7 +279,7 @@
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-06-30</span>
+        <span title="last modification date" class="post-info">2016-07-01</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
