@@ -92,3 +92,58 @@
 (b 'how-many-calls?) ; val->2
 (b 'reset-count)     ; val->1
 #+END_SRC
+
+*** 习题3.3
+为make-account添加密码. 没啥难度,添加一个参数和一个if就可以了.
+#+BEGIN_SRC scheme
+(define (make-account balance password)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (error "Invalid password" pw)))
+  dispatch)
+;; TEST
+(define acc (make-account 100 'pw))
+((acc 'foo 'withdraw ) 50) ;Invalid password p
+((acc 'pw 'withdraw ) 50)  ; 50
+#+END_SRC
+
+*** 习题3.4
+继续修改make-account..如果被错误的连续调用了7次,它将call-the-cops
+#+BEGIN_SRC scheme
+(define (make-account balance password)
+  (define error-pw-cnt 0)
+  (define (call-the-cops)
+       (display "Calling cops......."))
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (begin
+          (set! error-pw-cnt (+ 1 error-pw-cnt))
+          (if (>  error-pw-cnt 7)
+              (call-the-cops)
+              (error "Invalid password" pw)))))
+  dispatch)
+#+END_SRC
+
+** 3.1.2引进赋值带来的利益
