@@ -159,3 +159,24 @@
       x)))
 #+END_SRC
 
+例子:
+6/pi^2是两个随机选取整数没有公共因子的概率,现在考虑用随机数来实现一种 =蒙特卡洛模拟= 的技术.
+(真是长姿势了...
+#+BEGIN_SRC scheme
+(define (estimate-pi trials)
+  (sqrt (/ 6 (monte-carlo trials cesaro-test))))
+(define (cesaro-test)
+  (= (gcd (random 10000) (random 10000)) 1))
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+; 测试
+(estimate-pi 2000)
+#+END_SRC
+
