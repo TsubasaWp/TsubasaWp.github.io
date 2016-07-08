@@ -281,6 +281,31 @@
       x)))
 </pre>
 </div>
+
+<p>
+例子:
+6/pi<sup>2是两个随机选取整数没有公共因子的概率,现在考虑用随机数来实现一种</sup> <code>蒙特卡洛模拟</code> 的技术.
+(真是长姿势了&#x2026;
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (estimate-pi trials)
+  (sqrt (/ 6 (monte-carlo trials cesaro-test))))
+(define (cesaro-test)
+  (= (gcd (random 10000) (random 10000)) 1))
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+; 测试
+(estimate-pi 2000)
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -290,7 +315,7 @@
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-06</span>
+        <span title="last modification date" class="post-info">2016-07-08</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
