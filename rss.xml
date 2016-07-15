@@ -4,16 +4,16 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Wed, 13 Jul 2016 08:29:27 CST</pubDate>
-    <lastBuildDate>Wed, 13 Jul 2016 08:29:27 CST</lastBuildDate>
+    <pubDate>Fri, 15 Jul 2016 08:31:43 CST</pubDate>
+    <lastBuildDate>Fri, 15 Jul 2016 08:31:43 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
-      <title>一种基于顶点扭曲屏幕的思路</title>
-      <link>http://tsubasawp.github.io/blog/2016/07/13/一种基于顶点扭曲屏幕的思路</link>
-      <description><![CDATA[<TODO: insert your description here>]]></description>
-      <pubDate>2016-07-13</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/07/13/一种基于顶点扭曲屏幕的思路</guid>
+      <title>SICP-CH3b 模块化,对象和状态</title>
+      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
+      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
+      <pubDate>2016-07-15</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
     </item>
     <item>
       <title>Hello World</title>
@@ -36,7 +36,7 @@
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -331,15 +331,8 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
-    </item>
-    <item>
-      <title>SICP-CH3b 模块化,对象和状态</title>
-      <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
-      <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
-      <pubDate>2016-07-08</pubDate>
-      <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
     </item>
     <item>
       <title>SICP-CH1-构造过程抽象</title>
@@ -2028,7 +2021,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
@@ -5432,21 +5425,21 @@ apply-generic被调用了3次. 过程如下
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5727,7 +5720,7 @@ apply-generic被调用了3次. 过程如下
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -6271,8 +6264,267 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-08</pubDate>
+      <pubDate>2016-07-13</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
+    </item>
+    <item>
+      <title>princples and practice using c++ ch20 reading note</title>
+      <link>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</link>
+      <description><![CDATA[<div>
+<div class="post">
+<h1>princples and practice using c++ ch20 reading note</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. C++ 11 features:</a></li>
+<li><a href="#orgheadline6">2. STL</a>
+<ul>
+<li><a href="#orgheadline2">2.1. Data interface</a></li>
+<li><a href="#orgheadline3">2.2. Sequences and iterators</a></li>
+<li><a href="#orgheadline4">2.3. Linked lists</a></li>
+<li><a href="#orgheadline5">2.4. General algorithm</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">3. Generalizing vector yet again</a>
+<ul>
+<li><a href="#orgheadline7">3.1. Container traversal</a></li>
+<li><a href="#orgheadline8">3.2. auto</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">4. An example: text editor</a></li>
+</ul>
+</div>
+</div>
+<p>
+本章讲授如何模仿STL的思路写容器和算法.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> C++ 11 features:</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>using</li>
+</ul>
+<pre class="example">
+using Iterator = T*; // 类似typedef
+</pre>
+
+<ul class="org-ul">
+<li>auto</li>
+</ul>
+<pre class="example">
+auto it; // equal to Vector&lt;T&gt;::iterator it;
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">2</span> STL</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+编程中通常和两样东西打交道: 数据和算法. STL提供了一套容器, 以及一些通用的算法.
+</p>
+
+<p>
+引用一下百科:
+</p>
+
+<pre class="example">
+STL = Standard Template Library，标准模板库，惠普实验室开发的一系列软件的统称。它是由Alexander Stepanov、Meng Lee和David R Musser在惠普实验室工作时所开发出来的。从根本上说，STL是一些“容器”的集合，这些“容器”有list,vector,set,map等，STL也是算法和其他一些组件的集合。这里的“容器”和算法的集合指的是世界上很多聪明人很多年的杰作。STL的目的是标准化组件，这样就不用重新开发，可以使用现成的组件。STL现在是C++的一部分，因此不用额外安装什么。
+</pre>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">2.1</span> Data interface</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+数据结构最常用的特性包括:
+</p>
+<ul class="org-ul">
+<li>容器: vector, list, map &#x2026;</li>
+<li>数据组织: 快速查找, 打印等.</li>
+<li>访问: by value, by index, by properties, &#x2026;</li>
+<li>修改: 增删改</li>
+<li>数学运算: +, -, *, etc.</li>
+</ul>
+
+<p>
+另外,程序猿们希望在使用这些特性时不需要关心类型转换的问题.
+我们在上一章中实现的vector&lt;T&gt;就不满足这个需求, vector&lt;int&gt;和vector&lt;double&gt;是不同的类型.
+下面就来看看STL怎么解决这个问题.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">2.2</span> Sequences and iterators</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+序列是STL的核心思想. 序列有头有尾, 我们可以从begin到end遍历它.
+</p>
+
+<p>
+begin和end是iterator(迭代器). 迭代器是一个指向序列元素的对象.
+序列是"half-open"的,因为begin指向序列第一个元素, 而end指向的元素不属于序列,它指向最后一个元素之后的位置.可以这样表示:[begin:end).
+</p>
+
+<p>
+那么iterator是什么, 它看起来像指针, 但其实它是个更抽象的概念:
+</p>
+<ul class="org-ul">
+<li>它指向序列中的元素</li>
+<li>它可以用==或!=比较</li>
+<li>可以使用*取值</li>
+<li>可以用++获取下一个iterator.</li>
+</ul>
+
+<p>
+这样看起来是不是更像指针了23333.
+上面说了,迭代器是一种抽象的概念, 所以指向array的指针的确可以被称为迭代器. 而许多迭代器的功能比指针要多. 比如可以提供边界检查[begin:end).
+</p>
+
+<p>
+迭代器这个概念可以带来巨大的灵活性, 后面会说明.
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">2.3</span> Linked lists</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+大家都熟悉的链表..
+</p>
+
+<p>
+在STL中, list被实现为双向链表. 使用iterator来遍历,插入和删除. list不支持下标索引,因为对链表来说下标索引效率太低.
+</p>
+
+<p>
+vector的iterator可以直接利用指针实现, 而list的iterator则复杂一些(注意它是nested class):
+</p>
+<pre class="example">
+template&lt;typename Elem&gt;
+class list&lt;Elem&gt;::iterator {
+    Link&lt;Elem *&gt;curr;
+public:
+   iterator(Link&lt;Elem&gt;* p): curr{p};
+   iterator&amp; operator++() {curr = curr-&gt;succ; return *this;}
+   iterator&amp; operator--() {curr = curr-&gt;prev; return *this;}
+   Elem&amp; operator* () {return curr-&gt;val;} 
+   
+   bool operator==(const iterator&amp; b) const {return curr == b.curr};    
+   bool operator!=(const iterator&amp; b) const {return curr != b.curr};    
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">2.4</span> General algorithm</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+利用iterator,我们可以写出同时支持list和vector等容器的通用算法:
+</p>
+<pre class="example">
+template&lt;typename Iter&gt;
+Iter high(Iter first, Iter last)
+{
+    Iter high = first;
+    for ( Iter p = first; p != last; p++)
+        if ( high &lt; p ) high = p;
+    return p;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">3</span> Generalizing vector yet again</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+是时候改造一下上一章的vector了,我们为它加入iterator:
+</p>
+<pre class="example">
+template&lt;typename T&gt;
+class vector {
+public:
+    using size_type = unsigned long;
+    using value_type = T;
+    using iterator = T*;
+    using const_iterator = const T*;
+    //...
+    iterator begin();
+    iterator end();
+    size_type size();
+    // ... const version
+}
+</pre>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7"><span class="section-number-3">3.1</span> Container traversal</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+可以利用一个语法糖来实现通用的遍历:
+</p>
+<pre class="example">
+for ( T val : _list) cout &lt;&lt; val &lt;&lt; endl;
+for ( T val : _vector) cout &lt;&lt; val &lt;&lt; endl;
+</pre>
+
+<p>
+没错这个语法糖就是利用iterator实现的.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8"><span class="section-number-3">3.2</span> auto</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+声明iterator真的很烦有木有
+</p>
+<pre class="example">
+Vector&lt;double&gt;::iterator it;
+</pre>
+<p>
+c++11 为我们贴心的提供了一个语法糖,现在可以愉快的这么写了:
+</p>
+<pre class="example">
+auto it;
+</pre>
+
+<p>
+原则上只要编译期可以明确类型的声明都可以使用auto. 
+(可读性什么的自己权衡吧..)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10"><span class="section-number-2">4</span> An example: text editor</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+呃, 这部分就不做笔记了, 参考原书$20.6.
+</p>
+
+
+<p>
+以上
+</p>
+</div>
+</div>
+
+</div>
+</div>]]></description>
+      <pubDate>2016-07-13</pubDate>
+      <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
   </channel>
 </rss>
