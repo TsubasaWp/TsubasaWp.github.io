@@ -180,3 +180,32 @@
 (estimate-pi 2000)
 #+END_SRC
 
+** 习题3.5
+利用蒙特卡罗计算矩形中一个圆的面积,然后通过面积估算pi值.
+这道题思路跟上面差不多,只是处理坐标稍稍麻烦一点.
+#+BEGIN_SRC scheme
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+
+(define (estimate-pi trials x1 y1 x2 y2)
+  (define radio (min (/ (abs (- x2 x1)) 2) (/ (abs (- y2 y1)) 2)))
+  (define area (* (monte-carlo trials radio x1 y1 x2 y2)
+                  (* (abs (- x2 x1)) (abs (- y2 y1)))))
+  (/ area (expt radio 2)))
+
+(define (radio-test radio x1 y1 x2 y2)
+  (define x (- (random-in-range x1 x2) (/ (- x2 x1) 2)))
+  (define y (- (random-in-range y1 y2) (/ (- y2 y1) 2)))
+  (< (+ (expt x 2) (expt y 2)) (expt radio 2)))
+
+(define (monte-carlo trials radio x1 y1 x2 y2)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((radio-test radio x1 y1 x2 y2)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+#+END_SRC
