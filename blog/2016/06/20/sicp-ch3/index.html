@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-us">
   <head>
-    <title>SICP-CH3b 模块化,对象和状态 - org-page</title>
+    <title>SICP-CH3 模块化,对象和状态 - org-page</title>
     <meta charset="utf-8" />
     <meta name="author" content="Tsubasa" />
     <meta name="description" content="sicp第三章,模块化,对象和状态" />
@@ -31,7 +31,7 @@
 
 <div>
 <div class="post">
-<h1>SICP-CH3b 模块化,对象和状态</h1>
+<h1>SICP-CH3 模块化,对象和状态</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -51,6 +51,7 @@
 </li>
 <li><a href="#orgheadline10">3.1.2引进赋值带来的利益</a></li>
 <li><a href="#orgheadline11">习题3.5</a></li>
+<li><a href="#orgheadline12">习题3.6</a></li>
 </ul>
 </li>
 </ul>
@@ -347,6 +348,34 @@
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">习题3.6</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+实现一个可以重置随机数种子的random. \
+因为MIT-scheme中没有提供随机数种子生成器,所以这里只简单打印种子数值,毕竟玩弄闭包才是重点嘛2333
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (inner-rand seed)
+  (lambda (cmd)
+    (cond ((eq? cmd 'generate)
+           (set! seed (+ 1 seed))
+           seed)
+          ((eq? cmd 'reset)
+           (lambda (new-value)
+             (set! seed new-value)
+             seed)))))
+
+(define rand (inner-rand 1))
+
+(rand 'generate)
+((rand 'reset) 1)
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -354,7 +383,7 @@
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-15</span>
+        <span title="last modification date" class="post-info">2016-07-18</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>

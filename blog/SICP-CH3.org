@@ -1,0 +1,231 @@
+#+TITLE:       SICP-CH3 模块化,对象和状态
+#+AUTHOR:      Tsubasa
+#+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
+#+DATE:        2016-06-20 Mon
+#+URI:         /blog/%y/%m/%d/sicp-ch3
+#+KEYWORDS:    sicp
+#+TAGS:        sicp
+#+LANGUAGE:    en
+#+OPTIONS:     num:nil
+#+DESCRIPTION: sicp第三章,模块化,对象和状态
+
+[碎碎念]
+上一章还有几个实例的习题没有完成, 然而时间太有限了, 所以决定先挖新一章的坑把这本书大略学习完, 之后再来填那些实例, /跪
+
+前两章介绍了如何把 *基本过程* 和 *基本数据* 组合起来. 但有效的程序综合还需要一些 *组织原则*.\\
+本章将研究两种特点鲜明的组织策略:
+- =对象途径=: 需要关注计算对象可以怎样变化同时保持其标识.
+- =流方式=  : 可以松懈我们对时间的模拟与计算机求值过程中的各种事件的发生顺序.
+
+* 3.1赋值和局部状态
+所谓一个对象 =有状态= ,就是说它的行为受到它的历史的影响.\\
+所谓 =交互=, 就是建立起一个对象的状态变量与其它对象的状态变量之间的联系. \\
+所谓 =独立对象=,就是把一个系统中的状态变量'分组',形成一些内部聚合的子系统,每个子系统与其它子系统之间只存在松散的联系. \\
+每个对象需要有一些 =局部状态变量=,用于描述实际的对象状态. \\
+语言中需要提供 =赋值运算符=, 使我们能够通过人类可读的符号去模拟状态变量.
+
+** 3.1.1局部状态变量
+ 以银行账户为例,本节给出了三种维护状态的解决方案.
+*** 使用全局变量
+#+BEGIN_SRC scheme
+(define balance 100)
+#+END_SRC
+*** 使用let创建局部变量
+#+BEGIN_SRC scheme
+(let ((balance 100))
+   (lambda (amount)
+       (if (>- balance amount)
+           (begin (set! balance (- balance amount))
+                  balance)
+           "Insufficient funds")))
+#+END_SRC
+但是这种使用ser!与局部变量结合的技术在使用 *代换模型* 时会有问题, 后面会讲.\\
+[一旦在语言里引进了赋值,代换就不再适合作为过程应用的模型了]
+*** 利用闭包
+#+BEGIN_SRC scheme
+(define (make-withdraw balance)
+    (lambda (amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds")))
+#+END_SRC
+这样不必再使用let设置局部变量,因为形式参数本身就是局部的.下一节将讨论 *求值的环境模型*
+
+*** 习题3.1
+写出一个生成累加器的过程make-accumulator.它所生成的每个累加器都维持一个独立的和.
+#+BEGIN_SRC scheme
+(define (make-accumulator ini-val)
+  (lambda (amount)
+    (begin
+      (set! ini-val (+ amount ini-val))
+      ini-val)))
+
+(define A (make-accumulator 1))
+(A 1) ; val->2
+(A 2) ; val->4
+#+END_SRC
+
+*** 习题3.2
+实现一个可以统计调用次数的过程.
+#+BEGIN_SRC scheme
+(define (make-monitored proc)
+  (define count 0)
+  (define (how-many) count)
+  (define (reset)
+    (begin
+      (set! count 0)
+      count))
+  (define (dispatch m)
+    (cond ((eq? m 'how-many-calls?) (how-many))
+          ((eq? m 'reset-count) (reset))
+          (else
+           (begin
+             (set! count (+ 1 count))
+             (proc m)))))
+  dispatch)
+
+;; Test
+(define b (make-monitored sqrt))
+(b 100)
+(b 100)
+(b 'how-many-calls?) ; val->2
+(b 'reset-count)     ; val->1
+#+END_SRC
+
+*** 习题3.3
+为make-account添加密码. 没啥难度,添加一个参数和一个if就可以了.
+#+BEGIN_SRC scheme
+(define (make-account balance password)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (error "Invalid password" pw)))
+  dispatch)
+;; TEST
+(define acc (make-account 100 'pw))
+((acc 'foo 'withdraw ) 50) ;Invalid password p
+((acc 'pw 'withdraw ) 50)  ; 50
+#+END_SRC
+
+*** 习题3.4
+继续修改make-account..如果被错误的连续调用了7次,它将call-the-cops
+#+BEGIN_SRC scheme
+(define (make-account balance password)
+  (define error-pw-cnt 0)
+  (define (call-the-cops)
+       (display "Calling cops......."))
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch pw m)
+    (if (eq? pw password) 
+        (cond ((eq? m 'withdraw) withdraw)
+              ((eq? m 'deposit) deposit)
+              (else (error "Unknown request -- MAKE-ACCOUNT" m)))
+        (begin
+          (set! error-pw-cnt (+ 1 error-pw-cnt))
+          (if (>  error-pw-cnt 7)
+              (call-the-cops)
+              (error "Invalid password" pw)))))
+  dispatch)
+#+END_SRC
+
+** 3.1.2引进赋值带来的利益
+将赋值引进所用的程序设计语言,将会使我们陷入许多困难的概念问题丛林之中.
+将系统看做一集带有局部状态的对象,也是一种维护模块化设计的强有力的技术.\\
+通过引进 =赋值= 和 =将状态隐藏在局部变量中= 的技术, 我们能以一种更模块化的方式构造系统.
+
+#+BEGIN_SRC scheme
+(define rand
+  (let ((x 1))
+    (lambda ()
+      (set! x (rand-update x))
+      x)))
+#+END_SRC
+
+例子:
+6/pi^2是两个随机选取整数没有公共因子的概率,现在考虑用随机数来实现一种 =蒙特卡洛模拟= 的技术.
+(真是长姿势了...
+#+BEGIN_SRC scheme
+(define (estimate-pi trials)
+  (sqrt (/ 6 (monte-carlo trials cesaro-test))))
+(define (cesaro-test)
+  (= (gcd (random 10000) (random 10000)) 1))
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+; 测试
+(estimate-pi 2000)
+#+END_SRC
+
+** 习题3.5
+利用蒙特卡罗计算矩形中一个圆的面积,然后通过面积估算pi值.
+这道题思路跟上面差不多,只是处理坐标稍稍麻烦一点.
+#+BEGIN_SRC scheme
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+
+(define (estimate-pi trials x1 y1 x2 y2)
+  (define radio (min (/ (abs (- x2 x1)) 2) (/ (abs (- y2 y1)) 2)))
+  (define area (* (monte-carlo trials radio x1 y1 x2 y2)
+                  (* (abs (- x2 x1)) (abs (- y2 y1)))))
+  (/ area (expt radio 2)))
+
+(define (radio-test radio x1 y1 x2 y2)
+  (define x (- (random-in-range x1 x2) (/ (- x2 x1) 2)))
+  (define y (- (random-in-range y1 y2) (/ (- y2 y1) 2)))
+  (< (+ (expt x 2) (expt y 2)) (expt radio 2)))
+
+(define (monte-carlo trials radio x1 y1 x2 y2)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((radio-test radio x1 y1 x2 y2)
+           (iter (- trials-remaining 1) (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1) trials-passed))))
+  (iter trials 0))
+#+END_SRC
+
+** 习题3.6
+实现一个可以重置随机数种子的random. \
+因为MIT-scheme中没有提供随机数种子生成器,所以这里只简单打印种子数值,毕竟玩弄闭包才是重点嘛2333
+#+BEGIN_SRC scheme
+(define (inner-rand seed)
+  (lambda (cmd)
+    (cond ((eq? cmd 'generate)
+           (set! seed (+ 1 seed))
+           seed)
+          ((eq? cmd 'reset)
+           (lambda (new-value)
+             (set! seed new-value)
+             seed)))))
+
+(define rand (inner-rand 1))
+
+(rand 'generate)
+((rand 'reset) 1)
+#+END_SRC
