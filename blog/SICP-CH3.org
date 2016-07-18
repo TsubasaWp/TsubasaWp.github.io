@@ -1,4 +1,4 @@
-#+TITLE:       SICP-CH3b 模块化,对象和状态
+#+TITLE:       SICP-CH3 模块化,对象和状态
 #+AUTHOR:      Tsubasa
 #+EMAIL:       Tsubasa@Tsubasas-MacBook-Pro.local
 #+DATE:        2016-06-20 Mon
@@ -208,4 +208,24 @@
           (else
            (iter (- trials-remaining 1) trials-passed))))
   (iter trials 0))
+#+END_SRC
+
+** 习题3.6
+实现一个可以重置随机数种子的random. \
+因为MIT-scheme中没有提供随机数种子生成器,所以这里只简单打印种子数值,毕竟玩弄闭包才是重点嘛2333
+#+BEGIN_SRC scheme
+(define (inner-rand seed)
+  (lambda (cmd)
+    (cond ((eq? cmd 'generate)
+           (set! seed (+ 1 seed))
+           seed)
+          ((eq? cmd 'reset)
+           (lambda (new-value)
+             (set! seed new-value)
+             seed)))))
+
+(define rand (inner-rand 1))
+
+(rand 'generate)
+((rand 'reset) 1)
 #+END_SRC
