@@ -52,6 +52,12 @@
 <li><a href="#orgheadline10">3.1.2引进赋值带来的利益</a></li>
 <li><a href="#orgheadline11">习题3.5</a></li>
 <li><a href="#orgheadline12">习题3.6</a></li>
+<li><a href="#orgheadline13">3.1.3引进赋值的代价</a>
+<ul>
+<li><a href="#orgheadline14">同一和替换</a></li>
+<li><a href="#orgheadline15">命令式程序设计的缺陷</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -376,6 +382,67 @@
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">3.1.3引进赋值的代价</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+只要我们不使用赋值, 以同样参数对一个函数求值一定会产出同样的结果(传说中的可重入嘛?).\
+不使用赋值的设计称为 <code>函数式程序设计</code> 
+</p>
+
+<p>
+引入赋值的代价之一是 <code>无法使用代换模型</code> , 因为我们无法区分出现在set! 前后的两个同样的变量,
+它们不应该被同时代换掉.
+</p>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">同一和替换</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<p>
+一旦将变化引入计算模型, 其影响比打破一个代换模型要深远的多.首先考虑两个物体"同一"的概念.\
+以习题3.6的rand为例:\n
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define rand (inner-rand 1)) 
+(define rand1 (inner-rand 1)) 
+(define rand2 (inner-rand 2))
+</pre>
+</div>
+<p>
+rand和rand1是同一的吗? 是, 因为他们有同样的计算行为.\
+rand1和rand2是同一的吗? 不是, 因为他们计算行为不同. \
+虽然rand1和rand2是通过同样的方式创造出来的, 从这个角度可以说他们 <code>同一</code>. \
+但如果要求rand1和rand2在任何时候求值结果相同, 就无法说它们同一了. \
+</p>
+
+<p>
+如果一个语言支 <code>同一的东西可以相互替换</code> 的观念,这样替换不会改变有关表达式的值,
+那么这个语言就具有 <code>引用透明性</code>. 我们的计算力包含 set! 之后,就 <code>打破</code> 了引用透明性.
+</p>
+
+<p>
+引入赋值后, 判断两样东西是否 <code>同一</code> 就变成了一件 <code>错综复杂</code> 的事. 
+两个指向同一实例的指针"同一"否? 两个相同类的不同实例"同一"否?
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">命令式程序设计的缺陷</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+与函数式程序设计相对应的是,广泛采用 <code>赋值</code> 的程序设计被称为命令式程序设计. \
+</p>
+<ol class="org-ol">
+<li>一般而言,带有赋值的程序将强迫人们考虑赋值的顺序.而在函数式编程中这种情况不会出现.</li>
+<li>如果考虑到并发, 命令式程序设计的复杂性还会变得更糟.</li>
+</ol>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -383,7 +450,7 @@
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-18</span>
+        <span title="last modification date" class="post-info">2016-07-19</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
