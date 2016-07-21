@@ -4,15 +4,15 @@
     <title>org-page</title>
     <link>http://tsubasawp.github.io/</link>
     <description>static site generator</description>
-    <pubDate>Tue, 19 Jul 2016 22:06:46 CST</pubDate>
-    <lastBuildDate>Tue, 19 Jul 2016 22:06:46 CST</lastBuildDate>
+    <pubDate>Thu, 21 Jul 2016 22:43:55 CST</pubDate>
+    <lastBuildDate>Thu, 21 Jul 2016 22:43:55 CST</lastBuildDate>
     <docs>http://www.rssboard.org/rss-specification</docs>
     <generator>Org-page static site generator (https://github.com/kelvinh/org-page)</generator>
     <item>
       <title>SICP-CH3 模块化,对象和状态</title>
       <link>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</link>
       <description><![CDATA[sicp第三章,模块化,对象和状态]]></description>
-      <pubDate>2016-07-19</pubDate>
+      <pubDate>2016-07-21</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/06/20/sicp-ch3</guid>
     </item>
     <item>
@@ -36,7 +36,7 @@
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/16/hello-world/</guid>
     </item>
     <item>
@@ -331,7 +331,7 @@ int main(int argc, const char * argv[]) {
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/26/pppuc++-reading-note/</guid>
     </item>
     <item>
@@ -2021,7 +2021,7 @@ List给了 <b>过程</b> 完全第一级状态, 这是非常牛逼的(主要是�
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/09/sicp-ch1-构造过程抽象/</guid>
     </item>
     <item>
@@ -5425,21 +5425,21 @@ apply-generic被调用了3次. 过程如下
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/04/05/sicp-ch2-构造数据抽象/</guid>
     </item>
     <item>
       <title>Game Programming Patterns Reading Note</title>
       <link>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</link>
       <description><![CDATA[reading note]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/05/17/game-programming-patterns-reading-note</guid>
     </item>
     <item>
       <title>GPU Points</title>
       <link>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</link>
       <description><![CDATA[一些关于GPU的知识点,内容大部分源自RTR.]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/02/gpu-overview</guid>
     </item>
     <item>
@@ -5720,7 +5720,7 @@ apply-generic被调用了3次. 过程如下
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/01/30/[阅记]-解忧杂货铺---来自上天的祈祷/</guid>
     </item>
     <item>
@@ -6264,7 +6264,7 @@ uninitialized<sub>copy可以处理掉拷贝构造函数抛出的异常</sub>. �
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/02/25/princples-and-practice-using-c++-ch19-reading-note/</guid>
     </item>
     <item>
@@ -6523,7 +6523,7 @@ auto it;
 
 </div>
 </div>]]></description>
-      <pubDate>2016-07-18</pubDate>
+      <pubDate>2016-07-19</pubDate>
       <guid>http://tsubasawp.github.io/blog/2016/03/01/princples-and-practice-using-c++-ch20-reading-note/</guid>
     </item>
   </channel>

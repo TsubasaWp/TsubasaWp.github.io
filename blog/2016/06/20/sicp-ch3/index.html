@@ -58,8 +58,11 @@
 <li><a href="#orgheadline15">命令式程序设计的缺陷</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline16">习题3.7</a></li>
+<li><a href="#orgheadline17">习题3.8</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline18">3.2求值环境模型</a></li>
 </ul>
 </div>
 </div>
@@ -292,7 +295,7 @@
 
 <p>
 例子:
-6/pi<sup>2是两个随机选取整数没有公共因子的概率,现在考虑用随机数来实现一种</sup> <code>蒙特卡洛模拟</code> 的技术.
+ \(6/pi^2\) 是两个随机选取整数没有公共因子的概率,现在考虑用随机数来实现一种 <code>蒙特卡洛模拟</code> 的技术.
 (真是长姿势了&#x2026;
 </p>
 <div class="org-src-container">
@@ -387,7 +390,7 @@
 <h3 id="orgheadline13">3.1.3引进赋值的代价</h3>
 <div class="outline-text-3" id="text-orgheadline13">
 <p>
-只要我们不使用赋值, 以同样参数对一个函数求值一定会产出同样的结果(传说中的可重入嘛?).\
+只要我们不使用赋值, 以同样参数对一个函数求值一定会产出同样的结果(传说中的可重入嘛?).<br  />
 不使用赋值的设计称为 <code>函数式程序设计</code> 
 </p>
 
@@ -401,7 +404,7 @@
 <h4 id="orgheadline14">同一和替换</h4>
 <div class="outline-text-4" id="text-orgheadline14">
 <p>
-一旦将变化引入计算模型, 其影响比打破一个代换模型要深远的多.首先考虑两个物体"同一"的概念.\
+一旦将变化引入计算模型, 其影响比打破一个代换模型要深远的多.首先考虑两个物体"同一"的概念.<br  />
 以习题3.6的rand为例:\n
 </p>
 <div class="org-src-container">
@@ -412,10 +415,10 @@
 </pre>
 </div>
 <p>
-rand和rand1是同一的吗? 是, 因为他们有同样的计算行为.\
-rand1和rand2是同一的吗? 不是, 因为他们计算行为不同. \
-虽然rand1和rand2是通过同样的方式创造出来的, 从这个角度可以说他们 <code>同一</code>. \
-但如果要求rand1和rand2在任何时候求值结果相同, 就无法说它们同一了. \
+rand和rand1是同一的吗? 是, 因为他们有同样的计算行为.<br  />
+rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
+虽然rand1和rand2是通过同样的方式创造出来的, 从这个角度可以说他们 <code>同一</code>.<br  />
+但如果要求rand1和rand2在任何时候求值结果相同, 就无法说它们同一了.<br  />
 </p>
 
 <p>
@@ -434,7 +437,7 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同. \
 <h4 id="orgheadline15">命令式程序设计的缺陷</h4>
 <div class="outline-text-4" id="text-orgheadline15">
 <p>
-与函数式程序设计相对应的是,广泛采用 <code>赋值</code> 的程序设计被称为命令式程序设计. \
+与函数式程序设计相对应的是,广泛采用 <code>赋值</code> 的程序设计被称为命令式程序设计.<br  />
 </p>
 <ol class="org-ol">
 <li>一般而言,带有赋值的程序将强迫人们考虑赋值的顺序.而在函数式编程中这种情况不会出现.</li>
@@ -443,6 +446,59 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同. \
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">习题3.7</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+<p>
+这道题目看了半天才明白一点..其实很简单,在ex3.3的account外再套一层即可.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-joint account pw new-pw)
+  (lambda (password mode)
+    (if (eq? password new-pw)
+        (account pw mode)
+        (error "Invalid password" password))))
+;; test
+(define acc (make-account 100 'pw))
+(define acc-joint (make-joint acc 'pw 'new))
+((acc-joint 'new 'withdraw) 50) ; 50
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">习题3.8</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+<p>
+定义一个过程f, (+ (f 0) (f 1)) 从左到右求值返回0, 从右到左返回1.<br  />
+解题思路:<br  />
+</p>
+<ul class="org-ul">
+<li>f中应该带有状态,才会导致求值结果依赖求值顺序.</li>
+<li>按照题目描述的数学性质,f中应该有一个乘法运算.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (inner count)
+  (lambda (x) (set! count (* count x)) count))
+(define f (inner 1))
+(+ (f 0) (f 1)) ; val: 1
+(+ (f 1) (f 0)) ; val: 0
+</pre>
+</div>
+<p>
+可见我用的Mit-Scheme的求值顺序是从右到左.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18">3.2求值环境模型</h2>
 </div>
 
 </div>
@@ -450,7 +506,7 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同. \
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-19</span>
+        <span title="last modification date" class="post-info">2016-07-21</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
