@@ -65,6 +65,7 @@
 <li><a href="#orgheadline18">3.2求值环境模型</a>
 <ul>
 <li><a href="#orgheadline19">求值规则</a></li>
+<li><a href="#orgheadline20">练习3.9</a></li>
 </ul>
 </li>
 </ul>
@@ -529,7 +530,39 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 在求值的环境模型里,一个过程总是一个对偶,由一些代码和一个指向环境的指针组成. <br  />
 <code>define</code> 的行为: 在当前环境框架里建立一个约束,并赋予这个符号指定的值.
 <code>set!</code> 的行为: 在环境中找到包含这个变量约束的第一个框架, 然后 <code>修改</code> 这一框架.
+<code>应用过程对象</code> 将创建一个新环境
 </p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">练习3.9</h3>
+<div class="outline-text-3" id="text-orgheadline20">
+<p>
+分析对阶乘函数的递归版本和迭代版本分别应用环境求值模型时所创建的环境结构.
+递归版本:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (factorial n)
+  (if (= n 1)
+      1
+      (* (factorial (- n 1) n))))
+</pre>
+</div>
+<p>
+对(factorial 6)求值的过程:
+</p>
+<ul class="org-ul">
+<li>创建环境E1, 其中形参n绑定到实参6, factorial绑定到一个全局环境中的过程对象.</li>
+<li>把过程factorial应用到实参6, 创建环境E2</li>
+<li>把过程factorial应用到实参5, 创建环境E3</li>
+<li>把过程factorial应用到实参4, 创建环境E4</li>
+<li>把过程factorial应用到实参3, 创建环境E5</li>
+<li>把过程factorial应用到实参2, 创建环境E6</li>
+<li>把过程factorial应用到实参1, 创建环境E7</li>
+<li>在E7中得到返回值1</li>
+</ul>
 </div>
 </div>
 </div>
