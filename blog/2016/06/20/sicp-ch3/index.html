@@ -62,7 +62,11 @@
 <li><a href="#orgheadline17">习题3.8</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline18">3.2求值环境模型</a></li>
+<li><a href="#orgheadline18">3.2求值环境模型</a>
+<ul>
+<li><a href="#orgheadline19">求值规则</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -499,6 +503,35 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 
 <div id="outline-container-orgheadline18" class="outline-2">
 <h2 id="orgheadline18">3.2求值环境模型</h2>
+<div class="outline-text-2" id="text-orgheadline18">
+<p>
+前面有提到过,引进赋值后,求值的代换模型已经不再适用了.由于赋值的存在,变量已经不仅是某个值的名字.
+此时必须以某种方式制定一个 <code>位置</code>, 相应的值可以储存在哪里. 在我们新的求值模型中, 
+我们将这个位置维持在称为 <code>环境</code> 的结构中.
+</p>
+
+<p>
+<code>约束</code> 将一些变量关联于对应的值
+<code>框架</code> 包含着一些约束的表格
+<code>环境</code> 框架的序列
+</p>
+
+<p>
+在一个程序语言里,一个表达式本身根本没有任何意义, 其解释要依赖于上下文.
+</p>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19">求值规则</h3>
+<div class="outline-text-3" id="text-orgheadline19">
+<p>
+现在我们要用 <code>求值的环境模型</code> 代替 <code>求值的代换模型</code>.<br  />
+在求值的环境模型里,一个过程总是一个对偶,由一些代码和一个指向环境的指针组成. <br  />
+<code>define</code> 的行为: 在当前环境框架里建立一个约束,并赋予这个符号指定的值.
+<code>set!</code> 的行为: 在环境中找到包含这个变量约束的第一个框架, 然后 <code>修改</code> 这一框架.
+</p>
+</div>
+</div>
 </div>
 
 </div>
@@ -506,7 +539,7 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-21</span>
+        <span title="last modification date" class="post-info">2016-07-26</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
