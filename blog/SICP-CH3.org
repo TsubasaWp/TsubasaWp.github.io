@@ -327,5 +327,27 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.\\
 - 把过程factorial应用到实参2, 创建环境E6
 - 把过程factorial应用到实参1, 创建环境E7
 - 在E7中得到返回值1
+ 
+迭代版本:
+#+BEGIN_SRC scheme
+(define (factorial n)
+  (fact-iter 1 1 n))
+(define (fact-iter product counter max-count)
+  (if (> counter max-count)
+      product
+      (fact-iter (* counter product)
+                 (+ counter 1)
+                 max-count)))
+#+END_SRC
+对(factorial 6)求值的过程:
+- 创建E1, n绑定到实参6
+- 把过程factorial应用到实参6, 创建E2. fact-iter绑定到过程对象, n绑定到6.
+- 把过程fact-iter应用到实参1,1,6, 创建E3
+- 把过程fact-iter应用到实参1,2,6, 创建E4
+- 把过程fact-iter应用到实参2,3,6, 创建E5
+- 把过程fact-iter应用到实参6,4,6, 创建E6
+- 把过程fact-iter应用到实参24,5,6, 创建E7
+- 把过程fact-iter应用到实参120,6,6, 创建E8
+- 在E8中得到返回值720
 
-
+** 
