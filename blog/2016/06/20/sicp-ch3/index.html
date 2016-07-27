@@ -66,6 +66,7 @@
 <ul>
 <li><a href="#orgheadline19">求值规则</a></li>
 <li><a href="#orgheadline20">练习3.9</a></li>
+<li><a href="#orgheadline21"></a></li>
 </ul>
 </li>
 </ul>
@@ -563,7 +564,41 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 <li>把过程factorial应用到实参1, 创建环境E7</li>
 <li>在E7中得到返回值1</li>
 </ul>
+
+<p>
+迭代版本:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (factorial n)
+  (fact-iter 1 1 n))
+(define (fact-iter product counter max-count)
+  (if (&gt; counter max-count)
+      product
+      (fact-iter (* counter product)
+                 (+ counter 1)
+                 max-count)))
+</pre>
 </div>
+<p>
+对(factorial 6)求值的过程:
+</p>
+<ul class="org-ul">
+<li>创建E1, n绑定到实参6</li>
+<li>把过程factorial应用到实参6, 创建E2. fact-iter绑定到过程对象, n绑定到6.</li>
+<li>把过程fact-iter应用到实参1,1,6, 创建E3</li>
+<li>把过程fact-iter应用到实参1,2,6, 创建E4</li>
+<li>把过程fact-iter应用到实参2,3,6, 创建E5</li>
+<li>把过程fact-iter应用到实参6,4,6, 创建E6</li>
+<li>把过程fact-iter应用到实参24,5,6, 创建E7</li>
+<li>把过程fact-iter应用到实参120,6,6, 创建E8</li>
+<li>在E8中得到返回值720</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21"></h3>
 </div>
 </div>
 
@@ -572,7 +607,7 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-26</span>
+        <span title="last modification date" class="post-info">2016-07-27</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
