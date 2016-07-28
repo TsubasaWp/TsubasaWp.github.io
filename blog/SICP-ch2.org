@@ -758,3 +758,1302 @@ scheme为了方便表的构造而提供了一个基本操作list.所以上面序
               (map (lambda (x) (length (enumerate-tree x))) t)))
 (count-leaves (list 1 2 (list 2 3 4))) ; Value:5
 #+END_SRC
+
+*** 习题2.36
+#+BEGIN_SRC scheme
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      ()
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+
+(accumulate-n + 0 (list (list 1 2 3) (list 1 2 3)))
+#+END_SRC
+
+*** 习题2.37
+实现矩阵点的各种基本运算
+#+BEGIN_SRC scheme
+(define (dot-product v w)
+  (accumulate + 0 (accumulate-n * 1 (list v w))))
+
+(define (matrix-*-vector m v)
+  (map
+   (lambda (x) (dot-product x v))
+   m))
+(define (transpose m)
+  (accumulate-n (lambda (x y) (cons x y)) () m))
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map (lambda (col) (matrix-*-vector m col)) cols)))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(define mv (list 1 2 3))
+(define mm (list (list 1 2 3) (list 4 5 6) (list 4 5 6)))
+(dot-product mv mv);Value: 14
+(matrix-*-vector mm mv);Value 269: (14 32 32)
+(transpose mm);Value 266: ((1 4) (2 5) (3 6))
+(matrix-*-matrix mm mm);Value 268: ((21 48 48) (27 63 63) (33 78 78))
+#+END_SRC
+
+*** 习题2.38
+#+BEGIN_SRC scheme
+(fold-right / 1 (list 1 2 3)) ;;Value: 3/2
+(fold-left / 1 (list 1 2 3))  ;;Value: 1/6
+(fold-right list () (list 1 2 3));Value 270: (1 (2 (3 ())))
+(fold-left list () (list 1 2 3));Value 271: (((() 1) 2) 3)
+#+END_SRC
+保证fold-right和fold-left都相同的条件是,运算满足交换律.
+
+*** 习题2.39
+#+BEGIN_SRC scheme
+(define (reverse sequence)
+  (fold-right (lambda (x y) (append y (list x))) () sequence))
+  (define (reverse sequence)
+  (fold-left (lambda (x y) (cons y x)) ()  sequence))
+#+END_SRC
+
+*** 嵌套映射
+我们可以扩充序列泛型,将许多通常用嵌套循环表述的计算包含进来,  比如用append累积map的计算结果:
+#+BEGIN_SRC scheme
+(define (flatmap proc seq)
+  (accumulate append (list) (map proc seq)))
+#+END_SRC
+
+- ep1: 找出n以下所有和为素数的序对:
+#+BEGIN_SRC scheme
+(define (make-pair-sum pair)
+  (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+(define (prime-sum-pairs n)
+  (map make-pair-sum
+       (filter prime-sum?
+               (flatmap
+                (lambda (i)
+                  (map (lambda (j) (list i j))
+                       (enumerate-interval 1 (- i 1))))
+                (enumerate-interval 1 n)
+                ))))
+#+END_SRC
+
+-  ep2: 全排列
+#+BEGIN_SRC scheme
+(define (permutations s)
+  (if (null? s)
+      (list (list))
+      (flatmap (lambda (x)
+                 (map (lambda (p) (cons x p))
+                      (permutations (remove x s))))
+               s)))
+(define (remove item sequence)
+  (filter (lambda (x) (not (= x item)))
+          sequence))
+#+END_SRC
+
+*** 习题2.40
+#+BEGIN_SRC scheme
+(define (unique-pairs low high)
+  (flatmap (lambda (x) 
+         (map (lambda (y) (list x y))
+              (enumerate-interval (+ x 1) high)))
+           (enumerate-interval low high)))
+(unique-pairs 1 3);;=> ((1 2) (1 3) (2 3))
+(define (prime-sum-pair n)
+  (filter prime-sum? (unique-pairs 1 n)))
+(prime-sum-pair 3)
+#+END_SRC
+
+*** 习题2.41
+#+BEGIN_SRC scheme
+(define (unique-triples low high)
+  (flatmap (lambda (x)
+             (map (lambda (i) (append x i)) (unique-pairs (+ x 1) high)))
+           (enumerate-interval low high)))
+(unique-triples 1 4)
+(define (prime-sum-triple? list)
+  (prime? (+ (car list) (cadr list) (cadr (cdr list)))))
+(define (prime-sum-triples n)
+  (filter prime-sum-triple? (unique-triples 1 n)))
+(prime-sum-triples 4) ;;=> ((1 2 4) (2 3 4))
+#+END_SRC
+
+*** 习题2.42
+经典的8皇后问题,回溯法.
+#+BEGIN_SRC scheme
+(define (queens board-size)
+  (define (queen-cols k)
+    (if (= 0 k)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+        (queen-cols board-size))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define empty-board (list))
+#+END_SRC
+空棋盘就是nil
+#+BEGIN_SRC scheme
+(define (adjoin-position new-row k rest-of-queens)
+  (cons new-row rest-of-queens))
+#+END_SRC
+k其实没有用到,大概留出这个参数是为了便于替换成其它算法.
+
+#+BEGIN_SRC scheme
+(define (safe? k positions)
+  (define (safe-iter x rest distance)
+    (cond ((null? rest) #t)
+          ((= x (car rest)) #f)
+          ((= distance (abs (- x (car rest)))) #f)
+          (else (safe-iter x (cdr rest) (+ distance 1)))))
+  (safe-iter (car positions) (cdr positions) 1))
+(queens 4);;Value 458: ((3 1 4 2) (2 4 1 3))
+#+END_SRC
+遍历rest, 检查相同行中是否存在皇后, 以及对角线是否存在皇后.
+
+*** 习题2.43
+2.42解法只需要递归的计算一遍queen-cols,而Reasoner需要递归T遍,导致最后解题事件变成了
+ $T*board-size$
+
+** 实例:一个图形语言
+在描述一种语言时,应该将注意力集中在语言的基本原语,它的组合以及抽象手段.
+这一图形语言的优美之处,部分在于语言中只有一个元素,称为画家painter.
+
+*** 习题2.44
+#+BEGIN_SRC scheme
+(define (up-split painter n)
+  (if (= n 0)
+      painter
+      (let ((smaller (up-split painter (- n 1))))
+        (up painter (right smaller smaller)))))
+#+END_SRC
+
+*** 习题2.45
+#+BEGIN_SRC scheme
+(define (split t1 t2)
+  (define (process painter n)
+    (if (= n 0)
+        painter
+        (let ((process painter (- n 1)))
+          (let ((part (t2 smaller smaller)))
+            (t1 painter part)))))
+    (lambda (painter n) (process painter n)))
+#+END_SRC
+
+*** 习题2.46
+#+BEGIN_SRC scheme
+(define (make-vect x y) (cons x y))
+(define (xcor-vect rect) (car rect))
+(define (ycor-vect rect) (cdr rect))
+(define (add-vect v1 v2)
+  (make-vect
+   (+ (xcor-vect v1) (xcor-vect v2))
+   (+ (ycor-vect v1) (ycor-vect v2))))
+(define (sub-vect v1 v2)
+  (make-vect
+   (- (xcor-vect v1) (xcor-vect v2))
+   (- (ycor-vect v1) (ycor-vect v2))))
+(define (scale-vect s v)
+  (make-vect
+   (* s (xcor-vect v))
+   (* s (ycor-vect v))))
+#+END_SRC
+
+*** 习题2.47
+方案1:
+#+BEGIN_SRC scheme
+(define (origin-frame frame) (car frame))
+(define (edge1-frame frame) (cadr frame))
+(define (edge2-frame frame) (caddr frame))
+#+END_SRC
+方案2:
+#+BEGIN_SRC scheme
+(define (origin-frame frame) (car frame))
+(define (edge1-frame frame) (cadr frame))
+(define (edge2-frame frame) (cddr frame))
+#+END_SRC
+
+*** 习题2.48
+#+BEGIN_SRC scheme
+(define (make-segment v1 v2) (cons v1 v2))
+(define (start-segment seg) (car seg))
+(define (end-segment seg) (cdr seg))
+#+END_SRC
+
+*** 习题2.49
+首先定义一堆获取顶点/边/中点的过程...(吐血)...
+#+BEGIN_SRC scheme
+(define (top-left frame) (add-vect (origin-frame frame) (edge1-frame frame)))
+(define (top-right frame) (add-vect
+                           (edge2-frame frame)
+                           (add-vect (origin-frame frame) (edge1-frame frame))))
+(define (bottom-left frame) (origin-frame frame))
+(define (bottom-right frame) (add-vect (origin-frame frame) (edge2-frame frame)))
+
+(define (left-mid frame) (add-vect (origin-frame frame)
+                                   (scale-vect 0.5 (edge1-frame frame))))
+(define (top-mid frame) (add-vect
+                         (scale-vect 0.5 (edge2-frame frame))
+                         (add-vect (origin-frame frame)
+                                   (edge1-frame frame))))
+(define (bottom-mid frame) (add-vect (origin-frame frame)
+                                     (scale-vect 0.5 (edge2-frame frame))))
+(define (right-mid frame) (add-vect
+                         (edge2-frame frame)
+                         (add-vect (origin-frame frame)
+                                   (scale-vect 0.5 (edge1-frame frame)))))
+
+(define (top frame)  (make-segment (top-left frame) (top-right frame)))
+(define (left frame) (make-segment (top-left frame) (bottom-left frame)))
+(define (right frame) (make-segment (top-right frame) (bottom-right frame)))
+(define (bottom frame) (make-segment (bottom-left frame) (bottom-right frame)))
+#+END_SRC
+a) 画出框架的4条边,恩..套用前面定义的过程就好了
+#+BEGIN_SRC scheme
+(define (painter-a f)
+  (segments->painter
+   (list (left f) (top f) (rignt f) (bottom f))))
+#+END_SRC
+b) 画出对角线..还ok
+#+BEGIN_SRC scheme
+(define (painter-b f)
+  (segments->painter
+   (list
+    (make-segment (bottom-left f) (top-right f))
+    (make-segment (bottom-right f) (top-left f)))))
+#+END_SRC
+c) 画出各边中点连线. 于是有了上面一堆xx-mid过程..
+#+BEGIN_SRC scheme
+(define (painter-c f)
+  (segments->paiter
+   (list
+    (make-segment (left-mid f) (top-mid f))
+    (make-segment (top-mid f) (right-mid f))
+    (make-segment (right-mid f) (bottom-mid f))
+    (make-segment (bottom-mid f) (left-mid f)))))
+#+END_SRC
+d) 画出wave (此处沉默1分钟.....). 这是体力活无误了, 谁爱写谁写吧....ヾ(･∀･)ﾉ゛
+
+*** 习题2.50
+#+BEGIN_SRC scheme
+(define (flip-horiz painter)
+  (transform-painter painter
+                     (make-vect 1.0 0.0)
+                     (make-vect 0.0 0.0)
+                     (make-vect 1.0 1.0)))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (flip-180 painter)
+  (transform-painter painter
+                     (make-vect 1.0 1.0)
+                     (make-vect 0.0 1.0)
+                     (make-vect 1.0 0.0)))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (flip-270 painter)
+  (transform-painter painter
+                     (make-vect 0.0 1.0)
+                     (make-vect 0.0 0.0)
+                     (make-vect 1.0 1.0)))
+#+END_SRC
+
+*** 习题2.51
+#+BEGIN_SRC scheme
+(define (below painter1 painter2)
+  (let ((split-point (make-vect 0.0 0.5)))
+    (let ((paint-top
+           (transform-painter painter1
+                              split-point
+                              (make-vect 1 0.5)
+                              (make-vect 0 1)))
+          (paint-below
+           (transform-painter painter2
+                              (make-vect 0 0)
+                              (make-vect 1 0)
+                              (make-vect 0 0.5))))
+      (lambda (frame)
+        (paint-top frame)
+        (paint-bottom frame)))))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (below painter1 painter2)
+    (lambda (frame)
+            (rotate90
+                (beside
+                    (rotate270
+                        (flip-horiz painter1))
+                    (rotate270
+                        (flip-horiz painter2))))))
+#+END_SRC
+
+*** 强健的设计语言层次
+=分层设计= 一个复杂的系统应该通过一系列的层次构造出来,为了描述这些层次,需要使用一系列的语言.
+
+*** 练习2.52
+a) 给wave加上一条线段
+#+BEGIN_SRC scheme
+(make-segment (left-mid f) (top-mid f));; 随便加一条线段
+#+END_SRC
+b) 修改corner-split的构造模式
+#+BEGIN_SRC scheme
+(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+            (right (right-split painter (- n 1)))
+            (corner (corner-split painter (- n 1))))
+        (beside (below painter up)
+                (below right corner)))))
+#+END_SRC
+c) 修改square-limit
+#+BEGIN_SRC scheme
+(define (square-limit painter n)
+  (let ((squarter (corner-split (flip-horiz painter) n)))
+    (let ((half (beside (flip-horiz quarter) quarter)))
+      (below (flip-vert half) half))))
+#+END_SRC
+只把原来第二行的painter改成了(flip-horiz painter).
+这道题目的意义大概就在于演示"在良好的分层设计下进行修改是很easy的"吧.
+
+** 符号数据
+这一节将引进任意符号作为数据的功能.
+
+*** 引号
+为了能够直接操作符号,我们的语言需要拥有 *为数据对象加引号* 的能力.
+这样就可以将表和符号标记为应该作为 *数据对象* 看待, 而不是作为应该求值的表达式.
+#+BEGIN_SRC scheme
+(define a 1)
+(define b 2)
+(list a b) -> (1 2)
+(list 'a b) -> (a 2)
+(list 'a 'b) -> (a b)
+#+END_SRC
+注意, 引号只是一种将 =下一个完整的表达式= 用 (quote <expression>)形式包裹起来的语法糖.
+
+基本过程 =eq?= 可以以两个符号作为参数,检查它们是否为同样的符号.
+
+*** 习题2.53
+#+BEGIN_SRC scheme
+(list 'a 'b 'c);Value 468: (a b c)
+(list (list 'george));Value 469: ((george))
+(cdr '((x1 x2) (y1 y2)));Value 473: ((y1 y2))
+(cadr '((x1 x2) (y1 y2)));(y1 y2)
+(pair? (car '(a short list)));#f
+(menq 'red '((red shoes) (blue socks)));#f
+(menq 'red '(red shoes blue socks));Value 475: (red shoes blue socks)
+#+END_SRC
+
+*** 习题2.54
+#+BEGIN_SRC scheme
+(define (equal? x y)
+  (cond ((and (not (pair? x)) (not (pair? y))) (eq? x y))
+        ((and (pair? x) (pair? y))
+         (and (eq? (car x) (car y))
+              (equal? (cdr x) (cdr y))))
+        (else false)))
+#+END_SRC
+
+*** 习题2.55
+根据注释100,'a是(quote a)的语法糖, 所以:
+: (car ''abracadabra)
+等价于
+: (car '(quote abracadabra))
+
+** 实例:符号求导
+
+*** 对抽象数据的求导程序
+对于加和乘构造起来的表达式,求导工作可以通过以下几条规约完成:
+- $\frac{dc}{dx}=0$
+- $\frac{dx}{dx}=1$
+- $\frac{d(u+v)}{dx}=\frac{du}{dx}+\frac{dv}{dx}$
+- $\frac{d(uv)}{dx}=u\frac{dv}{dx}+v\frac{du}{dx}$
+
+假设我们已经有了一些代数运算的基本过程, 那么求导过程可以这样表达
+#+BEGIN_SRC scheme
+(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        ((sum? exp)
+         (make-sum (deriv (addend exp) var)
+                   (deriv (augend exp) var)))
+        ((product? exp)
+         (make-sum
+          (make-product (multiplier exp)
+                        (deriv (multiplicand exp) var))
+          (make-product (deriv (multiplier exp) var)
+                        (multiplicand exp))))
+        (else
+         (error "unknown expression type -- ERIV" exp))))
+#+END_SRC
+
+*** 代数表达式的表示
+有关导数问题的数据表示:
+#+BEGIN_SRC scheme
+; 变量就是符号
+(define (variable? x) (symbol? x))
+; 两个变量相同
+(define (same-variable? v1 v2)
+  (and (variable? v1) (variable? v2) (eq? v1 v2)))
+; 和式与乘式的构造函数
+(define (make-sum a1 a2) (list '+ a1 a2))
+(define (make-product m1 m2) (list '* m1 m2))
+; 和式就是第一个元素为'+'的表
+(define (sum? x)
+  (and (pair? x) (eq? (car x) '+)))
+(define (addend s) (cadr s))
+(define (augend s) (caddr s))
+; 乘式是第一个元素为'*'的表
+(define (product? x)
+  (and (pair? x) (eq? (car x) '*)))
+(define (multiplier p) (cadr p))
+(define (multiplicand p) (caddr p))
+#+END_SRC
+测试求导过程:
+#+BEGIN_SRC scheme
+(deriv '(+ x 3) 'x);Value 481: (+ (* x 0) (* 1 y))
+(deriv '(* x y) 'x);Value 482: (+ 1 0)
+#+END_SRC
+结果是对的,但是没有化简. 为了完成化简,我们需要修改构造函数的实现:
+#+BEGIN_SRC scheme
+(define (=number? exp num)
+  (and (number? exp) (= exp num)))
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else (list '+ a1 a2))))
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else (list '* m1 m2))))
+#+END_SRC
+测试
+#+BEGIN_SRC scheme
+(deriv '(+ x 3) 'x);Value 1
+(deriv '(* x y) 'x);Value y
+(deriv '(* (* x y) (+ x 3)) 'x);Value 486: (+ (* x y) (* y (+ x 3)))
+#+END_SRC
+情况好了一些,但第三个例子还是不太对,所以代数化简是非常非常复杂的问题..这里就不继续深究了..
+
+*** 习题2.56
+扩展deriv, 增加对指数的求导功能.
+首先定义make-exponention,exponentiation?,base,exponent:
+#+BEGIN_SRC scheme
+(define (make-exponentiation a1 a2) (list '** a1 a2))
+(define (exponentiation? x) (and (pair? x) (eq? (car x) '**)))
+(define (base x) (cadr x))
+(define (exponent x) (caddr x))
+#+END_SRC
+扩充deriv过程,把以下部分加入cond里:
+#+BEGIN_SRC scheme
+((exponentiation? exp)
+         (make-product
+          (make-product (exponent exp)
+                        (make-exponentiation
+                         (base exp)
+                         (make-sum (exponent exp) -1)))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(deriv '(** x 3) 'x);Value 490: (* 3 (** x 2))
+#+END_SRC
+
+*** 习题2.57
+扩充求导程序,使之能处理任意项的和与乘积..
+设法只修改和与乘积的表示,不修改deriv.
+#+BEGIN_SRC scheme
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else
+         (cond
+          ((not (pair? a2)) (cons '+ (append a1 (list a2))))
+          (else (cons '+ (append a1 a2)))))))
+
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else
+         (cond
+          ((not (pair? m2)) (cons '* (append m1 (list m2))))
+          (else (cons '* (append m1 m2)))))))
+#+END_SRC
+
+***  习题2.58
+a).支持乘法和加法的中缀运算.
+#+BEGIN_SRC scheme
+(define (make-sum a1 a2)
+  (cond ((=number? a1 0) a2)
+        ((=number? a2 0) a1)
+        ((and (number? a1) (number? a2)) (+ a1 a2))
+        (else
+         (cond
+          ((not (pair? a2)) (append a1 (append (list '+) (list a2))))
+          (else (append a1 (append (list '+) a2)))))))
+
+(define (make-product m1 m2)
+  (cond ((or (=number? m1 0) (=number? m2 0)) 0)
+        ((=number? m1 1) m2)
+        ((=number? m2 1) m1)
+        ((and (number? m1) (number? m2)) (* m1 m2))
+        (else
+         (cond
+          ((not (pair? m2)) (append m1 (append (list '*) (list m2))))
+          (else (append m1 (append (list '*) m2)))))))
+(define (sum? x)
+  (and (pair? x) (eq? (cadr x) '+)))
+(define (addend s) (car s))
+(define (augend s) (caddr s))
+(define (product? x)
+  (and (pair? x) (eq? (cadr x) '*)))
+(define (multiplier p) (car p))
+(define (multiplicand p) (caddr p))
+#+END_SRC
+修改make-sum和make-product即可, 不需要修改deriv.
+
+b).如果省略不必要的括号, 则必须修改deriv过程,提供处理符号优先级的功能.
+
+** 实例:集合的表示
+一个集合就是一些不同对象的汇集,利用一组可以用于"集合"的操作来定义他们.这些操作是:
+- element-of-set? (谓词)
+- adjoin-set
+- union-set
+- intersection-set
+
+*** 集合作为未排序的表
+定义element-of-set?
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((equal? x (car set)) true)
+        (else (element-of-set? x (cdr set)))))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (adjoin-set x set)
+  (if (element-of-set? x set)
+      set
+      (cons x set)))
+#+END_SRC
+
+#+BEGIN_SRC scheme
+(define (intersection-set set1 set2)
+  (cond ((or (null? set1) (null? set2)) ())
+        ((element-of-set? (car set1) set2)
+         (cons (car set1)
+               (intersection-set (cdr set1) set2)))
+        (else (intersection-set (cdr set1) set2))))
+#+END_SRC
+
+*** 习题2.59
+定义union
+#+BEGIN_SRC scheme
+(define (union set1 set2)
+  (cond ((null? set1) set2)
+        ((null? set2) set1)
+        ((element-of-set? (car set1) set2)
+         (union (cdr set1) set2))
+        (else (cons (car set1) (union (cdr set1) set2)))))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(define s1 (list 1 2 3))
+(define s2 (list 2 3 4))
+(union s1 s2); (1 2 3 4)
+#+END_SRC
+
+*** 习题2.60
+定义可重复集合的基本操作.
+首先定义最简单的adjoin,既然集合元素可重复,那么就不必判断element-of-set?了
+#+BEGIN_SRC scheme
+(define (adjoin-set x set) (cons x set))
+#+END_SRC
+
+element-of-set?只用谓词不能满足后面的需求,要计算x在set中的个数
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (define (iter x set count)
+    (cond ((null? set) count)
+          ((equal? x (car set))
+                   (iter x (cdr set) (+ count 1)))
+          (else (iter x (cdr set) count))))
+  (iter x set 0))
+
+
+#+END_SRC
+
+交集有点麻烦,在cons时需要借助cons-n过程,计入某个x在set1和set2中的最小个数
+#+BEGIN_SRC scheme
+(define (cons-n x set n)
+  (cond ((= n 0) set)
+        (else (cons-n x (cons x set) (- n 1)))))
+
+(define (intersection-set set1 set2)
+  (define (iter set1 set2 result)
+    (display result)
+    (cond ((or (null? set1) (null? set2)) result)
+          ((> (element-of-set? (car set1) result) 0)
+           (iter (cdr set1) set2 result))
+           (else (iter (cdr set1) set2
+                 (cons-n
+                  (car set1)
+                  result
+                  (min (element-of-set? (car set1) set1)
+                       (element-of-set? (car set1) set2)))))))
+  (iter set1 set2 ()))
+
+#+END_SRC
+并集
+#+BEGIN_SRC scheme
+(define (union set1 set2)
+  (define (iter set1 set2 result)
+    (cond ((null? set1) result)
+          ((null? set2) set1)
+          ((> (element-of-set? (car set1) result)
+              (element-of-set? (car set1) set1))
+           (iter (cdr set1) set2 result))
+          (else (iter (cdr set1) set2
+                      (cons-n
+                       (car set1)
+                       result
+                       (- (element-of-set? (car set1) set1)
+                            (element-of-set? (car set1) result)))))))
+  (iter set1 set2 set2))
+#+END_SRC
+测试union:
+#+BEGIN_SRC scheme
+(union '(a a b d d) '(a c d e f))
+;Value 555: (d b a a c d e f)
+#+END_SRC
+性能比不重复表差,$2*n^2$
+*** 集合作为排序的表
+加速集合操作的一种方式是给集合 =排序=. 这样我们就需要某种方式来比较两个元素.
+采用有序表以后,element-of-set?就不必扫描整个表了.
+
+(下面这个过程似乎只能判断值是数值类型的集合
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((= x (car set)) true)
+        ((< x (car set)) false)
+        (else (element-of-set? x (cdr set)))))
+(element-of-set 3 (list  2 3 4)) ;; Value: #t
+#+END_SRC
+平均而言,这个方法需要检查的步数是$\frac{n}{2}$.
+而计算交集只需要O(n)的复杂度
+#+BEGIN_SRC scheme
+(define (intersection-set set1 set2)
+  (if (or (null? set1) (null? set2))
+      ()
+      (let ((x1 (car set1)) (x2 (car set2)))
+        (cond ((= x1 x2)
+               (cons x1
+                     (intersection-set (cdr set1)
+                                       (cdr set2))))
+              ((< x1 x2)
+               (intersection-set (cdr set1) set2))
+              ((< x2 x1)
+               (intersection-set set1 (cdr set2)))))))
+#+END_SRC
+*** 习题2.61
+#+BEGIN_SRC scheme
+(define (adjoin-set x set)
+  (define (iter x set1 set2)
+    (cond ((= x (car set2)) (append set1 set2))
+          ((< x (car set2)) (append set1 (append (list x (car set2)) (cdr set2))))
+          (else (iter x (append set1 (list (car set2))) (cdr set2)))))
+  (iter x () set))
+#+END_SRC
+复杂度与二分一样,$\frac{n}{2}$.
+*** 习题2.62
+#+BEGIN_SRC scheme
+(define (union-set set1 set2)
+  (define (iter set1 set2 rst)
+    (cond ((null? set1) (append rst set1))
+          ((null? set2) (append rst set2))
+          (else (let ((x1 (car set1)) (x2 (car set2)))
+                  (cond
+                   ((= x1 x2)
+                    (iter (cdr set1) (cdr set2) (append rst (list x1 x2))))
+                   ((< x1 x2) 
+                    (iter (cdr set1) set2 (append rst (list x1))))
+                   ((< x2 x1)
+                    (iter set1 (cdr set2) (append rst (list x2)))))))))
+  (iter set1 set2 ()))
+
+(union-set '(1 2 2 4) '(2 2 3 4));Value 572: (1 2 2 2 2 3 4 4)
+
+#+END_SRC
+最容易想到的方法当然是利用2.61的adjoin-set啦,但那样的话复杂度又变成 $n^2$ 了..
+所以这里还是利用集合有序的特性,从小到大平行遍历两个集合,这样的复杂度只有n.
+*** 集合作为二叉树
+如果将集合安排成一棵树的形式,我们还可以得到比排序表更好的结果.
+其中每个节点保存一个集合元素,称为该节点的"数据项".
+
+将节点表示为三个元素的表:
+#+BEGIN_SRC scheme
+(define (make-tree entry left right) (list enrty left right))
+(define (entry tree) (car tree))
+(define (left-branch tree) (cadr tree))
+(define (right-branch tree) (caddr tree))
+#+END_SRC
+element-of-set?和adjoin-set
+#+BEGIN_SRC scheme
+(define (element-of-set? x set)
+  (cond ((null? set) false)
+        ((= x (entry set)) true)
+        ((< x (entry set))
+         (element-of-set? x (left-branch set)))
+        ((> x (entry set))
+         (element-of-set? x (right-branch set)))))
+
+(define (adjoin-set x set)
+  (cond ((null? set) (make-tree x () ()))
+        ((= x (entry set)) set)
+        ((< x (entry set))
+         (make-tree (entry set)
+                    (adjoin-set x (left-branch set))
+                    (right-branch set)))
+        ((> x (entry set))
+         (make-tree (entry set)
+                    (left-branch set)
+                    (adjoin-set x (right-branch set))))))
+#+END_SRC
+*** 习题2.63
+- a) 两个过程对所有的树生成结果都一样, 都是左子树优先遍历.
+- b) 这两个方法的展开数相同,但第一个方法中每次展开都使用了复杂度为 $n^2$ 的append操作,所以方法一的复杂度比方法2高的多.
+*** 习题2.64
+首先测试结果
+#+BEGIN_SRC scheme
+(list->tree '(1 3 5 7 9 11))
+;Value 578: (5 (1 () (3 () ())) (9 (7 () ()) (11 () ())))
+;画出来长这样:
+       5
+   1       9
+     3   7   11
+#+END_SRC
+这个算法利用二分法,递归的从叶子节点开始产生平衡树.上面这个树的计算过程是:
+#+BEGIN_SRC scheme
+(1 3 5 7 9 11) 
+;left-length: 2
+(1 3) 5 (7 9 11) 
+;left-of-left-tree: 0, left-of-right-tree: 1
+(() 1 (3)) 5 ((7) 9 (11))
+#+END_SRC
+复杂度:对于每个节点,上述算法只是进行make-tree,也没有额外的遍历, 所以复杂度是 $O(n)$
+*** 习题2.65
+并集先利用tree->list把一个tree转化成list, 然后利用前面的adjoin-set方法把元素逐个插入第二个tree中.
+#+BEGIN_SRC scheme
+(define (union-set-tree tree1 tree2)
+  (let ((list1 (tree->list tree1)))
+    (define (adjoin-list-to-tree list tree)
+      (cond ((null? list) tree)
+            (else
+             (adjoin-list-to-tree (cdr list)
+                                  (adjoin-set (car list) tree)))))
+    (list->tree (adjoin-list-to-tree list1 tree2))))
+#+END_SRC
+交集直接利用tree->list转化成list以后append,再利用list->tree转化回来
+#+BEGIN_SRC scheme
+(define (intersection-set-tree tree1 tree2)
+  (list->tree (intersection-set
+               (tree->list tree1)
+               (tree->list tree2))))
+#+END_SRC
+测试
+#+BEGIN_SRC scheme
+(union-set-tree (list->tree '(1 3 5)) (list->tree '(2 4)))
+;Value 613: ((1 () ()) (2 () ()) ((4 (3 () ()) (5 () ())) () ()))
+
+(intersection-set-tree (list->tree '(1 3 5)) (list->tree '(1 3 5 9 7 11)))
+;Value 612: (3 (1 () ()) (5 () ()))
+#+END_SRC
+*** 习题2.66
+实现对已根据key排序的二叉树查找. 
+前面定义的entry只有value,所以我们需要构造一个key-value结构的节点及key和value的读取过程.
+#+BEGIN_SRC scheme
+(define (make-entry key value) (cons key value))
+(define (key entry) (car entry))
+(define (value entry) (cdr entry))
+#+END_SRC
+实现普通的二叉树查找:
+#+BEGIN_SRC scheme
+(define (loopup x tree)
+  (cond ((null? tree) false)
+        ((= x (key (entry tree)))
+         (value (entry tree)))
+        ((< x (key (entry tree))) 
+         (loopup x (left-branch tree)))
+        ((> x (key (entry tree))) 
+         (loopup x (right-branch tree)))))
+#+END_SRC
+构造测试数据测试:
+#+BEGIN_SRC scheme
+(define test-tree (list->tree (list
+                               (make-entry 1 "aa")
+                               (make-entry 2 "bb")
+                               (make-entry 3 "cc")
+                               (make-entry 4 "dd")
+                               (make-entry 5 "ee")
+                               )))
+(loopup 3 test-tree) ;Value: "cc"
+(loopup 5 test-tree) ;Value: "dd"
+(loopup 1 test-tree) ;Value: "aa"
+#+END_SRC
+
+** 实例:Huffman编码树
+Huffman编码书树简单来说是用于实现 *无重复前缀变长编码* 的树形结构.
+
+*** 习题2.67
+要把本节代码全敲一遍才能算出来的题目....累死宝宝了. 代码太长不贴了, 最终答案是:
+: (a d a b b c a)
+
+*** 习题2.68
+实现加密算法. 步骤大概是从树根开始查找,如果元素在节点左字树的symbols中,则向结果中添加0,
+然后继续在左子树中查找, 右子树同理. 如果遇到叶子节点则说明该字符已经加密完成, 
+而后取下一个字符从根节点开始重新查找. 要实现一个判断节点是否在symbols的过程,并注意处理节点是叶子的情况.
+#+BEGIN_SRC scheme
+(define (symbol-in-tree? symbol tree)
+  (cond ((leaf? tree) (eq? symbol (symbol-leaf tree)))
+        (else (memq symbol (symbols tree)))))
+
+(define (encode-symbol message tree)
+  (define (encode-iter message subtree result)
+    (cond ((null? message) result)
+          ((leaf? subtree) (encode-iter (cdr message) tree result))
+          (else (let ((left (left-branch subtree))
+                 (right (right-branch subtree)))
+             (cond ((symbol-in-tree? (car message) left)
+                    (encode-iter  message left (cons '0 result)))
+                   ((symbol-in-tree? (car message) right)
+                    (encode-iter  message right (cons '1 result)))
+                   (else (error "sambol not in the tree"))
+                   )))))
+  (encode-iter message tree ()))
+#+END_SRC
+用上一题的加密结果来测试, 答案正确.
+#+BEGIN_SRC scheme
+(define sample-message '(a d a b b c a))
+(encode-symbol sample-message sample-tree)
+;Value 643: (0 1 1 1 0 1 0 1 0 0 1 1 0)
+#+END_SRC
+
+*** 习题2.69
+这道题目颇费了一些时间....
+关键的技巧是利用有序性, 反复归并前两个元素, 并利用adjoin-set将归并后的节点插入回节点序列.
+#+BEGIN_SRC scheme
+(define (successive-merge pairs)
+  (cond ((= 1 (length pairs)) pairs)
+        (else
+         (successive-merge
+          (adjoin-set
+           (make-code-tree (car pairs) (cadr pairs))
+           (cddr pairs))))))
+;; test
+(successive-merge (make-leaf-set (list '(A 4) '(B 2) '(C 1) '(D 1))))
+;Value 649: (((leaf a 4) ((leaf b 2) ((leaf d 1) (leaf c 1) (d c) 2) (b d c) 4) (a b d c) 8))
+#+END_SRC
+*** 习题2.70
+#+BEGIN_SRC scheme
+(define sing-pairs (list '(a 2) '(na 16) '(boom 1) '(sha 3) '(get 2) '(yip 9) '(job 2) '(wah 1)))
+(define sing-tree (car (successive-merge (make-leaf-set sing-pairs))))
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Get a job) sing-tree)
+; (0 0 0 0 0 0 0 0 0 1 1 1)
+(encode-symbol '(Sha na na na na na na na na) sing-tree)
+; (0 1 1 1 1 0 0 1 1 1 1 1 1 1)
+(encode-symbol '(Wah yip yip yip yip yip yip yip yip yip) sing-tree)
+; (0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 1)
+(encode-symbol '(Sha boom) sing-tree)
+; (1 1 0 1 1 0 1 1 1)
+#+END_SRC
+共需要84个二进制位. 如果用定长编码,为8个单词的编码,每个单词需要3个二进制位, 
+总共需要36*3=108个二进制位.
+*** 习题2.71
+n=5时,频度分别是1,2,4,8,16,树长这样:
+#+BEGIN_SRC scheme
+                    (a,b,c,d,e) 31
+               (a,b,c,d)15     e 16
+         (a,b,c) 7      d 8
+   (a,b)3        c 4
+a 1      b 2
+#+END_SRC
+频度最高的符号是e,它是根节点的右子树,编码需要1个二进制位.最不频繁的符号是a,位于树的第(n-1)层,需要4个二进制位.
+推广到一般的树,最频繁的符号需要1位,最不频繁的符号需要(n-1)位.
+*** 习题2.72
+对编码最频繁的符号来说,只需进行2次symbol-in-tree(因为首先计算左子数)即可命中,复杂度是n.
+对编码最不频繁的符号来说,需要进行n-1次symbol-in-tree才能命中,
+由于查找表逐层递减,总共需要查找 $1+2+..(n-1)=/fracn^2/2$次,复杂度是O(n^2).
+* 抽象数据的多重表示
+有时候,对于一个数据对象存在多种不同的表示方式,比如复数就可以表示为两种等价的形式:直角坐标想形式和极坐标形式.
+
+这一节我们将学习如何处理数据,使它们可能在一个程序的不同部分中采用不同的表示方式.
+更甚者,我们需要建立抽象屏障去隔离这些不同的设计选择.
+
+实现这种设计的关键是使用 =带有类型标识的数据对象=, 也就是让数据对象包含着它们应该如何处理的明确的信息.
+
+** 复数的表示
+沿用在2.1.1节设计有理数包时所采用的同样的数据抽象策略,假定复数运算的实现都包括以下4个选择函数:
+- real-part
+- imag-part
+- magnitude
+- angle
+
+以及两个构造过程
+- make-from-real-imag
+- make-from-mag-ang
+
+** 带标志的数据
+由选择函数和构造函数形成的抽象屏障,使我们可以把为自己所用的数据对象选择具体表示形式的事情尽量向后推,而且可以保持系统的灵活性.
+
+为了能对带标志的数据进行各种操作,我们将假定有过程 =type-tag= 和 =contents= ,它们分别从数据对象中提取出标志和实际内容.
+还要有一个过程 =attach-tag= ,用来生成带标志的数据对象.
+#+BEGIN_SRC scheme
+(define (attach-tag type-tag contents)
+  (cons type-tag contents))
+
+(define (type-tag datum)
+  (if (pair? datum)
+      (car datum)
+      (error "bad tagged datum -- TYPE-TAG" datum)))
+
+(define (contents datum)
+  (if (pair? datum)
+      (cdr datum)
+      (error "bad tagged datum -- CONTENTS" datum)))
+
+(define (rectangular? z)
+  (eq? (type-tag z) 'rectangular))
+
+(define (polar? z)
+  (eq? (type-tag z) 'polar))
+#+END_SRC
+然后使用不同后缀标志不同过程的名字
+#+BEGIN_SRC scheme
+(define (real-part-polar z)
+  (* (magnitude-polar z) (cos (angle-polar z))))
+
+(define (real-part-rectangular z) (car z))
+#+END_SRC
+然后用switch-case来实现通用过程real-part.. (为什么感觉switch-case搓搓的..
+#+BEGIN_SRC scheme
+(define (real-part z)
+  (cond ((rectangular? z)
+         (real-part-rectangular (contents z)))
+        ((polar? z)
+         (real-part-polar (contents z)))
+        (else (error "Unkown type -- REAL_PART" z))))
+#+END_SRC
+这样,实现复数运算时,我们依然可以采用如下形式,因为选择函数是通用的.
+#+BEGIN_SRC scheme
+(define (add-complex z1 z2)
+  (make-from-real-imag (+ (real-part z1) (real-part z2))
+                       (+ (imag-part z1) (imag-part z2))))
+#+END_SRC
+
+当通用类型选择polar类型的复数时,它会剥去标志, 只将内容传递给后面的代码. 
+而当构建一个复数时, 又会加上标志.
+这种 =剥去和加上标志= 的规范方式可以成为一种重要的组织策略.
+
+** 数据导向的程序设计和可加性
+上一节的实现有一些缺点(就是我吐槽的),switch-case的实现要求通用过程必须知道如何操作每一类数据.
+另外,还要保证系统中处理数据的过程不重名.
+基于这两点原因,我们说上面的实现不具备 =可加性=
+
+这一节要进一步将系统设计模块化, 我们叫它 =数据导向的程序设计=
+
+下面节选一些代码简要说明一下...注意put和get是超前的内容,在3.3.3节中会讲到.
+#+BEGIN_SRC scheme
+(define (install-rectangular-package)
+  ;;internal procedures
+  (define (real-part z) (car z))
+  ;;interface rest of the system
+  (define (tag x) (attach-tag 'rectangular z))
+  (put 'real-part '(rectangular) real-part))
+
+(define (apply-generic op . args)
+  (let ((type-tags (map type-tag args)))
+    (let ((proc (get op type-tags)))
+      (if proc
+          (apply proc (map contents args))
+          (error
+           "No mathod for these type -- APPLY-GENERIC"
+           (list op type-tags))))))
+
+(define (real-part z) (apply-generic 'real-part z))
+#+END_SRC
+大意就是把数据相关的过程打包存放在一张表里, 以数据类型为key. 用的时候一顿找, 取出相应的过程应用到数据类型.
+
+补充:不实现get和put方法的话后面的习题都无法继续了..所以在这里贴一下代码,测试可用
+#+BEGIN_SRC scheme
+(define local-table (list '*table*))
+(define (assoc key records)
+  (cond ((null? records)
+         #f)
+        ((equal? key (caar records))
+         (car records))
+        (else
+         (assoc key (cdr records)))))
+(define (get key-1 key-2)
+  (let ((subtable (assoc key-1 (cdr local-table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (cdr record)
+              #f))
+        #f)))
+(define (put key-1 key-2 value)
+  (let ((subtable (assoc key-1 (cdr local-table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (set-cdr! record value)
+              (set-cdr! subtable
+                        (cons (cons key-2 value)
+                              (cdr subtable)))))
+        (set-cdr! local-table
+                  (cons (list key-1
+                              (cons key-2 value))
+                        (cdr local-table)))))
+  'ok)
+#+END_SRC
+
+*** 习题2.73
+- a) 因为number?和same-value这两种逻辑无法用运算符来描述,也就无法放在索引表中.
+- b) 写出针对和式与积式的求导过程
+#+BEGIN_SRC scheme
+(define (operator exp) (car exp))
+(define (operands exp) (cdr exp))
+;; 求导过程
+(define (deriv exp var)
+  (cond ((number? exp) 0)
+        ((variable? exp)
+         (if (same-variable? exp var) 1 0))
+        (else
+         ((get 'deriv (operator exp)) (operands exp) var))))
+;; 安装内部过程
+(define (install-deriv-package)
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product))
+(install-deriv-package)
+;; 测试
+(deriv '(+ x 3) 'x)
+(deriv '(* x y) 'x)
+#+END_SRC
+- c) 把乘幂添加到上述系统中
+  #+BEGIN_SRC scheme
+(define (install-deriv-package)
+  (define (deriv-sum exp var)
+    (make-sum (deriv (car exp) var)
+              (deriv (cadr exp) var)))
+  (define (deriv-product exp var)
+    (make-sum
+     (make-product (car exp)
+                   (deriv (cadr exp) var))
+     (make-product (deriv (car exp) var)
+                   (cadr exp))))
+  (define (exponentiation exp var)
+    (make-product (cadr exp)
+                  (make-exponentiation
+                   (car exp)
+                   (make-sum (cadr exp) -1))))
+  (put 'deriv '+ deriv-sum)
+  (put 'deriv '* deriv-product)
+  (put 'deriv '** exponentiation))
+(install-deriv-package)
+;; test
+(deriv '(** x 3) 'x)
+; Value: (* 3 (** x 2))
+#+END_SRC
+- d) 把
+:  (put 'deriv 'operator operation)
+改成
+:  (put 'operator 'deriv  operation)
+
+*** 习题2.74
+首先需要定义两个方法作为工具,比起前面的put和get,它们多了一个table参数
+#+BEGIN_SRC scheme
+(define (get-tb table key-1 key-2 )
+  (let ((subtable (assoc key-1 (cdr table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (cdr record)
+              #f))
+        #f)))
+(define (put-tb table key-1 key-2 value)
+  (let ((subtable (assoc key-1 (cdr table))))
+    (if subtable
+        (let ((record (assoc key-2 (cdr subtable))))
+          (if record
+              (set-cdr! record value)
+              (set-cdr! subtable
+                        (cons (cons key-2 value)
+                              (cdr subtable)))))
+        (set-cdr! table
+                  (cons (list key-1
+                              (cons key-2 value))
+                        (cdr table)))))
+  'ok)
+
+
+
+#+END_SRC
+- a)
+#+BEGIN_SRC scheme
+(define (employee name)
+  (define rst (list '*table*))
+  (put-tb rst name 'address 'my-address)
+  (put-tb rst name 'salary '999)
+  rst)
+
+(define (load-offices)
+  (define office-table (list '*table))
+  (put-tb office-table 'office-1 'name1 (employee 'name1))
+  (put-tb office-table 'office-2 'name2 (employee 'name2))
+  (put-tb office-table 'office-2 'name3 (employee 'name3))
+  (put-tb office-table 'office-3 'name2 (employee 'name2))
+  office-table)
+
+(define offices-record (load-offices))
+#+END_SRC
+
+- b) 普通的查询
+#+BEGIN_SRC scheme
+(define (get-record office name)
+  (get-tb offices-record office name))
+
+(define (get-salary office name)
+  (define employee (get-tb offices-record office name))
+  (if (not employee)
+      (error "CANNOT FIND THE EMPLOYEE!")
+      (get-tb employee name 'salary)))
+
+(get-record 'office-2 'name2)
+(get-salary 'office-1 'name2)
+
+#+END_SRC
+
+- c) 稍微复杂的查询
+#+begin_SRC scheme
+(define (find-employee-record name)
+  (define (iter table name result)
+    (if (null? table)
+        result
+        (let ((subtable (car table)))
+          (if (null? subtable)
+              result
+              (let ((record (assoc name (cddr (cadr subtable)))))
+                (if record
+                    (iter (cdr table) name (cons result record)
+                    (iter (cdr table) name result)))))))
+    (iter (cdr offices-record) name '()))
+
+  (find-employee-record 'name3)
+#+END_SRC
+- d) 在前面load-office方法中添加新条目即可
+
+*** 消息传递
+另一种实现智能数据对象的策略是将每一个数据对象表示为一个过程,它以操作的名字作为输入,能够去执行特定的操作.
+
+我们叫它 =基于操作名的分派=
+
+按照这种思路实现复数(我简化过了..意思传达到即可..
+#+BEGIN_SRC scheme
+(define (make-from-real-imag x y)
+  (define (dispatch op)
+    (cond ((eq? op 'real-part) x)
+          ((eq? op 'imag-part) y))))
+
+(define (apply-generic op arg) (arg op))
+#+END_SRC
+
+*** 习题2.75
+#+BEGIN_SRC scheme
+(define (make-from-mag-ang x y)
+  (define (dispatch op)
+    (cond ((eq? op 'magnitude) x)
+          ((eq? op 'angle) y)
+          ((eq? op 'real-part) (* x (sin y)))
+          ((eq? op 'imag-part) (* x (cons y)))
+          (else
+           (error "Unknown op -- MAKE FROM MAG ANG" op))))
+  dispatch)
+#+END_SRC
+
+*** 习题2.76
+基于类型的分派适合需要经常加入新类型的系统,当有变化时向系统中添加一个package即可.
+
+而基于操作名的分派适合经常加入新操作的系统. 
+
+** 带有通用型操作的系统
+
+上一节教我们定义能够在不同表示上的通用运算包, 这一节教我们定义针对不同参数种类的通用型操作.
+
+*** 通用型算术运算
+书本上示例繁杂, 这里仅用add方法来说明吧
+
+首先,通用型算术过程的定义如下:
+#+BEGIN_SRC scheme
+(define (add x y) (apply-generic 'add x y))
+#+END_SRC
+
+然后安装各种包..
+#+BEGIN_SRC scheme
+(define (install-scheme-number-package)
+  (define (tag x)
+    (attach-tag 'scheme-number x))
+  (put 'add '(scheme-number scheme-number)
+      (lambda (x y) (tag (+ x y))))
+   'done)
+#+END_SRC
+
+可以看到,通用型的算术运算是利用内部过程+两层tag来实现的
+
+*** 习题2.77
+'complex包中并不存在'magnitude操作,所以返回错误
+
+apply-generic被调用了3次. 过程如下
+#+BEGIN_SRC scheme
+(magnitude z)
+(apply-generic 'magnitude z)
+;-> (complex)
+(get 'magnitude (complex))
+(apply magnitude z)
+(apply magnitude (map contents (list z)))
+(magnitude '(rectangular 3 4))
+(apply-generic 'magnitude '(rectangular 3 . 4))
+(map type-tag (list '(rectangular 3 . 4)))                      ; => '(rectangular)
+(get 'magnitude '(rectangular))                                 ; => magnitude  ; 这个 magnitude 是定义于 rectangular 包中的 magnitude
+(apply magnitude (map contents (list '(rectangular 3 . 4))))    ; => (apply magnitude '((3 . 4)))
+(magnitude '(3 . 4))
+(sqrt (+ (square (real-part '(3 . 4)))
+         (square (imag-part '(3 . 4)))))
+#+END_SRC
+
