@@ -66,7 +66,7 @@
 <ul>
 <li><a href="#orgheadline19">求值规则</a></li>
 <li><a href="#orgheadline20">练习3.9</a></li>
-<li><a href="#orgheadline21"></a></li>
+<li><a href="#orgheadline21">练习3.10</a></li>
 </ul>
 </li>
 </ul>
@@ -598,7 +598,63 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 </div>
 
 <div id="outline-container-orgheadline21" class="outline-3">
-<h3 id="orgheadline21"></h3>
+<h3 id="orgheadline21">练习3.10</h3>
+<div class="outline-text-3" id="text-orgheadline21">
+<p>
+先把let替换成lambda表达式的形式:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-withdraw initial-amount)
+  ((lambda (balance) (lambda (amount) ... )) initial-amount))
+</pre>
+</div>
+<p>
+执行define
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define W1 (make-withdraw 100))
+</pre>
+</div>
+<p>
+求值过程make-withdraw将设置环境E1,并将形参initial-amount约束到实参100.<br  />
+在E1中求值make-withdraw
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">((lambda (balance) (lambda (amount) ... )) 100)
+</pre>
+</div>
+<p>
+这个过程对象就作为调用make-withdraw的返回值,它的环境是E2,在全局环境中约束于W1.<br  />
+此时,环境大概是这样的(我用E0来表示全局环境):
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">E0: make-withdraw,W1
+E1: initial-amount = 100
+E2: balance = 100
+参数: amount
+过程体: (lambda (amount) .... )
+</pre>
+</div>
+<p>
+当我们把W1应用到一个参数时:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(W1 50)
+</pre>
+</div>
+<p>
+将产生一个新框架E3,把形参amount绑定到实参50,过程体中的set!操作将会修改位于E2中的约束balance.
+</p>
+
+<p>
+可见习题这个版本make-withdraw和3.2.3版本的make-withdraw创建出的对象具有相同对象, 不同的是习题版本额外创建了一个环境E1.
+</p>
+</div>
 </div>
 </div>
 
@@ -607,7 +663,7 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-27</span>
+        <span title="last modification date" class="post-info">2016-07-31</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
