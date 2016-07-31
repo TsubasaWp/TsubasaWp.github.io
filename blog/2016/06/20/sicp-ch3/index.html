@@ -65,10 +65,15 @@
 <li><a href="#orgheadline18">3.2求值环境模型</a>
 <ul>
 <li><a href="#orgheadline19">求值规则</a></li>
-<li><a href="#orgheadline20">练习3.9</a></li>
-<li><a href="#orgheadline21">练习3.10</a></li>
+<li><a href="#orgheadline20">简单的过程应用</a></li>
+<li><a href="#orgheadline21">练习3.9</a></li>
+<li><a href="#orgheadline22">将框架看做局部状态的展台</a></li>
+<li><a href="#orgheadline23">练习3.10</a></li>
+<li><a href="#orgheadline24">内部定义</a></li>
+<li><a href="#orgheadline25">练习3.11</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline26">用变动数据做模拟</a></li>
 </ul>
 </div>
 </div>
@@ -529,16 +534,27 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 <p>
 现在我们要用 <code>求值的环境模型</code> 代替 <code>求值的代换模型</code>.<br  />
 在求值的环境模型里,一个过程总是一个对偶,由一些代码和一个指向环境的指针组成. <br  />
-<code>define</code> 的行为: 在当前环境框架里建立一个约束,并赋予这个符号指定的值.
-<code>set!</code> 的行为: 在环境中找到包含这个变量约束的第一个框架, 然后 <code>修改</code> 这一框架.
-<code>应用过程对象</code> 将创建一个新环境
+<code>环境模型的规则</code>
+</p>
+<ul class="org-ul">
+<li>相对于一个给定环境 <b>求lambda表达式</b> ,将创建一个 <b>过程对象</b>.<br  /></li>
+<li>将一个 <b>过程对象</b> 应用于一集实际参数,将构造出一个新框架. 这是过程对象中的指针将指向新框架.<br  /></li>
+</ul>
+<p>
+一些关键字:<br  />
+<code>define</code> 的行为: 在当前环境框架里建立一个约束,并赋予这个符号指定的值.<br  />
+<code>set!</code> 的行为: 在环境中找到包含这个变量约束的第一个框架, 然后 <code>修改</code> 这一框架.<br  />
+<code>过程对象</code> 过程对象是一个序对,由lambda的正文和一个指向环境的指针组成.这个指针指向创建过程对象的环境.<br  />
 </p>
 </div>
 </div>
 
 <div id="outline-container-orgheadline20" class="outline-3">
-<h3 id="orgheadline20">练习3.9</h3>
-<div class="outline-text-3" id="text-orgheadline20">
+<h3 id="orgheadline20">简单的过程应用</h3>
+</div>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">练习3.9</h3>
+<div class="outline-text-3" id="text-orgheadline21">
 <p>
 分析对阶乘函数的递归版本和迭代版本分别应用环境求值模型时所创建的环境结构.
 递归版本:
@@ -596,10 +612,12 @@ rand1和rand2是同一的吗? 不是, 因为他们计算行为不同.<br  />
 </ul>
 </div>
 </div>
-
-<div id="outline-container-orgheadline21" class="outline-3">
-<h3 id="orgheadline21">练习3.10</h3>
-<div class="outline-text-3" id="text-orgheadline21">
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22">将框架看做局部状态的展台</h3>
+</div>
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23">练习3.10</h3>
+<div class="outline-text-3" id="text-orgheadline23">
 <p>
 先把let替换成lambda表达式的形式:
 </p>
@@ -648,14 +666,109 @@ E2: balance = 100
 </pre>
 </div>
 <p>
-将产生一个新框架E3,把形参amount绑定到实参50,过程体中的set!操作将会修改位于E2中的约束balance.
-</p>
-
-<p>
+将产生一个新框架E3,把形参amount绑定到实参50,过程体中的set!操作将会修改位于E2中的约束balance.<br  />
 可见习题这个版本make-withdraw和3.2.3版本的make-withdraw创建出的对象具有相同对象, 不同的是习题版本额外创建了一个环境E1.
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">内部定义</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+<p>
+内部过程定义的两个关键性质:
+</p>
+<ul class="org-ul">
+<li>局部过程的名字不会与包容他们的过程之外的名字互相干扰. 应为局部过程名字是在该过程运行时创建的框架里面约束的.</li>
+<li>局部过程只需要将包含着它们的过程的形参作为自由变量.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">练习3.11</h3>
+<div class="outline-text-3" id="text-orgheadline25">
+<p>
+考虑3.11节的银行账户过程,展示由下列交互序列生成的环境结构.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define acc (make-account 50))
+</pre>
+</div>
+<p>
+在全局环境中约束acc到一个过程对象
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">E0: make-account =
+      param: balance
+      body: (define (withdraw amount)...
+            (define (deposit ...
+            (define (dispatch ...
+      pointer:E0
+
+    acc =
+      param: m
+      body: (cond ((eq ? m 'widthdraw...
+                  ((eq ? m 'deposit...
+      pointer:E1
+      ---------------------------------
+      E1: balance = 50
+          withdraw ...
+          deposit ...
+          dispatch ...
+      ---------------------------------
+</pre>
+</div>
+<p>
+应用'deposit到acc
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">((acc 'deposit) 40)
+</pre>
+</div>
+<p>
+创建新环境E2,E2是E1的下属, 把形参m绑定到实参'deposit,并返回一个过程对象.其中balance是被关联在E1中的实参.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">E2: m = 'deposit
+    局部过程 =
+      param: amount
+      body: (set! balance (+ balance amuont)
+           balance
+      pointer: E2
+</pre>
+</div>
+<p>
+然后把实参40应用于返回的过程对象,创建新环境E3.E3是E2的下属,形参amount绑定实参40.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">E3: amount = 40
+</pre>
+</div>
+<p>
+对局部过程对象求值并返回,这将改变E1中的balance的值. <br  />
+应用'withdraw到acc的过程和上面差不多,这里就略过了&#x2026;
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">((acc 'withdraw) 60)
+30
+</pre>
+</div>
+<p>
+可以看到, acc的局部状态保存在E1中, 如果另外定义一个acc2, 则acc2的局部变量会保存在一个新框架中, 所以它们互相之间不会有影响.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26">用变动数据做模拟</h2>
 </div>
 
 </div>
