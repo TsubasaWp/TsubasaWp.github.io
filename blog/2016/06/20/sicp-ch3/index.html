@@ -73,7 +73,12 @@
 <li><a href="#orgheadline25">练习3.11</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline26">用变动数据做模拟</a></li>
+<li><a href="#orgheadline26">用变动数据做模拟</a>
+<ul>
+<li><a href="#orgheadline27">变动的表结构</a></li>
+<li><a href="#orgheadline28">习题3.12</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -769,6 +774,54 @@ E2: balance = 100
 
 <div id="outline-container-orgheadline26" class="outline-2">
 <h2 id="orgheadline26">用变动数据做模拟</h2>
+<div class="outline-text-2" id="text-orgheadline26">
+<p>
+作为对第二章数据抽象系统的扩展,为了模拟具有不断 <code>变化</code> 的状态的复合对象, 我们将设计出称为 <code>改变函数</code> 的操作.<br  />
+比如表示银行账户的数据结构可能就需要接受下面的操作:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(set-balance! &lt;accoun&gt; &lt;new-value&gt;)
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-3">
+<h3 id="orgheadline27">变动的表结构</h3>
+<div class="outline-text-3" id="text-orgheadline27">
+<p>
+针对序对的基本改变函数是 <code>set-car!</code> 和 <code>set-cdr!</code>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define x (cons 1 2))
+x ; val-&gt;(1,2)
+(set-car! x 3)
+(set-cdr! x 4)
+x ; val-&gt;(3,4)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28">习题3.12</h3>
+<div class="outline-text-3" id="text-orgheadline28">
+<p>
+<code>append!</code> 的功能与append类似, 不同的是它通过改变最后一个序对的cdr来达到追加表的目的.<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (append! x y)
+  (set-cdr! (last-paif x) y)
+x)
+</pre>
+</div>
+<p>
+碎碎念:直到看到这里我才意识到一个问题&#x2026;(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.
+</p>
+</div>
+</div>
 </div>
 
 </div>
@@ -776,7 +829,7 @@ E2: balance = 100
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-07-31</span>
+        <span title="last modification date" class="post-info">2016-08-01</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
