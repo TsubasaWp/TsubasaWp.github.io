@@ -447,4 +447,31 @@ E3: amount = 40
 可以看到, acc的局部状态保存在E1中, 如果另外定义一个acc2, 则acc2的局部变量会保存在一个新框架中, 所以它们互相之间不会有影响.
 
 * 用变动数据做模拟
+作为对第二章数据抽象系统的扩展,为了模拟具有不断 =变化= 的状态的复合对象, 我们将设计出称为 =改变函数= 的操作.\\
+比如表示银行账户的数据结构可能就需要接受下面的操作:
+#+BEGIN_SRC scheme
+(set-balance! <accoun> <new-value>)
+#+END_SRC
+
+** 变动的表结构 
+针对序对的基本改变函数是 =set-car!= 和 =set-cdr!=.
+#+BEGIN_SRC scheme
+(define x (cons 1 2))
+x ; val->(1,2)
+(set-car! x 3)
+(set-cdr! x 4)
+x ; val->(3,4)
+#+END_SRC
+
+** 习题3.12
+=append!= 的功能与append类似, 不同的是它通过改变最后一个序对的cdr来达到追加表的目的.\\
+#+BEGIN_SRC scheme
+(define (append! x y)
+  (set-cdr! (last-paif x) y)
+x)
+#+END_SRC
+碎碎念:直到看到这里我才意识到一个问题...(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.
+
+
+
 
