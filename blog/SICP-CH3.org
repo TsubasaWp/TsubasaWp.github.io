@@ -470,8 +470,34 @@ x ; val->(3,4)
   (set-cdr! (last-paif x) y)
 x)
 #+END_SRC
-碎碎念:直到看到这里我才意识到一个问题...(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.
+碎碎念:直到看到这里我才意识到一个问题...(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.\\
+<response 1>: (b)
+#+BEGIN_SRC scheme
+x: [a]-[b][]
+#+END_SRC
+<response 2>: (b c d)
+#+BEGIN_SRC scheme
+x: [a]-[b]-[c]-[d][]
+#+END_SRC
 
+** 习题3.13
+考虑下面make-cycle过程
+#+BEGIN_SRC scheme
+(define (make-cycle x)
+  (set-cdr! (last-pair x) x)
+  x)
+#+END_SRC
+画出盒子指针图形,说明下面表达式的结构
+#+BEGIN_SRC scheme
+(define z (makd-pair '(a b c))
+#+END_SRC
+我尝试跑了一下,结果no zuo no die....\\
+指针图形:
+#+BEGIN_SRC scheme
+[a]-[b]-[c]--|
+ |___________|
+#+END_SRC
 
+** 习题3.14
 
 
