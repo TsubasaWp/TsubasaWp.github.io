@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <title>Untitled - org-page</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tsubasa" />
+    <link rel="stylesheet" href="/media/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/media/css/prettify.css" type="text/css">
+  </head>
+  <body class="container">
+    <div>
+      <header class="masthead">
+        <h1 class="masthead-title"><a href="/">org-page</a></h1>
+        <p>static site generator</p>
+        <ul>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/resource/">Resource</a></li>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="https://github.com/kelvinh/org-page">GitHub</a></li>
+          <li><a href="/rss.xml">RSS</a></li>
+        </ul>
+        <form method="get" id="searchform" action="//www.google.com/search">
+          <input type="text" class="field" name="q" id="s" placeholder="Search">
+          <input type="hidden" name="as_sitesearch" value="tsubasawp.github.io">
+        </form>
+      </header>
+    </div>
+
+<div>
+<div class="post">
+<h1>Untitled</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. 备份</a></li>
+<li><a href="#orgheadline2">2. 2013</a></li>
+<li><a href="#orgheadline13">3. 2015</a>
+<ul>
+<li><a href="#orgheadline3">3.1. 工程转换</a></li>
+<li><a href="#orgheadline6">3.2. 工程配置</a>
+<ul>
+<li><a href="#orgheadline4">3.2.1. 工程文件</a></li>
+<li><a href="#orgheadline5">3.2.2. 路径</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">3.3. 编译</a>
+<ul>
+<li><a href="#orgheadline9">3.3.1. 用新版本的 MSBuild 编译难免会出现一些不兼容的状况</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline11">3.4. Incredibuild</a></li>
+<li><a href="#orgheadline12">3.5. Old Labs</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> 备份</h2>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> 2013</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+2013 支持 incredibuild,但在进行工程转换的时候出现了 bug:原有的工程文件中含有 xml 字符&amp;quote;,导致工程转换结束以后 vs 会 crash&#x2026;
+所以暂时放弃
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13"><span class="section-number-2">3</span> 2015</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">3.1</span> 工程转换</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+直接自动升级工程即可. 升级完毕后可以在 vs2015 中直接打开,工程目录保持不变. 升级之前会自动备份工程.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">3.2</span> 工程配置</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+vs2013/2015 的工程配置与 vs2008 区别比较大.
+</p>
+</div>
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4"><span class="section-number-4">3.2.1</span> 工程文件</h4>
+<div class="outline-text-4" id="text-3-2-1">
+<p>
+diff 了一下转换前后的工程文件,他们格式完全不同,基本不太可能手动修改
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">3.2.2</span> 路径</h4>
+<div class="outline-text-4" id="text-3-2-2">
+<p>
+vs2013/2015 的工程路径后不能带`\`,这一点与 2008 不同,需要格外注意
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10"><span class="section-number-3">3.3</span> 编译</h3>
+<div class="outline-text-3" id="text-3-3">
+</div><div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">3.3.1</span> 用新版本的 MSBuild 编译难免会出现一些不兼容的状况</h4>
+<div class="outline-text-4" id="text-3-3-1">
+</div><ol class="org-ol"><li><a id="orgheadline7"></a>对命名空间检查更加严格了,编译过程中出现很多"多次定义"error, 解决方案是为其中某一个添加命名空间.<br  /><div class="outline-text-5" id="text-3-3-1-1">
+<p>
+todo 测试兼容性
+</p>
+</div></li>
+<li><a id="orgheadline8"></a>sprintf 重定义 error<br  /></li></ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11"><span class="section-number-3">3.4</span> Incredibuild</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+incredibuild 5.0 不支持 2015&#x2026;&#x2026;.这个太伤了..
+好在 incredibuild 7 号称免费版可以用 4 核,也可以凑合用一下 (然而那个鬼官网死活没法下载
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">3.5</span> Old Labs</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+千辛万苦终于编译过了。。。纳尼 error LNK2019， 这种不详的预感是怎么回事。。
+经过一番 google，产生这个 error 的原因是项目使用的第三方 lib 是由上古版本的 vs 编译而成的，无法兼容。
+</p>
+
+<p>
+最糟糕的是，这些库里的一部分似乎已经绝版了。。。
+</p>
+
+<p>
+很遗憾，工程升级之路只能到此为止了。在此记录下整个事件的过程。
+</p>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+    <div>
+      <div class="post-meta">
+        <span title="post date" class="post-info">2016-08-02</span>
+        <span title="last modification date" class="post-info">2016-08-01</span>
+        <span title="tags" class="post-info">N/A</span>
+        <span title="author" class="post-info">Tsubasa</span>
+      </div>
+      <section>
+        <h1>Comments</h1>
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          //var disqus_developer = 1;
+          var disqus_identifier = "/blog/2016/08/02/untitled/";
+          var disqus_url = "http://tsubasawp.github.io/blog/2016/08/02/untitled/";
+          var disqus_shortname = 'Tsubasa';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="//disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        <div class="ds-thread"></div>
+        <script type="text/javascript">
+          var duoshuoQuery = {short_name:'Tsubasa'};
+          (function() {
+          var ds = document.createElement('script');
+          ds.type = 'text/javascript';ds.async = true;
+          ds.src = 'http://static.duoshuo.com/embed.js';
+          ds.charset = 'UTF-8';
+          (document.getElementsByTagName('head')[0]
+          || document.getElementsByTagName('body')[0]).appendChild(ds);
+          })();
+        </script>
+      </section>
+      <script src="//code.jquery.com/jquery-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.js"></script>
+      <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script src="/media/js/main.js"></script>
+      <div class="footer">
+        <p>Generated by <a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.x (<a href="http://orgmode.org">Org mode</a> 8.x)</p>
+        <p>
+          Copyright &copy; 2012 - <span id="footerYear"></span> <a href="mailto:Tsubasa &lt;at&gt; Tsubasas-MacBook-Pro &lt;dot&gt; local">Tsubasa</a>
+          &nbsp;&nbsp;-&nbsp;&nbsp;
+          Powered by <a href="https://github.com/kelvinh/org-page" target="_blank">org-page</a>
+          <script type="text/javascript">document.getElementById("footerYear").innerHTML = (new Date()).getFullYear();</script>
+        </p>
+      </div>
+    </div>
+
+  </body>
+</html>

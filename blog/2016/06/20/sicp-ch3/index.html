@@ -77,6 +77,8 @@
 <ul>
 <li><a href="#orgheadline27">变动的表结构</a></li>
 <li><a href="#orgheadline28">习题3.12</a></li>
+<li><a href="#orgheadline29">习题3.13</a></li>
+<li><a href="#orgheadline30">习题3.14</a></li>
 </ul>
 </li>
 </ul>
@@ -818,9 +820,61 @@ x)
 </pre>
 </div>
 <p>
-碎碎念:直到看到这里我才意识到一个问题&#x2026;(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.
+碎碎念:直到看到这里我才意识到一个问题&#x2026;(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.<br  />
+&lt;response 1&gt;: (b)
 </p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">x: [a]-[b][]
+</pre>
 </div>
+<p>
+&lt;response 2&gt;: (b c d)
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">x: [a]-[b]-[c]-[d][]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29">习题3.13</h3>
+<div class="outline-text-3" id="text-orgheadline29">
+<p>
+考虑下面make-cycle过程
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-cycle x)
+  (set-cdr! (last-pair x) x)
+  x)
+</pre>
+</div>
+<p>
+画出盒子指针图形,说明下面表达式的结构
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define z (makd-pair '(a b c))
+</pre>
+</div>
+<p>
+我尝试跑了一下,结果no zuo no die&#x2026;.<br  />
+指针图形:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">[a]-[b]-[c]--|
+ |___________|
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline30" class="outline-3">
+<h3 id="orgheadline30">习题3.14</h3>
 </div>
 </div>
 
@@ -829,7 +883,7 @@ x)
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-01</span>
+        <span title="last modification date" class="post-info">2016-08-02</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
