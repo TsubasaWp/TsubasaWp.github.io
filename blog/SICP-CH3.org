@@ -499,5 +499,27 @@ x: [a]-[b]-[c]-[d][]
 #+END_SRC
 
 ** 习题3.14
-
+分析下面这个过程:
+#+BEGIN_SRC scheme
+(define (mystery x)
+  (define (loop x y)
+    (if (null? x)
+        y
+        (let ((temp (cdr x)))
+          (set-cdr! x y)
+          (loop temp x))))
+  (loop x '()))
+#+END_SRC
+看上去是用来给序列逆序的,运行了一下果不其然.
+#+BEGIN_SRC scheme
+(define v '(a b c d))
+; v的盒子图形:
+[a]-[b]-[c]-[d]
+#+END_SRC
+求值(define w (mystery v))之后,w和v的盒子图形是
+#+BEGIN_SRC scheme
+w: [d]-[c]-[b]-[a]
+v: [a]
+#+END_SRC
+这是由于v在第一次调用loop时被当做实参绑定到形参x,然后被set-cdr!改变.
 
