@@ -875,6 +875,45 @@ x)
 
 <div id="outline-container-orgheadline30" class="outline-3">
 <h3 id="orgheadline30">习题3.14</h3>
+<div class="outline-text-3" id="text-orgheadline30">
+<p>
+分析下面这个过程:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (mystery x)
+  (define (loop x y)
+    (if (null? x)
+        y
+        (let ((temp (cdr x)))
+          (set-cdr! x y)
+          (loop temp x))))
+  (loop x '()))
+</pre>
+</div>
+<p>
+看上去是用来给序列逆序的,运行了一下果不其然.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define v '(a b c d))
+; v的盒子图形:
+[a]-[b]-[c]-[d]
+</pre>
+</div>
+<p>
+求值(define w (mystery v))之后,w和v的盒子图形是
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">w: [d]-[c]-[b]-[a]
+v: [a]
+</pre>
+</div>
+<p>
+这是由于v在第一次调用loop时被当做实参绑定到形参x,然后被set-cdr!改变.
+</p>
+</div>
 </div>
 </div>
 
@@ -883,7 +922,7 @@ x)
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-02</span>
+        <span title="last modification date" class="post-info">2016-08-03</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
