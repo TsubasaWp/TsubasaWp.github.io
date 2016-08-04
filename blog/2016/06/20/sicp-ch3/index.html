@@ -79,6 +79,7 @@
 <li><a href="#orgheadline28">习题3.12</a></li>
 <li><a href="#orgheadline29">习题3.13</a></li>
 <li><a href="#orgheadline30">习题3.14</a></li>
+<li><a href="#orgheadline31">共享和相等</a></li>
 </ul>
 </li>
 </ul>
@@ -820,7 +821,7 @@ x)
 </pre>
 </div>
 <p>
-碎碎念:直到看到这里我才意识到一个问题&#x2026;(list x y z)构造出表(x y z),其中每个元素都是一个序对,只是序对的cdr为空而已.以前一直没有理解这一点.<br  />
+碎碎念:直到看到这里我才意识到一个问题&#x2026;(list x y z)构造出表(x y z),其中每个元素都是一个序对.以前一直没有理解这一点.<br  />
 &lt;response 1&gt;: (b)
 </p>
 <div class="org-src-container">
@@ -915,6 +916,31 @@ v: [a]
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31">共享和相等</h3>
+<div class="outline-text-3" id="text-orgheadline31">
+<p>
+在3.1.3节我们讨论过 <b>同一</b> 和 <b>变化</b> 的问题,当不同数据对象共享某些序对时,这些问题就到现实中来了.
+考虑下面结构:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define x '(a b))
+(define z1 (cons x x))
+(define z2 (cons '(a b) '(a b)))
+</pre>
+</div>
+<p>
+其中,z1的car和cdr都指向同一个序对, 而z2的car和cdr不同,但它们使用的符号a,b是共享的.<br  />
+但作为表来考虑,z1和z2都表示((a b) a b),如果我们只用cons,car,cdr对表进行操作,则其中的共享就不会被察觉. 
+但如果允许 <code>改变</code> 表结构的话, 共享的情况就会被暴露了. <br  />
+检查表是否共享的一种方式是 <code>eq?</code>, 它检查x和y是否为同一个对象. 
+(eq? (car z1) (cdr z1))为真,而
+(eq? (car z2) (cdr z2))为假.
+</p>
+</div>
+</div>
 </div>
 
 </div>
@@ -922,7 +948,7 @@ v: [a]
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-03</span>
+        <span title="last modification date" class="post-info">2016-08-04</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
