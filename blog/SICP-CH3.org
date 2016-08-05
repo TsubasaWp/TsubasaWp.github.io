@@ -538,6 +538,45 @@ v: [a]
 (eq? (car z1) (cdr z1))为真,而
 (eq? (car z2) (cdr z2))为假.
 
+** 习题3.15
+画出盒子指针图形,解释set-to-wow!对上面结构z1和z2的影响.
+#+BEGIN_SRC scheme
+(define (set-to-wow! x)
+  (set-car! (car x) 'wow)
+  x)
+(set-to-wow! z1);;Value 10: ((wow b) wow b)
+(set-to-wow! z2);;Value 11: ((wow b) a b)
+#+END_SRC
+z1的盒子:
+#+BEGIN_SRC scheme
+z1---[ ]  [ ]
+      |    |
+x ---[wow][ ]---[b][]
+#+END_SRC
+z2的盒子
+#+BEGIN_SRC scheme
+z2---[ ][ ]---[ ][ ]---[ ][]
+      |        |        |
+      |       [wow]    [b]
+      |       [a]       |
+      |        |        |
+      ------- [ ][ ]---[ ][]
+#+END_SRC
 
-
+** 习题3.16
+考虑下面这个统计表结构中序对的过程
+#+BEGIN_SRC scheme
+(define (count-pairs x)
+    (if (not (pair? x))
+      0
+      (+ (count-pairs (car x))
+         (count-pairs (cdr x))
+         1)))
+#+END_SRC
+构造返回3,4,7的表
+#+BEGIN_SRC scheme
+(define x3 (cons 'a '(c d)))
+(define x4 (cons '(a b) (cons 'c 'd)))
+(define x7 (cons '(a b) (list 'c '(d e))))
+#+END_SRC
 
