@@ -80,6 +80,8 @@
 <li><a href="#orgheadline29">习题3.13</a></li>
 <li><a href="#orgheadline30">习题3.14</a></li>
 <li><a href="#orgheadline31">共享和相等</a></li>
+<li><a href="#orgheadline32">习题3.15</a></li>
+<li><a href="#orgheadline33">习题3.16</a></li>
 </ul>
 </li>
 </ul>
@@ -941,6 +943,76 @@ v: [a]
 </p>
 </div>
 </div>
+
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32">习题3.15</h3>
+<div class="outline-text-3" id="text-orgheadline32">
+<p>
+画出盒子指针图形,解释set-to-wow!对上面结构z1和z2的影响.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (set-to-wow! x)
+  (set-car! (car x) 'wow)
+  x)
+(set-to-wow! z1);;Value 10: ((wow b) wow b)
+(set-to-wow! z2);;Value 11: ((wow b) a b)
+</pre>
+</div>
+<p>
+z1的盒子:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">z1---[ ]  [ ]
+      |    |
+x ---[wow][ ]---[b][]
+</pre>
+</div>
+<p>
+z2的盒子
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">z2---[ ][ ]---[ ][ ]---[ ][]
+      |        |        |
+      |       [wow]    [b]
+      |       [a]       |
+      |        |        |
+      ------- [ ][ ]---[ ][]
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33">习题3.16</h3>
+<div class="outline-text-3" id="text-orgheadline33">
+<p>
+考虑下面这个统计表结构中序对的过程
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (count-pairs x)
+    (if (not (pair? x))
+      0
+      (+ (count-pairs (car x))
+         (count-pairs (cdr x))
+         1)))
+</pre>
+</div>
+<p>
+构造返回3,4,7的表
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define x3 (cons 'a '(c d)))
+(define x4 (cons '(a b) (cons 'c 'd)))
+(define x7 (cons '(a b) (list 'c '(d e))))
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -948,7 +1020,7 @@ v: [a]
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-04</span>
+        <span title="last modification date" class="post-info">2016-08-05</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
