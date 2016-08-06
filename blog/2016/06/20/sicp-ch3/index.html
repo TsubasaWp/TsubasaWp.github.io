@@ -82,6 +82,10 @@
 <li><a href="#orgheadline31">共享和相等</a></li>
 <li><a href="#orgheadline32">习题3.15</a></li>
 <li><a href="#orgheadline33">习题3.16</a></li>
+<li><a href="#orgheadline34">习题3.17</a></li>
+<li><a href="#orgheadline35">3.18</a></li>
+<li><a href="#orgheadline36">3.19</a></li>
+<li><a href="#orgheadline37">改变也就是赋值</a></li>
 </ul>
 </li>
 </ul>
@@ -860,7 +864,7 @@ x)
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(define z (makd-pair '(a b c))
+<pre class="src src-scheme">(define z (make-cycle '(a b c))
 </pre>
 </div>
 <p>
@@ -1011,7 +1015,118 @@ z2的盒子
 (define x7 (cons '(a b) (list 'c '(d e))))
 </pre>
 </div>
+<p>
+至于根本不返回的表..利用3.13的make-cycle就可以让count-pairs陷入无尽的循环中了√
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define z (make-cycle '(a b c))
+</pre>
 </div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">习题3.17</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+<p>
+设计一个count-pairs的正确版本.题目中给了提示,使用一个容器维护计算过的序对的轨迹.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (count-pairs-right x)
+  (define (count-pairs-inner x viewed-pair)
+    (define (is-pair-viewed? x)
+      (define (iter arr x)
+        (cond
+         ((eq? arr '())  #F)
+         ((eq? (car arr) x) #T)
+         (else (iter (cdr arr) x))))
+      (iter viewed-pair x))
+    (define (count-iter x)
+      (cond ((not (pair? x)) 0)
+            ((is-pair-viewed? x)
+             (+ (count-iter (car x))
+                (count-iter (cdr x))))
+            (else
+             (append! viewed-pair (list x))
+             (newline)
+             (+ (count-iter (car x))
+                (count-iter (cdr x))
+                1))))
+    (count-iter x))
+  (count-pairs-inner x (list x)))
+</pre>
+</div>
+<p>
+测试
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define l (cons a b))
+(define x (cons l l))
+(count-pairs-right x) ;; 2
+(count-pairs x) ;; 5
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-3">
+<h3 id="orgheadline35">3.18</h3>
+<div class="outline-text-3" id="text-orgheadline35">
+<p>
+实现一个过程,检查表中是否包含环.
+依次检查表中的节点是否与表头相等即可.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (is-cycle? arr)
+  (define (iter x)
+    (cond ((eq? x '()) #f)
+          ((eq? x arr) #t)
+          (else (iter (cdr x)))))
+  (iter (cdr arr)))
+</pre>
+</div>
+<p>
+测试:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define c (make-cycle '(a b c)))
+(is-cycle? c) ; #t
+(is-cycle? '(a b c)) ;#f
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36">3.19</h3>
+<div class="outline-text-3" id="text-orgheadline36">
+<p>
+采用常量空间重做3.18..需要一种很聪明的想法(看来我刚才写的一定是朴素的想法了&#x2026;.<br  />
+3.18的解法为神马不是常量空间呢,因为里面有递归,每次调用iter都将创建一个新环境,复杂度是N.
+看来这道题目需要用一种一刀秒的思路来解..<br  />
+3.13构造的环一定是表尾接表头的,这里就不考虑其它复杂情况了,比如表尾接表第二个节点之类的..<br  />
+那么我们只要把表第一个节点的cdr设置为nil,然后判断表的剩余部分的最后一个节点是不是第一个节点就可以了(有木有很聪明!
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (is-cycle? arr)
+  (let ((left-arr (cdr arr)))
+    (set-cdr! arr '())
+    (if (eq? (last-pair left-arr) arr)
+        #t
+        #f)))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37">改变也就是赋值</h3>
 </div>
 </div>
 
@@ -1020,7 +1135,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-05</span>
+        <span title="last modification date" class="post-info">2016-08-06</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
