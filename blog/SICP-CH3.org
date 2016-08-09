@@ -652,6 +652,49 @@ z2---[ ][ ]---[ ][ ]---[ ][]
 #+END_SRC
 
 ** 改变也就是赋值
+从理论上说,为了表现变动数据的行为,所需要的全部东西也就是赋值.
 
+** 习题3.20
+画出下面表达式求值过程的环境图示
+#+BEGIN_SRC scheme
+(define x (cons 1 2))
+(define z (cons x x))
+(set-car! (cdr z) 17)
+(car x )
+17
+#+END_SRC
 
-
+#+BEGIN_SRC scheme
+E0: [x]
+    x = 1, y = 2
+    参数: m1
+    过程体:(cond (eq? m 'car) ....)
+    [z]
+    x = [x], y = [x]
+    参数: m2
+    过程体:(cond (eq? m 'car) ....)
+    [car] 过程体..
+    [cdr] 过程体..
+    [set-car!] 过程体..
+    [set-cdr!] 过程体..
+#+END_SRC
+对z应用'cdr
+#+BEGIN_SRC scheme
+E1: m2 = 'cdr
+    得到E0中的x
+#+END_SRC
+对返回值x应用'set-car!
+#+BEGIN_SRC scheme
+E2: m1 = 'set-car!
+    返回[x]的内部过程(define (set-x! v) (set! x v))
+#+END_SRC
+对'set-car!应用17
+#+BEGIN_SRC scheme
+E3: v = 17
+    set改变了E0中[x]的实参x=1的值
+#+END_SRC
+对过程x应用'car
+#+BEGIN_SRC scheme
+E4: m1 = 'car
+    返回[x]的实参x的值17
+#+END_SRC
