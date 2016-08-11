@@ -87,6 +87,7 @@
 <li><a href="#orgheadline36">3.19</a></li>
 <li><a href="#orgheadline37">改变也就是赋值</a></li>
 <li><a href="#orgheadline38">习题3.20</a></li>
+<li><a href="#orgheadline39">队列的表示</a></li>
 </ul>
 </li>
 </ul>
@@ -1205,6 +1206,49 @@ z2的盒子
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">队列的表示</h3>
+<div class="outline-text-3" id="text-orgheadline39">
+<p>
+为了减少查找时间,我们用一对指针来表示序列:front-ptr和rear-ptr.
+它们分别指向一个常规表中的第一个序对和最后一个序对
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-queue) (cons '() '()))
+(define (empty-queue? queue) (null? (front-ptr queue)))
+(define (front-ptr queue) (car queue))
+(define (rear-ptr queueu) (cdr queue))
+(define (set-front-ptr! queue item) (set-car! queue item))
+(define (set-rear-ptr! queue item) (set-cdr! queue item))
+(define (front-queue queue)
+  (if (empty-queue? queue)
+      (error "FRONT called with an empty queue" queue)
+      (car (front-ptr queue))))
+
+(define (insert-queue! queue item)
+  (let ((new-pair (cons item '())))
+    (cond ((empty-queue? queue)
+           (set-front-ptr! queue new-pair)
+           (set-rear-ptr! queue new-pair)
+           queue)
+          (else
+           (set-cdr! (rear-ptr queue) new-pair)
+           (set-rear-ptr! queue new-pair)
+           queue))))
+
+(define (delete-queue! queue)
+  (cond ((empty-queue? queue)
+         (error "DELETE! called with an empty queue" queue))
+         (else
+          (set-front-ptr! queue (cdr (front-ptr queue)))
+          queue)))
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1212,7 +1256,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-09</span>
+        <span title="last modification date" class="post-info">2016-08-11</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
