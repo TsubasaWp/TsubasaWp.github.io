@@ -698,3 +698,38 @@ E3: v = 17
 E4: m1 = 'car
     返回[x]的实参x的值17
 #+END_SRC
+
+** 队列的表示
+为了减少查找时间,我们用一对指针来表示序列:front-ptr和rear-ptr.
+它们分别指向一个常规表中的第一个序对和最后一个序对
+
+#+BEGIN_SRC scheme
+(define (make-queue) (cons '() '()))
+(define (empty-queue? queue) (null? (front-ptr queue)))
+(define (front-ptr queue) (car queue))
+(define (rear-ptr queueu) (cdr queue))
+(define (set-front-ptr! queue item) (set-car! queue item))
+(define (set-rear-ptr! queue item) (set-cdr! queue item))
+(define (front-queue queue)
+  (if (empty-queue? queue)
+      (error "FRONT called with an empty queue" queue)
+      (car (front-ptr queue))))
+
+(define (insert-queue! queue item)
+  (let ((new-pair (cons item '())))
+    (cond ((empty-queue? queue)
+           (set-front-ptr! queue new-pair)
+           (set-rear-ptr! queue new-pair)
+           queue)
+          (else
+           (set-cdr! (rear-ptr queue) new-pair)
+           (set-rear-ptr! queue new-pair)
+           queue))))
+
+(define (delete-queue! queue)
+  (cond ((empty-queue? queue)
+         (error "DELETE! called with an empty queue" queue))
+         (else
+          (set-front-ptr! queue (cdr (front-ptr queue)))
+          queue)))
+#+END_SRC
