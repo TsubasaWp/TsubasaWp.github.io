@@ -707,7 +707,7 @@ E4: m1 = 'car
 (define (make-queue) (cons '() '()))
 (define (empty-queue? queue) (null? (front-ptr queue)))
 (define (front-ptr queue) (car queue))
-(define (rear-ptr queueu) (cdr queue))
+(define (rear-ptr queue) (cdr queue))
 (define (set-front-ptr! queue item) (set-car! queue item))
 (define (set-rear-ptr! queue item) (set-cdr! queue item))
 (define (front-queue queue)
@@ -732,4 +732,21 @@ E4: m1 = 'car
          (else
           (set-front-ptr! queue (cdr (front-ptr queue)))
           queue)))
+#+END_SRC
+
+** 习题3.21
+产生(() b)这样的输出结果是因为delete过程中没有重新指定rear-ptr的值,
+即使把"容器"清空,rear-ptr还是指向最后一次insert进来的那个值,所以队列本身看起来不是空的.
+想要达到Ben想要的效果,我们需要重新定义一个打印函数,不输出rear-ptr的值.
+#+BEGIN_SRC scheme
+(define (print-queue queue)
+    (front-ptr queue))
+#+END_SRC
+测试:
+#+BEGIN_SRC scheme
+(define q (make-queue))
+(insert-queue! q 'a)
+(insert-queue! q 'b)
+(print-queue q)
+; val=> (a b)
 #+END_SRC
