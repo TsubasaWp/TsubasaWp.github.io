@@ -88,6 +88,7 @@
 <li><a href="#orgheadline37">改变也就是赋值</a></li>
 <li><a href="#orgheadline38">习题3.20</a></li>
 <li><a href="#orgheadline39">队列的表示</a></li>
+<li><a href="#orgheadline40">习题3.21</a></li>
 </ul>
 </li>
 </ul>
@@ -1220,7 +1221,7 @@ z2的盒子
 <pre class="src src-scheme">(define (make-queue) (cons '() '()))
 (define (empty-queue? queue) (null? (front-ptr queue)))
 (define (front-ptr queue) (car queue))
-(define (rear-ptr queueu) (cdr queue))
+(define (rear-ptr queue) (cdr queue))
 (define (set-front-ptr! queue item) (set-car! queue item))
 (define (set-rear-ptr! queue item) (set-cdr! queue item))
 (define (front-queue queue)
@@ -1249,6 +1250,35 @@ z2的盒子
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40">习题3.21</h3>
+<div class="outline-text-3" id="text-orgheadline40">
+<p>
+产生(() b)这样的输出结果是因为delete过程中没有重新指定rear-ptr的值,
+即使把"容器"清空,rear-ptr还是指向最后一次insert进来的那个值,所以队列本身看起来不是空的.
+想要达到Ben想要的效果,我们需要重新定义一个打印函数,不输出rear-ptr的值.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (print-queue queue)
+    (front-ptr queue))
+</pre>
+</div>
+<p>
+测试:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define q (make-queue))
+(insert-queue! q 'a)
+(insert-queue! q 'b)
+(print-queue q)
+; val=&gt; (a b)
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1256,7 +1286,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-11</span>
+        <span title="last modification date" class="post-info">2016-08-15</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
