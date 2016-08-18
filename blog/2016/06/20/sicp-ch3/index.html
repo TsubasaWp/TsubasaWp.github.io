@@ -89,6 +89,7 @@
 <li><a href="#orgheadline38">习题3.20</a></li>
 <li><a href="#orgheadline39">队列的表示</a></li>
 <li><a href="#orgheadline40">习题3.21</a></li>
+<li><a href="#orgheadline41">习题3.22</a></li>
 </ul>
 </li>
 </ul>
@@ -1279,6 +1280,51 @@ z2的盒子
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline41" class="outline-3">
+<h3 id="orgheadline41">习题3.22</h3>
+<div class="outline-text-3" id="text-orgheadline41">
+<p>
+把队列构造成一个带有局部状态的过程.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (make-queue)
+  (let ((front-ptr '())
+        (rear-ptr '()))
+    (define empty-queue? (null? front-ptr))
+    (define (front-queue)
+      (if (empty-queue?)
+          (error "FRONT called with an empty queue")
+          (car front-ptr)))
+    (define (insert-queue! item)
+      (let ((new-pair (cons item '())))
+        (cond ((empty-queue?)
+               (set! front-ptr new-pair)
+               (set! rear-ptr new-pair))
+              (else
+               (set-cdr! rear-ptr new-pair)
+               (set! rear-ptr new-pair)))))
+    (define delete-queue!
+      (cond ((empty-queue?)
+             (error "DELETE! called with an empty queue" ))
+            (else
+             (set! front-ptr (cdr front-ptr)))
+            front-ptr))
+    (define (print-queue) front-ptr)
+
+    (define (dispatch m)
+      (cond ((equal? m "insert-queue!")
+             insert-queue!)
+            ((equal? m "delete-queue!")
+             delete-queue!)
+            ((equal? n "print-queue")
+             print-queue)))
+    dispatch))
+</pre>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1286,7 +1332,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-15</span>
+        <span title="last modification date" class="post-info">2016-08-18</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
