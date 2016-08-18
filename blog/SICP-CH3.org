@@ -750,3 +750,41 @@ E4: m1 = 'car
 (print-queue q)
 ; val=> (a b)
 #+END_SRC
+
+** 习题3.22
+把队列构造成一个带有局部状态的过程.
+#+BEGIN_SRC scheme
+(define (make-queue)
+  (let ((front-ptr '())
+        (rear-ptr '()))
+    (define empty-queue? (null? front-ptr))
+    (define (front-queue)
+      (if (empty-queue?)
+          (error "FRONT called with an empty queue")
+          (car front-ptr)))
+    (define (insert-queue! item)
+      (let ((new-pair (cons item '())))
+        (cond ((empty-queue?)
+               (set! front-ptr new-pair)
+               (set! rear-ptr new-pair))
+              (else
+               (set-cdr! rear-ptr new-pair)
+               (set! rear-ptr new-pair)))))
+    (define delete-queue!
+      (cond ((empty-queue?)
+             (error "DELETE! called with an empty queue" ))
+            (else
+             (set! front-ptr (cdr front-ptr)))
+            front-ptr))
+    (define (print-queue) front-ptr)
+
+    (define (dispatch m)
+      (cond ((equal? m "insert-queue!")
+             insert-queue!)
+            ((equal? m "delete-queue!")
+             delete-queue!)
+            ((equal? n "print-queue")
+             print-queue)))
+    dispatch))
+
+#+END_SRC
