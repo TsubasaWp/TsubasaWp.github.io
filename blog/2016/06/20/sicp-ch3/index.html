@@ -1290,35 +1290,34 @@ z2的盒子
 <div class="org-src-container">
 
 <pre class="src src-scheme">(define (make-queue)
-  (let ((front-ptr '())
-        (rear-ptr '()))
-    (define empty-queue? (null? front-ptr))
-    (define (front-queue)
+  (let ((front '())
+        (rear '()))
+    (define empty-queue? (null? front))
+    (define front-queue
       (if (empty-queue?)
           (error "FRONT called with an empty queue")
-          (car front-ptr)))
+          (car front)))
     (define (insert-queue! item)
       (let ((new-pair (cons item '())))
         (cond ((empty-queue?)
-               (set! front-ptr new-pair)
-               (set! rear-ptr new-pair))
+               (set! front new-pair)
+               (set! rear new-pair))
               (else
-               (set-cdr! rear-ptr new-pair)
-               (set! rear-ptr new-pair)))))
+               (set-cdr! rear new-pair)
+               (set! rear new-pair)))))
     (define delete-queue!
       (cond ((empty-queue?)
              (error "DELETE! called with an empty queue" ))
             (else
-             (set! front-ptr (cdr front-ptr)))
-            front-ptr))
-    (define (print-queue) front-ptr)
-
+             (set! front (cdr front))
+            front)))
+    (define (print-queue) front)
     (define (dispatch m)
-      (cond ((equal? m "insert-queue!")
+      (cond ((eq? m "insert-queue!")
              insert-queue!)
-            ((equal? m "delete-queue!")
+            ((eq? m "delete-queue!")
              delete-queue!)
-            ((equal? n "print-queue")
+            ((eq? n "print-queue")
              print-queue)))
     dispatch))
 </pre>
@@ -1332,7 +1331,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-08-18</span>
+        <span title="last modification date" class="post-info">2016-08-19</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
