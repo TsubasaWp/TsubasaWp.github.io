@@ -777,12 +777,13 @@ E4: m1 = 'car
              (set! front (cdr front))
             front)))
     (define (print-queue) front)
-    (define (dispatch m)
-      (cond ((eq? m "insert-queue!")
-             insert-queue!)
-            ((eq? m "delete-queue!")
-             delete-queue!)
-            ((eq? n "print-queue")
-             print-queue)))
-    dispatch))
+
+(define d (make-deque))
+((d 'insert-queue!) 1)
+#+END_SRC
+
+** 习题3.23
+实现双端队列
+#+BEGIN_SRC scheme
+
 #+END_SRC
