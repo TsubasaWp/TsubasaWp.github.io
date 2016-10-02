@@ -783,7 +783,93 @@ E4: m1 = 'car
 #+END_SRC
 
 ** 习题3.23
-实现双端队列
+实现双端队列.这个问题类似双向列表,我们需要维护头和尾两个指针,并小心的处理边界问题.
 #+BEGIN_SRC scheme
-
+(define (make-deque)
+  (let ((front '())
+        (rear '()))
+    (define (empty-queue?) (or (null? front) (null? rear)))
+    (define (set-next node nxt)
+      (set-car! (cdr node) nxt))
+    (define (set-prev node nxt)
+      (set-cdr! (cdr node) nxt))
+    (define (get-next node) (cadr node))
+    (define (get-prev node) (cddr node))
+    (define (front-queue)
+      (if (empty-queue?)
+          (error "FRONT called with an empty queue")
+          (car front)))
+    (define (front-insert-queue! item)
+      (let ((new-pair (cons item (cons '() '()))))
+        (cond ((empty-queue?)
+               (set! front new-pair)
+               (set! rear new-pair))
+              (else
+               (set-next new-pair front)
+               (set-prev front new-pair)
+               (set! front new-pair)
+               ))
+        (print-queue)
+        ))
+    (define (rear-insert-queue! item)
+        (let ((new-pair (cons item (cons '() '()))))
+        (cond ((empty-queue?)
+               (set! front new-pair)
+               (set! rear new-pair))
+              (else
+               (set-prev new-pair rear)
+               (set-next rear new-pair)
+               (set! rear new-pair)
+               ))
+        (print-queue)
+        ))
+    (define (front-delete-queue!)
+      (cond ((empty-queue?)
+             (error "DELETE! called with an empty queue" ))
+            (else
+             (set! front (get-next front))
+             (cond ((empty-queue?)
+                    (display "Now the queue is empty"))
+                   (else
+                    (set-prev front '())))))
+      (print-queue))
+    (define (rear-delete-queue!)
+      (cond ((empty-queue?)
+             (error "DELETE! called with an empty queue" ))
+            (else
+             (set! rear (get-prev rear))
+             (cond ((empty-queue?)
+                    (display "Now the queue is empty"))
+                   (else
+                    (set-next rear '())))))
+      (print-queue))
+    (define (print-queue)
+      (define (print-iter p)
+        (cond ((not (null? p))
+               (display (car p))
+               (display " ")
+               (print-iter (car (cdr p))))))
+      (print-iter front))
+    (define (dispatch m)
+      (cond ((eq? m 'front-insert-queue!)
+             front-insert-queue!)
+            ((eq? m 'rear-insert-queue!)
+             rear-insert-queue!)
+            ((eq? m 'front-delete-queue!)
+             front-delete-queue!)
+            ((eq? m 'rear-delete-queue!)
+             rear-delete-queue!)
+            ((eq? m 'print-queue)
+             (print-queue))
+            ))
+    dispatch))
+;; Test
+(define d (make-deque)) ; -> d
+((d 'front-insert-queue!) 1) ; -> 1
+((d 'front-insert-queue!) 2) ; -> 2 1 
+((d 'front-insert-queue!) 3) ; -> 3 2 1
+((d 'rear-insert-queue!) 3) ; -> 3 2 1 3
+((d 'front-delete-queue!)) ; -> 2 1 3
+((d 'rear-delete-queue!)) ; -> 2 1
+(d 'print-queue)
 #+END_SRC
