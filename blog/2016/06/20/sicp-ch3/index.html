@@ -91,6 +91,12 @@
 <li><a href="#orgheadline40">习题3.21</a></li>
 <li><a href="#orgheadline41">习题3.22</a></li>
 <li><a href="#orgheadline42">习题3.23</a></li>
+<li><a href="#orgheadline45">表格的表示</a>
+<ul>
+<li><a href="#orgheadline43">一维表格</a></li>
+<li><a href="#orgheadline44">两维表格</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1420,6 +1426,52 @@ z2的盒子
 </div>
 </div>
 </div>
+
+<div id="outline-container-orgheadline45" class="outline-3">
+<h3 id="orgheadline45">表格的表示</h3>
+<div class="outline-text-3" id="text-orgheadline45">
+</div><div id="outline-container-orgheadline43" class="outline-4">
+<h4 id="orgheadline43">一维表格</h4>
+<div class="outline-text-4" id="text-orgheadline43">
+<p>
+在一维表格中,每个值保存在一个关键码之下.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(define (lookup key table)
+  (let ((record (assoc key (cdr table))))
+    (if record
+        (cdr record)
+        false)))
+
+(define (assoc key records)
+  (cond ((null? records) false)
+        ((equal? key (caar records)) (car records))
+        (else (assoc key (cdr records)))))
+
+(define (insert! key value table)
+  (let ((record (assoc key (cdr table))))
+    (if record
+        (set-cdr! record value)
+        (set-cdr! table
+                  (cons (cons key value) (cdr table))))))
+
+(define (make-table)
+  (list '*table*))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline44" class="outline-4">
+<h4 id="orgheadline44">两维表格</h4>
+<div class="outline-text-4" id="text-orgheadline44">
+<p>
+两维表格中的每个值由两个关键码索引.
+</p>
+</div>
+</div>
+</div>
 </div>
 
 </div>
@@ -1427,7 +1479,7 @@ z2的盒子
     <div>
       <div class="post-meta">
         <span title="post date" class="post-info">2016-06-20</span>
-        <span title="last modification date" class="post-info">2016-10-02</span>
+        <span title="last modification date" class="post-info">2016-10-20</span>
         <span title="tags" class="post-info"><a href="/tags/sicp/">sicp</a></span>
         <span title="author" class="post-info">Tsubasa</span>
       </div>
