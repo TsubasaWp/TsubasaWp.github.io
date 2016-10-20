@@ -873,3 +873,35 @@ E4: m1 = 'car
 ((d 'rear-delete-queue!)) ; -> 2 1
 (d 'print-queue)
 #+END_SRC
+
+** 表格的表示
+
+*** 一维表格
+在一维表格中,每个值保存在一个关键码之下.
+#+BEGIN_SRC scheme
+(define (lookup key table)
+  (let ((record (assoc key (cdr table))))
+    (if record
+        (cdr record)
+        false)))
+
+(define (assoc key records)
+  (cond ((null? records) false)
+        ((equal? key (caar records)) (car records))
+        (else (assoc key (cdr records)))))
+
+(define (insert! key value table)
+  (let ((record (assoc key (cdr table))))
+    (if record
+        (set-cdr! record value)
+        (set-cdr! table
+                  (cons (cons key value) (cdr table))))))
+
+(define (make-table)
+  (list '*table*))
+#+END_SRC
+
+*** 两维表格
+两维表格中的每个值由两个关键码索引.
+
+
