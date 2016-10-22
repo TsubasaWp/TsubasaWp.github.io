@@ -941,4 +941,13 @@ E4: m1 = 'car
 ((t 'lookup-proc) 'a1 'b1)
 #+END_SRC
 
+** 习题3.24
+实现一个允许数值误差的比较过程same-key?
+#+BEGIN_SRC scheme
+(define (same-key? a b range)
+  (if (and (number? a) (number? b))
+      (and (>= a (- b range)) (<= a (+ b range)))
+      (eq? a b)))
+#+END_SRC
 
+** 习题3.25
